@@ -1,0 +1,54 @@
+{
+  "logo": "/images/navbar/logo.png",
+  "logo2": "/images/navbar/siteName.png",
+  "logo_url": "/",
+  "copyright": "MyCompany. All rights reserved.",
+  "social": [
+    {
+      "link": "https://www.facebook.com/mycompany",
+      "social_icon": "ph-facebook-logo"
+    },
+    {
+      "link": "https://www.instagram.com/mycompany",
+      "social_icon": "ph-instagram-logo"
+    },
+    {
+      "link": "https://www.twitter.com/mycompany",
+      "social_icon": "ph-twitter-logo"
+    },
+    {
+      "link": "https://www.github.com/mycompany",
+      "social_icon": "ph-github-logo"
+    },
+    {
+      "link": "https://www.youtube.com/mycompany",
+      "social_icon": "ph-youtube-logo"
+    }
+  ],
+  "sections": [
+    {
+      "link": "/about/",
+      "text": "About"
+    },
+    {
+      "link": "/programs/",
+      "text": "Programs"
+    },
+    {
+      "link": "/sponsors/",
+      "text": "Sponsors"
+    },
+    {
+      "link": "/stores/",
+      "text": "Stores"
+    },
+    {
+      "link": "/press/",
+      "text": "Press"
+    },
+    {
+      "link": "/calendar/",
+      "text": "Calendar"
+    }
+  ]
+}

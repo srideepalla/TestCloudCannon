@@ -1,0 +1,109 @@
+{
+  "logo": "/images/navbar/logo.png",
+  "logo2": "/images/navbar/siteName.png",
+  "items": [
+    {
+      "link": "/about",
+      "text": "About",
+      "enable_dropdown": true,
+      "dropdown": [
+        {
+          "dropdown_text": "About the Stevie Awards",
+          "dropdown_link": "/about"
+        },
+        {
+          "dropdown_text": "Staff",
+          "dropdown_link": "/staff"
+        },
+        {
+          "dropdown_text": "Calendar",
+          "dropdown_link": "/calendar"
+        },
+        {
+          "dropdown_text": "Stevie Awards Update Newsletter",
+          "dropdown_link": "/newsletter"
+        },
+        {
+          "dropdown_text": "Contact",
+          "dropdown_link": "/contact"
+        }
+      ]
+    },
+    {
+      "link": "/programs",
+      "text": "Programs",
+      "enable_dropdown": true,
+      "dropdown": [
+        {
+          "dropdown_text": "American Business Award",
+          "dropdown_link": "/aba/"
+        },
+        {
+          "dropdown_text": "Asia-Pacific Stevie Awards",
+          "dropdown_link": "/apsa/"
+        }
+      ]
+    },
+    {
+      "link": "/judges",
+      "text": "Judges",
+      "enable_dropdown": true,
+      "dropdown": [
+        {
+          "dropdown_text": "Apply to be a Judge",
+          "dropdown_link": "/judges/apply/"
+        },
+        {
+          "dropdown_text": "Judge & Awards Process",
+          "dropdown_link": "/judges/process"
+        },
+        {
+          "dropdown_text": "Judge's Comments",
+          "dropdown_link": "/judges/comments/"
+        }
+      ]
+    },
+    {
+      "link": "/sponsors/",
+      "text": "Sponsors",
+      "enable_dropdown": false,
+      "dropdown": []
+    },
+    {
+      "link": "/stores/",
+      "text": "Stores",
+      "enable_dropdown": false,
+      "dropdown": [
+        {
+          "dropdown_text": "All Articles",
+          "dropdown_link": "/blog"
+        },
+        {
+          "dropdown_text": "Marketing",
+          "dropdown_link": "/tags/marketing/"
+        },
+        {
+          "dropdown_text": "Technology",
+          "dropdown_link": "/tags/technology/"
+        }
+      ]
+    },
+    {
+      "link": "/press/",
+      "text": "Press",
+      "enable_dropdown": false,
+      "dropdown": []
+    },
+    {
+      "link": "/calendar/",
+      "text": "Calendar",
+      "enable_dropdown": null,
+      "dropdown": null
+    }
+  ],
+  "enable_nav_btn": true,
+  "nav_btn": {
+    "text": "Get Started",
+    "link": "/signup/"
+  }
+}

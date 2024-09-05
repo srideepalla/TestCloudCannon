@@ -1,0 +1,83 @@
+/***********
+24. Character Styles
+***********/
+
+.medium {
+    font-weight: 500;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.semi-bold {
+    font-weight: 600;
+}
+
+.t1, .title-1 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 120pt;
+}
+
+.t2, .title-2 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 80pt;
+}
+
+h1, .h1 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 54pt;
+    font-weight: 600;
+}
+
+h2, .h2 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 50pt;
+    font-weight: 600;
+}
+
+h3, .h3 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 40pt;
+    font-weight: 600;
+}
+
+h4, .h4 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 32pt;
+    font-weight: 600;
+}
+
+h5, .h5 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 24pt;
+    font-weight: 600;
+}
+
+h6, .h6 {
+    font-family: 'Tusker Grotesk', sans-serif;
+    font-size: 22pt;
+    font-weight: 600;
+}
+
+p, .p, .p1 {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 24pt;
+    font-weight: 400;
+}
+
+.p2 {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 18pt;
+}
+
+.p3 {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 16pt;
+}
+
+label, .label {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 14pt;
+    font-weight: 600;
+}
