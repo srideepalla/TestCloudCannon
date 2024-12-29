@@ -31,35 +31,40 @@ const SocialIcon = ({ platform }) => {
   return icons[platform] || null;
 };
 
-const Footer = ({
-  copyright = "Copyright © 2024 Stevie Awards, Inc. All Rights Reserved. American Business Awards and International Business Awards are registered trademarks of Stevie Awards, Inc.",
-  logo = {
-    src: "./assets/images/footer-logo.svg",
-    alt: "footer logo",
-    maxWidth: "311px"
-  },
-  links = [
+const Altfooter = (props) => {
+  const defaultLinks = [
     { text: "ABOUT", href: "" },
     { text: "PROGRAMS", href: "" },
     { text: "SPONSORS", href: "" },
     { text: "STORES", href: "" },
     { text: "PRESS", href: "" },
     { text: "CALENDAR", href: "" }
-  ],
-  socialMedia = [
+  ];
+
+  const defaultSocialMedia = [
     { platform: "instagram", href: "" },
     { platform: "twitter", href: "" },
     { platform: "youtube", href: "" },
     { platform: "facebook", href: "" },
     { platform: "tiktok", href: "" }
-  ],
-  newsletter = {
-    title: "SUBSCRIBE TO OUR NEWSLETTER",
-    description: "Get free weekly newsletter about opportunities to win Stevie awards",
-    buttonText: "SUBSCRIBE",
-    placeholder: "EMAIL"
-  }
-}) => {
+  ];
+
+  const {
+    copyright = "Copyright © 2024 Stevie Awards, Inc. All Rights Reserved.",
+    logo = {
+      src: "./assets/images/footer-logo.svg",
+      alt: "footer logo"
+    },
+    links = defaultLinks,
+    socialMedia = defaultSocialMedia,
+    newsletter = {
+      title: "SUBSCRIBE TO OUR NEWSLETTER",
+      description: "Get free weekly newsletter about opportunities to win Stevie awards",
+      buttonText: "SUBSCRIBE",
+      placeholder: "EMAIL"
+    }
+  } = props;
+
   return (
     <footer className="bg-black pt-[162px] pb-9 lg:pb-16 lg:pt-20 overflow-hidden -mt-[120px] lg:mt-0">
       <div className="container">
@@ -135,4 +140,4 @@ const Footer = ({
   );
 };
 
-export default Footer;
+export default Altfooter;
