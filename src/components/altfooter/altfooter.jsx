@@ -1,28 +1,6 @@
-import React from 'react';
+import React from "react";
 
-function Altfooter() {
-  const links = [
-    { text: "ABOUT", href: "" },
-    { text: "PROGRAMS", href: "" },
-    { text: "SPONSORS", href: "" },
-    { text: "STORES", href: "" },
-    { text: "PRESS", href: "" },
-    { text: "CALENDAR", href: "" }
-  ];
-
-  const socialMedia = [
-    { platform: "instagram", href: "" },
-    { platform: "twitter", href: "" },
-    { platform: "youtube", href: "" },
-    { platform: "facebook", href: "" },
-    { platform: "tiktok", href: "" }
-  ];
-
-  const logo = {
-    src: "./assets/images/footer-logo.svg",
-    alt: "footer logo"
-  };
-
+function Altfooter(block) {
   return (
     <footer className="bg-black pt-[162px] pb-9 lg:pb-16 lg:pt-20 overflow-hidden -mt-[120px] lg:mt-0">
       <div className="container">
@@ -30,31 +8,34 @@ function Altfooter() {
           <div className="w-full lg:max-w-[390px] footer-logo">
             <div className="mb-6">
               <a href="">
-                <img 
+                <img
                   className="max-w-[200px] lg:max-w-[311px] mx-auto text-center lg:text-start lg:mx-0"
-                  src={logo.src} 
-                  alt={logo.alt}
+                  src={block.logo.src}
+                  alt={block.logo.alt}
                 />
               </a>
             </div>
             <p className="copyright opacity-30 text-white lg:text-sm text-center lg:text-start text-[11px]">
-              Copyright © 2024 Stevie Awards, Inc. All Rights Reserved.
+              {block.copyright}
             </p>
           </div>
-          
+
           <div className="w-full footer-right-content">
             <ul className="footer-links flex-wrap lg:flex-nowrap justify-center lg:justify-end flex gap-y-3 gap-x-6 lg:gap-9 mb-10 lg:mb-0">
-              {links.map((link, index) => (
+              {block.links.map((link, index) => (
                 <li key={index}>
-                  <a href={link.href} className="text-white TuskerGrotesk5500Medium text-xs lg:text-sm leading-4 lg:leading-5">
+                  <a
+                    href={link.href}
+                    className="text-white TuskerGrotesk5500Medium text-xs lg:text-sm leading-4 lg:leading-5"
+                  >
                     {link.text}
                   </a>
                 </li>
               ))}
             </ul>
-            
+
             <ul className="footer-socail-media flex flex-wrap justify-center lg:flex-nowrap gap-[22px] lg:justify-end py-8 lg:py-14 border-b border-[#333333] mb-4 lg:mb-0 lg:border-0">
-              {socialMedia.map((social, index) => (
+              {block.socialMedia.map((social, index) => (
                 <li key={index}>
                   <a
                     href={social.href}
@@ -65,14 +46,14 @@ function Altfooter() {
                 </li>
               ))}
             </ul>
-            
+
             <div className="subscribe-wrapper max-w-[524px] mx-auto lg:mx-0 lg:ml-auto">
               <div className="mb-4 lg:mb-7">
                 <h3 className="text-white TuskerGrotesk5600Semibold text-base lg:text-2xl mb-1 lg:mb-3">
-                  SUBSCRIBE TO OUR NEWSLETTER
+                  {block.newsletter.title}
                 </h3>
                 <p className="text-white text-xs lg:text-base opacity-60">
-                  Get free weekly newsletter about opportunities to win Stevie awards
+                  {block.newsletter.description}
                 </p>
               </div>
               <form action="">
