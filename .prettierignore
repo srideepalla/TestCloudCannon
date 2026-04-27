@@ -1,0 +1,13 @@
+node_modules/
+dist/
+src/content/**/*.mdx
+.astro/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+**/.astro/
+**/content.d.ts
+**/types.d.ts
+*.log
+coverage/
+.cache/

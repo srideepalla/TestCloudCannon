@@ -1,6 +1,10 @@
 # build output
 dist/
-.output/
+
+_docs/
+/docGen.js
+
+# generated types
 .astro/
 
 # dependencies
@@ -10,8 +14,6 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
-
 
 # environment variables
 .env
@@ -19,3 +21,15 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# jetbrains setting folder
+.idea/
+
+# vscode settings
+.vscode/
+
+# temporary files
+*.tmp
+*.temp
+
+.migration/

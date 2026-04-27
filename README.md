@@ -1,58 +1,72 @@
-# Sendit
+# Astro Component Starter
 
-Sendit is a polished, marketing website template for Astro. Browse through a [live demo](https://top-quail.cloudvent.net/).
+A starter template with 40+ Astro components, each built for visual editing in [CloudCannon](https://cloudcannon.com/). You clone it, you own it. Every component is your source code to modify, extend, or delete.
 
-![Sendit template screenshot](public/images/_screenshot.png)
+All the source code and content is yours, it lives in your repository and you decide when (or if) to pull in future improvements from the core repo.
 
-[![Deploy to CloudCannon](https://buttons.cloudcannon.com/deploy.svg)](https://app.cloudcannon.com/register#sites/connect/github/CloudCannon/sendit-astro-template)
+The design is intentionally unbranded so it can morph into any brand you want. Update CSS variables and the entire site shifts to match your colors, fonts, and identity. Components are built on web fundamentals: vanilla CSS, semantic HTML, and a sprinkling of vanilla JS only when something can't be done with CSS alone. Performance and accessibility are baked in from the start.
 
-## Features
-
-- Pre-built pages
-- Pre-styled components
-- Blog with pagination and category pages
-- Configurable navigation and footer
-- Multiple hero options
-- Configurable theme colors
-- Optimised for editing in [CloudCannon](https://cloudcannon.com/)
-- Live, visual editing powered by [Bookshop](https://github.com/CloudCannon/bookshop)
-
-## Setup
-
-1. Get a workflow going to see your site's output (with [CloudCannon](https://app.cloudcannon.com/)
-   or Astro locally).
-
-## Develop
-
-Sendit is built with [Astro](https://astro.build/).
+## Quick Start
 
 ```bash
-$ npm install
-$ npm run dev
+npx create-astro-component-starter my-site-name
+cd my-site-name
+npm run dev
 ```
 
-## Editing
+Your site is now running at `http://localhost:4321`.
 
-Sendit is set up for adding, updating and removing pages, components, posts, portfolio items, company details and footer elements in [CloudCannon](https://app.cloudcannon.com/).
+This command scaffolds the latest starter into a local project folder, sets the starter repo as `upstream`, and installs dependencies automatically.
 
-### Posts
+**Make your first change:** Open `src/content/pages/index.md`, change the hero heading, and watch it update in your browser.
 
-- Add, update or remove a post in the _Posts_ collection.
-- The **Staff Author** field links to members in the **Staff** collection.
-- Change the defaults when new posts are created in `content/posts/_defaults.md`.
+## What You'll See
 
-### Company details
+- **Your site** at [localhost:4321](http://localhost:4321), a fully working demo with pages, blog, and navigation
+- **Component docs** at [localhost:4321/component-docs/](http://localhost:4321/component-docs/), documentation, examples, and a visual builder for every component
 
-- Reused around the site to save multiple editing locations.
-- Set in the _Data_ / _Company_ section.
+## The Three-File Pattern
 
-### Nav/footer details
+Every component in this starter ships with three files. This is what makes the system work: developers build components, editors visually manage content.
 
-- Reused around the site to save multiple editing locations.
-- Set in the _Data_ section with respective names
+```
+src/components/.../button/
+├── Button.astro                          # The component
+├── button.cloudcannon.inputs.yml         # What editors see and can change
+└── button.cloudcannon.structure-value.yml # Defaults and picker metadata
+```
 
-### Theme colors
+## Key Directories
 
-- Theme colors can be set in _Data_ / _Theme_
-- The main colors are set and variants of them are computed
-- The colors will update on the next build
+```
+src/
+├── components/          # All 40+ components (yours to edit)
+│   ├── building-blocks/ # Core UI: buttons, headings, forms, layout wrappers
+│   ├── page-sections/   # Full-width sections: heroes, features, CTAs
+│   └── navigation/      # Header, footer, mobile nav
+├── content/             # Your pages and blog posts (Markdown/MDX)
+├── styles/              # Design tokens, themes, base styles
+│   ├── variables/       # Colors, fonts, spacing, widths
+│   └── themes/          # Light and dark theme definitions
+└── component-docs/   # Built-in docs (can be excluded from production builds)
+```
+
+## Dev and Build Commands
+
+| Command                      | Description                                       |
+| ---------------------------- | ------------------------------------------------- |
+| `npm run dev`                | Start the development server                      |
+| `npm run build`              | Build for production (component docs excluded)    |
+| `npm run build:with-library` | Build for production with component docs included |
+
+## Prerequisites
+
+- Node.js >= 24.0.0
+
+## Learn More
+
+Head to the [component docs](http://localhost:4321/component-docs/) in your dev server for a guided tour, examples for every component, and a visual component builder.
+
+## License
+
+MIT

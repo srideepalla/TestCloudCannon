@@ -1,0 +1,5 @@
+<svg width="9" height="16" viewBox="0 0 9 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path className="group-hover:fill-black transition duration-300"
+        d="M2.86358 5.42686H0.921341V8.01651H2.86358V15.7855H6.10064V8.01651H8.45852L8.6903 5.42686H6.10064V4.34762C6.10064 3.72934 6.22495 3.48462 6.82251 3.48462H8.6903V0.247559H6.22495C3.89685 0.247559 2.86358 1.27241 2.86358 3.23537V5.42686Z"
+        fill="white" />
+</svg>

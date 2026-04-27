@@ -1,27 +1,89 @@
 ---
-import { changeLanguage } from "i18next";
-import PageLayout from "@layouts/PageLayout.astro";
-import { getCollection, CollectionEntry } from "astro:content";
-import '@fontsource-variable/inter';
+import footerData from "@data/footer.json";
+import mainNavData from "@data/mainNav.json";
+import CollectionLayout from "@layouts/CollectionLayout.astro";
+import Page from "@layouts/Page.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 
-changeLanguage("en");
+const componentImports = {
+  ...import.meta.glob("../components/building-blocks/**/*.astro", { eager: true }),
+  ...import.meta.glob("../components/page-sections/**/*.astro", { eager: true }),
+};
+
+const mdxComponents: Record<string, any> = {};
+
+Object.entries(componentImports).forEach(([path, module]) => {
+  const fileName = path.split("/").at(-1)!.replace(".astro", "");
+
+  mdxComponents[fileName] = (module as any).default;
+});
+
+// Collections that should use the sidebar layout
+const SIDEBAR_COLLECTIONS = ["about", "awards", "enter", "judges", "press", "tickets", "sponsors"];
 
 export interface Props {
-    page: CollectionEntry<"pages">;
+  page: CollectionEntry<"pages">;
 }
+
 export async function getStaticPaths() {
-    const pages = await getCollection("pages", ({ data }) => !data.hidden);
-    return pages.map((page) => {
-        const slug = page.slug.replace(/index$/, "");
-        if (slug.length === 0)
-            return { params: { slug: undefined }, props: { page } };
-        return { params: { slug }, props: { page } };
+  const INDIVIDUAL_ROUTES = new Set([
+    "privacy",
+    "refund-policy",
+    "thank-you-for-requesting-the-iba-entry-kit",
+  ]);
+
+  const pages = await getCollection("pages", draftFilter);
+
+  return pages
+    .filter((page) => {
+      return !INDIVIDUAL_ROUTES.has(page.id);
+    })
+    .map((page) => {
+      const slug = page.id.replace(/index$/, "");
+
+      if (slug.length === 0) return { params: { slug: undefined }, props: { page } };
+      return { params: { slug }, props: { page } };
     });
 }
-const page = Astro.props.page;
-if (!page.data.content_blocks) {
-    throw new Error(`Tried to output page with unsupported schema: ${page.data._schema}`);
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+
+// Determine if this page should use CollectionLayout
+// Check if the page path starts with a sidebar collection (e.g., es/about/, en/about/, about/)
+const pageId = page.id;
+const pathParts = pageId.split("/");
+let collectionName = null;
+
+// Check patterns like "es/about/page" or "about/page"
+for (const part of pathParts) {
+  if (SIDEBAR_COLLECTIONS.includes(part)) {
+    collectionName = part;
+    break;
+  }
 }
+
+const useSidebarLayout = collectionName !== null;
 ---
 
-<PageLayout frontmatter={page.data} />
+{
+  useSidebarLayout ? (
+    <CollectionLayout
+      title={page.data.title || ""}
+      pageHeading={page.data.pageHeading || ""}
+      description={page.data.description || ""}
+      image={page.data.image || ""}
+      collection={collectionName}
+      entry={page}
+    />
+  ) : (
+    <Page
+      frontmatter={page.data}
+      mainNav={mainNavData}
+      footer={footerData}
+    >
+      <Content components={mdxComponents} />
+    </Page>
+  )
+}
