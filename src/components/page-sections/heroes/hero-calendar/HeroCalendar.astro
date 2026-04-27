@@ -1,0 +1,333 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Button from "@core-elements/button/Button.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import calendarData from "@data/calendar.json";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+import Card from "@wrappers/card/Card.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+import Split from "@wrappers/split/Split.astro";
+
+const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+function getUpcomingDeadlines() {
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+
+  return calendarData.events
+    .filter((e) => new Date(e.date).getTime() >= todayUTC)
+    .map((e) => {
+      const d = new Date(e.date);
+
+      return {
+        date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`,
+        label: e.label,
+      };
+    });
+}
+
+const {
+  backgroundImage = {},
+  subheading = "ENTRIES NOW OPEN",
+  heading = "The 23rd Annual International Business Awards",
+  description = "",
+  buttonSections = [],
+  deadlinesHeading = "Upcoming Deadlines & Events",
+  socialLinks = [],
+
+  colorScheme = "dark",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const resolvedDeadlines = getUpcomingDeadlines();
+---
+
+<CustomSection
+  class:list={["hero-calendar", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="xl"
+  paddingVertical="3xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  backgroundImage={{ ...backgroundImage, positionVertical: "center", positionHorizontal: "center" }}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Split
+    distributionMode="half"
+    verticalAlignment="bottom"
+    gap="3xl"
+    minSplitWidth={960}
+  >
+    <div
+      slot="first"
+      class="hero-calendar__content"
+    >
+      <Heading
+        level="h3"
+        size="xs"
+        text={subheading}
+        class="hero-calendar__subheading"
+        data-prop="subheading"
+      />
+      <Heading
+        level="h2"
+        size="2xl"
+        text={heading}
+        class="hero-calendar__heading"
+        data-prop="heading"
+      />
+      <Text
+        size="sm"
+        text={description}
+        class="hero-calendar__description"
+        data-prop="description"
+      />
+      {
+        buttonSections.length > 0 && (
+          <ButtonGroup
+            buttonSections={buttonSections}
+            direction="row"
+            data-children-prop="buttonSections"
+          />
+        )
+      }
+    </div>
+
+    <div
+      slot="second"
+      class="hero-calendar__deadlines"
+    >
+      <Split
+        distributionMode="flexible-fixed"
+        verticalAlignment="center"
+        gap="sm"
+        minSplitWidth={300}
+        fixedWidth={77}
+      >
+        <div slot="first">
+          <Heading
+            level="h3"
+            size="sm"
+            text={deadlinesHeading}
+            class="hero-calendar__deadlines-heading"
+            data-prop="deadlinesHeading"
+          />
+        </div>
+        <div slot="second">
+          <Button
+            text="View All"
+            link="/About/Calendar"
+            variant="text"
+            size="md"
+            iconName="arrow-down-right"
+            iconPosition="after"
+          />
+        </div>
+      </Split>
+      <Carousel
+        slideWidthPercent={33}
+        style="--slide-width: var(--width);"
+        showIndicators={false}
+        showArrows={true}
+        loop={true}
+        class="hero-calendar__carousel"
+      >
+        {
+          resolvedDeadlines.map((deadline) => (
+            <CarouselSlide>
+              <Card
+                border={true}
+                rounded={false}
+                colorScheme="dark"
+                paddingVertical="md"
+                paddingHorizontal="md"
+                class="hero-calendar__card"
+              >
+                <Heading
+                  level="h3"
+                  size="lg"
+                  text={deadline.date}
+                  class="hero-calendar__date"
+                />
+                <Text
+                  size="xs"
+                  text={deadline.label}
+                  class="hero-calendar__label"
+                />
+              </Card>
+            </CarouselSlide>
+          ))
+        }
+      </Carousel>
+      {
+        socialLinks.length > 0 && (
+          <ButtonGroup
+            class="hero-calendar__socials"
+            direction="column"
+            data-children-prop="socialLinks"
+          >
+            {socialLinks.map((social) => (
+              <Button
+                size="md"
+                link={social.link}
+                iconName={social.icon || "social/linkedin"}
+                hideText={true}
+                variant="ghost"
+                openInNewTab={true}
+                aria-label={social.platform}
+                class="hero-calendar__social-link"
+                data-editable="array-item"
+                data-id="page-sections/heroes/hero-calendar/socialLink"
+              />
+            ))}
+          </ButtonGroup>
+        )
+      }
+    </div>
+  </Split>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .hero-calendar {
+      min-height: 53em;
+    }
+
+    .hero-calendar > .outer-content {
+      min-height: inherit;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-calendar > .outer-content::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55));
+      z-index: 11;
+      pointer-events: none;
+    }
+    .hero-calendar > .outer-content > .background-image picture {
+      display: flex;
+      justify-content: center;
+    }
+
+    .hero-calendar > .outer-content > .background-image img {
+      max-width: var(--content-width-4xl);
+    }
+
+    .hero-calendar > .outer-content > .content {
+      position: static;
+      z-index: 12;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .hero-calendar .split {
+      margin-top: 0;
+    }
+
+    .hero-calendar__subheading {
+      margin-top: 0;
+    }
+
+    .hero-calendar__subheading .heading-inner {
+      font-weight: var(--font-weight-normal);
+      color: rgb(223, 186, 25);
+      text-transform: uppercase;
+    }
+
+    .hero-calendar__heading {
+      text-wrap: auto;
+      margin-top: var(--spacing-sm);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .hero-calendar__deadlines .controls-wrapper {
+      justify-content: flex-start;
+      padding: 0 var(--spacing-sm);
+    }
+
+    .hero-calendar__deadlines .controls-wrapper button {
+      border-radius: var(--radius-none);
+    }
+
+    .hero-calendar__deadlines-heading {
+      margin: 0;
+    }
+
+    .hero-calendar__description {
+      margin-top: var(--spacing-md);
+    }
+
+    .hero-calendar__carousel {
+      margin-top: var(--spacing-md);
+      --width: 33%;
+
+      @media (width < 640px) {
+        --width: 100%;
+      }
+    }
+
+    .hero-calendar__carousel .slide__content {
+      height: 100%;
+    }
+
+    .hero-calendar__card {
+      margin-top: 0;
+      padding: 0 var(--spacing-xs);
+      height: 100%;
+    }
+
+    .hero-calendar__card .card-inner {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    .hero-calendar__label {
+      margin-top: var(--spacing-xs);
+    }
+
+    .hero-calendar__label .text-inner p {
+      font-family: var(--font-headings);
+      color: var(--color-text-strong);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-calendar__socials {
+      position: absolute;
+      top: var(--spacing-3xl);
+      right: var(--spacing-5xl);
+      width: auto;
+      margin-top: 0;
+
+      @media (max-width: 1536px) {
+        position: static;
+
+        & > .button-group__items {
+          flex-direction: row;
+          margin-top: var(--spacing-md);
+        }
+      }
+    }
+
+    .hero-calendar__socials > .button-group__items {
+      flex-wrap: nowrap;
+    }
+
+    .hero-calendar__social-link > .button-inner {
+      border-radius: var(--radius-full);
+      padding: var(--spacing-sm);
+    }
+  }
+</style>

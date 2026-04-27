@@ -1,0 +1,18 @@
+---
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+---
+
+<span
+  id={id}
+  class="anchor-target"
+></span>
+
+<style>
+  .anchor-target {
+    display: block;
+    scroll-margin-top: var(--nav-height, 100px);
+  }
+</style>

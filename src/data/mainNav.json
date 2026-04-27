@@ -1,0 +1,278 @@
+{
+  "logoSource": "/images/logo.png",
+  "logoAlt": "The International Business Awards",
+  "navData": [
+    {
+      "name": "ABOUT",
+      "path": "/about",
+      "children": [
+        { "name": "About Us", "path": "/about/about-us" },
+        { "name": "FAQ", "path": "/about/faq" },
+        { "name": "Calendar", "path": "/about/calendar" },
+        { "name": "Staff", "path": "/about/staff" },
+        { "name": "Stevie Awards Update Newsletter", "path": "/about/newsletter" },
+        { "name": "Contact", "path": "/about/contact" }
+      ]
+    },
+    {
+      "name": "THE AWARDS",
+      "path": "/awards",
+      "children": [
+        { "name": "The Stevie® Award Trophy", "path": "/awards/thestevieaward/" },
+        { "name": "Best of the IBA Awards", "path": "/awards/best-iba-awards/" },
+        {
+          "name": "2025 Stevie Award Winners",
+          "path": "/awards/iba-winners/",
+          "children": [
+            {
+              "name": "Achievement Categories",
+              "path": "/Awards/IBA-Winners/achievement-winners/"
+            },
+            { "name": "App Categories", "path": "/Awards/IBA-Winners/app-category-winners/" },
+            {
+              "name": "Company/Organization Categories",
+              "path": "/Awards/IBA-Winners/company-organization-awards-winners/"
+            },
+            {
+              "name": "Communications, Public Relations, & Investor Relations Categories",
+              "path": "/Awards/IBA-Winners/PR-awards-winners/"
+            },
+            {
+              "name": "Creative Categories",
+              "path": "/Awards/IBA-Winners/creative-awards-category-winners/"
+            },
+            {
+              "name": "Customer Service Categories",
+              "path": "/Awards/IBA-Winners/customer-service-awards-winners/"
+            },
+            {
+              "name": "Entrepreneur Categories",
+              "path": "/Awards/IBA-Winners/entrepreneur-awards-winners/"
+            },
+            { "name": "Event Categories", "path": "/Awards/IBA-Winners/event-category-winners/" },
+            {
+              "name": "Human Resources Categories",
+              "path": "/Awards/IBA-Winners/hr-awards-winners/"
+            },
+            {
+              "name": "Individual Categories",
+              "path": "/Awards/IBA-Winners/individual-category-winners/"
+            },
+            {
+              "name": "Management Categories",
+              "path": "/Awards/IBA-Winners/management-awards-category-winners/"
+            },
+            {
+              "name": "Marketing Categories",
+              "path": "/Awards/IBA-Winners/marketing-awards-category-winners/"
+            },
+            {
+              "name": "New Products & Product Management Categories",
+              "path": "/Awards/IBA-Winners/new-product-awards-category-winners/"
+            },
+            {
+              "name": "Podcast Categories",
+              "path": "/Awards/IBA-Winners/podcast-category-winners/"
+            },
+            {
+              "name": "Publication Categories",
+              "path": "/Awards/IBA-Winners/publications-awards-category-winners/"
+            },
+            {
+              "name": "Social Media Categories",
+              "path": "/Awards/IBA-Winners/social-media-awards-category-winners/"
+            },
+            {
+              "name": "Support Categories",
+              "path": "/Awards/IBA-Winners/support-awards-category-winners/"
+            },
+            {
+              "name": "Sustainability Categories",
+              "path": "/Awards/IBA-Winners/sustainability-category-winners/"
+            },
+            {
+              "name": "Technology Categories",
+              "path": "/Awards/IBA-Winners/technology-category-winners/"
+            },
+            {
+              "name": "Thought Leadership Categories",
+              "path": "/Awards/IBA-Winners/thought-leadership-category-winners/"
+            },
+            {
+              "name": "Video Categories",
+              "path": "/Awards/IBA-Winners/video-awards-category-winners/"
+            },
+            {
+              "name": "Website Categories",
+              "path": "/Awards/IBA-Winners/website-awards-category-winners/"
+            }
+          ]
+        },
+        { "name": "People's Choice Stevie Awards", "path": "/awards/peopleschoice/" },
+        {
+          "name": "Categories",
+          "path": "/awards/categories/",
+          "children": [
+            { "name": "Achievement", "path": "/Awards/Categories/achievement-categories/" },
+            {
+              "name": "Achievement in Management",
+              "path": "/Awards/Categories/achievement-in-management-categories/"
+            },
+            {
+              "name": "Achievement in Marketing",
+              "path": "/Awards/Categories/achievement-in-marketing-categories/"
+            },
+            {
+              "name": "Achievement in PR",
+              "path": "/Awards/Categories/achievement-in-pr-categories/"
+            },
+            {
+              "name": "AI Innovation & Transformation",
+              "path": "/Awards/Categories/ai-innovation-transformation-categories/"
+            },
+            { "name": "App", "path": "/Awards/Categories/app-categories/" },
+            {
+              "name": "Company/Organization",
+              "path": "/Awards/Categories/company-organization-categories/"
+            },
+            { "name": "Creative", "path": "/Awards/Categories/creative-categories/" },
+            {
+              "name": "Customer Service",
+              "path": "/Awards/Categories/customer-service-categories/"
+            },
+            { "name": "Entrepreneur", "path": "/Awards/Categories/entrepreneur-categories/" },
+            { "name": "Event", "path": "/Awards/Categories/event-categories/" },
+            { "name": "Human Resources", "path": "/Awards/Categories/human-resources-categories/" },
+            { "name": "Individual", "path": "/Awards/Categories/individual-categories/" },
+            {
+              "name": "New Product & Product Management",
+              "path": "/Awards/Categories/New-Product-Product-Management-Categories/"
+            },
+            { "name": "Podcast", "path": "/awards/categories/podcast-categories/" },
+            {
+              "name": "Public Sector & Government Innovation",
+              "path": "/Awards/Categories/public-sector-government-innovation-categories/"
+            },
+            { "name": "Publication", "path": "/Awards/Categories/publication-categories/" },
+            { "name": "Social Media", "path": "/Awards/Categories/social-media-categories/" },
+            { "name": "Support", "path": "/Awards/Categories/support-categories/" },
+            { "name": "Sustainability", "path": "/Awards/Categories/sustainability-categories/" },
+            { "name": "Technology", "path": "/Awards/Categories/technology-categories/" },
+            {
+              "name": "Thought Leadership",
+              "path": "/Awards/Categories/thought-leadership-categories/"
+            },
+            { "name": "Video", "path": "/Awards/Categories/video-categories/" },
+            { "name": "Web Achievement", "path": "/Awards/Categories/web-achievement-categories/" }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ENTER",
+      "path": "/enter/how-to-enter",
+      "children": [
+        { "name": "How To Enter", "path": "/enter/how-to-enter" },
+        {
+          "name": "Regulations, Terms & Conditions",
+          "path": "/enter/regulations-terms-conditions"
+        },
+        { "name": "Entry Preparation Tips", "path": "/enter/entry-preparation-tips" },
+        { "name": "Entry Fees", "path": "/enter/entry-fees" },
+        { "name": "10 Reasons to Enter", "path": "/enter/10-reasons-enter" },
+        { "name": "How to Submit Winning Entries", "path": "/enter/how-to-submit-winning-entries" },
+        { "name": "What's New & Different for 2026", "path": "/enter/whats-new-different" }
+      ]
+    },
+    {
+      "name": "JUDGES",
+      "path": "/judges",
+      "children": [
+        { "name": "Judging & Awards Process", "path": "/judges/judging-awards-process" },
+        { "name": "Apply to Be a Judge", "path": "/judges/you-be-the-judge" },
+        { "name": "Judging Committees", "path": "/judges/judging-committees" }
+      ]
+    },
+    {
+      "name": "SPONSORS",
+      "path": "/sponsors",
+      "children": [
+        { "name": "Become a Sponsor", "path": "/sponsors/become-sponsor/" },
+        { "name": "Supporting Sponsorship", "path": "/sponsors/supporting-sponsorship/" }
+      ]
+    },
+    {
+      "name": "PRESS",
+      "path": "/press",
+      "children": [
+        { "name": "Media Inquiry", "path": "/press/media-inquiry/" },
+        { "name": "Press Releases", "path": "/press/press-releases/" },
+        {
+          "name": "Press Clippings",
+          "path": "https://feed.meltwater.com/gyda/outputs/xml/html/16/79/76398.html"
+        },
+        { "name": "Photos and Logos", "path": "/press/photos-and-logos/" }
+      ]
+    },
+    {
+      "name": "TICKETS",
+      "path": "/tickets",
+      "children": [
+        { "name": "Awards Banquet", "path": "/tickets/awards-banquet/" },
+        { "name": "Watch Awards Presentations", "path": "/tickets/watch-awards-presentations/" }
+      ]
+    },
+    {
+      "name": "STORE",
+      "path": "https://stevieawards.myshopify.com/",
+      "children": []
+    }
+  ],
+  "buttonSections": [
+    {
+      "_component": "navigation/language-switcher",
+      "currentLanguage": "EN",
+      "currentFlag": "us",
+      "languages": [
+        { "name": "Bulgarian", "langCode": "bg", "flag": "bg" },
+        { "name": "Chinese (Simplified)", "langCode": "zh", "flag": "cn" },
+        { "name": "Czech", "langCode": "cs", "flag": "cz" },
+        { "name": "Danish", "langCode": "da", "flag": "dk" },
+        { "name": "Dutch", "langCode": "nl", "flag": "nl" },
+        { "name": "Estonian", "langCode": "et", "flag": "ee" },
+        { "name": "Finnish", "langCode": "fi", "flag": "fi" },
+        { "name": "French", "langCode": "fr", "flag": "fr" },
+        { "name": "German", "langCode": "de", "flag": "de" },
+        { "name": "Greek", "langCode": "el", "flag": "gr" },
+        { "name": "Hungarian", "langCode": "hu", "flag": "hu" },
+        { "name": "Indonesian", "langCode": "id", "flag": "id" },
+        { "name": "Italian", "langCode": "it", "flag": "it" },
+        { "name": "Japanese", "langCode": "ja", "flag": "jp" },
+        { "name": "Korean", "langCode": "ko", "flag": "kr" },
+        { "name": "Lithuanian", "langCode": "lt", "flag": "lt" },
+        { "name": "Latvian", "langCode": "lv", "flag": "lv" },
+        { "name": "Norwegian (Bokmål)", "langCode": "nb", "flag": "no" },
+        { "name": "Polish", "langCode": "pl", "flag": "pl" },
+        { "name": "Portuguese (Brazil)", "langCode": "pt-br", "flag": "br" },
+        { "name": "Portuguese (Portugal)", "langCode": "pt", "flag": "pt" },
+        { "name": "Romanian", "langCode": "ro", "flag": "ro" },
+        { "name": "Russian", "langCode": "ru", "flag": "ru" },
+        { "name": "Slovak", "langCode": "sk", "flag": "sk" },
+        { "name": "Slovenian", "langCode": "sl", "flag": "si" },
+        { "name": "Spanish", "langCode": "es", "flag": "es" },
+        { "name": "Swedish", "langCode": "sv", "flag": "se" },
+        { "name": "Thai", "langCode": "th", "flag": "th" },
+        { "name": "Turkish", "langCode": "tr", "flag": "tr" },
+        { "name": "Ukrainian", "langCode": "uk", "flag": "ua" },
+        { "name": "Vietnamese", "langCode": "vi", "flag": "vi" }
+      ]
+    },
+    {
+      "_component": "building-blocks/core-elements/button",
+      "text": "Log in",
+      "link": "https://the-stevie-awards.com/login",
+      "variant": "ghost",
+      "size": "sm"
+    }
+  ]
+}

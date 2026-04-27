@@ -1,0 +1,137 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+
+interface GalleryImage {
+  source: string;
+  alt: string;
+  thumbnail: string;
+}
+
+const {
+  heading = "Event Gallery",
+  description = "",
+  images = [],
+
+  colorScheme = "dark",
+  backgroundColor = "base",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const typedImages = images as GalleryImage[];
+
+const thumbnails = typedImages.map((img) => ({
+  src: img.thumbnail || img.source,
+  alt: img.alt,
+}));
+---
+
+<CustomSection
+  class:list={["gallery-carousel", className]}
+  maxContentWidth="xl"
+  paddingHorizontal="md"
+  paddingVertical="2xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="2xl"
+    alignX="center"
+    text={heading}
+    data-prop="heading"
+  />
+
+  <Text
+    alignX="center"
+    text={description}
+    data-prop="description"
+    size="md"
+  />
+
+  <Carousel
+    showIndicators={true}
+    showArrows={true}
+    loop={true}
+    align="center"
+    slideWidthPercent={100}
+    controlsPosition="after"
+    thumbnails={thumbnails}
+    data-children-prop={useDefaultEditableBinding ? "images" : undefined}
+  >
+    {
+      typedImages.map((image, index) => (
+        <CarouselSlide
+          data-editable="array-item"
+          data-id="page-sections/carousels/gallery-carousel/galleryImage"
+          aria-label={`Image ${index + 1} of ${typedImages.length}`}
+        >
+          <Image
+            source={image.source}
+            alt={image.alt}
+            rounded={true}
+            loading="lazy"
+            decoding="async"
+          />
+        </CarouselSlide>
+      ))
+    }
+  </Carousel>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .gallery-carousel .heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .gallery-carousel .text {
+      max-width: 672px;
+      margin-inline: auto;
+    }
+
+    .gallery-carousel .controls-wrapper {
+      align-self: center;
+      width: min(calc(100% + 300px), 100vw);
+    }
+    .gallery-carousel .controls-wrapper .button {
+      z-index: 1;
+      margin: calc(-50% - 120px) var(--spacing-lg) 0 var(--spacing-lg);
+
+      & > button {
+        width: 44px;
+        height: 44px;
+        background-color: color-mix(in srgb, var(--color-bg-brand-muted) 80%, transparent);
+        border-color: color-mix(in srgb, var(--color-bg-brand-muted) 80%, transparent);
+        color: var(--color-text-on-brand);
+
+        &:hover,
+        &:focus {
+          background-color: color-mix(in srgb, var(--color-bg-brand) 80%, transparent);
+          border-color: color-mix(in srgb, var(--color-bg-brand) 80%, transparent);
+          color: var(--color-text-on-brand);
+        }
+      }
+    }
+
+    .gallery-carousel .controls-wrapper .indicator.is-active img {
+      border-bottom: 3px solid var(--color-bg-brand);
+      border-radius: var(--radius-sm);
+      margin-bottom: 1px;
+    }
+    .gallery-carousel .controls-wrapper .indicator img {
+      border-radius: var(--radius-sm);
+      margin-bottom: 1px;
+    }
+  }
+</style>

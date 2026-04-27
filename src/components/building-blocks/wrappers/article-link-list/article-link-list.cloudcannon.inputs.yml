@@ -1,0 +1,5 @@
+stories:
+  type: array
+  comment: List of article items with thumbnail image, title, and link.
+  options:
+    structures: _structures.storyItem

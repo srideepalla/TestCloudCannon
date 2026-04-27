@@ -1,0 +1,43 @@
+heading:
+  type: text
+  comment: Section heading text displayed centered above the carousels.
+
+description:
+  type: markdown
+  comment: Supporting description text below the heading.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+cards:
+  type: array
+  comment: Cards to display. Each card has a logo thumbnail, event photo, and content panel.
+  options:
+    structures: _structures.card
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

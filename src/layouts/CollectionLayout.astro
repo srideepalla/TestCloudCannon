@@ -1,0 +1,236 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Footer from "@components/navigation/footer/Footer.astro";
+import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
+import Side from "@components/navigation/side/Side.astro";
+import MainComponent from "@components/utils/MainComponent.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import footerData from "@data/footer.json";
+import mainNavData from "@data/mainNav.json";
+import seoData from "@data/seo.json";
+import sidebarNavData from "@data/sidebarNav.json";
+import Layout from "@layouts/BaseLayout.astro";
+import Split from "@wrappers/split/Split.astro";
+import { render } from "astro:content";
+
+const componentImports = {
+  ...import.meta.glob("../components/building-blocks/**/*.astro", { eager: true }),
+  ...import.meta.glob("../components/page-sections/**/*.astro", { eager: true }),
+};
+
+const mdxComponents: Record<string, any> = {};
+
+Object.entries(componentImports).forEach(([path, module]) => {
+  const fileName = path.split("/").at(-1)!.replace(".astro", "");
+
+  mdxComponents[fileName] = (module as any).default;
+});
+
+interface SidebarLink {
+  text: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  pageHeading?: string;
+  description?: string;
+  image?: string;
+  collection: string;
+  slug?: string;
+  entry?: any;
+}
+
+const { title, pageHeading, description, image, collection, entry } = Astro.props;
+const sidebar = (sidebarNavData as Record<string, { heading: string; links: SidebarLink[] }>)[
+  collection
+];
+const sidebarNavItems = sidebar?.links.map((link) => ({ name: link.text, path: link.href })) ?? [];
+const Content = entry ? (await render(entry)).Content : null;
+const pageSections = entry?.data?.pageSections ?? [];
+const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];
+const pageDescription = description || seoData.description;
+---
+
+<Layout
+  title={title}
+  description={pageDescription}
+  image={image}
+>
+  <MainNavigation {...mainNavData} />
+
+  <CustomSection
+    colorScheme="dark"
+    backgroundColor="base"
+    maxContentWidth="3xl"
+    paddingHorizontal="xl"
+    paddingVertical="sm"
+    class="breadcrumb-bar"
+  >
+    <a href="/">Home</a>
+    <span class="breadcrumb-sep">&gt;</span>
+    <a href={`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`}>{sidebar?.heading}</a>
+    <span class="breadcrumb-sep">&gt;</span>
+    <span class="breadcrumb-current">{title}</span>
+  </CustomSection>
+
+  <main class="collection-layout">
+    <CustomSection
+      colorScheme="light"
+      backgroundColor="base"
+      maxContentWidth="3xl"
+      paddingHorizontal="xl"
+      paddingVertical="3xl"
+      class="collection-section"
+    >
+      <Split
+        distributionMode="fixed-flexible"
+        fixedWidth={280}
+        minSplitWidth={1024}
+        gap="6xl"
+        class="collection-split"
+      >
+        {
+          sidebar && (
+            <aside
+              slot="first"
+              class="collection-sidebar"
+            >
+              <div
+                class="sidebar-heading"
+                data-theme="dark"
+              >
+                {sidebar.heading}
+              </div>
+              <Side
+                navData={sidebarNavItems}
+                class="collection-sidenav"
+              />
+              <div
+                class="sidebar-blocks"
+                data-editable="component"
+                data-component="utils/main-component"
+                data-prop-sections="sidebarBlocks"
+              >
+                <MainComponent sections={sidebarBlocks} />
+              </div>
+            </aside>
+          )
+        }
+        <div
+          slot="second"
+          class="collection-content"
+        >
+          {
+            pageHeading ? (
+              <Heading
+                level="h1"
+                size="3xl"
+                data-prop="pageHeading"
+                text={pageHeading}
+                class="collection-title"
+              />
+            ) : (
+              <Heading
+                level="h1"
+                size="3xl"
+                data-prop="title"
+                text={title}
+                class="collection-title"
+              />
+            )
+          }
+          {
+            pageSections.length > 0 ? (
+              <div
+                data-editable="component"
+                data-component="utils/main-component"
+                data-prop-sections="pageSections"
+              >
+                <MainComponent sections={pageSections} />
+              </div>
+            ) : (
+              <Text
+                size="lg"
+                data-prop="@content"
+                class="prose"
+              >
+                {Content ? <Content components={mdxComponents} /> : <slot />}
+              </Text>
+            )
+          }
+        </div>
+      </Split>
+    </CustomSection>
+  </main>
+
+  <Footer {...footerData} />
+</Layout>
+
+<style is:global>
+  .collection-layout {
+    min-height: 60vh;
+  }
+
+  .collection-section .split {
+    margin-top: 0;
+  }
+
+  .breadcrumb-bar a {
+    font-size: var(--font-size-sm);
+    color: var(--color-link-strong);
+    text-decoration: none;
+  }
+
+  .breadcrumb-bar a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb-sep {
+    color: var(--color-link-strong);
+    margin: 0 0.5rem;
+    font-size: var(--font-size-sm);
+  }
+
+  .breadcrumb-current {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-strong);
+  }
+
+  .sidebar-heading {
+    font-family: var(--font-headings), sans-serif;
+    font-weight: var(--font-weight-bold);
+    background-color: var(--color-bg);
+    color: var(--color-text-strong);
+    padding: 0.75rem 1rem;
+    font-size: var(--font-size-md);
+    text-transform: uppercase;
+  }
+  .collection-title {
+    font-weight: var(--font-weight-semibold);
+    margin-top: 0;
+  }
+
+  .sidebar-blocks {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .sidebar-blocks > :global(*) {
+    margin-top: 0;
+  }
+
+  .prose {
+    a {
+      color: var(--color-link-strong);
+      text-decoration: underline;
+      transition: color 0.2s ease-in-out;
+      &:hover {
+        color: var(--color-link-strong-hover);
+      }
+    }
+  }
+</style>

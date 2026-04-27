@@ -1,0 +1,56 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+
+const {
+  heading = "Stay Tuned!",
+  text = "Entries open for The 2026 American Business Awards on Oct 7.",
+
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["hero-banner", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="2xl"
+  paddingVertical="2xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="2xl"
+    alignX="center"
+    text={heading}
+    data-prop="heading"
+  />
+  <Text
+    alignX="center"
+    text={text}
+    data-prop="text"
+  />
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .hero-banner .heading .heading-inner {
+      font-weight: 900 !important;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-banner .text {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: var(--color-text-strong);
+    }
+  }
+</style>

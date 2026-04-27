@@ -1,0 +1,64 @@
+label: Grid Testimonials
+icon: format_quote
+description: Testimonial card carousel with quotes, author attribution, and company logos.
+value:
+  _component: page-sections/features/grid-testimonials
+  heading: Winner Testimonials
+  testimonials:
+    - quote: "Quote text."
+      authorName: "Author Name"
+      authorTitle: "Author Title"
+      companyLogo:
+        source: ""
+        alt: "Company Logo"
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Grid Testimonials
+  subtext:
+    - key: heading
+  icon: format_quote
+picker_preview:
+  text: Grid Testimonials
+  subtext: Testimonial card carousel with quotes, author attribution, and company logos.
+_inputs_from_glob:
+  - /src/components/page-sections/features/grid-testimonials/grid-testimonials.cloudcannon.inputs.yml
+_structures:
+  testimonialItem:
+    values:
+      - label: Testimonial
+        value:
+          quote: ""
+          authorName: ""
+          authorTitle: ""
+          companyLogo:
+            source: ""
+            alt: ""
+        preview:
+          text:
+            - key: authorName
+          subtext:
+            - key: quote
+        _inputs:
+          quote:
+            type: markdown
+            comment: The testimonial quote text.
+            options:
+              bold: true
+              italic: true
+          authorName:
+            type: text
+            comment: Name of the testimonial author.
+          authorTitle:
+            type: text
+            comment: Title or role of the author.
+          companyLogo:
+            type: object
+            comment: Company logo image.
+          companyLogo.source:
+            type: image
+            comment: Logo image file.
+          companyLogo.alt:
+            type: text
+            comment: Alt text for the logo.

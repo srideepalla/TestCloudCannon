@@ -1,0 +1,76 @@
+backgroundImage:
+  type: object
+  comment: Background image for the hero section.
+
+backgroundImage.source:
+  type: image
+  comment: Image file path.
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: cover
+    width: 1920
+    height: 1080
+
+backgroundImage.alt:
+  type: text
+  comment: Alt text for the background image.
+
+subheading:
+  type: text
+  comment: Gold subheading text above the main title (e.g., "ENTRIES NOW OPEN").
+
+heading:
+  type: text
+  comment: Main hero heading text.
+
+description:
+  type: markdown
+  comment: Description paragraph below the heading.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+buttonSections:
+  type: array
+  comment: Call-to-action buttons.
+  options:
+    structures: _structures.buttonSections
+
+deadlinesHeading:
+  type: text
+  comment: Heading above the deadlines carousel.
+
+socialLinks:
+  type: array
+  comment: Social media icon links displayed on the right side of the calendar panel.
+  options:
+    structures: _structures.socialLink
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

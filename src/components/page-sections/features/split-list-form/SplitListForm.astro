@@ -1,0 +1,193 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Embed from "@core-elements/embed/Embed.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import ListComponent from "@core-elements/list/List.astro";
+import Text from "@core-elements/text/Text.astro";
+import ArticleLinkList from "@wrappers/article-link-list/ArticleLinkList.astro";
+import ButtonSections from "@wrappers/button-group/ButtonGroup.astro";
+import Card from "@wrappers/card/Card.astro";
+import Split from "@wrappers/split/Split.astro";
+
+const {
+  subheading = "",
+  heading = "",
+  description = "",
+  list = null,
+  buttonSections = [],
+  formHeading = "",
+  formEmbed = "",
+  formCardColorScheme = "light",
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["split-list-form", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Split
+    distributionMode="half"
+    gap="2xl"
+    minSplitWidth={1024}
+    verticalAlignment="center"
+  >
+    <div
+      slot="first"
+      class="split-list-form__left"
+    >
+      <Heading
+        level="h2"
+        size="md"
+        text={subheading}
+        data-prop="subheading"
+        class="split-list-form__subheading"
+      />
+      <Heading
+        level="h3"
+        size="3xl"
+        text={heading}
+        data-prop="heading"
+        class="split-list-form__heading"
+      />
+      {
+        description && (
+          <Text
+            size="sm"
+            text={description}
+            data-prop="description"
+            class="split-list-form__description"
+          />
+        )
+      }
+      {
+        list?._component === "building-blocks/core-elements/list" && (
+          <div class="split-list-form__list">
+            <ListComponent
+              {...list}
+              data-children-prop="list.items"
+            />
+          </div>
+        )
+      }
+      {
+        list?._component === "building-blocks/wrappers/article-link-list" && (
+          <div class="split-list-form__list">
+            <ArticleLinkList
+              {...list}
+              data-children-prop="list.stories"
+            />
+          </div>
+        )
+      }
+      {
+        buttonSections.length > 0 && (
+          <ButtonSections
+            buttonSections={buttonSections}
+            direction="row"
+            data-children-prop="buttonSections"
+          />
+        )
+      }
+    </div>
+
+    <div
+      slot="second"
+      class="split-list-form__right"
+    >
+      <Card
+        colorScheme={formCardColorScheme}
+        backgroundColor="base"
+        paddingVertical="xl"
+        paddingHorizontal="xl"
+        rounded={true}
+        class="split-list-form__form-card"
+      >
+        <Heading
+          level="h3"
+          size="md"
+          text={formHeading}
+          alignX="center"
+          data-prop="formHeading"
+          class="split-list-form__form-heading"
+        />
+        {
+          formEmbed && (
+            <Embed
+              html={formEmbed}
+              class="split-list-form__embed"
+              placeholderText="Form Embed Placeholder - visible on the live site"
+            />
+          )
+        }
+      </Card>
+    </div>
+  </Split>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .split-list-form .split {
+      margin-top: 0;
+    }
+
+    .split-list-form__subheading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+
+    .split-list-form__heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+
+    .split-list-form__list {
+      margin: var(--spacing-lg) 0;
+
+      p {
+        color: var(--color-text-strong);
+      }
+    }
+
+    .split-list-form__right {
+      height: 100%;
+    }
+
+    .split-list-form__form-card {
+      height: 100%;
+      margin-top: 0 !important;
+    }
+
+    .split-list-form__form-card > .card-inner {
+      height: 100% !important;
+    }
+
+    .split-list-form__form-heading {
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+    }
+
+    .split-list-form__embed {
+      margin-top: var(--spacing-lg) !important;
+    }
+
+    .split-list-form__embed .embed-content {
+      aspect-ratio: unset !important;
+    }
+  }
+</style>

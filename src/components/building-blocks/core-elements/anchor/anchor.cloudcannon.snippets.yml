@@ -1,0 +1,19 @@
+anchor:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Page Anchor
+    subtext:
+      - key: id
+    icon: link
+  definitions:
+    component_name: Anchor
+    named_args:
+      - editor_key: id
+        type: string
+  _inputs:
+    id:
+      type: text
+      label: Anchor ID
+      comment: The ID that in-page links will reference (e.g. Q26)

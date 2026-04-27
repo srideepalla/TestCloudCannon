@@ -1,0 +1,154 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import SimpleText from "@core-elements/simple-text/SimpleText.astro";
+import calendarData from "@data/calendar.json";
+import Card from "@wrappers/card/Card.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+import GridItem from "@wrappers/grid/GridItem.astro";
+
+const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+
+function getUpcomingEvents() {
+  const now = new Date();
+  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+
+  return calendarData.events
+    .filter((e) => new Date(e.date).getTime() >= todayUTC)
+    .map((e) => {
+      const d = new Date(e.date);
+
+      return {
+        month: MONTHS[d.getUTCMonth()],
+        day: String(d.getUTCDate()).padStart(2, "0"),
+        title: e.title,
+        description: e.description,
+      };
+    });
+}
+
+type CalendarEvent = {
+  month: string;
+  day: string;
+  title: string;
+  description?: string;
+};
+
+const {
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "3xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const resolvedEvents: CalendarEvent[] = getUpcomingEvents();
+
+const hasEvents = resolvedEvents.length > 0;
+
+if (!_component && !hasEvents) return;
+---
+
+<CustomSection
+  class:list={["grid-calendar", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Grid
+    layout="start"
+    minItemWidth={350}
+    gap="lg"
+    class="grid-calendar__grid"
+    useDefaultEditableBinding={false}
+  >
+    {
+      resolvedEvents.map((event: CalendarEvent) => (
+        <GridItem useDefaultEditableBinding={false}>
+          <Card
+            rounded={false}
+            useDefaultEditableBinding={false}
+            backgroundColor="surface"
+            paddingHorizontal="lg"
+            paddingVertical="lg"
+            class="grid-calendar__card"
+          >
+            <div class="grid-calendar__date">
+              <SimpleText
+                class="grid-calendar__month"
+                text={event.month}
+                useDefaultEditableBinding={false}
+                size="xl"
+                alignX="center"
+              />
+              <SimpleText
+                class="grid-calendar__day"
+                text={event.day}
+                useDefaultEditableBinding={false}
+                size="5xl"
+                alignX="center"
+              />
+            </div>
+            <div class="grid-calendar__content">
+              <SimpleText
+                class="grid-calendar__title"
+                text={event.title}
+                useDefaultEditableBinding={false}
+                size="md"
+              />
+              <SimpleText
+                class="grid-calendar__description"
+                text={event.description}
+                useDefaultEditableBinding={false}
+                size="sm"
+              />
+            </div>
+          </Card>
+        </GridItem>
+      ))
+    }
+  </Grid>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .grid-calendar__card > .card-inner {
+      border-left: 4px solid var(--gold);
+    }
+
+    .grid-calendar__card > .card-inner .card-content {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+    }
+
+    .grid-calendar__month,
+    .grid-calendar__day,
+    .grid-calendar__title {
+      margin: 0;
+      p {
+        color: var(--color-text-strong);
+        font-weight: var(--font-weight-bold);
+      }
+    }
+
+    .grid-calendar__month,
+    .grid-calendar__day {
+      p {
+        line-height: 1;
+      }
+    }
+
+    .grid-calendar__description {
+      margin: 0;
+      p {
+        color: var(--color-text-muted);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+label: Article Link List
+icon: article
+description: List of articles with thumbnail image, title, and learn more link.
+value:
+  _component: building-blocks/wrappers/article-link-list
+  stories:
+    - image:
+        source: ""
+        alt: ""
+      title: "Article title goes here"
+      link: ""
+preview:
+  text:
+    - Article Link List
+  icon: article
+picker_preview:
+  text: Article Link List
+  subtext: List of articles with thumbnail, title, and link.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/article-link-list/article-link-list.cloudcannon.inputs.yml
+_structures:
+  storyItem:
+    values:
+      - label: Article
+        value:
+          image:
+            source: ""
+            alt: ""
+          title: ""
+          link: ""
+        preview:
+          text:
+            - key: title
+          image:
+            - key: image.source
+        _inputs:
+          image:
+            type: object
+          image.source:
+            type: image
+            comment: Thumbnail image for the article.
+            options:
+              paths:
+                uploads: src/assets/images
+                static: ""
+          image.alt:
+            type: text
+            comment: Alt text for the thumbnail.
+          title:
+            type: text
+            comment: Article headline.
+          link:
+            type: url
+            comment: URL to the full article.

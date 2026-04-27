@@ -1,0 +1,103 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+
+const {
+  heading = "",
+  description = "",
+  logos = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["feature-logo-scroller", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="lg"
+    alignX="center"
+    text={heading}
+    data-prop="heading"
+    class="feature-logo-scroller__heading"
+  />
+  <Text
+    alignX="center"
+    size="lg"
+    text={description}
+    data-prop="description"
+  />
+  {
+    logos.length > 0 && (
+      <Carousel
+        autoScroll={true}
+        loop={true}
+        slideWidthPercent={14}
+        minSlideWidth={120}
+        class="feature-logo-scroller__carousel"
+        data-children-prop="logos"
+      >
+        {logos.map((logo: { source: string; alt: string }) => (
+          <CarouselSlide
+            data-editable="array-item"
+            data-id="building-blocks/wrappers/carousel/carousel-slide"
+            class="feature-logo-scroller__slide"
+          >
+            <div class="feature-logo-scroller__logo-wrap">
+              <Image
+                source={logo.source}
+                alt={logo.alt}
+                data-prop-source="source"
+                data-prop-alt="alt"
+              />
+            </div>
+          </CarouselSlide>
+        ))}
+      </Carousel>
+    )
+  }
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .feature-logo-scroller__heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+    .feature-logo-scroller__logo-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 72px;
+      padding-inline: var(--spacing-sm);
+    }
+
+    .feature-logo-scroller__logo-wrap .image {
+      margin-top: 0;
+      max-width: 128px;
+      height: auto;
+    }
+
+    .feature-logo-scroller__logo-wrap .image img {
+      max-height: 72px;
+      max-width: 128px;
+      object-fit: contain;
+    }
+  }
+</style>

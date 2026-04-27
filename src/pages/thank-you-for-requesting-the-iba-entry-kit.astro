@@ -1,0 +1,15 @@
+---
+import CollectionLayout from "@layouts/CollectionLayout.astro";
+import { getEntry } from "astro:content";
+
+const entry = await getEntry("pages", "thank-you-for-requesting-the-iba-entry-kit");
+---
+
+<CollectionLayout
+  title={entry?.data.title || "Thank You for Requesting the IBA Entry Kit"}
+  pageHeading={entry?.data.pageHeading || ""}
+  description={entry?.data.description || ""}
+  image={entry?.data.image || ""}
+  collection="about"
+  entry={entry}
+/>

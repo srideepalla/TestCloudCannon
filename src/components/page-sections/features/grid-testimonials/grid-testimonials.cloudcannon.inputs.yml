@@ -1,0 +1,35 @@
+heading:
+  type: text
+  comment: Section heading text.
+
+testimonials:
+  type: array
+  comment: Testimonial cards displayed in the carousel.
+  options:
+    structures: _structures.testimonialItem
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

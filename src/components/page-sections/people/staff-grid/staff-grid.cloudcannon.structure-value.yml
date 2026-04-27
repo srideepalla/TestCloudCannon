@@ -1,0 +1,90 @@
+label: Staff Grid
+icon: group
+description: Responsive grid of staff profile cards with photo, name, title, and expandable bio.
+value:
+  _component: page-sections/people/staff-grid
+  staff:
+    - imageSource: ""
+      imageAlt: ""
+      heading: Name
+      jobTitle: Job Title
+      description: ""
+      backgroundColor: surface
+  colorScheme: inherit
+  backgroundColor: none
+preview:
+  text:
+    - Staff Grid
+  icon: group
+picker_preview:
+  text: Staff Grid
+  subtext: Responsive grid of staff profile cards.
+_inputs_from_glob:
+  - /src/components/page-sections/people/staff-grid/staff-grid.cloudcannon.inputs.yml
+_structures:
+  staffMember:
+    values:
+      - label: Staff Member
+        icon: person
+        value:
+          photo:
+            source: ""
+            alt: ""
+          heading: ""
+          jobTitle: ""
+          description: ""
+          colorScheme: inherit
+          backgroundColor: surface
+        preview:
+          text:
+            - key: heading
+          subtext:
+            - key: jobTitle
+        _inputs:
+          photo:
+            type: object
+            comment: Profile photo.
+          photo.source:
+            type: image
+            comment: URL or path to the profile photo.
+            options:
+              paths:
+                uploads: src/assets/images
+                static: ""
+          photo.alt:
+            type: text
+            comment: Alt text for the profile photo.
+          heading:
+            type: text
+            comment: Staff member's name.
+          jobTitle:
+            type: text
+            comment: Job title or role.
+          description:
+            type: markdown
+            comment: Biography or description.
+          colorScheme:
+            type: select
+            options:
+              values:
+                - id: inherit
+                  name: Inherit
+                - id: dark
+                  name: Dark
+                - id: light
+                  name: Light
+          backgroundColor:
+            type: select
+            comment: Card background colour.
+            options:
+              values:
+                - id: none
+                  name: None
+                - id: base
+                  name: Base
+                - id: surface
+                  name: Surface
+                - id: accent
+                  name: Accent
+                - id: highlight
+                  name: Highlight

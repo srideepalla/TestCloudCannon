@@ -1,0 +1,127 @@
+---
+import Button from "@core-elements/button/Button.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Card from "@wrappers/card/Card.astro";
+import Split from "@wrappers/split/Split.astro";
+
+const {
+  eventPhoto = { source: "", alt: "" },
+  dateLabel = "",
+  name = "",
+  description = "",
+  link = "",
+  colorScheme = "inherit",
+  brandColor = "#003366",
+  class: className,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<Card
+  rounded={true}
+  colorScheme={colorScheme}
+  class:list={["event-card", className]}
+  style={`--event-brand-color: ${brandColor};`}
+  backgroundColor="base"
+  {...htmlAttributes}
+>
+  <Split
+    distributionMode="third-two-thirds"
+    verticalAlignment="stretch"
+    minSplitWidth={800}
+    gap="xl"
+  >
+    <Fragment slot="first">
+      <Image
+        source={eventPhoto?.source || ""}
+        alt={eventPhoto?.alt || name}
+        data-prop-src="eventPhoto.source"
+        data-prop-alt="eventPhoto.alt"
+      />
+    </Fragment>
+    <Fragment slot="second">
+      <div class="event-card-content">
+        {dateLabel && <p class="event-card-date">ENTRIES OPEN: {dateLabel}</p>}
+        <Heading
+          level="h3"
+          size="lg"
+          text={name}
+          data-prop="name"
+        />
+        <Text
+          text={description}
+          data-prop="description"
+        />
+        {
+          link && (
+            <Button
+              link={link}
+              text="Learn More"
+              variant="text-brand"
+              uppercase={true}
+              useDefaultEditableBinding={false}
+            />
+          )
+        }
+      </div>
+    </Fragment>
+  </Split>
+</Card>
+
+<style is:global>
+  @layer building-blocks {
+    .event-card .background {
+      background-color: var(--event-brand-color, #003366);
+    }
+
+    .event-card .split .split-inner {
+      gap: 0px;
+    }
+
+    .event-card .image,
+    .event-card .image .image-inner,
+    .event-card .image picture {
+      height: 100%;
+      width: 100%;
+    }
+
+    .event-card .image img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      width: 100%;
+    }
+
+    .event-card-content {
+      color: var(--color-text-on-brand);
+      padding: 2.5rem 3rem;
+    }
+
+    .event-card-date {
+      color: var(--color-brand);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .event-card-content .heading {
+      margin: 0;
+      color: var(--color-text-on-brand);
+      font-weight: var(--font-weight-bold);
+    }
+
+    .event-card-content .text {
+      margin-inline: 0;
+      max-width: 100%;
+    }
+    .event-card-content .text-inner,
+    .event-card-content .text-inner p {
+      color: var(--color-text-on-brand);
+      margin-bottom: var(--spacing-md);
+    }
+  }
+</style>

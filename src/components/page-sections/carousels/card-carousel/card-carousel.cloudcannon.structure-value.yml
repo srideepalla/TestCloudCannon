@@ -1,0 +1,109 @@
+label: Card Carousel
+icon: view_carousel
+description: Logo thumbnail selector with synced content carousel showing cards with unique colors.
+value:
+  _component: page-sections/carousels/card-carousel
+  heading: Explore Other Stevie Awards Competitions
+  description: ""
+  cards:
+    - logo:
+        source: ""
+        alt: ""
+      eventPhoto:
+        source: ""
+        alt: ""
+      dateLabel: "2024"
+      name: Award Name
+      description: Description of the award.
+      link: ""
+      brandColor: "#003366"
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Card Carousel
+  subtext:
+    - key: heading
+  icon: view_carousel
+picker_preview:
+  text: Card Carousel
+  subtext: Logo thumbnail selector with synced content carousel showing cards with unique colors.
+_inputs_from_glob:
+  - /src/components/page-sections/carousels/card-carousel/card-carousel.cloudcannon.inputs.yml
+_structures:
+  card:
+    values:
+      - label: Card
+        value:
+          logo:
+            source: ""
+            alt: ""
+          eventPhoto:
+            source: ""
+            alt: ""
+          dateLabel: ""
+          name: ""
+          description: ""
+          link: ""
+          colorScheme: inherit
+          brandColor: "#003366"
+        preview:
+          text:
+            - key: name
+          subtext:
+            - key: dateLabel
+        _inputs:
+          logo:
+            type: object
+            comment: Logo image used in the thumbnail selector.
+          logo.source:
+            type: image
+            comment: Logo image file.
+            options:
+              paths:
+                uploads: src/assets/images
+          logo.alt:
+            type: text
+            comment: Alt text for the logo.
+          eventPhoto:
+            type: object
+            comment: Event photo displayed on the left side of the content card.
+          eventPhoto.source:
+            type: image
+            comment: Event photo file.
+            options:
+              paths:
+                uploads: src/assets/images
+          eventPhoto.alt:
+            type: text
+            comment: Alt text for the event photo.
+          dateLabel:
+            type: date
+            comment: Date or year label shown in gold above the program name.
+          name:
+            type: text
+            comment: Award program name.
+          description:
+            type: markdown
+            comment: Description of the award program.
+            options:
+              bold: true
+              italic: true
+              link: true
+          link:
+            type: url
+            comment: URL for the Learn More link.
+          colorScheme:
+            type: select
+            comment: Color scheme for the card.
+            options:
+              values:
+                - id: inherit
+                  name: Inherit
+                - id: light
+                  name: Light
+                - id: dark
+                  name: Dark
+          brandColor:
+            type: color
+            comment: Unique brand color for this program's content panel background.

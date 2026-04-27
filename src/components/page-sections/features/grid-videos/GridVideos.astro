@@ -1,0 +1,97 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import Video from "@core-elements/video/Video.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+import GridItem from "@wrappers/grid/GridItem.astro";
+
+interface VideoItem {
+  youtubeId: string;
+  title: string;
+}
+
+const {
+  heading = "What Winning a Stevie Award Means to Our 2025 Winners",
+  videos = [] as VideoItem[],
+
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["grid-videos", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="lg"
+    alignX="center"
+    text={heading}
+    data-prop="heading"
+    class="grid-videos__heading"
+  />
+
+  <Grid
+    layout="center"
+    minItemWidth={450}
+    maxItemWidth={450}
+    gap="lg"
+    data-children-prop="videos"
+    class="grid-videos__grid"
+  >
+    {
+      (videos as VideoItem[]).map((video) => (
+        <GridItem
+          data-editable="array-item"
+          data-id="page-sections/features/grid-videos/videoItem"
+          class="grid-videos__item"
+        >
+          <Video
+            type="youtube"
+            id={video.youtubeId}
+            title={video.title}
+          />
+          {video.title && (
+            <Text
+              text={video.title}
+              size="sm"
+              alignX="center"
+              data-prop="title"
+              class="grid-videos__video-title"
+            />
+          )}
+        </GridItem>
+      ))
+    }
+  </Grid>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .grid-videos .heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .grid-videos__grid > .grid-inner > .grid-item > .grid-item-content > .video {
+      border-radius: var(--radius-sm);
+    }
+
+    .grid-videos__video-title {
+      margin-top: var(--spacing-sm) !important;
+      font-weight: var(--font-weight-bold);
+    }
+  }
+</style>

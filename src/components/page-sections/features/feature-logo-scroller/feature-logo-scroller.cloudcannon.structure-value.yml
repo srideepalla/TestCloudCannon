@@ -1,0 +1,44 @@
+label: Feature Logo Scroller
+icon: handshake
+description: Centered section with heading, description, and auto-scrolling company logo marquee.
+value:
+  _component: page-sections/features/feature-logo-scroller
+  heading: Heading Text
+  description: ""
+  logos:
+    - source: ""
+      alt: Company Logo
+  colorScheme: light
+  backgroundColor: base
+preview:
+  text:
+    - Feature Logo Scroller
+  subtext:
+    - key: heading
+  icon: handshake
+picker_preview:
+  text: Feature Logo Scroller
+  subtext: Centered section with heading, description, and auto-scrolling company logo marquee.
+_inputs_from_glob:
+  - /src/components/page-sections/features/feature-logo-scroller/feature-logo-scroller.cloudcannon.inputs.yml
+_structures:
+  logoItem:
+    values:
+      - label: Logo
+        value:
+          source: ""
+          alt: ""
+        preview:
+          text:
+            - key: alt
+          icon: image
+        _inputs:
+          source:
+            type: image
+            comment: Company logo image.
+            options:
+              paths:
+                uploads: src/assets/images
+          alt:
+            type: text
+            comment: Company name for accessibility.

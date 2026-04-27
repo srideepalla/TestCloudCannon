@@ -1,0 +1,204 @@
+---
+import quickActionOpen from "@assets/images/quick-action.svg?raw";
+import quickActionClose from "@assets/images/quick-action-close.svg?raw";
+import Heading from "@core-elements/heading/Heading.astro";
+import Button from "@core-elements/button/Button.astro";
+import quickActionsData from "@data/quickActions.json";
+import { slugifyLabel } from "@components/utils/slugify";
+
+const { heading, links } = quickActionsData;
+const popoverId = `modal-${slugifyLabel(heading)}`;
+---
+
+<div
+  class="quick-actions-wrapper modal"
+  data-theme="dark"
+>
+  <!-- Custom trigger button -->
+  <button
+    class="quick-actions-button modal-trigger"
+    popovertarget={popoverId}
+    aria-label="Toggle quick actions menu"
+  >
+    <span
+      class="quick-actions-icon quick-actions-icon-open"
+      set:html={quickActionOpen}
+    />
+    <span
+      class="quick-actions-icon quick-actions-icon-close"
+      set:html={quickActionClose}
+    />
+  </button>
+
+  <!-- Modal popover (using same structure as Modal.astro) -->
+  <div
+    id={popoverId}
+    popover="auto"
+    class="modal-popover quick-actions-modal"
+    role="dialog"
+    aria-label={heading}
+  >
+    <div class="modal-body quick-actions-body">
+      <div class="quick-actions-header-row">
+        <Heading
+          text={heading}
+          level="h2"
+          size="xs"
+          class="quick-actions-heading"
+        />
+        <Button
+          iconName="x-mark"
+          hideText
+          text="Close"
+          variant="text-strong"
+          size="lg"
+          element="button"
+          class="modal-close quick-actions-close"
+          popovertarget={popoverId}
+          popovertargetaction="hide"
+        />
+      </div>
+      <hr class="quick-actions-divider" />
+      <ul class="quick-actions-list">
+        {
+          links.map((link) => (
+            <li class="quick-actions-list-item">
+              <Button
+                text={link.text}
+                link={link.href}
+                variant="text-strong"
+                size="md"
+                uppercase={false}
+                class="quick-action-button"
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  function setupQuickActions() {
+    const modal = document.querySelector<HTMLElement>(".quick-actions-wrapper");
+    if (!modal) return;
+    if (modal.hasAttribute("data-modal-initialized")) return;
+    modal.setAttribute("data-modal-initialized", "");
+
+    const trigger = modal.querySelector<HTMLButtonElement>(".modal-trigger");
+    const popover = modal.querySelector<HTMLElement>(".modal-popover");
+    if (!trigger || !popover) return;
+
+    popover.addEventListener("toggle", (e) => {
+      const { newState } = e as ToggleEvent;
+      trigger.setAttribute("aria-expanded", String(newState === "open"));
+
+      if (newState === "closed") {
+        trigger.focus();
+      }
+    });
+  }
+
+  onPageLoad(setupQuickActions);
+</script>
+
+<style is:global>
+  @layer components {
+    /* Wrapper positioning */
+    .quick-actions-wrapper {
+      position: fixed;
+      bottom: var(--spacing-2xl);
+      right: var(--spacing-2xl);
+      z-index: 9999;
+      display: block;
+      margin: 0;
+    }
+
+    /* Custom trigger button */
+    .quick-actions-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 74px;
+      height: 74px;
+      padding: 0;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .quick-actions-icon {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.3s ease;
+    }
+
+    .quick-actions-icon-open {
+      opacity: 1;
+    }
+
+    .quick-actions-icon-close {
+      opacity: 0;
+    }
+
+    .quick-actions-button[aria-expanded="true"] .quick-actions-icon-open {
+      opacity: 0;
+    }
+
+    .quick-actions-button[aria-expanded="true"] .quick-actions-icon-close {
+      opacity: 1;
+    }
+
+    /* Override modal popover positioning and styling */
+    .quick-actions-modal {
+      position: fixed;
+      bottom: calc(var(--spacing-2xl) + 90px);
+      right: var(--spacing-2xl);
+      top: unset;
+      left: unset;
+      border: none;
+      background-color: rgb(228, 105, 37);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 450px;
+      margin: 0;
+      padding: var(--spacing-xl);
+    }
+
+    .quick-actions-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-sm);
+    }
+
+    .quick-actions-heading.heading {
+      margin: 0;
+      margin-top: 0;
+    }
+
+    .quick-actions-divider {
+      margin: var(--spacing-md) 0 var(--spacing-lg) 0;
+      border-color: var(--color-text-strong);
+    }
+
+    .quick-actions-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .quick-action-button {
+      padding: var(--spacing-sm) 0;
+    }
+  }
+</style>

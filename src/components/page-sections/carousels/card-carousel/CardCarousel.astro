@@ -1,0 +1,161 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+import EventCard from "@wrappers/event-card/EventCard.astro";
+
+interface Card {
+  logo: { source: string; alt: string };
+  eventPhoto: { source: string; alt: string };
+  dateLabel: string;
+  name: string;
+  description: string;
+  link: string;
+  colorScheme: string;
+  brandColor: string;
+}
+
+const {
+  heading = "Explore Other Stevie Awards Competitions",
+  description = "",
+  cards = [],
+
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const typedCards = cards as Card[];
+
+const thumbnails = typedCards.map((card) => ({
+  src: card.logo?.source || "",
+  alt: card.logo?.alt || card.name,
+}));
+---
+
+<CustomSection
+  class:list={["card-carousel", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="2xl"
+    alignX="center"
+    text={heading}
+    data-prop="heading"
+  />
+  <Text
+    alignX="center"
+    text={description}
+    data-prop="description"
+  />
+
+  <Carousel
+    showIndicators={true}
+    showArrows={true}
+    loop={true}
+    align="center"
+    slideWidthPercent={100}
+    controlsPosition="before"
+    thumbnails={thumbnails}
+    data-children-prop={useDefaultEditableBinding ? "cards" : undefined}
+    style="--thumb-indicator-width: 18%; --thumb-indicator-min-width: 160px;"
+  >
+    {
+      typedCards.map((card, index) => (
+        <CarouselSlide
+          data-editable="array-item"
+          data-component="building-blocks/wrappers/event-card"
+          aria-label={card.name}
+        >
+          <EventCard
+            eventPhoto={card.eventPhoto}
+            dateLabel={card.dateLabel}
+            name={card.name}
+            description={card.description}
+            link={card.link}
+            brandColor={card.brandColor}
+            colorScheme={card.colorScheme}
+          />
+        </CarouselSlide>
+      ))
+    }
+  </Carousel>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .card-carousel > .outer-content > .content > .heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+    .card-carousel > .outer-content > .content > .heading .heading-inner {
+      max-width: 896px;
+      margin-inline: auto;
+      text-wrap: auto;
+    }
+
+    .card-carousel .text {
+      max-width: 672px;
+      margin-inline: auto;
+    }
+
+    .card-carousel .carousel-inner {
+      gap: var(--spacing-lg);
+    }
+
+    .card-carousel .thumb-slide {
+      width: fit-content;
+      padding: var(--spacing-sm);
+      --thumb-indicator-width: 15%;
+    }
+    .card-carousel .indicator--thumb {
+      aspect-ratio: unset;
+      height: 80px;
+      width: fit-content;
+      padding: 0.75rem 1rem;
+    }
+
+    .card-carousel .indicator--thumb.is-active {
+      border-color: var(--color-border-subtle);
+
+      &::after {
+        content: "";
+        height: 3px;
+        width: 100%;
+        background-color: var(--color-bg-brand);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+      }
+    }
+
+    .card-carousel .thumb-slide:has(.indicator--thumb.is-active) {
+      border-color: var(--color-border-subtle);
+    }
+
+    .card-carousel .controls-wrapper .button button {
+      width: 44px;
+      height: 44px;
+    }
+
+    .card-carousel .card {
+      padding: 0 var(--spacing-2xl);
+
+      @media (width < 640px) {
+        padding: 0 var(--spacing-sm);
+      }
+    }
+  }
+</style>

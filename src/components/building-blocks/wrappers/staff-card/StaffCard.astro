@@ -1,0 +1,180 @@
+---
+import Button from "@core-elements/button/Button.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Card from "@wrappers/card/Card.astro";
+import Split from "@wrappers/split/Split.astro";
+
+const {
+  photo = { source: "", alt: "" },
+  heading = "",
+  jobTitle = "",
+  description = "",
+  colorScheme = "inherit",
+  backgroundColor = "surface",
+  class: className,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const uid = `staff-bio-${heading.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+---
+
+<Card
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  class:list={["staff-card", className]}
+  {...htmlAttributes}
+>
+  <Split
+    distributionMode="fixed-flexible"
+    fixedWidth={180}
+    verticalAlignment="top"
+    minSplitWidth={300}
+    gap="md"
+  >
+    <Fragment slot="first">
+      <Image
+        source={photo?.source || ""}
+        alt={photo?.alt || heading}
+        data-prop-src="photo.source"
+        data-prop-alt="photo.alt"
+      />
+    </Fragment>
+    <Fragment slot="second">
+      <div class="staff-card-content">
+        <Heading
+          level="h3"
+          size="md"
+          text={heading}
+          data-prop="heading"
+        />
+        <Text
+          class="staff-card-job-title"
+          data-prop="jobTitle"
+          size="sm"
+        >
+          {jobTitle}
+        </Text>
+        <div class="staff-card-bio-wrapper">
+          <input
+            type="checkbox"
+            id={uid}
+            class="staff-card-toggle"
+          />
+          <Text
+            text={description}
+            data-prop="description"
+            class="staff-card-description"
+          />
+          <label
+            for={uid}
+            class="staff-card-read-more"
+          >
+            <Button
+              class="read-more-label"
+              variant="text-brand-muted"
+              size="sm"
+              uppercase={false}
+              useDefaultEditableBinding={false}
+              >Read More</Button
+            >
+            <Button
+              class="read-less-label"
+              variant="text-brand-muted"
+              size="sm"
+              uppercase={false}
+              useDefaultEditableBinding={false}
+              >Read Less</Button
+            >
+          </label>
+        </div>
+      </div>
+    </Fragment>
+  </Split>
+</Card>
+
+<style is:global>
+  @layer building-blocks {
+    .staff-card .split .split-inner {
+      gap: 0;
+    }
+
+    .staff-card .image,
+    .staff-card .image .image-inner,
+    .staff-card .image picture {
+      height: 100%;
+      width: 100%;
+    }
+
+    .staff-card .image img {
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      width: 100%;
+    }
+
+    .staff-card-content {
+      padding: var(--spacing-lg);
+    }
+
+    .staff-card-content .heading {
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .staff-card-job-title {
+      margin: 0;
+      color: var(--color-text);
+      opacity: 0.6;
+    }
+
+    .staff-card-bio-wrapper {
+      margin-top: var(--spacing-sm);
+      position: relative;
+    }
+
+    .staff-card-toggle {
+      clip: rect(0 0 0 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .staff-card-description .text-inner {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4;
+      overflow: hidden;
+    }
+
+    .staff-card-description .text-inner p {
+      margin: 0;
+    }
+
+    .staff-card-toggle:checked ~ .staff-card-description .text-inner {
+      display: block;
+      overflow: visible;
+    }
+
+    .staff-card-read-more {
+      display: inline-block;
+    }
+
+    .staff-card-read-more .read-less-label {
+      display: none;
+    }
+
+    .staff-card-toggle:checked ~ .staff-card-read-more .read-more-label {
+      display: none;
+    }
+
+    .staff-card-toggle:checked ~ .staff-card-read-more .read-less-label {
+      display: inline;
+    }
+  }
+</style>

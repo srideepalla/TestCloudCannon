@@ -1,0 +1,38 @@
+eventPhoto:
+  type: object
+  comment: The event's main photo shown in the card.
+  options:
+    preview:
+      icon: image
+      text:
+        - key: alt
+        - Event Photo
+      subtext:
+        - key: source
+        - Add an image source
+      image:
+        - key: source
+eventPhoto.source:
+  type: image
+  comment: URL or path to the event photo.
+  options:
+    paths:
+      uploads: src/assets/images
+eventPhoto.alt:
+  type: text
+  comment: Alt text for the event photo.
+dateLabel:
+  type: date
+  comment: Date or deadline text shown above the event name (e.g. "March 31, 2026").
+name:
+  type: text
+  comment: Name of the event or awards program.
+description:
+  type: markdown
+  comment: Short description of the event.
+link:
+  type: url
+  comment: URL for the "Learn More" button. Leave empty to hide the button.
+brandColor:
+  type: color
+  comment: Brand color used as the background of the text panel.

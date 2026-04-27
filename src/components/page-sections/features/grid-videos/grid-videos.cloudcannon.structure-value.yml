@@ -1,0 +1,41 @@
+label: Grid Videos
+icon: play_circle
+description: Centered heading with a 3-column grid of YouTube video embeds.
+value:
+  _component: page-sections/features/grid-videos
+  heading: "Heading Text"
+  videos:
+    - youtubeId: ""
+      title: "Video 1"
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Grid Videos
+  subtext:
+    - key: heading
+  icon: play_circle
+picker_preview:
+  text: Grid Videos
+  subtext: Centered heading with a 3-column grid of YouTube video embeds.
+_inputs_from_glob:
+  - /src/components/page-sections/features/grid-videos/grid-videos.cloudcannon.inputs.yml
+_structures:
+  videoItem:
+    values:
+      - label: Video
+        value:
+          youtubeId: ""
+          title: ""
+        preview:
+          text:
+            - key: title
+          subtext:
+            - key: youtubeId
+        _inputs:
+          youtubeId:
+            type: text
+            comment: YouTube video ID (the part after v= in the URL).
+          title:
+            type: text
+            comment: Title of the video for accessibility.

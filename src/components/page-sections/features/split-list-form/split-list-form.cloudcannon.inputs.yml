@@ -1,0 +1,73 @@
+subheading:
+  type: text
+  comment: Uppercase label above the main heading.
+
+heading:
+  type: text
+  comment: Main section heading.
+
+description:
+  type: markdown
+  comment: Optional description below the heading.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+list:
+  type: object
+  comment: The content to display on the left side. Add a List, Article Link List, or Button.
+  options:
+    structures: _structures.listContent
+
+buttonSections:
+  type: array
+  comment: Call-to-action buttons.
+  options:
+    structures: _structures.buttonSections
+
+formHeading:
+  type: text
+  comment: Heading text inside the form panel.
+
+formEmbed:
+  type: code
+  comment: Raw HTML embed code for the form (e.g., HubSpot form script).
+  options:
+    syntax: html
+
+formCardColorScheme:
+  type: select
+  comment: Color scheme for the form card panel.
+  options:
+    values:
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

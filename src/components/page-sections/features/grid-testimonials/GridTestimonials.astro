@@ -1,0 +1,169 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Card from "@wrappers/card/Card.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+
+const {
+  heading = "Winner Testimonials",
+  testimonials = [],
+
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["grid-testimonials", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical="3xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading
+    level="h2"
+    size="lg"
+    text={heading}
+    data-prop="heading"
+    class="grid-testimonials__heading"
+  />
+
+  <Carousel
+    slideWidthPercent={33}
+    showIndicators={false}
+    showArrows={true}
+    loop={true}
+    align="center"
+    class="grid-testimonials__carousel"
+    data-children-prop="testimonials"
+  >
+    {
+      testimonials.map((item) => (
+        <CarouselSlide
+          data-editable="array-item"
+          data-id="building-blocks/wrappers/carousel/carousel-slide"
+        >
+          <Card
+            rounded={true}
+            backgroundColor="highlight"
+            paddingVertical="xl"
+            paddingHorizontal="xl"
+            class="grid-testimonials__card"
+          >
+            <Text
+              text={item.quote}
+              data-prop="quote"
+              alignX="center"
+              size="md"
+            />
+            <Text
+              class="grid-testimonials__author"
+              alignX="center"
+              useDefaultEditableBinding={false}
+            >
+              <span
+                data-editable="text"
+                data-prop="authorName"
+              >
+                {item.authorName}
+              </span>
+              {item.authorTitle && (
+                <span
+                  class="grid-testimonials__author-title"
+                  data-editable="text"
+                  data-prop="authorTitle"
+                >
+                  , {item.authorTitle}
+                </span>
+              )}
+            </Text>
+            <Image
+              source={item.companyLogo?.source}
+              alt={item.companyLogo?.alt || item.authorName}
+              data-prop-src="companyLogo.source"
+              data-prop-alt="companyLogo.alt"
+              class="grid-testimonials__logo"
+            />
+          </Card>
+        </CarouselSlide>
+      ))
+    }
+  </Carousel>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .grid-testimonials__heading {
+      margin-right: 136px;
+      margin-left: 16px;
+    }
+
+    .grid-testimonials__carousel .slide__content,
+    .grid-testimonials__carousel .slide__content .card {
+      height: 100%;
+    }
+
+    .grid-testimonials__card > .card-inner {
+      border-radius: var(--radius-xl);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .grid-testimonials__card .card-outer-content {
+      flex: 1;
+    }
+
+    .grid-testimonials__card .card-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+    }
+
+    .grid-testimonials__author {
+      margin-top: auto;
+      padding-top: var(--spacing-lg);
+      font-weight: var(--font-weight-bold);
+      & span {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        line-height: 1;
+      }
+    }
+    .grid-testimonials__logo .image-inner img {
+      height: 40px;
+    }
+
+    .grid-testimonials .slide {
+      padding-inline: var(--spacing-sm);
+    }
+
+    .grid-testimonials .carousel > .carousel-inner > .controls-wrapper {
+      position: absolute;
+      top: -76px;
+      right: 16px;
+
+      & > .button > button {
+        width: 44px;
+        height: 44px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .grid-testimonials .carousel-inner {
+        --slide-width: 85% !important;
+      }
+    }
+  }
+</style>

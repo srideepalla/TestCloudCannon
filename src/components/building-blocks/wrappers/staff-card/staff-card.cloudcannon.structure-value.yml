@@ -1,0 +1,25 @@
+label: Staff Card
+icon: person
+description: Profile card with photo, name, job title, and expandable biography.
+value:
+  _component: building-blocks/wrappers/staff-card
+  photo:
+    source: ""
+    alt: ""
+  heading: Name
+  jobTitle: Job Title
+  description: ""
+  colorScheme: inherit
+  backgroundColor: surface
+preview:
+  text:
+    - key: heading
+    - Staff Card
+  subtext:
+    - key: jobTitle
+  icon: person
+picker_preview:
+  text: Staff Card
+  subtext: Profile card with photo, name, job title, and expandable bio.
+_inputs_from_glob:
+  - /src/components/building-blocks/wrappers/staff-card/staff-card.cloudcannon.inputs.yml

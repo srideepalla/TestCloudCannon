@@ -1,0 +1,213 @@
+label: Split List Form
+icon: view_column
+description: Split section with a list on the left and an embedded form panel on the right.
+value:
+  _component: page-sections/features/split-list-form
+  subheading: ""
+  heading: ""
+  description: ""
+  list: {}
+  buttonSections: []
+  formHeading: ""
+  formEmbed: ""
+  formCardColorScheme: light
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Split List Form
+  subtext:
+    - key: heading
+  icon: view_column
+picker_preview:
+  text: Split List Form
+  subtext: Split section with a list and embedded form panel.
+_inputs_from_glob:
+  - /src/components/page-sections/features/split-list-form/split-list-form.cloudcannon.inputs.yml
+_structures:
+  listContent:
+    values:
+      - label: List
+        icon: list
+        description: A configurable list with icons, bullets, or numbers.
+        value:
+          _component: building-blocks/core-elements/list
+          items: []
+          listType: icon
+          direction: vertical
+          alignX: start
+          size: md
+          columns: false
+        _inputs:
+          items:
+            type: array
+            comment: The items to display in the list.
+            options:
+              structures: _structures.listItems
+          listType:
+            type: select
+            comment: The type of list to display.
+            options:
+              values:
+                - id: icon
+                  name: Icon
+                - id: bullet
+                  name: Bullet
+                - id: numbered
+                  name: Numbered
+          direction:
+            type: select
+            comment: The direction to display the list.
+            options:
+              values:
+                - id: vertical
+                  name: Vertical
+                - id: horizontal
+                  name: Horizontal
+          alignX:
+            type: select
+            comment: The alignment of the list.
+            options:
+              values:
+                - id: start
+                  name: Start
+                - id: center
+                  name: Center
+                - id: end
+                  name: End
+          size:
+            type: select
+            comment: The size of the list.
+            options:
+              values:
+                - id: sm
+                  name: Small
+                - id: md
+                  name: Medium
+                - id: lg
+                  name: Large
+                - id: xl
+                  name: Extra Large
+                - id: 2xl
+                  name: 2xl
+                - id: 3xl
+                  name: 3xl
+                - id: 4xl
+                  name: 4xl
+                - id: 5xl
+                  name: 5xl
+          columns:
+            type: switch
+            comment: Display list items in two columns when the container is wider than 640px.
+        _structures:
+          listItems:
+            values:
+              - label: List Item
+                value:
+                  text: "List item"
+                  iconName: ""
+                  iconColor: default
+                preview:
+                  icon: text_fields
+                  image:
+                    - template: src/icons/{iconName}.svg
+                _inputs:
+                  text:
+                    type: markdown
+                    comment: The text to display in the list item.
+                    options:
+                      blockquote: false
+                      bold: true
+                      format:
+                      italic: true
+                      link: true
+                      strike: false
+                      subscript: true
+                      superscript: true
+                      underline: false
+                      bulletedlist: false
+                      numberedlist: false
+                      removeformat: true
+                  iconName:
+                    type: select
+                    comment: The name of the icon to display from the icon library.
+                    hidden: "listType !== 'icon'"
+                    options:
+                      values: _select_data.icons
+                      preview:
+                        text:
+                          - key: name
+                        image:
+                          - template: src/icons/{id}.svg
+                  iconColor:
+                    type: select
+                    comment: The color of the icon.
+                    hidden: "listType !== 'icon'"
+                    options:
+                      values:
+                        - id: default
+                          name: Default
+                        - id: brand
+                          name: Brand
+                        - id: blue
+                          name: Blue
+                        - id: green
+                          name: Green
+                        - id: yellow
+                          name: Yellow
+                        - id: orange
+                          name: Orange
+                        - id: red
+                          name: Red
+                        - id: purple
+                          name: Purple
+                        - id: pink
+                          name: Pink
+                        - id: cyan
+                          name: Cyan
+      - label: Article Link List
+        icon: article
+        description: A list of articles with thumbnail images, titles, and links.
+        value:
+          _component: building-blocks/wrappers/article-link-list
+          stories: []
+        _inputs:
+          stories:
+            type: array
+            comment: The articles to display in the list.
+            options:
+              structures: _structures.storyItem
+        _structures:
+          storyItem:
+            values:
+              - label: Article
+                value:
+                  image:
+                    source: ""
+                    alt: ""
+                  title: ""
+                  link: ""
+                preview:
+                  text:
+                    - key: title
+                  image:
+                    - key: image.source
+                _inputs:
+                  image:
+                    type: object
+                  image.source:
+                    type: image
+                    comment: Thumbnail image for the article.
+                    options:
+                      paths:
+                        uploads: src/assets/images
+                        static: ""
+                  image.alt:
+                    type: text
+                    comment: Alt text for the thumbnail.
+                  title:
+                    type: text
+                    comment: Article headline.
+                  link:
+                    type: url
+                    comment: URL to the full article.

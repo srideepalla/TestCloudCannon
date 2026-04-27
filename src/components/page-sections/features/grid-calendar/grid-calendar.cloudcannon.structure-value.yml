@@ -1,0 +1,19 @@
+label: Grid Calendar
+icon: calendar_month
+comment: Note that this section is automatically populated with upcoming events from the [calendar data file](cloudcannon:collections/pages:/edit?collection=data:/edit?collection=data&path=%2Fsrc%2Fdata%2Fcalendar.json&schema=false&editor=data).
+description: Two-column grid of calendar event cards with date, title, and description.
+value:
+  _component: page-sections/features/grid-calendar
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Grid Calendar
+  subtext:
+    - key: heading
+  icon: calendar_month
+picker_preview:
+  text: Grid Calendar
+  subtext: Two-column grid of calendar event cards.
+_inputs_from_glob:
+  - /src/components/page-sections/features/grid-calendar/grid-calendar.cloudcannon.inputs.yml

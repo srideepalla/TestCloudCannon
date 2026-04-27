@@ -1,0 +1,41 @@
+@layer reset {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :where(:root) {
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5rem;
+    }
+
+    img,
+    picture,
+    video,
+    canvas,
+    svg {
+      max-width: 100%;
+    }
+
+    input,
+    button,
+    textarea,
+    select {
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
+
+    pre {
+      margin: 0;
+    }
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "about": {
+    "heading": "About",
+    "links": [
+      {
+        "text": "About Us",
+        "href": "/about/about-us"
+      },
+      {
+        "text": "FAQ",
+        "href": "/about/faq"
+      },
+      {
+        "text": "Calendar",
+        "href": "/about/calendar"
+      },
+      {
+        "text": "Staff",
+        "href": "/about/staff"
+      },
+      {
+        "text": "Newsletter",
+        "href": "/about/newsletter"
+      },
+      {
+        "text": "Contact",
+        "href": "/about/contact"
+      }
+    ]
+  },
+  "awards": {
+    "heading": "Awards",
+    "links": [
+      {
+        "text": "Categories",
+        "href": "/awards/categories"
+      },
+      {
+        "text": "The Stevie Award",
+        "href": "/awards/thestevieaward"
+      },
+      {
+        "text": "IBA Winners",
+        "href": "/awards/iba-winners"
+      },
+      {
+        "text": "Best of the IBA Awards",
+        "href": "/awards/best-iba-awards"
+      },
+      {
+        "text": "People's Choice Stevie Awards",
+        "href": "/awards/peopleschoice"
+      }
+    ]
+  },
+  "enter": {
+    "heading": "Enter",
+    "links": [
+      {
+        "text": "How To Enter",
+        "href": "/enter/how-to-enter"
+      },
+      {
+        "text": "Regulations, Terms & Conditions",
+        "href": "/enter/regulations-terms-conditions"
+      },
+      {
+        "text": "Entry Preparation Tips",
+        "href": "/enter/entry-preparation-tips"
+      },
+      {
+        "text": "Entry Fees",
+        "href": "/enter/entry-fees"
+      },
+      {
+        "text": "What's New & Different for 2026",
+        "href": "/enter/whats-new-different"
+      },
+      {
+        "text": "10 Reasons to Enter",
+        "href": "/enter/10-reasons-enter"
+      },
+      {
+        "text": "How to Submit Winning Entries",
+        "href": "/enter/how-to-submit-winning-entries"
+      }
+    ]
+  },
+  "judges": {
+    "heading": "Judges",
+    "links": [
+      {
+        "text": "Judging & Awards Process",
+        "href": "/judges/judging-awards-process"
+      },
+      {
+        "text": "Apply to Be a Judge",
+        "href": "/judges/you-be-the-judge"
+      },
+      {
+        "text": "Judging Committees",
+        "href": "/judges/judging-committees"
+      }
+    ]
+  },
+  "press": {
+    "heading": "Press",
+    "links": [
+      {
+        "text": "Media Inquiries",
+        "href": "/press/media-inquiry"
+      },
+      {
+        "text": "Press Releases",
+        "href": "/press/press-releases"
+      },
+      {
+        "text": "Press Clippings",
+        "href": "/press/press-clippings"
+      },
+      {
+        "text": "Photos & Logos",
+        "href": "/press/photos-and-logos"
+      }
+    ]
+  },
+  "tickets": {
+    "heading": "Tickets",
+    "links": [
+      {
+        "text": "Watch the Awards Presentations",
+        "href": "https://vimeo.com/1109123270?share=copy"
+      },
+      {
+        "text": "Awards Banquet",
+        "href": "/tickets/awards-banquet"
+      }
+    ]
+  },
+  "sponsors": {
+    "heading": "Sponsors",
+    "links": [
+      {
+        "text": "Become a Sponsor",
+        "href": "/sponsors/become-sponsor"
+      },
+      {
+        "text": "Supporting Sponsorship",
+        "href": "/sponsors/supporting-sponsorship"
+      }
+    ]
+  }
+}

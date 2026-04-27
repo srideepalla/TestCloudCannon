@@ -1,0 +1,121 @@
+label: Hero Calendar
+icon: calendar_month
+comment: Note that the calendar in this section is automatically populated with upcoming events from the [calendar data file](cloudcannon:collections/pages:/edit?collection=data:/edit?collection=data&path=%2Fsrc%2Fdata%2Fcalendar.json&schema=false&editor=data).
+description: Full-viewport hero with optional background image, left content with heading and CTAs, and right calendar carousel with social links.
+value:
+  _component: page-sections/heroes/hero-calendar
+  backgroundImage:
+    source: ""
+    alt: ""
+  subheading: "Subheading Text"
+  heading: "Heading Text"
+  description: "Description Text"
+  buttonSections:
+    - _component: building-blocks/core-elements/button
+      text: Button Text
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: primary
+      size: md
+      uppercase: true
+    - _component: building-blocks/core-elements/button
+      text: Button Text
+      hideText: false
+      link: ""
+      iconName: ""
+      iconPosition: before
+      variant: tertiary
+      size: md
+      uppercase: true
+  deadlinesHeading: "Heading Text"
+  socialLinks:
+    - platform: LinkedIn
+      link: https://www.linkedin.com/company/the-stevie-awards
+      icon: social/linkedin
+    - platform: X
+      link: https://x.com/thestevieawards
+      icon: social/x
+    - platform: Facebook
+      link: https://www.facebook.com/TheStevieAwards/
+      icon: social/facebook
+    - platform: Instagram
+      link: https://www.instagram.com/thestevieawards/?hl=en
+      icon: social/instagram
+    - platform: YouTube
+      link: https://www.youtube.com/user/TheStevies
+      icon: social/youtube
+  colorScheme: dark
+  backgroundColor:
+preview:
+  text:
+    - Hero Calendar
+  subtext:
+    - key: heading
+  icon:
+picker_preview:
+  text: Hero Calendar
+  subtext: Full-viewport hero with background image, heading, CTAs, and calendar carousel.
+_inputs_from_glob:
+  - /src/components/page-sections/heroes/hero-calendar/hero-calendar.cloudcannon.inputs.yml
+_structures:
+  socialLink:
+    values:
+      - label: Social Link
+        value:
+          platform: ""
+          link: ""
+          icon: social/linkedin
+        preview:
+          text:
+            - key: platform
+        _inputs:
+          platform:
+            type: select
+            comment: Platform name (e.g., "LinkedIn", "X").
+            options:
+              allow_create: true
+              values:
+                - id: LinkedIn
+                  name: LinkedIn
+                - id: X
+                  name: X
+                - id: Facebook
+                  name: Facebook
+                - id: Instagram
+                  name: Instagram
+                - id: YouTube
+                  name: YouTube
+                - id: bluesky
+                  name: Bluesky
+                - id: discord
+                  name: Discord
+                - id: github
+                  name: Github
+                - id: gitlab
+                  name: Gitlab
+                - id: gitter
+                  name: Gitter
+                - id: google
+                  name: Google
+                - id: medium
+                  name: Medium
+                - id: pinterest
+                  name: Pinterest
+                - id: reddit
+                  name: Reddit
+                - id: tiktok
+                  name: Tiktok
+                - id: twitch
+                  name: Twitch
+                - id: yelp
+                  name: Yelp
+          link:
+            type: url
+            comment: URL to social media profile.
+          icon:
+            type: select
+            comment: SVG or icon markup for the social icon.
+            options:
+              values: _select_data.icons

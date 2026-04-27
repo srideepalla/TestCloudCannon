@@ -1,0 +1,54 @@
+---
+import Page from "@layouts/Page.astro";
+---
+
+<Page
+  title="Page Not Found | 404"
+  frontmatter={{
+    title: "Page Not Found | 404",
+    pageSections: [
+      {
+        _component: "page-sections/builders/custom-section",
+        label: "",
+        contentSections: [
+          {
+            _component: "building-blocks/core-elements/icon",
+            name: "exclamation-triangle",
+            size: "3xl",
+            alignX: "center",
+          },
+          {
+            _component: "building-blocks/core-elements/heading",
+            text: "Page Not Found | 404",
+            level: "h1",
+            size: "xl",
+            alignX: "center",
+          },
+          {
+            _component: "building-blocks/wrappers/button-group",
+            alignX: "center",
+            buttonSections: [
+              {
+                _component: "building-blocks/core-elements/button",
+                text: "Back to Home",
+                link: "/",
+                iconName: "arrow-left",
+                iconPosition: "before",
+                variant: "primary",
+                size: "md",
+                hideText: false,
+                uppercase: false,
+              },
+            ],
+          },
+        ],
+        maxContentWidth: "sm",
+        paddingHorizontal: "xl",
+        paddingVertical: "4xl",
+        colorScheme: "light",
+        backgroundColor: "surface",
+        rounded: false,
+      },
+    ],
+  }}
+/>

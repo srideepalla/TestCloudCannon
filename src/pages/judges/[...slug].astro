@@ -1,0 +1,28 @@
+---
+import CollectionLayout from "@layouts/CollectionLayout.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("judges", draftFilter);
+
+  return entries.map((entry: CollectionEntry<"judges">) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"judges">;
+}
+
+const { entry } = Astro.props;
+---
+
+<CollectionLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  image={entry.data.image}
+  collection="judges"
+  entry={entry}
+/>

@@ -1,0 +1,83 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Grid from "@wrappers/grid/Grid.astro";
+import GridItem from "@wrappers/grid/GridItem.astro";
+import StaffCard from "@wrappers/staff-card/StaffCard.astro";
+
+type StaffMember = {
+  photo?: { source?: string; alt?: string };
+  heading: string;
+  jobTitle?: string;
+  description?: string;
+  colorScheme?: string;
+  backgroundColor?: string;
+};
+
+const {
+  staff = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "md",
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-children-prop": childrenDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "staff" : null);
+
+const hasStaff = staff?.length > 0;
+
+if (!_component && !hasStaff) return;
+---
+
+<CustomSection
+  class:list={["staff-grid", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal=""
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Grid
+    layout="start"
+    minItemWidth={712}
+    maxItemWidth={712}
+    gap="lg"
+    class="staff-grid__grid"
+    data-children-prop={effectiveChildrenProp || undefined}
+  >
+    {
+      staff.map((member: StaffMember) => (
+        <GridItem
+          data-editable="array-item"
+          data-id="building-blocks/wrappers/staff-card"
+        >
+          <StaffCard
+            photo={member.photo}
+            heading={member.heading}
+            jobTitle={member.jobTitle}
+            description={member.description}
+            colorScheme={member.colorScheme}
+            backgroundColor={member.backgroundColor ?? "surface"}
+          />
+        </GridItem>
+      ))
+    }
+  </Grid>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .staff-grid .grid {
+      margin-top: 0;
+    }
+
+    .staff-grid .grid-item {
+      height: auto;
+    }
+  }
+</style>

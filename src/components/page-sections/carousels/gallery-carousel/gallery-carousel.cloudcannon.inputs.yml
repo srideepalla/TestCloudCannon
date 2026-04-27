@@ -1,0 +1,43 @@
+heading:
+  type: text
+  comment: Section heading text (e.g., "Event Gallery").
+
+description:
+  type: markdown
+  comment: Description text below the heading. Supports inline links rendered in gold.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+images:
+  type: array
+  comment: Gallery images for the carousel (main image and thumbnail).
+  options:
+    structures: _structures.galleryImage
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

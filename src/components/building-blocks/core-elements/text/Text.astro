@@ -1,0 +1,189 @@
+---
+import markdownit from "markdown-it";
+
+const md = markdownit({ html: true });
+
+const {
+  text = "",
+  size = "md",
+  alignX = "start",
+  class: className,
+  useDefaultEditableBinding = false,
+  "data-prop": customDataProp,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const markdownContent = text ? md.render(text) : "";
+
+const effectiveDataProp = customDataProp ?? (useDefaultEditableBinding ? "text" : null);
+const textDataAttributes = effectiveDataProp
+  ? { "data-editable": "text", "data-prop": effectiveDataProp }
+  : {};
+
+const hasText = text?.trim().length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasText && !hasSlotContent) return;
+---
+
+<div
+  class:list={["text", className]}
+  {...htmlAttributes}
+>
+  <div
+    class:list={["text-inner", size && `size-${size}`, `align-${alignX}`]}
+    {...textDataAttributes}
+  >
+    <slot>
+      {text && <Fragment set:html={markdownContent} />}
+    </slot>
+  </div>
+</div>
+
+<style>
+  @layer components {
+    .text {
+      margin-top: var(--spacing-lg);
+
+      > .text-inner {
+        -webkit-font-smoothing: auto;
+        -moz-osx-font-smoothing: auto;
+        font-size: var(--font-size);
+
+        &.align-start {
+          text-align: start;
+        }
+        &.align-center {
+          text-align: center;
+        }
+        &.align-end {
+          text-align: end;
+        }
+
+        /*
+          Four size options. Body text uses the matching text token.
+          Headings shift one step up/down the heading token scale so
+          they always align with the heading component's own sizing,
+          just at the appropriate level for this text size.
+        */
+
+        /* Defaults match md so unclassed containers still render correctly */
+        --font-size: var(--font-size-md);
+        --h1: var(--font-size-heading-2xl);
+        --h2: var(--font-size-heading-xl);
+        --h3: var(--font-size-heading-lg);
+        --h4: var(--font-size-heading-md);
+        --h5: var(--font-size-heading-sm);
+        --h6: var(--font-size-heading-xs);
+
+        &.size-xs {
+          --font-size: var(--font-size-xs);
+          --h1: var(--font-size-heading-lg);
+          --h2: var(--font-size-heading-md);
+          --h3: var(--font-size-heading-sm);
+          --h4: var(--font-size-heading-xs);
+          --h5: var(--font-size-md);
+          --h6: var(--font-size-sm);
+        }
+
+        &.size-sm {
+          --font-size: var(--font-size-sm);
+          --h1: var(--font-size-heading-xl);
+          --h2: var(--font-size-heading-lg);
+          --h3: var(--font-size-heading-md);
+          --h4: var(--font-size-heading-sm);
+          --h5: var(--font-size-heading-xs);
+          --h6: var(--font-size-md);
+        }
+
+        &.size-md {
+          --font-size: var(--font-size-md);
+          --h1: var(--font-size-heading-2xl);
+          --h2: var(--font-size-heading-xl);
+          --h3: var(--font-size-heading-lg);
+          --h4: var(--font-size-heading-md);
+          --h5: var(--font-size-heading-sm);
+          --h6: var(--font-size-heading-xs);
+        }
+
+        &.size-lg {
+          --font-size: var(--font-size-lg);
+          --h1: var(--font-size-heading-3xl);
+          --h2: var(--font-size-heading-2xl);
+          --h3: var(--font-size-heading-xl);
+          --h4: var(--font-size-heading-lg);
+          --h5: var(--font-size-heading-md);
+          --h6: var(--font-size-heading-sm);
+        }
+
+        /* Headings use the shifted token for this size */
+        :global(h1) {
+          font-size: var(--h1);
+        }
+        :global(h2) {
+          font-size: var(--h2);
+        }
+        :global(h3) {
+          font-size: var(--h3);
+        }
+        :global(h4) {
+          font-size: var(--h4);
+        }
+        :global(h5) {
+          font-size: var(--h5);
+        }
+        :global(h6) {
+          font-size: var(--h6);
+        }
+
+        /*
+          Explicitly inherit for elements that browsers or resets
+          may give a fixed size (code, pre, table cells).
+          Everything else already inherits by default.
+        */
+        :global(p),
+        p,
+        :global(ul),
+        :global(ol),
+        :global(li),
+        :global(blockquote),
+        :global(blockquote p),
+        :global(pre),
+        :global(pre code),
+        :global(code),
+        :global(table),
+        :global(thead),
+        :global(tbody),
+        :global(tr),
+        :global(th),
+        :global(td),
+        :global(p a),
+        :global(p strong),
+        :global(p em),
+        :global(p u),
+        :global(mark) {
+          font-size: var(--font-size);
+        }
+
+        /* Keep sub/sup proportionally smaller relative to the chosen size */
+        :global(sub),
+        :global(sup) {
+          font-size: 0.75em;
+        }
+
+        :global(span.brand-color) {
+          color: var(--color-brand);
+        }
+
+        :global(span.brand-muted-color) {
+          color: var(--color-brand-muted);
+        }
+
+        :global(span.brand-subtle-color) {
+          color: var(--color-brand-subtle);
+        }
+      }
+    }
+  }
+</style>

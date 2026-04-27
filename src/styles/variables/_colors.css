@@ -1,0 +1,53 @@
+:where(:root) {
+  --gray-0: #fff;
+  --gray-1: #f8f9fa;
+  --gray-2: #e5e7eb;
+  --gray-3: #d1d5db;
+  --gray-4: #9ca3af;
+  --gray-5: #6b7280;
+  --gray-6: #4b5563;
+  --gray-7: #374151;
+  --gray-8: #1f2937;
+  --gray-9: #242424;
+  --gray-10: #0a0a0a;
+  --gray-11: #050505;
+  --gray-12: #000;
+
+  --gold: #dfba19;
+  --gold-light: rgba(223, 186, 25, 0.15);
+  --gold-dark: #b89a14;
+  --gold-darker: #a16107;
+
+  --navy: #036;
+  --navy-light: rgba(0, 51, 102, 0.85);
+  --navy-dark: #024;
+
+  --orange: #f59e0b;
+  --orange-light: #fef3e7;
+
+  --cream: #fff7e0;
+
+  --blue-light: #e8f4fd;
+  --blue-dark: #2563eb;
+
+  --green-light: #e8fce9;
+  --green-dark: #10b981;
+
+  --yellow-light: #fef9e7;
+  --yellow-dark: #fbbf24;
+
+  --orange-light: #fef3e7;
+  --orange-dark: #b45309;
+
+  --red-light: #fee8e8;
+  --red-dark: #933;
+
+  --purple-light: #f3e8ff;
+  --purple-dark: #a855f7;
+
+  --pink-light: #fde8f2;
+  --pink-dark: #ec4899;
+
+  --cyan-light: #e8fffe;
+  --cyan-dark: #06b6d4;
+}

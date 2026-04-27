@@ -1,0 +1,69 @@
+logoSource:
+  type: image
+  comment: "Logo image source URL or path."
+  options:
+    resize_style: contain
+    width: 1920
+    height: 1280
+logoAlt:
+  type: text
+  comment: "Alt text for the logo image for accessibility."
+quickLinks:
+  type: array
+  comment: "Navigation links shown in the Quick Links column (e.g. Blog through Contact Us)."
+  options:
+    structures: _structures.linkItems
+newsletterHeading:
+  type: text
+  comment: "Heading for the newsletter / stay connected column."
+newsletterText:
+  type: markdown
+  comment: "Short description shown beneath the newsletter heading."
+newsletterLink:
+  type: url
+  comment: "URL for the Subscribe button. Leave empty to hide the button."
+socials:
+  type: array
+  comment: "Social media links shown beneath the newsletter content."
+  options:
+    structures: _structures.socialItems
+footerText:
+  type: text
+  comment: "Legal / copyright text shown at the bottom of the footer."
+_structures:
+  linkItems:
+    values:
+      - label: Navigation Link
+        icon: link
+        value:
+          name: ""
+          path: ""
+        _inputs:
+          name:
+            type: text
+            comment: "Display text for the navigation link."
+          path:
+            type: url
+            comment: "URL path for the navigation link."
+            options:
+              hide_link_to_file: true
+              hide_link_to_email_address: true
+              hide_link_to_telephone: true
+  socialItems:
+    values:
+      - label: Social Link
+        icon: share
+        value:
+          icon: ""
+          link: ""
+          label: ""
+        _inputs:
+          icon:
+            type: text
+            comment: "Icon name for the social media platform (e.g. social/linkedin)."
+          link:
+            type: url
+            comment: "URL to the social media profile."
+          label:
+            type: text
+            comment: "Accessible label for the icon button (e.g. LinkedIn)."

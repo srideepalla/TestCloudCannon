@@ -1,0 +1,29 @@
+---
+import CollectionLayout from "@layouts/CollectionLayout.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("sponsors", draftFilter);
+
+  return entries.map((entry: CollectionEntry<"sponsors">) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"sponsors">;
+}
+
+const { entry } = Astro.props;
+---
+
+<CollectionLayout
+  title={entry.data.title || ""}
+  pageHeading={entry.data.pageHeading || ""}
+  description={entry.data.description || ""}
+  image={entry.data.image || ""}
+  collection="sponsors"
+  entry={entry}
+/>

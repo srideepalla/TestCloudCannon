@@ -1,0 +1,53 @@
+label: Event Gallery Carousel
+icon: photo_library
+description: Dark section with main image carousel and synced thumbnail navigation strip.
+value:
+  _component: page-sections/carousels/gallery-carousel
+  heading: Event Gallery
+  description: ""
+  images:
+    - source: ""
+      alt: ""
+      thumbnail: ""
+  colorScheme: dark
+  backgroundColor: base
+preview:
+  text:
+    - Event Gallery Carousel
+  subtext:
+    - key: heading
+  icon: photo_library
+picker_preview:
+  text: Event Gallery Carousel
+  subtext: Dark section with main image carousel and synced thumbnail navigation strip.
+_inputs_from_glob:
+  - /src/components/page-sections/carousels/gallery-carousel/gallery-carousel.cloudcannon.inputs.yml
+_structures:
+  galleryImage:
+    values:
+      - label: Gallery Image
+        value:
+          source: ""
+          alt: ""
+          thumbnail: ""
+        preview:
+          text:
+            - key: alt
+          image:
+            - key: source
+        _inputs:
+          source:
+            type: image
+            comment: Full-size image for the main carousel.
+            options:
+              paths:
+                uploads: src/assets/images
+          alt:
+            type: text
+            comment: Alt text describing the image.
+          thumbnail:
+            type: image
+            comment: Thumbnail image for the navigation strip. Falls back to the main image if empty.
+            options:
+              paths:
+                uploads: src/assets/images

@@ -1,0 +1,125 @@
+---
+import Button from "@core-elements/button/Button.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import Split from "@wrappers/split/Split.astro";
+
+interface StoryItem {
+  image: { source: string; alt: string };
+  title: string;
+  link: string;
+}
+
+const {
+  stories = [] as StoryItem[],
+  itemDataId = "building-blocks/wrappers/article-link-list/story-item",
+  "data-children-prop": childrenDataProp,
+  useDefaultEditableBinding = false,
+  class: className,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const effectiveChildrenProp = childrenDataProp ?? (useDefaultEditableBinding ? "stories" : null);
+const arrayDataAttributes = effectiveChildrenProp
+  ? { "data-editable": "array", "data-prop": effectiveChildrenProp }
+  : {};
+
+const hasStories = (stories as StoryItem[])?.length > 0;
+const hasSlotContent = Astro.slots.has("default");
+
+if (!_component && !hasStories && !hasSlotContent) return;
+---
+
+<div
+  class:list={["article-link-list", className]}
+  {...htmlAttributes}
+>
+  <div
+    class="article-link-list__stories"
+    {...arrayDataAttributes}
+  >
+    {
+      (stories as StoryItem[]).map((story) => (
+        <div
+          class="article-link-list__story"
+          data-editable={effectiveChildrenProp ? "array-item" : undefined}
+          data-id={itemDataId}
+        >
+          <Split
+            distributionMode="fixed-flexible"
+            fixedWidth={128}
+            gap="md"
+            verticalAlignment="center"
+            minSplitWidth={200}
+            class="article-link-list__split"
+          >
+            <Image
+              slot="first"
+              source={story.image?.source}
+              alt={story.image?.alt || ""}
+              aspectRatio="landscape"
+              class="article-link-list__thumb"
+            />
+            <div
+              slot="second"
+              class="article-link-list__story-content"
+            >
+              <Text
+                text={story.title}
+                size="md"
+                data-prop={effectiveChildrenProp ? "title" : undefined}
+                class="article-link-list__story-title"
+              />
+              {story.link && (
+                <Button
+                  text="Learn More"
+                  link={story.link}
+                  variant="text"
+                  size="sm"
+                  uppercase={true}
+                  iconName="arrow-right"
+                  iconPosition="after"
+                  class="article-link-list__story-link"
+                />
+              )}
+            </div>
+          </Split>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+<style is:global>
+  @layer components {
+    .article-link-list__stories {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .article-link-list__thumb .image {
+      margin-top: 0 !important;
+    }
+
+    .article-link-list__story-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+    }
+
+    .article-link-list__story-title.text {
+      margin: 0;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .article-link-list__story-title.text p {
+      margin: 0;
+    }
+
+    .article-link-list__story-link.button {
+      margin-top: 0;
+    }
+  }
+</style>

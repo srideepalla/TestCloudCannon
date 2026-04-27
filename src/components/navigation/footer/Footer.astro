@@ -1,0 +1,211 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Button from "@core-elements/button/Button.astro";
+import Divider from "@core-elements/divider/Divider.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Text from "@core-elements/text/Text.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+import Split from "@wrappers/split/Split.astro";
+import type { SocialLink } from "../../../../types";
+
+const {
+  quickLinks = [],
+  socials = [] as SocialLink[],
+  footerText = "",
+  logoSource,
+  logoAlt,
+  newsletterHeading = "Stay Connected",
+  newsletterText = "",
+  newsletterLink = "",
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<footer
+  class="footer"
+  {...htmlAttributes}
+>
+  <CustomSection
+    maxContentWidth="2xl"
+    paddingHorizontal="md"
+    paddingVertical="2xl"
+    useDefaultEditableBinding={false}
+  >
+    <Split
+      distributionMode="quarter-three-quarters"
+      verticalAlignment="start"
+      minSplitWidth={800}
+      gap="xl"
+    >
+      <Fragment slot="first">
+        <Image
+          source={logoSource}
+          alt={logoAlt}
+          class="footer-logo"
+          useDefaultEditableBinding={false}
+        />
+      </Fragment>
+      <Fragment slot="second">
+        <Split
+          distributionMode="half"
+          verticalAlignment="start"
+          minSplitWidth={600}
+          gap="xl"
+        >
+          <Fragment slot="first">
+            <Heading
+              level="h3"
+              size="xs"
+              text="Quick Links"
+              class="footer-col-heading footer-col-heading-quick-links"
+            />
+            <ButtonGroup
+              direction="column"
+              alignX="start"
+              useDefaultEditableBinding={false}
+              class="footer-quick-links"
+            >
+              {
+                quickLinks.map((link: { name: string; path: string }) => (
+                  <Button
+                    link={link.path}
+                    text={link.name}
+                    uppercase={false}
+                    variant="text"
+                    size="sm"
+                    useDefaultEditableBinding={false}
+                  />
+                ))
+              }
+            </ButtonGroup>
+          </Fragment>
+          <Fragment slot="second">
+            <Heading
+              level="h3"
+              size="xs"
+              class="footer-col-heading"
+            >
+              <Button
+                href={newsletterLink}
+                text={newsletterHeading}
+                iconName="arrow-right"
+                iconPosition="after"
+                variant="text"
+                size="sm"
+                uppercase={false}
+                useDefaultEditableBinding={false}
+              />
+            </Heading>
+            {
+              newsletterText && (
+                <Text
+                  size="sm"
+                  class="footer-newsletter-text"
+                  text={newsletterText}
+                  useDefaultEditableBinding={false}
+                />
+              )
+            }
+            {
+              socials.length > 0 && (
+                <ButtonGroup
+                  class="footer-socials"
+                  alignX="start"
+                  useDefaultEditableBinding={false}
+                >
+                  {socials.map((social) => (
+                    <Button
+                      variant="ghost"
+                      size="lg"
+                      iconName={social.icon}
+                      link={social.link}
+                      hideText="true"
+                      aria-label={
+                        social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`
+                      }
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      useDefaultEditableBinding={false}
+                    />
+                  ))}
+                </ButtonGroup>
+              )
+            }
+          </Fragment>
+        </Split>
+      </Fragment>
+    </Split>
+
+    <Divider />
+
+    <Text
+      size="sm"
+      class="footer-legal-text"
+      text={footerText}
+      useDefaultEditableBinding={false}
+    />
+  </CustomSection>
+</footer>
+
+<style>
+  @layer page-sections {
+    .footer {
+      .footer-logo {
+        max-width: 250px;
+      }
+
+      .footer-col-heading-quick-links {
+        text-transform: uppercase;
+      }
+
+      .footer-quick-links {
+        margin-block: var(--spacing-sm);
+      }
+
+      .footer-quick-links :global(.button-group__items) {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-quick-links :global(.button .button-inner) {
+        color: var(--color-text-muted);
+        font-family: var(--font-headings);
+      }
+      .footer-quick-links :global(.button:hover .button-inner) {
+        color: var(--color-text-strong);
+        text-decoration: none;
+      }
+
+      .footer-col-heading {
+        margin-bottom: var(--spacing-xs);
+      }
+      .footer-newsletter-text {
+        margin-block: var(--spacing-sm);
+
+        :global(.text-inner),
+        :global(.text-inner) :global(p) {
+          color: var(--color-text-muted);
+        }
+      }
+
+      .footer-col-heading :global(.button .button-inner) {
+        color: inherit;
+        font-family: inherit;
+        font-size: inherit;
+      }
+
+      .footer-legal-text :global(.text-inner),
+      .footer-legal-text :global(.text-inner) :global(p) {
+        color: var(--color-text-muted);
+
+        :global(a) {
+          color: var(--color-text-strong);
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+</style>

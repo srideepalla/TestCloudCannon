@@ -1,0 +1,25 @@
+label: Event Card
+icon: event
+description: A two-column card featuring an event photo alongside the event name, description, and link.
+value:
+  _component: building-blocks/wrappers/event-card
+  eventPhoto:
+    source: null
+    alt: null
+  dateLabel: null
+  name: null
+  description: null
+  link: null
+  colorScheme: inherit
+  brandColor: "#003366"
+preview:
+  text:
+    - key: name
+    - Event Card
+  subtext:
+    - key: dateLabel
+  icon: event
+picker_preview:
+  text:
+    - Event Card
+  icon: event

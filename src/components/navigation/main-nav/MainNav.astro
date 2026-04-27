@@ -1,0 +1,146 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Bar from "@components/navigation/bar/Bar.astro";
+import Mobile from "@components/navigation/mobile/Mobile.astro";
+import Image from "@core-elements/image/Image.astro";
+import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+
+type NavButton = {
+  text?: string;
+  href?: string;
+  [key: string]: unknown;
+};
+
+const {
+  logoSource,
+  logoAlt = "logo",
+  navData = [],
+  buttonSections = [] as NavButton[],
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const mobileNavData = [
+  ...navData,
+  ...buttonSections.map((button: NavButton) => ({
+    _component: button._component || "building-blocks/core-elements/button",
+    name: button.text || button.currentLanguage || "Button",
+    path: button.href || "#",
+    currentFlag: button.currentFlag || "",
+    children: button.languages || [],
+  })),
+];
+---
+
+<CustomSection
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="none"
+  colorScheme="dark"
+  backgroundColor="accent"
+  class:list={["main-nav", className]}
+  {...htmlAttributes}
+  useDefaultEditableBinding={false}
+>
+  <a href="/">
+    <Image
+      source={logoSource}
+      class="main-nav-logo"
+      alt={logoAlt}
+      useDefaultEditableBinding={false}
+    />
+  </a>
+  <Bar
+    navData={navData}
+    class="desktop-main-nav"
+  />
+  <ButtonGroup
+    direction="row"
+    alignX="center"
+    class="desktop-button-group"
+    buttonSections={buttonSections}
+    useDefaultEditableBinding={false}
+  />
+  <Mobile
+    logoSource={logoSource}
+    logoAlt={logoAlt}
+    navData={mobileNavData}
+    class="mobile-main-nav"
+    useDefaultEditableBinding={false}
+  />
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .main-nav {
+      background-color: var(--color-bg-accent);
+      padding-block: var(--spacing-md);
+      position: sticky;
+      top: 0;
+      z-index: var(--layer-2);
+
+      .desktop-main-nav,
+      .desktop-button-group.button-group {
+        @media (max-width: 1024px) {
+          display: none;
+        }
+      }
+
+      .main-nav-logo {
+        margin-top: 0 !important;
+      }
+
+      @media (min-width: 1025px) {
+        .mobile {
+          display: none;
+        }
+      }
+
+      .nav-hamburger.mobile-button {
+        @media (min-width: 1025px) {
+          display: none;
+        }
+      }
+
+      > .outer-content > .content {
+        align-items: center;
+        container-type: inline-size;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: var(--spacing-md);
+
+        @media (width < 1025px) {
+          grid-template-columns: 1fr auto;
+        }
+
+        > a {
+          grid-column: 1;
+          justify-self: start;
+
+          > .image img {
+            max-width: 250px;
+          }
+        }
+
+        > .desktop-main-nav.bar {
+          grid-column: 2;
+          min-width: 0;
+        }
+
+        > .desktop-button-group.button-group {
+          container-type: normal;
+          grid-column: 3;
+          justify-self: end;
+          margin-top: 0;
+        }
+
+        > .mobile-main-nav {
+          grid-column: 3;
+          justify-self: end;
+        }
+      }
+    }
+  }
+</style>
