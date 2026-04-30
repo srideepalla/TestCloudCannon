@@ -1,71 +1,106 @@
-# Astro Component Starter
+# The International Business Awards
 
-A starter template with 40+ Astro components, each built for visual editing in [CloudCannon](https://cloudcannon.com/). You clone it, you own it. Every component is your source code to modify, extend, or delete.
+The official website for The International Business Awards® (IBA), also known as the "International Stevies" - the world's premier business awards program recognizing achievements in the workplace across the globe.
 
-All the source code and content is yours, it lives in your repository and you decide when (or if) to pull in future improvements from the core repo.
+Built with [Astro](https://astro.build/) and [CloudCannon](https://cloudcannon.com/) CMS for visual editing, this site features a component library architecture that allows content editors to build and manage pages through an intuitive visual interface.
 
-The design is intentionally unbranded so it can morph into any brand you want. Update CSS variables and the entire site shifts to match your colors, fonts, and identity. Components are built on web fundamentals: vanilla CSS, semantic HTML, and a sprinkling of vanilla JS only when something can't be done with CSS alone. Performance and accessibility are baked in from the start.
+## About The International Business Awards
+
+For more than 20 years, The International Business Awards have shone a spotlight on organizations of every type and size worldwide: large and small, public and private, for-profit and non-profit. The competition attracts nominations from organizations in over 70 nations and markets, featuring categories spanning Management, Marketing, Public Relations, Product Development, Technology, AI Innovation, and more.
 
 ## Quick Start
 
 ```bash
-npx create-astro-component-starter my-site-name
-cd my-site-name
+npm install
 npm run dev
 ```
 
 Your site is now running at `http://localhost:4321`.
 
-This command scaffolds the latest starter into a local project folder, sets the starter repo as `upstream`, and installs dependencies automatically.
+## Key Content Areas
 
-**Make your first change:** Open `src/content/pages/index.md`, change the hero heading, and watch it update in your browser.
+The site is organized into several main content collections:
 
-## What You'll See
+- **pages** - Main marketing and informational pages
+- **about** - About the awards, FAQ, calendar
+- **awards** - Categories, winners, and award information
+- **enter** - Entry guidelines, tips, and submission information
+- **judges** - Judging process and committee information
+- **press** - Press releases, clippings, and media resources
+- **sponsors** - Sponsorship opportunities and information
+- **tickets** - Awards ceremony and event information
 
-- **Your site** at [localhost:4321](http://localhost:4321), a fully working demo with pages, blog, and navigation
-- **Component docs** at [localhost:4321/component-docs/](http://localhost:4321/component-docs/), documentation, examples, and a visual builder for every component
+## Component Architecture
 
-## The Three-File Pattern
-
-Every component in this starter ships with three files. This is what makes the system work: developers build components, editors visually manage content.
+This site uses a component library approach with 40+ reusable Astro components. Each component follows a three-file pattern for seamless CloudCannon integration:
 
 ```
-src/components/.../button/
-├── Button.astro                          # The component
-├── button.cloudcannon.inputs.yml         # What editors see and can change
-└── button.cloudcannon.structure-value.yml # Defaults and picker metadata
+src/components/.../component-name/
+├── ComponentName.astro                          # The component
+├── component-name.cloudcannon.inputs.yml        # CloudCannon editor configuration
+└── component-name.cloudcannon.structure-value.yml # Default values and picker metadata
 ```
 
-## Key Directories
+### MDX Snippets
+
+Some components are also available as **snippets** for use within MDX content. These allow editors to embed rich components directly in markdown content (such as images, videos, forms, and embeds). Snippet configurations are defined in `component-name.cloudcannon.snippets.yml` files and are automatically discovered by CloudCannon via the `_snippets_from_glob` setting in `cloudcannon.config.yml`.
+
+### Key Directories
 
 ```
 src/
-├── components/          # All 40+ components (yours to edit)
+├── components/          # All reusable components
 │   ├── building-blocks/ # Core UI: buttons, headings, forms, layout wrappers
-│   ├── page-sections/   # Full-width sections: heroes, features, CTAs
+│   ├── page-sections/   # Full-width sections: heroes, features, CTAs, calendars
 │   └── navigation/      # Header, footer, mobile nav
-├── content/             # Your pages and blog posts (Markdown/MDX)
+├── content/             # All site content (Markdown/MDX)
+├── data/                # Site-wide data: navigation, footer, SEO, calendar
 ├── styles/              # Design tokens, themes, base styles
 │   ├── variables/       # Colors, fonts, spacing, widths
 │   └── themes/          # Light and dark theme definitions
-└── component-docs/   # Built-in docs (can be excluded from production builds)
+└── component-docs/      # Component library documentation (excluded from production)
 ```
 
-## Dev and Build Commands
+## Development Commands
 
 | Command                      | Description                                       |
 | ---------------------------- | ------------------------------------------------- |
 | `npm run dev`                | Start the development server                      |
 | `npm run build`              | Build for production (component docs excluded)    |
 | `npm run build:with-library` | Build for production with component docs included |
+| `npm run preview`            | Preview production build locally                  |
+| `npm run check`              | Run linting and formatting checks                 |
+| `npm run check:fix`          | Auto-fix linting and formatting issues            |
+
+## Visual Editing in CloudCannon
+
+This site is configured for visual editing in CloudCannon CMS. Content editors can:
+
+- Build pages by selecting and configuring components through a visual interface
+- Edit content directly on the page with live preview
+- Manage site-wide data like navigation, footer, and SEO settings
+- Add and organize content across multiple collections
+
+The CloudCannon configuration is defined in `cloudcannon.config.yml` or component yml files.
+
+## Site Data Management
+
+Site-wide configuration is managed through JSON files in `src/data/`:
+
+- `mainNav.json` - Main navigation structure
+- `sidebarNav.json` - Sidebar navigation for content pages
+- `footer.json` - Footer content and links
+- `seo.json` - SEO metadata and social media configuration
+- `calendar.json` - Event dates and deadlines
+- `quickActions.json` - Quick action menu (floating action button)
 
 ## Prerequisites
 
 - Node.js >= 24.0.0
 
-## Learn More
+## Component Documentation
 
-Head to the [component docs](http://localhost:4321/component-docs/) in your dev server for a guided tour, examples for every component, and a visual component builder.
+During development, visit [localhost:4321/component-docs/](http://localhost:4321/component-docs/) to explore the component library with examples, documentation, and a visual component builder.
 
 ## License
 
