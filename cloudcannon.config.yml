@@ -55,13 +55,14 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
@@ -81,20 +82,21 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
   enter:
     path: src/content/enter
-    icon: ent
+    icon: door_sliding
     disable_url: false
     _enabled_editors:
       - visual
@@ -106,13 +108,14 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
@@ -131,20 +134,21 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
   press:
     path: src/content/press
-    icon: chess
+    icon: share
     disable_url: false
     _enabled_editors:
       - visual
@@ -156,13 +160,14 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
@@ -181,20 +186,21 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
   tickets:
     path: src/content/tickets
-    icon: rocket
+    icon: local_activity
     disable_url: false
     _enabled_editors:
       - visual
@@ -206,13 +212,14 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
+    new_preview_url: /about/about-us
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md
         reorder_inputs: true
         hide_extra_inputs: false
         remove_empty_inputs: false
-        remove_extra_inputs: false
+        remove_extra_inputs: true
         name: New Page
     disable_add: false
     disable_add_folder: false
@@ -244,16 +251,33 @@ collections_config:
           width: 1920
           height: 1280
         cascade: true
+      events:
+        comment: Events to populate Hero Calendar and Grid Calendar. Both will automatically filter to show only upcoming events.
+      footerText:
+        type: markdown
+      href:
+        type: url
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
+file_config:
+  - glob: /src/data/quickActions.json
+    _inputs:
+      heading:
+        type: text
+        comment: The heading for the quick actions (menu from button on bottom right of screen) section.
+      links:
+        type: array
+        comment: The links for the quick actions (menu from button on bottom right of screen) section.
+        options:
+          structures: _structures.linkItems
 _inputs:
   pageSections:
     comment: The main sections of the page.
     cascade: true
   sidebarBlocks:
     type: array
-    comment: Additional content blocks to display in the sidebar below the navigation.
+    comment: Additional content blocks to display in the sidebar below the navigation. The navigation can be edited from the [sidebar nav data file](cloudcannon:collections/pages:/edit?collection=data:/edit?collection=data&path=%2Fsrc%2Fdata%2FsidebarNav.json&schema=false&editor=data)
     options:
       structures: _structures.sidebarBlocks
     cascade: true
@@ -280,6 +304,16 @@ _inputs:
     comment: >-
       Page title for SEO. Also for the h1 of the page content if no Page Heading
       value.
+    cascade: true
+  $.description:
+    type: textarea
+    comment: >-
+      Page description for SEO.
+    cascade: true
+  $.image:
+    type: image
+    comment: >-
+      Page image for SEO.
     cascade: true
 _select_data:
   icons:
