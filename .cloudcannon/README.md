@@ -103,7 +103,7 @@ Your site uses a **branching workflow** for safe publishing:
 - All edits you make are typically saved to the staging branch first
 - Preview your changes here before publishing to production
 
-### Feature Branches (Optional)
+### Feature Branches (Recommended)
 
 Feature branches are useful for:
 
