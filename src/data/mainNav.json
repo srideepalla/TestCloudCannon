@@ -65,6 +65,10 @@
             {
               "name": "Sustainability Categories",
               "path": "/awards/categories/Sustainability-Categories"
+            },
+            {
+              "name": "Thought Leadership Categories",
+              "path": "/awards/categories/Thought-Leadership-Categories/"
             }
           ]
         },
