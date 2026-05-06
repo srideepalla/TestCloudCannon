@@ -1,8 +1,8 @@
 {
-  "name": "The International Business Awards",
-  "url": "https://iba.stevieawards.com",
-  "description": "For more than 20 years, The International Business Awards, known as the International Stevies, have shone a spotlight on organizations of every type and size worldwide: large and small, public and private.",
-  "logoSource": "/images/logo.png",
-  "titleFormat": "{title} | The International Business Awards",
+  "name": "The Stevie® Awards for Women in Business",
+  "url": "https://women.stevieawards.com",
+  "description": "The Stevie® Awards for Women in Business are the world's premier business awards for female entrepreneurs, executives, employees and the organizations they run. ",
+  "logoSource": null,
+  "titleFormat": "{title} | The Stevie® Awards for Women in Business",
   "twitterHandle": "@thestevieawards"
 }
