@@ -1,70 +1,58 @@
 {
   "events": [
     {
-      "date": "2026-02-10",
+      "date": "2026-05-12T00:00:00.000Z",
       "label": "Entries open",
-      "title": "Entries open for The 2026 International Business Awards®",
+      "title": "Entries open for the 23rd Stevie® Awards for Women in Business",
       "description": "The entry kit will be distributed this week."
     },
     {
-      "date": "2026-04-08",
+      "date": "2026-06-24T00:00:00.000Z",
       "label": "Early-bird Entry deadline",
-      "title": "Early-bird entry deadline for The 2026 International Business Awards®",
+      "title": "Early-bird entry deadline for the 23rd Stevie® Awards for Women in Business ",
       "description": "Entry fees are discounted for nominations submitted through this date."
     },
     {
-      "date": "2026-05-06",
+      "date": "2026-07-22T00:00:00.000Z",
       "label": "Primary Entry deadline",
-      "title": "Primary entry deadline for The 2026 International Business Awards®",
+      "title": "Primary entry deadline for the 23rd Stevie® Awards for Women in Business ",
       "description": "Late fees will apply for nominations submitted after this date."
     },
     {
-      "date": "2026-06-01",
+      "date": "2026-07-30T00:00:00.000Z",
       "label": "Judging begins",
-      "title": "Judging of The 2026 International Business Awards® begins",
+      "title": "Judging of the 23rd Stevie® Awards for Women in Business ",
       "description": ""
     },
     {
-      "date": "2026-06-17",
+      "date": "2026-08-19T00:00:00.000Z",
       "label": "Final Entry deadline",
-      "title": "Final entry deadline for The 2026 International Business Awards®",
+      "title": "Final entry deadline for the 23rd Stevie® Awards for Women in Business ",
       "description": ""
     },
     {
-      "date": "2026-07-27",
+      "date": "2026-09-10T00:00:00.000Z",
       "label": "Judging ends",
-      "title": "Judging of The 2026 International Business Awards® ends",
+      "title": "Judging of the 23rd Stevie® Awards for Women in Business ",
       "description": ""
     },
     {
-      "date": "2026-08-11",
-      "label": "Winners notified",
-      "title": "Stevie® winners notified in The 2026 International Business Awards®",
+      "date": "2026-09-16T00:00:00.000Z",
+      "label": "Finalists notified",
+      "title": "Stevie® finalists notified in the 23rd Stevie® Awards for Women in Business ",
       "description": "Tickets for the awards banquet go on sale today."
     },
     {
-      "date": "2026-08-12",
-      "label": "Winners announced",
-      "title": "Stevie® winners publicly announced in The 2026 International Business Awards®",
+      "date": "2026-09-17T00:00:00.000Z",
+      "label": "Finalists announced",
+      "title": "Stevie® finalists publicly announced in the 23rd Stevie® Awards for Women in Business ",
       "description": ""
     },
     {
-      "date": "2026-08-13",
-      "label": "People's Choice voting begins",
-      "title": "People's Choice Stevie® Awards for Favorite Companies public voting begins",
-      "description": "An annual feature of The International Business Awards®"
-    },
-    {
-      "date": "2026-09-11",
-      "label": "People's Choice voting ends",
-      "title": "People's Choice Stevie® Awards for Favorite Companies public voting ends",
-      "description": ""
-    },
-    {
-      "date": "2026-10-28",
+      "date": "2026-11-16T00:00:00.000Z",
       "label": "Awards Banquet",
-      "title": "Awards banquet of The 23rd International Business Awards®",
-      "description": "Pullman Paris Montparnasse, Paris, France"
+      "title": "Awards banquet of the 23rd Stevie® Awards for Women in Business ",
+      "description": "Marriott Marquis Hotel, New York City"
     }
   ]
 }
