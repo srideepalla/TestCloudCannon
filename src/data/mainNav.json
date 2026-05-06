@@ -75,6 +75,10 @@
               "path": "/awards/categories/New-Product-Service-Awards-Categories"
             },
             {
+              "name": "Social Media Categories ",
+              "path": "/awards/categories/Social-Media-Categories/"
+            },
+            {
               "name": "Sustainability Categories",
               "path": "/awards/categories/Sustainability-Categories"
             },
