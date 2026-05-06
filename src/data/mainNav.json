@@ -223,6 +223,11 @@
       ]
     },
     {
+      "name": "WEBINARS",
+      "path": "/Webinars/upcoming-webinars/",
+      "children": []
+    },
+    {
       "name": "STORE",
       "path": "https://stevieawards.myshopify.com/",
       "children": []
