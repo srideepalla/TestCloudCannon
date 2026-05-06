@@ -57,6 +57,10 @@
             {
               "name": "Company/Organization (Women-Owned or -Led) Awards Categories",
               "path": "/awards/categories/Company-Organization-Awards-Categories"
+            },
+            {
+              "name": "Individual Women Awards Categories",
+              "path": "/awards/categories/Individual-Women-Awards-Categories/"
             }
           ]
         },
