@@ -22,7 +22,7 @@ pageSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
         hideText: false
-        link: /request-the-iba-entry-kit/
+        link: /enter/request-the-entry-kit/
         openInNewTab: false
         iconName: ''
         iconPosition: before
@@ -62,70 +62,39 @@ pageSections:
     list:
       _component: building-blocks/core-elements/list
       items:
-        - text: AI Categories (New for 2026)
-          iconName: four-pointed-star
-          iconColor: brand
         - text: Achievement Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: App Categories
+        - text: Achievement in Communications or PR Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Company/Organization Categories
+        - text: Achievement in Marketing Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Corporate Communications & Public Relations Categories
+        - text: >-
+            Artificial Intelligence (AI) and Technology Categories (New for
+            2026)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Creative Categories
+        - text: Company/Organization (Women-Owned or -Led) Awards Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Customer Service Categories
+        - text: Individual Women Awards Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Entrepreneur Categories
+        - text: Media (Developed for/by Women) Awards Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Event Categories
+        - text: New Product & Service (Developed for/by Women) Awards Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Human Resources Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Individual Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Management Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Marketing Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: New Product & Product Management Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Podcast Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Publication Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Social Media Awards
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Support Categories
+        - text: Social Media Categories
           iconName: four-pointed-star
           iconColor: brand
         - text: Sustainability Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Technology Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Video Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Web Achievement Categories
+        - text: Thought Leadership Categories
           iconName: four-pointed-star
           iconColor: brand
       listType: icon
@@ -147,18 +116,16 @@ pageSections:
         icon:
     formHeading: 'Get the Entry Kit: Your Guide to Submitting Nominations'
     formEmbed: >-
-      <div id="hubspot-entrykit-form" class="w-full"
-      data-hs-forms-root="true"><div class="hs-form-frame"
-      data-portal-id="35655" data-form-id="8c8fe571-1bef-44a9-b3f0-31964149cdfc"
-      data-target="#hubspot-entrykit-form" data-on-form-submitted="function () {
-          const redirectTo = resolveRedirect(thankYouUrl);
-          try {
-            window.top.location.href = redirectTo;
-          } catch (e) {
-            window.location.href = redirectTo;
-          }
-        }" style="height: 1000px;"><iframe src="https://js.hsforms.net/ui-forms-embed-components-app/frame.html?_hsPortalId=35655&amp;_hsFormId=8c8fe571-1bef-44a9-b3f0-31964149cdfc&amp;_hsIsQa=false&amp;_hsHublet=na1&amp;_hsDisableScriptloader=true&amp;_hsDisableRedirect=true&amp;_hsInstanceId=5f74d8e2-1d0c-450b-b91c-8724e65f22d1&amp;_hsUtk=c9d14285c0c99ecef07fc6ffb25c22fa"   loading="lazy" data-test-id="embedded-form-8c8fe571-1bef-44a9-b3f0-31964149cdfc" title="Form" scrolling="no" style="border: none; height: 100%; width: 100%;"></iframe></div>
-      </div>
+      <script charset="utf-8" type="text/javascript"
+      src="//js.hsforms.net/forms/embed/v2.js"></script>
+
+      <script>
+        hbspt.forms.create({
+          portalId: "35655",
+          formId: "5fa286f3-1858-4405-965e-6c70170a89a3",
+          region: "na1"
+        });
+      </script>
     formCardColorScheme: light
     colorScheme: dark
     backgroundColor: base
@@ -474,7 +441,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54003424986-e236287c23-o.jpg
           alt: The Stevie Awards for Technology Excellence
-        dateLabel: 2026-03-11T00:00:00Z
+        dateLabel: ''
         name: The Stevie® Awards for Technology Excellence
         description: >-
           The Stevie Awards for Technology Excellence celebrate the remarkable
@@ -491,7 +458,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/53326016090-b15cd8eda3-o.jpg
           alt: The Stevie Awards for Women in Business
-        dateLabel: 2026-05-12T00:00:00Z
+        dateLabel: ''
         name: The Stevie® Awards for Women in Business
         description: >-
           The Stevie Awards for Women in Business are open to all organizations
@@ -580,7 +547,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54062370686-038444a2c2-o.jpg
           alt: The German Stevie Awards
-        dateLabel: 2026-03-26T00:00:00Z
+        dateLabel: ''
         name: The German Stevie® Awards
         description: >-
           The German Stevie Awards are open to all organizations in the European
