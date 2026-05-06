@@ -43,205 +43,24 @@
       "path": "/awards",
       "children": [
         {
+          "name": "Categories",
+          "path": "/awards/categories/",
+          "children": [
+            {
+              "name": "Achievement Categories",
+              "path": "/Awards/Categories/achievement-categories/"
+            }
+          ]
+        },
+        {
           "name": "The Stevie® Award Trophy",
           "path": "/awards/thestevieaward/",
           "children": []
         },
         {
-          "name": "Categories",
-          "path": "/awards/categories/",
-          "children": [
-            {
-              "name": "Achievement",
-              "path": "/Awards/Categories/achievement-categories/"
-            },
-            {
-              "name": "Achievement in Management",
-              "path": "/Awards/Categories/achievement-in-management-categories/"
-            },
-            {
-              "name": "Achievement in Marketing",
-              "path": "/Awards/Categories/achievement-in-marketing-categories/"
-            },
-            {
-              "name": "Achievement in PR",
-              "path": "/Awards/Categories/achievement-in-pr-categories/"
-            },
-            {
-              "name": "AI Innovation & Transformation",
-              "path": "/Awards/Categories/ai-innovation-transformation-categories/"
-            },
-            {
-              "name": "App",
-              "path": "/Awards/Categories/app-categories/"
-            },
-            {
-              "name": "Company/Organization",
-              "path": "/Awards/Categories/company-organization-categories/"
-            },
-            {
-              "name": "Creative",
-              "path": "/Awards/Categories/creative-categories/"
-            },
-            {
-              "name": "Customer Service",
-              "path": "/Awards/Categories/customer-service-categories/"
-            },
-            {
-              "name": "Entrepreneur",
-              "path": "/Awards/Categories/entrepreneur-categories/"
-            },
-            {
-              "name": "Event",
-              "path": "/Awards/Categories/event-categories/"
-            },
-            {
-              "name": "Human Resources",
-              "path": "/Awards/Categories/human-resources-categories/"
-            },
-            {
-              "name": "Individual",
-              "path": "/Awards/Categories/individual-categories/"
-            },
-            {
-              "name": "New Product & Product Management",
-              "path": "/Awards/Categories/New-Product-Product-Management-Categories/"
-            },
-            {
-              "name": "Podcast",
-              "path": "/awards/categories/podcast-categories/"
-            },
-            {
-              "name": "Public Sector & Government Innovation",
-              "path": "/Awards/Categories/public-sector-government-innovation-categories/"
-            },
-            {
-              "name": "Publication",
-              "path": "/Awards/Categories/publication-categories/"
-            },
-            {
-              "name": "Social Media",
-              "path": "/Awards/Categories/social-media-categories/"
-            },
-            {
-              "name": "Support",
-              "path": "/Awards/Categories/support-categories/"
-            },
-            {
-              "name": "Sustainability",
-              "path": "/Awards/Categories/sustainability-categories/"
-            },
-            {
-              "name": "Technology",
-              "path": "/Awards/Categories/technology-categories/"
-            },
-            {
-              "name": "Thought Leadership",
-              "path": "/Awards/Categories/thought-leadership-categories/"
-            },
-            {
-              "name": "Video",
-              "path": "/Awards/Categories/video-categories/"
-            },
-            {
-              "name": "Web Achievement",
-              "path": "/Awards/Categories/web-achievement-categories/"
-            }
-          ]
-        },
-        {
           "name": "2025 Stevie Award Winners",
           "path": "/awards/sawib-winners/",
-          "children": [
-            {
-              "name": "Achievement Categories",
-              "path": "/Awards/IBA-Winners/achievement-winners/"
-            },
-            {
-              "name": "App Categories",
-              "path": "/Awards/IBA-Winners/app-category-winners/"
-            },
-            {
-              "name": "Company/Organization Categories",
-              "path": "/Awards/IBA-Winners/company-organization-awards-winners/"
-            },
-            {
-              "name": "Communications, Public Relations, & Investor Relations Categories",
-              "path": "/Awards/IBA-Winners/PR-awards-winners/"
-            },
-            {
-              "name": "Creative Categories",
-              "path": "/Awards/IBA-Winners/creative-awards-category-winners/"
-            },
-            {
-              "name": "Customer Service Categories",
-              "path": "/Awards/IBA-Winners/customer-service-awards-winners/"
-            },
-            {
-              "name": "Entrepreneur Categories",
-              "path": "/Awards/IBA-Winners/entrepreneur-awards-winners/"
-            },
-            {
-              "name": "Event Categories",
-              "path": "/Awards/IBA-Winners/event-category-winners/"
-            },
-            {
-              "name": "Human Resources Categories",
-              "path": "/Awards/IBA-Winners/hr-awards-winners/"
-            },
-            {
-              "name": "Individual Categories",
-              "path": "/Awards/IBA-Winners/individual-category-winners/"
-            },
-            {
-              "name": "Management Categories",
-              "path": "/Awards/IBA-Winners/management-awards-category-winners/"
-            },
-            {
-              "name": "Marketing Categories",
-              "path": "/Awards/IBA-Winners/marketing-awards-category-winners/"
-            },
-            {
-              "name": "New Products & Product Management Categories",
-              "path": "/Awards/IBA-Winners/new-product-awards-category-winners/"
-            },
-            {
-              "name": "Podcast Categories",
-              "path": "/Awards/IBA-Winners/podcast-category-winners/"
-            },
-            {
-              "name": "Publication Categories",
-              "path": "/Awards/IBA-Winners/publications-awards-category-winners/"
-            },
-            {
-              "name": "Social Media Categories",
-              "path": "/Awards/IBA-Winners/social-media-awards-category-winners/"
-            },
-            {
-              "name": "Support Categories",
-              "path": "/Awards/IBA-Winners/support-awards-category-winners/"
-            },
-            {
-              "name": "Sustainability Categories",
-              "path": "/Awards/IBA-Winners/sustainability-category-winners/"
-            },
-            {
-              "name": "Technology Categories",
-              "path": "/Awards/IBA-Winners/technology-category-winners/"
-            },
-            {
-              "name": "Thought Leadership Categories",
-              "path": "/Awards/IBA-Winners/thought-leadership-category-winners/"
-            },
-            {
-              "name": "Video Categories",
-              "path": "/Awards/IBA-Winners/video-awards-category-winners/"
-            },
-            {
-              "name": "Website Categories",
-              "path": "/Awards/IBA-Winners/website-awards-category-winners/"
-            }
-          ]
+          "children": []
         },
         {
           "name": "The Top 5 Awards",
