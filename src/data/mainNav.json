@@ -296,23 +296,18 @@
       "path": "/judges",
       "children": [
         {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
-          "children": []
-        },
-        {
           "name": "Apply to Be a Judge",
           "path": "/judges/you-be-the-judge",
           "children": []
         },
         {
-          "name": "Judging Committees",
-          "path": "/judges/judging-committees",
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
           "children": []
         },
         {
-          "name": "Staff",
-          "path": "/judges/judging-committees/staff",
+          "name": "Judging Committees",
+          "path": "/judges/judging-committees",
           "children": []
         }
       ]
@@ -376,13 +371,13 @@
       ]
     },
     {
-      "name": "WEBINARS",
-      "path": "/Webinars/upcoming-webinars/",
+      "name": "STORE",
+      "path": "https://stevieawards.myshopify.com/",
       "children": []
     },
     {
-      "name": "STORE",
-      "path": "https://stevieawards.myshopify.com/",
+      "name": "WEBINARS",
+      "path": "/Webinars/upcoming-webinars/",
       "children": []
     }
   ],

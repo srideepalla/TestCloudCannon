@@ -86,20 +86,16 @@
     "heading": "Judges",
     "links": [
       {
-        "text": "Judging & Awards Process",
-        "href": "/judges/judging-awards-process"
-      },
-      {
         "text": "Apply to Be a Judge",
         "href": "/judges/you-be-the-judge"
       },
       {
-        "text": "Judging Committees",
-        "href": "/judges/judging-committees"
+        "text": "Judging & Awards Process",
+        "href": "/judges/judging-awards-process"
       },
       {
-        "text": "Staff",
-        "href": "/judges/judging-committees/staff"
+        "text": "Judging Committees",
+        "href": "/judges/judging-committees"
       }
     ]
   },
