@@ -90,6 +90,35 @@ const mobileNavData = [
 
       .main-nav-logo {
         margin-top: 0 !important;
+        max-width: min(250px, 45vw);
+        width: 250px;
+      }
+
+      .main-nav-logo picture,
+      .main-nav-logo img {
+        display: block;
+        height: auto;
+        width: 100%;
+      }
+
+      .desktop-main-nav.bar > .bar-list > .nav-item > a:not(:hover),
+      .desktop-main-nav.bar > .bar-list > .nav-item > .nav-item-trigger:not(:hover) {
+        color: var(--gray-0) !important;
+      }
+
+      .desktop-main-nav.bar > .bar-list > .nav-item > a:hover,
+      .desktop-main-nav.bar > .bar-list > .nav-item > .nav-item-trigger:hover {
+        color: var(--color-brand) !important;
+      }
+
+      .desktop-main-nav.bar .nav-item-content a:not(:hover),
+      .desktop-main-nav.bar .nav-item-content .nav-item-group-heading:not(:hover) {
+        color: var(--gray-12) !important;
+      }
+
+      .desktop-main-nav.bar .nav-item-content a:hover,
+      .desktop-main-nav.bar .nav-item-content .nav-item-group-heading:hover {
+        color: var(--color-brand) !important;
       }
 
       @media (min-width: 1025px) {
