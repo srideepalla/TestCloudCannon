@@ -128,12 +128,12 @@
     "heading": "Tickets",
     "links": [
       {
-        "text": "Watch the Awards Presentations",
-        "href": "https://vimeo.com/1109123270?share=copy"
-      },
-      {
         "text": "Awards Banquet",
         "href": "/tickets/awards-banquet"
+      },
+      {
+        "text": "Watch the Awards Presentations",
+        "href": "/tickets/watch-awards-presentations"
       }
     ]
   },
