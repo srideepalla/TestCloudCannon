@@ -2,7 +2,7 @@
   "name": "The Stevie® Awards for Women in Business",
   "url": "https://women.stevieawards.com",
   "description": "The Stevie® Awards for Women in Business are the world's premier business awards for female entrepreneurs, executives, employees and the organizations they run. ",
-  "logoSource": null,
+  "logoSource": "/src/assets/images/sawib-hc-w.png",
   "titleFormat": "{title} | The Stevie® Awards for Women in Business",
   "twitterHandle": "@thestevieawards"
 }

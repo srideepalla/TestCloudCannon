@@ -1,25 +1,57 @@
 {
-  "logoSource": "/images/logo.png",
-  "logoAlt": "The International Business Awards",
+  "logoSource": "/src/assets/images/sawib-hc-w.png",
+  "logoAlt": "The Stevie® Awards for Women in Business",
   "navData": [
     {
       "name": "ABOUT",
       "path": "/about",
       "children": [
-        { "name": "About Us", "path": "/about/about-us" },
-        { "name": "FAQ", "path": "/about/faq" },
-        { "name": "Calendar", "path": "/about/calendar" },
-        { "name": "Staff", "path": "/about/staff" },
-        { "name": "Stevie Awards Update Newsletter", "path": "/about/newsletter" },
-        { "name": "Contact", "path": "/about/contact" }
+        {
+          "name": "About Us",
+          "path": "/about/about-us",
+          "children": []
+        },
+        {
+          "name": "FAQ",
+          "path": "/about/faq",
+          "children": []
+        },
+        {
+          "name": "Calendar",
+          "path": "/about/calendar",
+          "children": []
+        },
+        {
+          "name": "Staff",
+          "path": "/about/staff",
+          "children": []
+        },
+        {
+          "name": "Stevie Awards Update Newsletter",
+          "path": "/about/newsletter",
+          "children": []
+        },
+        {
+          "name": "Contact",
+          "path": "/about/contact",
+          "children": []
+        }
       ]
     },
     {
       "name": "THE AWARDS",
       "path": "/awards",
       "children": [
-        { "name": "The Stevie® Award Trophy", "path": "/awards/thestevieaward/" },
-        { "name": "Best of the IBA Awards", "path": "/awards/best-iba-awards/" },
+        {
+          "name": "The Stevie® Award Trophy",
+          "path": "/awards/thestevieaward/",
+          "children": []
+        },
+        {
+          "name": "Best of the IBA Awards",
+          "path": "/awards/best-iba-awards/",
+          "children": []
+        },
         {
           "name": "2025 Stevie Award Winners",
           "path": "/awards/iba-winners/",
@@ -28,7 +60,10 @@
               "name": "Achievement Categories",
               "path": "/Awards/IBA-Winners/achievement-winners/"
             },
-            { "name": "App Categories", "path": "/Awards/IBA-Winners/app-category-winners/" },
+            {
+              "name": "App Categories",
+              "path": "/Awards/IBA-Winners/app-category-winners/"
+            },
             {
               "name": "Company/Organization Categories",
               "path": "/Awards/IBA-Winners/company-organization-awards-winners/"
@@ -49,7 +84,10 @@
               "name": "Entrepreneur Categories",
               "path": "/Awards/IBA-Winners/entrepreneur-awards-winners/"
             },
-            { "name": "Event Categories", "path": "/Awards/IBA-Winners/event-category-winners/" },
+            {
+              "name": "Event Categories",
+              "path": "/Awards/IBA-Winners/event-category-winners/"
+            },
             {
               "name": "Human Resources Categories",
               "path": "/Awards/IBA-Winners/hr-awards-winners/"
@@ -108,12 +146,19 @@
             }
           ]
         },
-        { "name": "People's Choice Stevie Awards", "path": "/awards/peopleschoice/" },
+        {
+          "name": "People's Choice Stevie Awards",
+          "path": "/awards/peopleschoice/",
+          "children": []
+        },
         {
           "name": "Categories",
           "path": "/awards/categories/",
           "children": [
-            { "name": "Achievement", "path": "/Awards/Categories/achievement-categories/" },
+            {
+              "name": "Achievement",
+              "path": "/Awards/Categories/achievement-categories/"
+            },
             {
               "name": "Achievement in Management",
               "path": "/Awards/Categories/achievement-in-management-categories/"
@@ -130,40 +175,82 @@
               "name": "AI Innovation & Transformation",
               "path": "/Awards/Categories/ai-innovation-transformation-categories/"
             },
-            { "name": "App", "path": "/Awards/Categories/app-categories/" },
+            {
+              "name": "App",
+              "path": "/Awards/Categories/app-categories/"
+            },
             {
               "name": "Company/Organization",
               "path": "/Awards/Categories/company-organization-categories/"
             },
-            { "name": "Creative", "path": "/Awards/Categories/creative-categories/" },
+            {
+              "name": "Creative",
+              "path": "/Awards/Categories/creative-categories/"
+            },
             {
               "name": "Customer Service",
               "path": "/Awards/Categories/customer-service-categories/"
             },
-            { "name": "Entrepreneur", "path": "/Awards/Categories/entrepreneur-categories/" },
-            { "name": "Event", "path": "/Awards/Categories/event-categories/" },
-            { "name": "Human Resources", "path": "/Awards/Categories/human-resources-categories/" },
-            { "name": "Individual", "path": "/Awards/Categories/individual-categories/" },
+            {
+              "name": "Entrepreneur",
+              "path": "/Awards/Categories/entrepreneur-categories/"
+            },
+            {
+              "name": "Event",
+              "path": "/Awards/Categories/event-categories/"
+            },
+            {
+              "name": "Human Resources",
+              "path": "/Awards/Categories/human-resources-categories/"
+            },
+            {
+              "name": "Individual",
+              "path": "/Awards/Categories/individual-categories/"
+            },
             {
               "name": "New Product & Product Management",
               "path": "/Awards/Categories/New-Product-Product-Management-Categories/"
             },
-            { "name": "Podcast", "path": "/awards/categories/podcast-categories/" },
+            {
+              "name": "Podcast",
+              "path": "/awards/categories/podcast-categories/"
+            },
             {
               "name": "Public Sector & Government Innovation",
               "path": "/Awards/Categories/public-sector-government-innovation-categories/"
             },
-            { "name": "Publication", "path": "/Awards/Categories/publication-categories/" },
-            { "name": "Social Media", "path": "/Awards/Categories/social-media-categories/" },
-            { "name": "Support", "path": "/Awards/Categories/support-categories/" },
-            { "name": "Sustainability", "path": "/Awards/Categories/sustainability-categories/" },
-            { "name": "Technology", "path": "/Awards/Categories/technology-categories/" },
+            {
+              "name": "Publication",
+              "path": "/Awards/Categories/publication-categories/"
+            },
+            {
+              "name": "Social Media",
+              "path": "/Awards/Categories/social-media-categories/"
+            },
+            {
+              "name": "Support",
+              "path": "/Awards/Categories/support-categories/"
+            },
+            {
+              "name": "Sustainability",
+              "path": "/Awards/Categories/sustainability-categories/"
+            },
+            {
+              "name": "Technology",
+              "path": "/Awards/Categories/technology-categories/"
+            },
             {
               "name": "Thought Leadership",
               "path": "/Awards/Categories/thought-leadership-categories/"
             },
-            { "name": "Video", "path": "/Awards/Categories/video-categories/" },
-            { "name": "Web Achievement", "path": "/Awards/Categories/web-achievement-categories/" }
+            {
+              "name": "Video",
+              "path": "/Awards/Categories/video-categories/"
+            },
+            {
+              "name": "Web Achievement",
+              "path": "/Awards/Categories/web-achievement-categories/"
+            }
           ]
         }
       ]
@@ -172,55 +259,125 @@
       "name": "ENTER",
       "path": "/enter/how-to-enter",
       "children": [
-        { "name": "How To Enter", "path": "/enter/how-to-enter" },
+        {
+          "name": "How To Enter",
+          "path": "/enter/how-to-enter",
+          "children": []
+        },
         {
           "name": "Regulations, Terms & Conditions",
-          "path": "/enter/regulations-terms-conditions"
+          "path": "/enter/regulations-terms-conditions",
+          "children": []
         },
-        { "name": "Entry Preparation Tips", "path": "/enter/entry-preparation-tips" },
-        { "name": "Entry Fees", "path": "/enter/entry-fees" },
-        { "name": "10 Reasons to Enter", "path": "/enter/10-reasons-enter" },
-        { "name": "How to Submit Winning Entries", "path": "/enter/how-to-submit-winning-entries" },
-        { "name": "What's New & Different for 2026", "path": "/enter/whats-new-different" }
+        {
+          "name": "Entry Preparation Tips",
+          "path": "/enter/entry-preparation-tips",
+          "children": []
+        },
+        {
+          "name": "Entry Fees",
+          "path": "/enter/entry-fees",
+          "children": []
+        },
+        {
+          "name": "10 Reasons to Enter",
+          "path": "/enter/10-reasons-enter",
+          "children": []
+        },
+        {
+          "name": "How to Submit Winning Entries",
+          "path": "/enter/how-to-submit-winning-entries",
+          "children": []
+        },
+        {
+          "name": "What's New & Different for 2026",
+          "path": "/enter/whats-new-different",
+          "children": []
+        }
       ]
     },
     {
       "name": "JUDGES",
       "path": "/judges",
       "children": [
-        { "name": "Judging & Awards Process", "path": "/judges/judging-awards-process" },
-        { "name": "Apply to Be a Judge", "path": "/judges/you-be-the-judge" },
-        { "name": "Judging Committees", "path": "/judges/judging-committees" },
-        { "name": "Staff", "path": "/judges/judging-committees/staff" }
+        {
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
+          "children": []
+        },
+        {
+          "name": "Apply to Be a Judge",
+          "path": "/judges/you-be-the-judge",
+          "children": []
+        },
+        {
+          "name": "Judging Committees",
+          "path": "/judges/judging-committees",
+          "children": []
+        },
+        {
+          "name": "Staff",
+          "path": "/judges/judging-committees/staff",
+          "children": []
+        }
       ]
     },
     {
       "name": "SPONSORS",
       "path": "/sponsors",
       "children": [
-        { "name": "Become a Sponsor", "path": "/sponsors/become-sponsor/" },
-        { "name": "Supporting Sponsorship", "path": "/sponsors/supporting-sponsorship/" }
+        {
+          "name": "Become a Sponsor",
+          "path": "/sponsors/become-sponsor/",
+          "children": []
+        },
+        {
+          "name": "Supporting Sponsorship",
+          "path": "/sponsors/supporting-sponsorship/",
+          "children": []
+        }
       ]
     },
     {
       "name": "PRESS",
       "path": "/press",
       "children": [
-        { "name": "Media Inquiry", "path": "/press/media-inquiry/" },
-        { "name": "Press Releases", "path": "/press/press-releases/" },
+        {
+          "name": "Media Inquiry",
+          "path": "/press/media-inquiry/",
+          "children": []
+        },
+        {
+          "name": "Press Releases",
+          "path": "/press/press-releases/",
+          "children": []
+        },
         {
           "name": "Press Clippings",
-          "path": "https://feed.meltwater.com/gyda/outputs/xml/html/16/79/76398.html"
+          "path": "https://feed.meltwater.com/gyda/outputs/xml/html/16/79/76398.html",
+          "children": []
         },
-        { "name": "Photos and Logos", "path": "/press/photos-and-logos/" }
+        {
+          "name": "Photos and Logos",
+          "path": "/press/photos-and-logos/",
+          "children": []
+        }
       ]
     },
     {
       "name": "TICKETS",
       "path": "/tickets",
       "children": [
-        { "name": "Awards Banquet", "path": "/tickets/awards-banquet/" },
-        { "name": "Watch Awards Presentations", "path": "/tickets/watch-awards-presentations/" }
+        {
+          "name": "Awards Banquet",
+          "path": "/tickets/awards-banquet/",
+          "children": []
+        },
+        {
+          "name": "Watch Awards Presentations",
+          "path": "/tickets/watch-awards-presentations/",
+          "children": []
+        }
       ]
     },
     {
@@ -240,44 +397,173 @@
       "currentLanguage": "EN",
       "currentFlag": "us",
       "languages": [
-        { "name": "Bulgarian", "langCode": "bg", "flag": "bg" },
-        { "name": "Chinese (Simplified)", "langCode": "zh", "flag": "cn" },
-        { "name": "Czech", "langCode": "cs", "flag": "cz" },
-        { "name": "Danish", "langCode": "da", "flag": "dk" },
-        { "name": "Dutch", "langCode": "nl", "flag": "nl" },
-        { "name": "Estonian", "langCode": "et", "flag": "ee" },
-        { "name": "Finnish", "langCode": "fi", "flag": "fi" },
-        { "name": "French", "langCode": "fr", "flag": "fr" },
-        { "name": "German", "langCode": "de", "flag": "de" },
-        { "name": "Greek", "langCode": "el", "flag": "gr" },
-        { "name": "Hungarian", "langCode": "hu", "flag": "hu" },
-        { "name": "Indonesian", "langCode": "id", "flag": "id" },
-        { "name": "Italian", "langCode": "it", "flag": "it" },
-        { "name": "Japanese", "langCode": "ja", "flag": "jp" },
-        { "name": "Korean", "langCode": "ko", "flag": "kr" },
-        { "name": "Lithuanian", "langCode": "lt", "flag": "lt" },
-        { "name": "Latvian", "langCode": "lv", "flag": "lv" },
-        { "name": "Norwegian (Bokmål)", "langCode": "nb", "flag": "no" },
-        { "name": "Polish", "langCode": "pl", "flag": "pl" },
-        { "name": "Portuguese (Brazil)", "langCode": "pt-br", "flag": "br" },
-        { "name": "Portuguese (Portugal)", "langCode": "pt", "flag": "pt" },
-        { "name": "Romanian", "langCode": "ro", "flag": "ro" },
-        { "name": "Russian", "langCode": "ru", "flag": "ru" },
-        { "name": "Slovak", "langCode": "sk", "flag": "sk" },
-        { "name": "Slovenian", "langCode": "sl", "flag": "si" },
-        { "name": "Spanish", "langCode": "es", "flag": "es" },
-        { "name": "Swedish", "langCode": "sv", "flag": "se" },
-        { "name": "Thai", "langCode": "th", "flag": "th" },
-        { "name": "Turkish", "langCode": "tr", "flag": "tr" },
-        { "name": "Ukrainian", "langCode": "uk", "flag": "ua" },
-        { "name": "Vietnamese", "langCode": "vi", "flag": "vi" }
+        {
+          "name": "Bulgarian",
+          "langCode": "bg",
+          "flag": "bg"
+        },
+        {
+          "name": "Chinese (Simplified)",
+          "langCode": "zh",
+          "flag": "cn"
+        },
+        {
+          "name": "Czech",
+          "langCode": "cs",
+          "flag": "cz"
+        },
+        {
+          "name": "Danish",
+          "langCode": "da",
+          "flag": "dk"
+        },
+        {
+          "name": "Dutch",
+          "langCode": "nl",
+          "flag": "nl"
+        },
+        {
+          "name": "Estonian",
+          "langCode": "et",
+          "flag": "ee"
+        },
+        {
+          "name": "Finnish",
+          "langCode": "fi",
+          "flag": "fi"
+        },
+        {
+          "name": "French",
+          "langCode": "fr",
+          "flag": "fr"
+        },
+        {
+          "name": "German",
+          "langCode": "de",
+          "flag": "de"
+        },
+        {
+          "name": "Greek",
+          "langCode": "el",
+          "flag": "gr"
+        },
+        {
+          "name": "Hungarian",
+          "langCode": "hu",
+          "flag": "hu"
+        },
+        {
+          "name": "Indonesian",
+          "langCode": "id",
+          "flag": "id"
+        },
+        {
+          "name": "Italian",
+          "langCode": "it",
+          "flag": "it"
+        },
+        {
+          "name": "Japanese",
+          "langCode": "ja",
+          "flag": "jp"
+        },
+        {
+          "name": "Korean",
+          "langCode": "ko",
+          "flag": "kr"
+        },
+        {
+          "name": "Lithuanian",
+          "langCode": "lt",
+          "flag": "lt"
+        },
+        {
+          "name": "Latvian",
+          "langCode": "lv",
+          "flag": "lv"
+        },
+        {
+          "name": "Norwegian (Bokmål)",
+          "langCode": "nb",
+          "flag": "no"
+        },
+        {
+          "name": "Polish",
+          "langCode": "pl",
+          "flag": "pl"
+        },
+        {
+          "name": "Portuguese (Brazil)",
+          "langCode": "pt-br",
+          "flag": "br"
+        },
+        {
+          "name": "Portuguese (Portugal)",
+          "langCode": "pt",
+          "flag": "pt"
+        },
+        {
+          "name": "Romanian",
+          "langCode": "ro",
+          "flag": "ro"
+        },
+        {
+          "name": "Russian",
+          "langCode": "ru",
+          "flag": "ru"
+        },
+        {
+          "name": "Slovak",
+          "langCode": "sk",
+          "flag": "sk"
+        },
+        {
+          "name": "Slovenian",
+          "langCode": "sl",
+          "flag": "si"
+        },
+        {
+          "name": "Spanish",
+          "langCode": "es",
+          "flag": "es"
+        },
+        {
+          "name": "Swedish",
+          "langCode": "sv",
+          "flag": "se"
+        },
+        {
+          "name": "Thai",
+          "langCode": "th",
+          "flag": "th"
+        },
+        {
+          "name": "Turkish",
+          "langCode": "tr",
+          "flag": "tr"
+        },
+        {
+          "name": "Ukrainian",
+          "langCode": "uk",
+          "flag": "ua"
+        },
+        {
+          "name": "Vietnamese",
+          "langCode": "vi",
+          "flag": "vi"
+        }
       ]
     },
     {
       "_component": "building-blocks/core-elements/button",
       "text": "Log in",
+      "hideText": false,
       "link": "https://the-stevie-awards.com/login",
+      "openInNewTab": false,
+      "iconName": "",
+      "iconPosition": "before",
       "variant": "ghost",
+      "uppercase": true,
       "size": "sm"
     }
   ]

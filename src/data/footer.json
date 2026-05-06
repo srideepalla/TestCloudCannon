@@ -1,23 +1,56 @@
 {
-  "logoSource": "/images/logo.png",
-  "logoAlt": "The International Business Awards",
+  "logoSource": "/src/assets/images/sawib-hc-w.png",
+  "logoAlt": "The Stevie® Awards for Women in Business",
   "quickLinks": [
-    { "name": "Blog", "path": "https://blog.stevieawards.com/blog" },
-    { "name": "Programs", "path": "/awards/about-us" },
-    { "name": "Calendar", "path": "/about/calendar" },
-    { "name": "Store", "path": "https://stevieawards.myshopify.com/" },
-    { "name": "Press", "path": "/press/press-releases/" },
-    { "name": "Contact Us", "path": "/about/contact" }
+    {
+      "name": "Blog",
+      "path": "https://blog.stevieawards.com/blog"
+    },
+    {
+      "name": "Programs",
+      "path": "/awards/about-us"
+    },
+    {
+      "name": "Calendar",
+      "path": "/about/calendar"
+    },
+    {
+      "name": "Store",
+      "path": "https://stevieawards.myshopify.com/"
+    },
+    {
+      "name": "Press",
+      "path": "/press/press-releases/"
+    },
+    {
+      "name": "Contact Us",
+      "path": "/about/contact"
+    }
   ],
   "newsletterHeading": "Subscribe to our newsletter",
   "newsletterText": "The best way to stay on top of deadlines, extensions, and program updates is by subscribing to our free, weekly newsletter.",
   "newsletterLink": "/about/newsletter",
   "socials": [
-    { "icon": "social/linkedin", "link": "https://www.linkedin.com/company/the-stevie-awards" },
-    { "icon": "social/x", "link": "https://x.com/thestevieawards" },
-    { "icon": "social/facebook", "link": "https://www.facebook.com/TheStevieAwards/" },
-    { "icon": "social/instagram", "link": "https://www.instagram.com/thestevieawards/" },
-    { "icon": "social/youtube", "link": "https://www.youtube.com/user/TheStevies" }
+    {
+      "icon": "social/linkedin",
+      "link": "https://www.linkedin.com/company/the-stevie-awards"
+    },
+    {
+      "icon": "social/x",
+      "link": "https://x.com/thestevieawards"
+    },
+    {
+      "icon": "social/facebook",
+      "link": "https://www.facebook.com/TheStevieAwards/"
+    },
+    {
+      "icon": "social/instagram",
+      "link": "https://www.instagram.com/thestevieawards/"
+    },
+    {
+      "icon": "social/youtube",
+      "link": "https://www.youtube.com/user/TheStevies"
+    }
   ],
   "footerText": "Questions? Problems? <a href='/About/contact'>Contact Us</a>. Read Our <a href='/refund-policy'>Refunds & Delivery Policy</a>. Our privacy policy is <a href='/privacy'>available here</a>. Copyright © 2026 Stevie Awards, Inc. All Rights Reserved. American Business Awards and International Business Awards are registered trademarks of Stevie Awards, Inc."
 }
