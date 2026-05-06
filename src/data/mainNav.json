@@ -49,6 +49,10 @@
             {
               "name": "Achievement Categories",
               "path": "/Awards/Categories/achievement-categories/"
+            },
+            {
+              "name": "Artificial Intelligence (AI) and Technology Categories ",
+              "path": "/awards/categories/AI-Technology-Categories"
             }
           ]
         },
