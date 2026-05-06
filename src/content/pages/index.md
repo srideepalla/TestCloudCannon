@@ -5,19 +5,20 @@ description: ''
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source: /src/assets/images/IBA-Home-5.jpg
-      alt: International Business Awards ceremony
+      source: /src/assets/images/54917709518-2ffd87eb40-o.jpg
+      alt: Stevie® Awards for Women in Business  ceremony
     subheading: Entries Now Open
     heading: The 23rd Annual Stevie® Awards for Women in Business
     description: >-
-      Nominate your people, projects, or organization in the 2026 edition of The
-      International Business Awards®, the top honors for achievement in the
-      workplace across the globe.
+      Recognize excellence in women-led achievement across every industry. The
+      Stevie® Awards for Women in Business are the world’s premier business
+      awards honoring female entrepreneurs, executives, employees, and the
+      organizations they lead.
 
 
-      Request your Entry Kit to learn how to submit nominations to join the list
-      of prestigious Stevie® Award winners including DHL, Cisco, Samsung,
-      Toyota, and many others.
+      Request your Entry Kit today to learn how to submit nominations to join
+      distinguished Stevie® Award winners such as AT&T Business, Salesforce,
+      It's a 10, and Watsons.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
