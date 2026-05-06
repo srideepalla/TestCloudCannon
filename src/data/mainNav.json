@@ -53,6 +53,10 @@
             {
               "name": "Artificial Intelligence (AI) and Technology Categories ",
               "path": "/awards/categories/AI-Technology-Categories"
+            },
+            {
+              "name": "Company/Organization (Women-Owned or -Led) Awards Categories",
+              "path": "/awards/categories/Company-Organization-Awards-Categories"
             }
           ]
         },
