@@ -425,6 +425,30 @@ pageSections:
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
+  - _component: page-sections/carousels/gallery-carousel
+    heading: Event Gallery
+    description: >-
+      Stevie Award Winners are celebrated around the world at our red-carpet
+      awards galas, where they present an acceptance speech on stage before an
+      audience of hundreds of entrepreneurs and executives. Gold, Silver, and
+      Bronze Stevie Award placements among the 2025 Finalists were announced at
+      a gala awards banquet attended by nearly 600 nominees, judges, and guests
+      from around the world on November 10 in New York City.
+
+
+      Winners in the 2026 competition will be revealed and celebrated on
+      November 16 durng the awards banquet of the 23rd Stevie Awards for Women
+      in Business at the Marriott Marquis Hotel in New York City. While
+      attendance is not required to win, all winners who attend have the
+      opportunity to deliver an acceptance speech on stage and be professionally
+      photographed and interviewed on our red carpet. Visit our [FAQ
+      page](/about/faq) for more details about the ceremony.
+    images:
+      - source: /src/assets/images/IBA25-Winner-2.jpg
+        alt: IBA Winner
+        thumbnail: ''
+    colorScheme: dark
+    backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: Explore Other Stevie® Awards Competitions
     description: >-
