@@ -255,16 +255,18 @@ pageSections:
   - _component: page-sections/features/grid-videos
     heading: What Winning a Stevie Award Means to Our 2025 Winners
     videos:
-      - youtubeId: C5LdvqBMA1c
-        title: 8x8 wins a Stevie® Award in The 2025 International Business Awards®
-      - youtubeId: L87uOu3UCNY
+      - youtubeId: UqX5Q9pE6io
         title: >-
-          Vitamin Marketing Services wins a Stevie® Award in The 2025
-          International Business Awards®
-      - youtubeId: a8cAa8Rf5qM
+          Distruptor Brand wins in the 2025 Stevie® Awards for Women in
+          Business 
+      - youtubeId: wvSEt0yvIqs
         title: >-
-          Anytime Counselling wins a Stevie® Award in The 2025 International
-          Business Awards®
+          Green Panther Skincare wins in the 2025 Stevie® Awards for Women in
+          Business
+      - youtubeId: fS5Q7wiWcJs
+        title: >-
+          Clearpath Learning Group wins in the 2025 Stevie® Awards for Women in
+          Business
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
@@ -330,20 +332,21 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: Event Gallery
     description: >-
-      Winning a Stevie Award is an opportunity to showcase your achievements on
-      a global stage. On October 10, 2025, more than 300 executives from around
-      the world attended the joint ceremony for The 22nd International Business
-      Awards® and the 11th German Stevie Awards® to witness the acceptance
-      speeches of winners from a variety of industries and nations.
+      Stevie Award Winners are celebrated around the world at our red-carpet
+      awards galas, where they present an acceptance speech on stage before an
+      audience of hundreds of entrepreneurs and executives. Gold, Silver, and
+      Bronze Stevie Award placements among the 2025 Finalists were announced at
+      a gala awards banquet attended by nearly 600 nominees, judges, and guests
+      from around the world on November 10 in New York City.
 
 
-      Winners in the 2026 competition will connect and network with hundreds of
-      professionals from leading organizations at this year's gala celebration
-      on 28 October in Paris, France. While attendance is not required to win,
-      all winners who attend have the opportunity to deliver an acceptance
-      speech on stage and get professionally photographed and interviewed on our
-      red carpet. Visit our <a href="/About/faq">FAQ page</a> for more details
-      about the ceremony.
+      Winners in the 2026 competition will be revealed and celebrated on
+      November 16 durng the awards banquet of the 23rd Stevie Awards for Women
+      in Business at the Marriott Marquis Hotel in New York City. While
+      attendance is not required to win, all winners who attend have the
+      opportunity to deliver an acceptance speech on stage and be professionally
+      photographed and interviewed on our red carpet. Visit our [FAQ
+      page](/about/faq) for more details about the ceremony.
     images:
       - source: /src/assets/images/IBA25-Winner-1.jpg
         alt: IBA Winner
