@@ -67,10 +67,7 @@ pageSections:
         - text: Achievement Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in Communications or PR Categories
-          iconName: four-pointed-star
-          iconColor: brand
-        - text: Achievement in Marketing Categories
+        - text: Achievement in Communications, Marketing or PR Categories
           iconName: four-pointed-star
           iconColor: brand
         - text: >-
