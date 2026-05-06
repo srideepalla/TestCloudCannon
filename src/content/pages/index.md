@@ -45,21 +45,22 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: The World's Premier Business Awards
+    subheading: Nominate Women-Owned Businesses, Entrepreneurs & More
     heading: Award Categories
     description: >-
-      For more than 20 years, The International Business Awards®, known as the
-      “International Stevies”, have shone a spotlight on organizations of every
-      type and size worldwide: large and small, public and private, for-profit
-      and non-profit. Open to all organizations and individuals, the 2025
-      competition attracted more than 3,800 nominations from organizations in 78
-      nations and markets.
+      For more than 20 years, the Stevie® Awards for Women in Business have
+      shined a spotlight on women-owned and led organizations of every type and
+      size worldwide: large and small, public and private, for-profit and
+      non-profit. The 2025 competition attracted more than 1,500 nominations
+      submitted by organizations and individuals in 48 nations.
 
 
-      The IBAs feature a wide range of categories spanning Management,
-      Marketing, Public Relations, Product Development, Technology, and more,
-      with new 2026 category groups highlighting Artificial Intelligence and
-      Public Sector & Government Innovation.
+      Female entrepreneurs, executives, employees, and the organizations they
+      run, worldwide, are eligible to be nominated. With more than 150
+      categories spanning a wide range of workplace achievements, you can submit
+      nominations that showcase your organization's unique impact and values.
+      The 2026 program introduces new categories recognizing Women in Artificial
+      Intelligence, XYZ, and more.
     list:
       _component: building-blocks/core-elements/list
       items:
@@ -131,12 +132,11 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Recognizing Industry Leaders Worldwide
+    heading: Past Winners in the Stevie® Awards for Women in Business
     description: >-
-      Every organization has an equal chance to win a Stevie Award. Each year,
-      small and mid-sized organizations are honored as winners alongside Fortune
-      500 giants like Delta Airlines, IBM, PayPal and Viettel. Past winners
-      include:
+      Each year, women-owned small and mid-sized businesses are recognized
+      alongside female leaders from global corporations such as IBM, Mastercard,
+      and Microsoft. Past winners include:
     logos:
       - source: /src/assets/images/IBA-Winner-Amazon.jpeg
         alt: Amazon
@@ -205,35 +205,33 @@ pageSections:
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: International Business Awards®
+    subheading: The Stevie® Awards for Women in Business
     heading: FEATURE STORIES
     description: ''
     list:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /src/assets/images/iba25-winners-1.webp
-            alt: IBA25 Winner Announcement
-          title: Winners in the 2025 International Business Awards® Announced
-          link: >-
-            https://blog.stevieawards.com/blog/stevie-awards-announce-winners-in-the-22nd-annual-international-business-awards-from-across-the-globe
-        - image:
-            source: /src/assets/images/iba25-winners-9.webp
-            alt: Grand Stevie Winners
+            source: /src/assets/images/wib-winners.webp
+            alt: SAWIB25 Winner Announcement
           title: >-
-            Grand Stevie® Winners Announced in 22nd International Business
-            Awards®
+            Winners in the 22nd Annual Stevie® Awards for Women in Business
+            Announced
           link: >-
-            https://blog.stevieawards.com/blog/grand-stevie-winners-announced-in-22nd-international-business-awards
+            https://blog.stevieawards.com/blog/winners-in-the-22nd-annual-stevie-awards-for-women-in-business-announced
         - image:
-            source: /src/assets/images/ibagsa25-pc-horizontal.webp
-            alt: People's Choice
+            source: /src/assets/images/persistent-sheshapesai-logo.webp
+            alt: Persistent and Stevie Awards Honor Female Leaders
           title: >-
-            Winners of 2025 People's Choice Stevie® Awards for Favorite
-            Companies Announced in The International Business Awards and the
-            German Stevie Awards
+            Finalists Announced in Persistent’s SheShapesAI Awards at the 22nd
+            Annual Stevie Awards for Women in Business
           link: >-
-            https://blog.stevieawards.com/blog/winners-of-2025-peoples-choice-stevie-awards-for-favorite-companies-announced-in-the-international-business-awards-and-the-german-stevie-awards
+            https://blog.stevieawards.com/blog/finalists-announced-in-persistents-sheshapesai-awards-at-the-22nd-annual-stevie-awards-for-women-in-business
+        - image:
+            source: /src/assets/images/welcome-wfw-post-1200-x-800-px.webp
+            alt: WFW
+          title: Introducing the Women|Future Webinars
+          link: https://blog.stevieawards.com/blog/topic/women-future-webinars
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
     formEmbed: >-
