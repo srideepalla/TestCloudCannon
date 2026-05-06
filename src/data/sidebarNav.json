@@ -7,12 +7,12 @@
         "href": "/about/about-us"
       },
       {
-        "text": "FAQ",
-        "href": "/about/faq"
-      },
-      {
         "text": "Calendar",
         "href": "/about/calendar"
+      },
+      {
+        "text": "FAQ",
+        "href": "/about/faq"
       },
       {
         "text": "Staff",
@@ -32,24 +32,20 @@
     "heading": "Awards",
     "links": [
       {
-        "text": "Categories",
-        "href": "/awards/categories"
-      },
-      {
         "text": "The Stevie Award",
         "href": "/awards/thestevieaward"
       },
       {
-        "text": "IBA Winners",
-        "href": "/awards/iba-winners"
+        "text": "Categories",
+        "href": "/awards/categories"
       },
       {
-        "text": "Best of the IBA Awards",
-        "href": "/awards/best-iba-awards"
+        "text": "Winners",
+        "href": "/awards/sawib-winners"
       },
       {
-        "text": "People's Choice Stevie Awards",
-        "href": "/awards/peopleschoice"
+        "text": "Top 5 Awards",
+        "href": "/awards/top-5-awards/"
       }
     ]
   },
