@@ -67,6 +67,10 @@
               "path": "/awards/categories/Individual-Women-Awards-Categories/"
             },
             {
+              "name": "Media Awards Categories",
+              "path": "/awards/categories/media-awards-categories/"
+            },
+            {
               "name": "Sustainability Categories",
               "path": "/awards/categories/Sustainability-Categories"
             },
