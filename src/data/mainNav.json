@@ -61,6 +61,10 @@
             {
               "name": "Individual Women Awards Categories",
               "path": "/awards/categories/Individual-Women-Awards-Categories/"
+            },
+            {
+              "name": "Sustainability Categories",
+              "path": "/awards/categories/Sustainability-Categories"
             }
           ]
         },
