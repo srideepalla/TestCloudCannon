@@ -46,6 +46,10 @@
       {
         "text": "Top 5 Awards",
         "href": "/awards/top-5-awards/"
+      },
+      {
+        "name": "Winners' Circle",
+        "path": "/awards/2025-winnerscircle/"
       }
     ]
   },
