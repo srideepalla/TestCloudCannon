@@ -190,7 +190,8 @@
       "children": [
         { "name": "Judging & Awards Process", "path": "/judges/judging-awards-process" },
         { "name": "Apply to Be a Judge", "path": "/judges/you-be-the-judge" },
-        { "name": "Judging Committees", "path": "/judges/judging-committees" }
+        { "name": "Judging Committees", "path": "/judges/judging-committees" },
+        { "name": "Staff", "path": "/judges/judging-committees/staff" }
       ]
     },
     {
