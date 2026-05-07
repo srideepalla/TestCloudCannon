@@ -13,7 +13,7 @@ pageSections:
       Recognize excellence in women-led achievement across every industry. The
       Stevie® Awards for Women in Business are the world’s premier business
       awards honoring female entrepreneurs, executives, employees, and the
-      organizations they lead.
+      organizations they run.
 
 
       Request your Entry Kit today to learn how to submit nominations to join
@@ -270,17 +270,17 @@ pageSections:
     heading: Winner Testimonials
     testimonials:
       - quote: >-
-          Winning the Stevie Award has been an affirmation of our good work and
-          the intent that we set out with. It gives us validation of our effort,
-          our plans, and our execution. This award helps bring our initiatives
-          to a larger community. We will be able to build on our purpose to make
-          students industry-ready, and hope this award will encourage others to
-          do more for the larger community.
-        authorName: Mona Bharadwaj
-        authorTitle: Technology Partner Specialist, IBM India
+          Not only is the prestige of winning a Stevie Award high praise, but so
+          too is the honor of serving as an example to young female
+          entrepreneurs, showing them that they can create companies based on
+          authenticity, passion, and creativity, and that those companies can
+          thrive. I couldn't be more thrilled about this distinction and all the
+          forward progress it represents.
+        authorName: Amanda Lien,
+        authorTitle: Founder, Minutiae Content Co., USA
         companyLogo:
-          source: /src/assets/images/IBA-Winner-IBM.png
-          alt: IBM
+          source: /uploads/new-website-testimonial-logos-1.png
+          alt:
       - quote: >-
           On behalf of my team at Pepsico, we are very excited and proud to have
           won the Gold Stevie Award. This award is a confirmation of the efforts
@@ -338,7 +338,7 @@ pageSections:
 
 
       Winners in the 2026 competition will be revealed and celebrated on
-      November 16 durng the awards banquet of the 23rd Stevie Awards for Women
+      November 16 during the awards banquet of the 23rd Stevie Awards for Women
       in Business at the Marriott Marquis Hotel in New York City. While
       attendance is not required to win, all winners who attend have the
       opportunity to deliver an acceptance speech on stage and be professionally
