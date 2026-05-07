@@ -282,17 +282,17 @@ pageSections:
           source: /uploads/new-website-testimonial-logos-1.png
           alt:
       - quote: >-
-          On behalf of my team at Pepsico, we are very excited and proud to have
-          won the Gold Stevie Award. This award is a confirmation of the efforts
-          that Pepsico as a company has taken to focus on high-tech to bring
-          more innovation, productivity, and tech-based capabilities to the
-          business, our partners, and consumers. Winning the Stevie Award also
-          boosts the morale and ambition of the team.
-        authorName: Ravi Boggaram
-        authorTitle: CTO Sr. Director, Global Digital Services, Pepsico
+          To be recognised among such extraordinary women in business is an
+          honour - especially for work rooted in care, community, and
+          innovation. This nomination reflects not only my journey as a founder,
+          but also the work we do at Hoama Group, my commitment to mentoring
+          entrepreneurs, advocating for disabled leadership, and shaping what
+          care can be. I’m proud to represent the UK on a global stage.
+        authorName:
+        authorTitle: Umbreen David, Managing Director, Hoama Group Ltd, United Kingdom
         companyLogo:
-          source: /src/assets/images/pepsico-logo-header.webp
-          alt: Pepsico
+          source: /uploads/new-website-testimonial-logos-2-1.png
+          alt:
       - quote: >-
           Winning a Stevie Award is about more than recognition; it's about the
           commitment we've made to ourselves and those who believe in our
