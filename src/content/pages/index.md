@@ -367,83 +367,20 @@ pageSections:
       photographed and interviewed on our red carpet. Visit our [FAQ
       page](/about/faq) for more details about the ceremony.
     images:
-      - source: /src/assets/images/IBA25-Winner-1.jpg
-        alt: IBA Winner
+      - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
+        alt: ''
         thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-2.jpg
-        alt: IBA Winner
+      - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
+        alt: ''
         thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-3.jpg
-        alt: IBA Winner
+      - source: /src/assets/images/54916595357-599f7d59f1-o.jpg
+        alt: ''
         thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-4.jpg
-        alt: IBA Winner
+      - source: /src/assets/images/54918360318-b10dcd9644-c.jpg
+        alt: ''
         thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-5.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-6.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-7.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-8.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-9.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-10.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-11.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-12.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-13.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-14.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-15.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-16.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-17.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-18.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-19.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-20.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-21.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-22.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-23.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-24.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-25.jpg
-        alt: IBA Winner
-        thumbnail: ''
-      - source: /src/assets/images/IBA25-Winner-26.jpg
-        alt: IBA Winner
+      - source: /src/assets/images/54917823675-a9d1ed6fb2-o.jpg
+        alt: ''
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
