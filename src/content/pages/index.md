@@ -135,70 +135,61 @@ pageSections:
       alongside female leaders from global corporations such as IBM, Mastercard,
       and Microsoft. Past winners include:
     logos:
-      - source: /src/assets/images/IBA-Winner-Amazon.jpeg
-        alt: Amazon
-      - source: /src/assets/images/IBA-Winner-AyalaLand.jpg
-        alt: AyalaLand
-      - source: /src/assets/images/IBA-Winner-Carrefoursa.png
-        alt: Carrefoursa
-      - source: /src/assets/images/IBA-Winner-CathayUnitedBank.jpg
-        alt: Cathay United Bank
-      - source: /src/assets/images/IBA-Winner-Cisco.png
-        alt: Cisco
-      - source: /src/assets/images/IBA-Winner-Dell.png
-        alt: Dell
-      - source: /src/assets/images/IBA-Winner-DHL.png
-        alt: DHL Express
-      - source: /src/assets/images/IBA-Winner-Delta.jpg
-        alt: Delta
-      - source: /src/assets/images/IBA-Winner-DrPhoneFix.jpg
-        alt: Dr. Phone Fix
-      - source: /src/assets/images/IBA-Winner-ExtendMax.jpg
-        alt: ExtendMax
-      - source: /src/assets/images/IBA-Winner-Ford.png
-        alt: Ford
-      - source: /src/assets/images/IBA-Winner-Halkbank.png
-        alt: Halkbank
-      - source: /src/assets/images/IBA-Winner-HaseIgel.jpg
-        alt: Hase & Igel
-      - source: /src/assets/images/IBA-Winner-IBM.png
-        alt: IBM
-      - source: /src/assets/images/IBA-Winner-LLYC.jpg
-        alt: LLYC
-      - source: /src/assets/images/IBA-Winner-LoungeGroup.png
-        alt: Lounge Group
-      - source: /src/assets/images/IBA-Winner-OctopusEnergy.jpg
-        alt: Octopus Energy
-      - source: /src/assets/images/IBA-Winner-OPET.png
-        alt: OPET
-      - source: /src/assets/images/IBA-Winner-PayPal.jpg
-        alt: PayPal
-      - source: /src/assets/images/IBA-Winner-PWC.png
-        alt: PWC
-      - source: /src/assets/images/IBA-Winner-QNET.jpg
-        alt: QNET
-      - source: /src/assets/images/IBA-Winner-Salesforce.png
-        alt: Salesforce
-      - source: /src/assets/images/IBA-Winner-Samsung.png
-        alt: Samsung
-      - source: /src/assets/images/IBA-Winner-SaudiAramco.png
-        alt: SaudiAramco
-      - source: /src/assets/images/IBA-Winner-Sony.jpg
-        alt: Sony
-      - source: /src/assets/images/IBA-Winner-TelkomIndonesia.png
-        alt: Telkom Indonesia
-      - source: /src/assets/images/IBA-Winner-Telus.jpg
-        alt: Telus
-      - source: /src/assets/images/IBA-Winner-Toyota.png
-        alt: Toyota
-      - source: /src/assets/images/IBA-Winner-Unicef.png
-        alt: Unicef
+      - source: /src/assets/images/estelauder.png
+        alt: estee
+      - source: /src/assets/images/tripadvisor.webp
+        alt: tripadvisor
+      - source: /src/assets/images/ltk.png
+        alt: ltk
       - source: /src/assets/images/IBA-Winner-Verizon.png
         alt: Verizon
-      - source: /src/assets/images/IBA-Winner-Viettel.jpg
-        alt: Viettel
-      - source: /src/assets/images/IBA-Winner-Visatec.png
-        alt: Visatec
+      - source: /src/assets/images/2mamabees-logo.webp
+        alt: mamabees
+      - source: /src/assets/images/itsa10.svg
+        alt: itsa10
+      - source: /src/assets/images/bugbite.png
+        alt: bugbite
+      - source: /src/assets/images/babylist.jpg
+        alt: babylist
+      - source: /src/assets/images/megaworld.png
+        alt: Megaworld
+      - source: /src/assets/images/playwise.png
+        alt: Playwise
+      - source: /src/assets/images/IBA-Winner-Salesforce.png
+        alt: Salesforce
+      - source: /src/assets/images/cognizant-logo.jpg
+        alt: Cognizant
+      - source: /src/assets/images/nextivia.png
+        alt: Nextivia
+      - source: /src/assets/images/hiltonsupply.webp
+        alt: hilton
+      - source: /src/assets/images/susan-g-komen-logo-svg.png
+        alt: susankomen
+      - source: /src/assets/images/mastercard-logo.svg
+        alt: mastercard
+      - source: /src/assets/images/brandless.png
+        alt: brandless
+      - source: /src/assets/images/usercentrics.png
+        alt: Usercentrics
+      - source: /src/assets/images/IBA-Winner-Telus.jpg
+        alt: Telus
+      - source: >-
+          /src/assets/images/398df067-a804-4b24-85b8-4306e194273d-company-logoo-microsoft-logo.png
+        alt: microsoft
+      - source: /src/assets/images/images.png
+        alt: purpol
+      - source: /src/assets/images/vanguard-logo.png
+        alt: vanguard
+      - source: /src/assets/images/sap-2011-logo-svg.png
+        alt: sap
+      - source: /src/assets/images/sunhope.webp
+        alt: sun hope
+      - source: /src/assets/images/att.jpg
+        alt: att
+      - source: /src/assets/images/buyfromablackwoman.png
+        alt: buyfromblackwoman
+      - source: /src/assets/images/IBA/es/IBA-Winner-IBM.png
+        alt: ibm
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
