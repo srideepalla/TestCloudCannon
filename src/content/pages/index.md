@@ -291,18 +291,22 @@ pageSections:
         authorName:
         authorTitle: Umbreen David, Managing Director, Hoama Group Ltd, United Kingdom
         companyLogo:
-          source: /uploads/new-website-testimonial-logos-2-1.png
+          source:
           alt:
       - quote: >-
-          Winning a Stevie Award is about more than recognition; it's about the
-          commitment we've made to ourselves and those who believe in our
-          vision. The Gold Stevie Award reinforces that our dedication is making
-          a difference, and it drives us to continue striving for excellence.
-        authorName: Charles Chima
-        authorTitle: Chief Strategy Officer, Dynace Global, Malaysia
+          The opportunities the Stevies give to share and be involved is heads
+          above many other award programs. I started taking other people in
+          business to New York for the Stevie Awards for Women in Business in
+          2017. I love the event and to mix with other amazing winners. It's
+          always so well done and professional. The Stevie Awards process is one
+          of integrity, the judging is fair and the process is easy to follow. I
+          love the feedback from the judges; there aren't many awards that give
+          you feedback and it is so valuable.
+        authorName: Annette Densham, Founder &amp; CEO, Award Writing Services, Indonesia
+        authorTitle:
         companyLogo:
-          source: /src/assets/images/dynace-logo-2.png
-          alt: Dynace Global
+          source:
+          alt:
       - quote: >-
           We're proud that Setupad's drive to deliver the best publisher tech on
           the market was acknowledged by this esteemed award. The Stevie triumph
