@@ -276,7 +276,7 @@ pageSections:
           authenticity, passion, and creativity, and that those companies can
           thrive. I couldn't be more thrilled about this distinction and all the
           forward progress it represents.
-        authorName: Amanda Lien,
+        authorName: Amanda Lien
         authorTitle: Founder, Minutiae Content Co., USA
         companyLogo:
           source: /uploads/new-website-testimonial-logos-1.png
@@ -288,8 +288,8 @@ pageSections:
           but also the work we do at Hoama Group, my commitment to mentoring
           entrepreneurs, advocating for disabled leadership, and shaping what
           care can be. I’m proud to represent the UK on a global stage.
-        authorName:
-        authorTitle: Umbreen David, Managing Director, Hoama Group Ltd, United Kingdom
+        authorName: Umbreen David
+        authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
         companyLogo:
           source:
           alt:
@@ -302,32 +302,50 @@ pageSections:
           of integrity, the judging is fair and the process is easy to follow. I
           love the feedback from the judges; there aren't many awards that give
           you feedback and it is so valuable.
-        authorName: Annette Densham, Founder &amp; CEO, Award Writing Services, Indonesia
-        authorTitle:
+        authorName: Annette Densham
+        authorTitle: ', Founder & CEO, Award Writing Services, Indonesia'
         companyLogo:
           source:
           alt:
       - quote: >-
-          We're proud that Setupad's drive to deliver the best publisher tech on
-          the market was acknowledged by this esteemed award. The Stevie triumph
-          is not just an accolade; it's a strategic asset leading to new heights
-          of impact, reputation, and sustainable growth. It's a catalyst for our
-          ongoing success story.
-        authorName: Toms Panders
-        authorTitle: Co-Founder & CEO, Setupad, Latvia
+          Winning the Gold Stevie® Award for Female Executive of the Year is a
+          deeply personal honor, but it also highlights the exceptional work and
+          dedication of the Viderity team. This recognition not only celebrates
+          my leadership, but also elevates Viderity's reputation as a company
+          that values innovation, education, and delivering impactful solutions
+          to our clients.
+        authorName: Rachel Everett
+        authorTitle: CEO, Viderity, USA
         companyLogo:
-          source: /src/assets/images/logo-fin-v-x3.webp
-          alt: Setupad
+          source:
+          alt:
       - quote: >-
-          Winning this Stevie Award has positively impacted my personal life and
-          transformed my business! My business, Kasselot Evanesse, has received
-          international recognition. Stevie Awards are super beneficial to
-          launching new brands.
-        authorName: LeeAnne Kassel
-        authorTitle: CEO, Kasselot Evanesse, (Pty) Ltd, South Africa
+          This is my first Stevie Award, and I’m representing my company as
+          Co-founder and CEO.  This is an international recognition as well as
+          more recognition for underrepresented people in business. Our Stevie
+          Awards are going to change the way the industry looks at our company.
+          There are a lot of women in leadership positions at Chargeback Gurus,
+          and this award shows that there is space for both women and men to
+          succeed in business together.
+        authorName: Srii Srinivasan
+        authorTitle: Co-Founder, Chargeback Gurus, USA
         companyLogo:
-          source: /src/assets/images/1684529716669.jpg
-          alt: Evanesse
+          source:
+          alt:
+      - quote: >-
+          Winning the Female Thought Leader of the Year Stevie Award is an
+          incredible honor that validates the dedication and passion I pour into
+          advancing mental health and wellness in the workplace. For both myself
+          and my organization, this recognition is a testament to our commitment
+          to creating meaningful, human-centered benefits that support the
+          well-being of individuals globally. It inspires us to continue driving
+          impactful change in the way mental health and wellness are understood
+          and prioritized.
+        authorName: Danae Goldsmith
+        authorTitle: Sr. Director of Strategic Partnerships, Workplace Options, USA
+        companyLogo:
+          source: ''
+          alt: ''
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
