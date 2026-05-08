@@ -115,16 +115,11 @@ pageSections:
         icon:
     formHeading: 'Get the Entry Kit: Your Guide to Submitting Nominations'
     formEmbed: >-
-      <script charset="utf-8" type="text/javascript"
-      src="//js.hsforms.net/forms/embed/v2.js"></script>
+      <script src="https://js.hsforms.net/forms/embed/35655.js" defer></script>
 
-      <script>
-        hbspt.forms.create({
-          portalId: "35655",
-          formId: "5fa286f3-1858-4405-965e-6c70170a89a3",
-          region: "na1"
-        });
-      </script>
+      <div class="hs-form-frame" data-region="na1"
+      data-form-id="2ff4cb10-a9ba-4cd4-aa1f-a0de3a9f3530"
+      data-portal-id="35655"></div>
     formCardColorScheme: light
     colorScheme: dark
     backgroundColor: base
