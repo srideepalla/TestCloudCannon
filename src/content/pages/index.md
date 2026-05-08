@@ -216,10 +216,11 @@ pageSections:
           link: >-
             https://blog.stevieawards.com/blog/finalists-announced-in-persistents-sheshapesai-awards-at-the-22nd-annual-stevie-awards-for-women-in-business
         - image:
-            source: /src/assets/images/welcome-wfw-post-1200-x-800-px.webp
-            alt: WFW
-          title: Introducing the Women|Future Webinars
-          link: https://blog.stevieawards.com/blog/topic/women-future-webinars
+            source: /src/assets/images/wfc-webinars-logo-for-facebook.png
+            alt: Women Future Webinars
+          title: Join the 2026 Women|Future Webinars
+          link: >-
+            https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
     formEmbed: >-
