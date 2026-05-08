@@ -270,7 +270,7 @@ pageSections:
         authorName: Amanda Lien
         authorTitle: Founder, Minutiae Content Co., USA
         companyLogo:
-          source: /uploads/new-website-testimonial-logos-1.png
+          source:
           alt:
       - quote: >-
           To be recognised among such extraordinary women in business is an
