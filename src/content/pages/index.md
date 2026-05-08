@@ -358,7 +358,7 @@ pageSections:
       photographed and interviewed on our red carpet. Visit our [FAQ
       page](/about/faq) for more details about the ceremony.
     images:
-      - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
+      - source: /src/assets/images/54916995791-2f67be70ba-o.jpg
         alt: ''
         thumbnail: ''
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
@@ -398,6 +398,9 @@ pageSections:
         alt: ''
         thumbnail: ''
       - source: /src/assets/images/54918164611-3912a076b1-c.jpg
+        alt: ''
+        thumbnail: ''
+      - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
         alt: ''
         thumbnail: ''
     colorScheme: dark
