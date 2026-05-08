@@ -212,13 +212,13 @@ pageSections:
             alt: Persistent and Stevie Awards Honor Female Leaders
           title: >-
             Finalists Announced in Persistent’s SheShapesAI Awards at the 22nd
-            Annual Stevie Awards for Women in Business
+            Annual Stevie® Awards for Women in Business
           link: >-
             https://blog.stevieawards.com/blog/finalists-announced-in-persistents-sheshapesai-awards-at-the-22nd-annual-stevie-awards-for-women-in-business
         - image:
-            source: /src/assets/images/wfc-webinars-logo-for-facebook.png
+            source: /src/assets/images/54918164611-3912a076b1-c.jpg
             alt: Women Future Webinars
-          title: Join the 2026 Women|Future Webinars
+          title: Register for the 2026 Women|Future Webinars
           link: >-
             https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
     buttonSections: []
@@ -395,7 +395,7 @@ pageSections:
       - source: /src/assets/images/54916228917-5dda7cc82f-o.jpg
         alt: ''
         thumbnail: ''
-      - source: /src/assets/images/54918164611-3912a076b1-c.jpg
+      - source: /src/assets/images/54918136961-54ce8a17c7-c.jpg
         alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
