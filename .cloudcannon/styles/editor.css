@@ -9,3 +9,8 @@ span.brand-muted-color {
 span.brand-subtle-color {
   color: #4b5563;
 }
+
+
+span.red {
+  color: red;
+}

@@ -22,8 +22,8 @@ eventPhoto.alt:
   type: text
   comment: Alt text for the event photo.
 dateLabel:
-  type: date
-  comment: Date or deadline text shown above the event name (e.g. "March 31, 2026").
+  type: text
+  comment: 'Date, deadline text, or status shown above the event name (e.g. "March 31, 2026" or "NOW").'
 name:
   type: text
   comment: Name of the event or awards program.

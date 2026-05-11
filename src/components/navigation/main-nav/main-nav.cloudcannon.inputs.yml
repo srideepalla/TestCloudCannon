@@ -24,6 +24,7 @@ _structures:
         value:
           name: ""
           path: ""
+          openInNewTab: false
           children: []
         _inputs:
           name:
@@ -36,6 +37,9 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: "Open this link in a new browser tab (useful for external links)."
           children:
             type: array
             comment: "Child navigation items for dropdown menus."
@@ -48,6 +52,7 @@ _structures:
         value:
           name: ""
           path: ""
+          openInNewTab: false
           children: []
         _inputs:
           name:
@@ -60,6 +65,9 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: "Open this link in a new browser tab (useful for external links)."
           children:
             type: array
             comment: "Grandchild navigation items for nested dropdowns."
@@ -72,6 +80,7 @@ _structures:
         value:
           name: ""
           path: ""
+          openInNewTab: false
         _inputs:
           name:
             type: text
@@ -83,3 +92,6 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: "Open this link in a new browser tab (useful for external links)."

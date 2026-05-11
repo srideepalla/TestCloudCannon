@@ -22,7 +22,7 @@ function getUpcomingDeadlines() {
       const d = new Date(e.date);
 
       return {
-        date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`,
+        date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
         label: e.label,
       };
     });

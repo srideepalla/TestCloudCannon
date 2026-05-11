@@ -20,7 +20,16 @@ Object.entries(componentImports).forEach(([path, module]) => {
 });
 
 // Collections that should use the sidebar layout
-const SIDEBAR_COLLECTIONS = ["about", "awards", "enter", "judges", "press", "tickets", "sponsors"];
+const SIDEBAR_COLLECTIONS = [
+  "about",
+  "awards",
+  "enter",
+  "judges",
+  "press",
+  "tickets",
+  "sponsors",
+  "webinars",
+];
 
 export interface Props {
   page: CollectionEntry<"pages">;
@@ -54,13 +63,18 @@ const { Content } = await render(page);
 // Check if the page path starts with a sidebar collection (e.g., es/about/, en/about/, about/)
 const pageId = page.id;
 const pathParts = pageId.split("/");
-let collectionName = null;
+let collectionName: string | null = null;
 
-// Check patterns like "es/about/page" or "about/page"
-for (const part of pathParts) {
-  if (SIDEBAR_COLLECTIONS.includes(part)) {
-    collectionName = part;
-    break;
+// Frontmatter override: explicit sidebar collection
+if (page.data.sidebarCollection && SIDEBAR_COLLECTIONS.includes(page.data.sidebarCollection)) {
+  collectionName = page.data.sidebarCollection;
+} else {
+  // Check patterns like "es/about/page" or "about/page"
+  for (const part of pathParts) {
+    if (SIDEBAR_COLLECTIONS.includes(part)) {
+      collectionName = part;
+      break;
+    }
   }
 }
 

@@ -149,5 +149,14 @@
         "href": "/sponsors/supporting-sponsorship"
       }
     ]
+  },
+  "webinars": {
+    "heading": "Webinars",
+    "links": [
+      {
+        "text": "Upcoming Webinars",
+        "href": "/webinars/upcoming-webinars"
+      }
+    ]
   }
 }

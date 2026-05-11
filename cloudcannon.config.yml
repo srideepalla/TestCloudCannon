@@ -244,6 +244,28 @@ collections_config:
           width: 1920
           height: 1280
         cascade: true
+      brandColor:
+        type: color
+        comment: "Primary brand color (e.g. navbar, accents). Applied site-wide."
+        options:
+          format: hex
+        cascade: true
+      brandColorMuted:
+        type: color
+        comment: "Slightly darker shade of the brand color, used for hovers and muted accents."
+        options:
+          format: hex
+        cascade: true
+      brandTextColor:
+        type: color
+        comment: "Text color that appears on top of the brand background (e.g. on primary buttons, navbar). Pick a color with strong contrast against the brand color."
+        options:
+          format: hex
+        cascade: true
+      openInNewTab:
+        type: switch
+        comment: "Open this link in a new browser tab."
+        cascade: true
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false

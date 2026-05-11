@@ -78,8 +78,8 @@ _structures:
             type: text
             comment: Alt text for the event photo.
           dateLabel:
-            type: date
-            comment: Date or year label shown in gold above the program name.
+            type: text
+            comment: 'Date, year, or status label shown above the program name (e.g. "March 31, 2026", "2026", or "NOW").'
           name:
             type: text
             comment: Award program name.

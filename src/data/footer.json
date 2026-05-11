@@ -4,7 +4,8 @@
   "quickLinks": [
     {
       "name": "Blog",
-      "path": "https://blog.stevieawards.com/blog"
+      "path": "https://blog.stevieawards.com/blog",
+      "openInNewTab": true
     },
     {
       "name": "Programs",
@@ -16,7 +17,8 @@
     },
     {
       "name": "Store",
-      "path": "https://stevieawards.myshopify.com/"
+      "path": "https://stevieawards.myshopify.com/",
+      "openInNewTab": true
     },
     {
       "name": "Press",

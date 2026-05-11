@@ -36,6 +36,17 @@ displayWidth:
         name: Full width
       - id: "50"
         name: Half width
+alignX:
+  type: select
+  comment: Horizontal alignment of the image when narrower than its container.
+  options:
+    values:
+      - id: start
+        name: Left
+      - id: center
+        name: Center
+      - id: end
+        name: Right
 rounded:
   type: switch
   comment: Whether to apply rounded corners to the image.

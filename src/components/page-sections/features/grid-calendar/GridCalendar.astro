@@ -20,6 +20,7 @@ function getUpcomingEvents() {
       return {
         month: MONTHS[d.getUTCMonth()],
         day: String(d.getUTCDate()).padStart(2, "0"),
+        year: String(d.getUTCFullYear()),
         title: e.title,
         description: e.description,
       };
@@ -29,6 +30,7 @@ function getUpcomingEvents() {
 type CalendarEvent = {
   month: string;
   day: string;
+  year: string;
   title: string;
   description?: string;
 };
@@ -93,6 +95,13 @@ if (!_component && !hasEvents) return;
                 size="5xl"
                 alignX="center"
               />
+              <SimpleText
+                class="grid-calendar__year"
+                text={event.year}
+                useDefaultEditableBinding={false}
+                size="sm"
+                alignX="center"
+              />
             </div>
             <div class="grid-calendar__content">
               <SimpleText
@@ -141,6 +150,15 @@ if (!_component && !hasEvents) return;
     .grid-calendar__day {
       p {
         line-height: 1;
+      }
+    }
+
+    .grid-calendar__year {
+      margin-top: var(--spacing-xs);
+      p {
+        color: var(--color-text-muted);
+        font-weight: var(--font-weight-bold);
+        letter-spacing: 0.05em;
       }
     }
 

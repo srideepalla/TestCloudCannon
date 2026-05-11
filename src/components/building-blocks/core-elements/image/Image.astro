@@ -35,6 +35,7 @@ const {
   positionHorizontal = "center",
   background = false,
   displayWidth = "100",
+  alignX = "center",
   useDefaultEditableBinding = false,
   class: className,
   "data-prop-src": customDataPropSrc,
@@ -147,7 +148,7 @@ if (
 ---
 
 <div
-  class:list={["image", displayWidthClass, className]}
+  class:list={["image", displayWidthClass, `align-${alignX}`, className]}
   {...htmlAttributes}
 >
   <div
@@ -208,7 +209,18 @@ if (
 
       &.width-50 {
         width: 50%;
+      }
+
+      &.align-start {
+        margin-inline: 0 auto;
+      }
+
+      &.align-center {
         margin-inline: auto;
+      }
+
+      &.align-end {
+        margin-inline: auto 0;
       }
 
       &:has(> .image-inner.background) {

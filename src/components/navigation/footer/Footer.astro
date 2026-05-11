@@ -69,16 +69,19 @@ const {
               class="footer-quick-links"
             >
               {
-                quickLinks.map((link: { name: string; path: string }) => (
-                  <Button
-                    link={link.path}
-                    text={link.name}
-                    uppercase={false}
-                    variant="text"
-                    size="sm"
-                    useDefaultEditableBinding={false}
-                  />
-                ))
+                quickLinks.map(
+                  (link: { name: string; path: string; openInNewTab?: boolean }) => (
+                    <Button
+                      link={link.path}
+                      text={link.name}
+                      openInNewTab={link.openInNewTab}
+                      uppercase={false}
+                      variant="text"
+                      size="sm"
+                      useDefaultEditableBinding={false}
+                    />
+                  )
+                )
               }
             </ButtonGroup>
           </Fragment>
@@ -126,8 +129,7 @@ const {
                       aria-label={
                         social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`
                       }
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      openInNewTab={true}
                       useDefaultEditableBinding={false}
                     />
                   ))}

@@ -58,7 +58,14 @@ _structures:
             comment: Company logo image.
           companyLogo.source:
             type: image
-            comment: Logo image file.
+            comment: "Upload a landscape logo at 160×40px (or 320×80px for retina). Use PNG with a transparent background to avoid stretching."
+            options:
+              paths:
+                uploads: src/assets/images
+                static: ""
+              resize_style: contain
+              width: 320
+              height: 80
           companyLogo.alt:
             type: text
             comment: Alt text for the logo.

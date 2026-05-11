@@ -12,6 +12,8 @@ const pageSchema = z.object({
   canonical: z.string().optional(),
   draft: z.boolean().default(false),
   pageSections: z.array(contentBlockSchema).optional(),
+  sidebarCollection: z.string().optional(),
+  sidebarBlocks: z.array(contentBlockSchema).optional(),
 });
 
 const docsPageSchema = z.object({

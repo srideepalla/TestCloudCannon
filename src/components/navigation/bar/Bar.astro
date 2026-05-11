@@ -52,6 +52,8 @@ function createNavItemData(item, level, parentGroupId) {
             <li class="nav-item">
               <a
                 href={itemData.path}
+                target={itemData.openInNewTab ? "_blank" : undefined}
+                rel={itemData.openInNewTab ? "noopener" : undefined}
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
                 {itemData.name}
@@ -104,6 +106,8 @@ function createNavItemData(item, level, parentGroupId) {
                       <li class="nav-item">
                         <a
                           href={childData.path}
+                          target={childData.openInNewTab ? "_blank" : undefined}
+                          rel={childData.openInNewTab ? "noopener" : undefined}
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
@@ -118,6 +122,8 @@ function createNavItemData(item, level, parentGroupId) {
                         <a
                           class="nav-item-group-heading"
                           href={childData.path}
+                          target={childData.openInNewTab ? "_blank" : undefined}
+                          rel={childData.openInNewTab ? "noopener" : undefined}
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
@@ -137,6 +143,8 @@ function createNavItemData(item, level, parentGroupId) {
                             <li class="nav-item">
                               <a
                                 href={grandChildData.path}
+                                target={grandChildData.openInNewTab ? "_blank" : undefined}
+                                rel={grandChildData.openInNewTab ? "noopener" : undefined}
                                 aria-current={grandChildData.isCurrent ? "page" : undefined}
                               >
                                 {grandChildData.name}
