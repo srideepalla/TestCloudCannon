@@ -1369,7 +1369,6 @@ _editables:
     blockquote: true
     bold: true
     bulletedlist: true
-    center:
     code: true
     copyformatting: true
     embed: false
@@ -1381,8 +1380,10 @@ _editables:
     image_size_attributes: false
     indent:
     italic: true
-    justify:
-    left:
+    left: "align-left"
+    center: "align-center"
+    right: "align-right"
+    justify: "align-justify"
     link: true
     mime_type:
     numberedlist: true
@@ -1391,7 +1392,6 @@ _editables:
     redo: true
     removeformat: true
     resize_style:
-    right:
     snippet: true
     strike: true
     subscript: true
