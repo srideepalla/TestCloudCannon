@@ -19,11 +19,6 @@ import {
   setupAllCarousels,
   setupCarousel,
 } from "./src/components/building-blocks/wrappers/carousel/setup";
-import {
-  destroyImageCarousel,
-  setupAllImageCarousels,
-  setupImageCarousel,
-} from "./src/components/building-blocks/wrappers/image-carousel/setup";
 
 const DEBUG = import.meta.env.DEV;
 
@@ -61,13 +56,6 @@ const CAROUSEL_INNER_ATTRS = [
   "data-autoscroll",
   "style",
 ];
-
-/**
- * ImageCarousel only reads `data-loop` from its root for Embla config.
- * Image list and arrow visibility are rendered conditionally, so those
- * are handled via childList mutations below.
- */
-const IMAGE_CAROUSEL_ROOT_ATTRS = ["data-loop"];
 
 function makeResetScheduler({ destroy, init, label }) {
   const pending = new Set();
@@ -111,12 +99,6 @@ const queueCarouselReset = makeResetScheduler({
   label: "carousel",
 });
 
-const queueImageCarouselReset = makeResetScheduler({
-  destroy: destroyImageCarousel,
-  init: setupImageCarousel,
-  label: "image-carousel",
-});
-
 function initNewComponents(root) {
   if (root.nodeType !== Node.ELEMENT_NODE) return;
 
@@ -133,21 +115,6 @@ function initNewComponents(root) {
   for (const el of newCarousels) {
     log("initialising new carousel", el);
     setupCarousel(el);
-  }
-
-  const newImageCarousels = [];
-
-  if (root.classList?.contains("image-carousel") && !root.hasAttribute("data-embla-initialized")) {
-    newImageCarousels.push(root);
-  }
-
-  root
-    .querySelectorAll(".image-carousel:not([data-embla-initialized])")
-    .forEach((el) => newImageCarousels.push(el));
-
-  for (const el of newImageCarousels) {
-    log("initialising new image-carousel", el);
-    setupImageCarousel(el);
   }
 }
 
@@ -170,29 +137,12 @@ const observer = new MutationObserver((mutations) => {
         queueCarouselReset(target.closest(".carousel"), `attr:${attributeName}`);
         continue;
       }
-
-      if (
-        IMAGE_CAROUSEL_ROOT_ATTRS.includes(attributeName) &&
-        target.classList.contains("image-carousel")
-      ) {
-        queueImageCarouselReset(target, `attr:${attributeName}`);
-        continue;
-      }
     }
 
     if (type === "childList") {
       if (target instanceof Element) {
         if (target.classList.contains("track")) {
           queueCarouselReset(target.closest(".carousel"), "slides changed");
-        }
-
-        if (target.classList.contains("main-track") || target.classList.contains("thumbs-strip")) {
-          queueImageCarouselReset(target.closest(".image-carousel"), "images changed");
-        }
-
-        if (target.classList.contains("image-carousel")) {
-          // showArrows toggles .arrow-prev / .arrow-next in/out
-          queueImageCarouselReset(target, "arrows toggled");
         }
       }
 
@@ -215,17 +165,15 @@ const observer = new MutationObserver((mutations) => {
 
 observer.observe(document.body, {
   attributes: true,
-  attributeFilter: [...BENTO_BOX_ATTRS, ...CAROUSEL_INNER_ATTRS, ...IMAGE_CAROUSEL_ROOT_ATTRS],
+  attributeFilter: [...BENTO_BOX_ATTRS, ...CAROUSEL_INNER_ATTRS],
   childList: true,
   subtree: true,
 });
 
 // Initialise any components already in the editor DOM.
 setupAllCarousels();
-setupAllImageCarousels();
 
 log("observer active", {
   bentoAttrs: BENTO_BOX_ATTRS,
   carouselAttrs: CAROUSEL_INNER_ATTRS,
-  imageCarouselAttrs: IMAGE_CAROUSEL_ROOT_ATTRS,
 });
