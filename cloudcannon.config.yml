@@ -563,14 +563,14 @@ file_config:
               - label: Navigation Link
                 icon: link
                 value:
-                  name: ""
-                  path: ""
+                  text: ""
+                  href: ""
                   openInNewTab: false
                 _inputs:
-                  name:
+                  text:
                     type: text
                     comment: "Display text for the navigation link."
-                  path:
+                  href:
                     type: url
                     comment: "URL path for the navigation link."
                   openInNewTab:
