@@ -266,8 +266,8 @@ pageSections:
         authorName: Amanda Lien
         authorTitle: Founder, Minutiae Content Co., USA
         companyLogo:
-          source:
-          alt:
+          source: /uploads/new-website-testimonial-logos-1.png
+          alt: minutiae
       - quote: >-
           To be recognised among such extraordinary women in business is an
           honour - especially for work rooted in care, community, and
@@ -278,13 +278,13 @@ pageSections:
         authorName: Umbreen David
         authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
         companyLogo:
-          source:
-          alt:
+          source: /src/assets/images/new-website-testimonial-logos-6.png
+          alt: hoama
       - quote: >-
           The opportunities the Stevies give to share and be involved is heads
           above many other award programs. I started taking other people in
           business to New York for the Stevie Awards for Women in Business in
-          2017. I love the event and to mix with other amazing winners. It's
+          2017. I love the event and mixing with other amazing winners. It's
           always so well done and professional. The Stevie Awards process is one
           of integrity, the judging is fair and the process is easy to follow. I
           love the feedback from the judges; there aren't many awards that give
@@ -292,7 +292,7 @@ pageSections:
         authorName: Annette Densham
         authorTitle: ', Founder & CEO, Award Writing Services, Indonesia'
         companyLogo:
-          source:
+          source: /src/assets/images/new-website-testimonial-logos-3-1.png
           alt:
       - quote: >-
           Winning the Gold Stevie® Award for Female Executive of the Year is a
@@ -304,8 +304,8 @@ pageSections:
         authorName: Rachel Everett
         authorTitle: CEO, Viderity, USA
         companyLogo:
-          source:
-          alt:
+          source: /src/assets/images/new-website-testimonial-logos-4.png
+          alt: viderity
       - quote: >-
           This is my first Stevie Award, and I’m representing my company as
           Co-founder and CEO.  This is an international recognition as well as
@@ -317,8 +317,8 @@ pageSections:
         authorName: Srii Srinivasan
         authorTitle: Co-Founder, Chargeback Gurus, USA
         companyLogo:
-          source:
-          alt:
+          source: /src/assets/images/new-website-testimonial-logos-5.png
+          alt: chargeback
       - quote: >-
           Winning the Female Thought Leader of the Year Stevie Award is an
           incredible honor that validates the dedication and passion I pour into
@@ -331,8 +331,8 @@ pageSections:
         authorName: Danae Goldsmith
         authorTitle: Sr. Director of Strategic Partnerships, Workplace Options, USA
         companyLogo:
-          source: ''
-          alt: ''
+          source: /src/assets/images/new-website-testimonial-logos-7.png
+          alt: workplaceoptions
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
