@@ -51,8 +51,8 @@ pageSections:
         positionHorizontal: center
         priority: false
     maxContentWidth: xl
-    paddingHorizontal: 2xl
-    paddingVertical: md
+    paddingHorizontal: xl
+    paddingVertical: sm
     colorScheme: light
     backgroundColor: base
     backgroundImage:
@@ -70,11 +70,6 @@ pageSections:
           # Invest in Your Growth: Women\|Future Webinars Series
 
 
-          ##### **Join us for three inspiring webinars taking place across June,
-          July, and August 2026 — designed to empower, connect, and elevate
-          women in business.**
-
-
           The Women\|Future Webinars (formerly the Women\|Future Conference) are
           a series of free webinars hosted by the Stevie® Awards. The sessions
           are designed for women small business owners, executives,
@@ -85,15 +80,24 @@ pageSections:
           Business, the Women\|Future Conference was created to give
           high-achieving women professionals, thought leaders, and entrepreneurs
           a place to connect, share ideas, and network. After a successful
-          seven-year run as a live conference, we transformed it into a webinar
-          series.
+          seven-year run as a conference, we transformed it into a webinar
+          series. Register now to discover practical strategies to help you
+          **grow and future-proof your organization, build credibility through
+          business awards, and get firsthand perspectives from women
+          entrepreneurs** who have successfully built and scaled their
+          businesses!
 
 
-          Register now to discover practical strategies to help you grow and
-          future-proof your organization, build credibility through business
-          awards, and get firsthand perspectives from women entrepreneurs who
-          have successfully built and scaled their businesses!
-        alignX: start
+          ##### **Join us for three inspiring webinars taking place across June,
+          July, and August 2026 — designed to empower, connect, and elevate
+          women in business.**
+
+
+          <a
+          href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
+          target="_blank" rel="noopener" title="Register Now"><strong>Register
+          Now</strong></a>
+        alignX: center
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
     paddingVertical: 2xl
@@ -123,7 +127,7 @@ pageSections:
         positionHorizontal: center
         priority: false
     maxContentWidth: xl
-    paddingHorizontal: 2xl
+    paddingHorizontal: lg
     paddingVertical: md
     colorScheme: light
     backgroundColor: base
@@ -148,19 +152,19 @@ pageSections:
       - _component: building-blocks/wrappers/grid
         label: Webinar Registration Cards
         layout: center
-        minItemWidth: 280
-        maxItemWidth: 400
+        minItemWidth: 100
+        maxItemWidth: 281
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/wfc-webinars-logo-for-facebook.png
+                source: /src/assets/images/june-speakers-2.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: square
+                aspectRatio: landscape
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -183,14 +187,14 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/wfc-webinars-logo-for-facebook.png
+                source: /src/assets/images/july-speakers.png
                 alt: Women|Future Webinar — July 15, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: square
+                aspectRatio: landscape
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -213,14 +217,14 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/wfc-webinars-logo-for-facebook.png
+                source: /src/assets/images/august-intro.png
                 alt: Women|Future Webinar — August 12, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: square
+                aspectRatio: landscape
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -241,10 +245,10 @@ pageSections:
                 variant: primary
                 uppercase: true
                 size: md
-        gap: lg
-    maxContentWidth: 3xl
-    paddingHorizontal: 2xl
-    paddingVertical: 2xl
+        gap: md
+    maxContentWidth: xl
+    paddingHorizontal: lg
+    paddingVertical: lg
     colorScheme: light
     backgroundColor: base
     backgroundImage:
@@ -361,7 +365,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: WFW Partner Inquiries
+    formHeading: Partner Inquiries
     formEmbed: >-
       <div style="overflow:hidden; height:487px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1PTeidvLDSjOlEbhYaqPCMQrif" title="WFW
@@ -381,7 +385,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: WFW Event Updates
+    formHeading: Event Updates
     formEmbed: >-
       <div style="overflow:hidden; height:790px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1q4-6ZPRHT2u19ve5YM3QVArif" title="WFW
@@ -401,7 +405,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: WFW Contact Us
+    formHeading: Contact Us
     formEmbed: >-
       <div style="overflow:hidden; height:460px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1JLe6ZTExSqS6ATMvwbHJqgrif" title="WFW
