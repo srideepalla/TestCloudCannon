@@ -4,7 +4,7 @@
   "navData": [
     {
       "name": "ABOUT",
-      "path": "/about",
+      "path": "",
       "children": [
         {
           "name": "About Us",
@@ -40,7 +40,7 @@
     },
     {
       "name": "THE AWARDS",
-      "path": "/awards",
+      "path": "",
       "children": [
         {
           "name": "Categories",
@@ -107,7 +107,7 @@
     },
     {
       "name": "ENTER",
-      "path": "/enter/how-to-enter",
+      "path": "",
       "children": [
         {
           "name": "How To Enter",
@@ -148,7 +148,7 @@
     },
     {
       "name": "JUDGES",
-      "path": "/judges",
+      "path": "",
       "children": [
         {
           "name": "Apply to Be a Judge",
@@ -169,7 +169,7 @@
     },
     {
       "name": "SPONSORS",
-      "path": "/sponsors",
+      "path": "",
       "children": [
         {
           "name": "Become a Sponsor",
@@ -185,7 +185,7 @@
     },
     {
       "name": "PRESS",
-      "path": "/press",
+      "path": "",
       "children": [
         {
           "name": "Media Inquiry",
@@ -211,7 +211,7 @@
     },
     {
       "name": "TICKETS",
-      "path": "/tickets",
+      "path": "",
       "children": [
         {
           "name": "Awards Banquet",

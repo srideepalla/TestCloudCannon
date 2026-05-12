@@ -1,5 +1,6 @@
 ---
 import Icon from "@core-elements/icon/Icon.astro";
+import { itemHasSplitNavLink } from "@component-utils/navSplitLink";
 
 const {
   navData = [],
@@ -11,22 +12,23 @@ const {
 
 const navInstanceId = crypto.randomUUID();
 
-function isCurrentPage(item) {
+function isCurrentPage(item: any) {
   return Boolean(item.path && Astro.url.pathname === item.path);
 }
 
-function hasCurrentChild(item) {
+function hasCurrentChild(item: any) {
   if (isCurrentPage(item)) return true;
-  return Boolean(item.children?.some((child) => hasCurrentChild(child)));
+  return Boolean(item.children?.some((child: any) => hasCurrentChild(child)));
 }
 
 // Helper function to create navigation item data
-function createNavItemData(item, level, parentGroupId) {
+function createNavItemData(item: any, level: any, parentGroupId: any) {
   const hasChildren = Boolean(item.children?.length);
 
   return {
     ...item,
     hasChildren,
+    hasSplitLink: itemHasSplitNavLink(item),
     level,
     dropdownId: `dropdown-toggle-${crypto.randomUUID()}`,
     contentId: `dropdown-content-${crypto.randomUUID()}`,
@@ -44,8 +46,8 @@ function createNavItemData(item, level, parentGroupId) {
 >
   <ul class="bar-list">
     {
-      navData.map((item) => {
-        const itemData = createNavItemData(item, "top");
+      navData.map((item: any) => {
+        const itemData = createNavItemData(item, "top", null);
 
         if (!itemData.hasChildren) {
           return (
@@ -73,23 +75,51 @@ function createNavItemData(item, level, parentGroupId) {
               aria-controls={itemData.contentId}
               autocomplete="off"
             />
-            <label
-              for={itemData.dropdownId}
-              class="nav-item-trigger"
-              role="button"
-              aria-controls={itemData.contentId}
-              tabindex="0"
-              aria-current={itemData.isCurrent ? "page" : undefined}
-            >
-              {itemData.name}
-              <span class="nav-item-icon">
-                <Icon
-                  name="chevron-down"
-                  size="none"
-                  aria-hidden="true"
-                />
-              </span>
-            </label>
+            {itemData.hasSplitLink ? (
+              <div class="nav-item-split">
+                <a
+                  href={itemData.path}
+                  class="nav-item-link"
+                  target={itemData.openInNewTab ? "_blank" : undefined}
+                  rel={itemData.openInNewTab ? "noopener" : undefined}
+                  aria-current={itemData.isCurrent ? "page" : undefined}
+                >
+                  {itemData.name}
+                </a>
+                <label
+                  for={itemData.dropdownId}
+                  class="nav-item-trigger nav-item-toggle-btn"
+                  aria-controls={itemData.contentId}
+                  tabindex="0"
+                  aria-label={`Toggle ${itemData.name} submenu`}
+                >
+                  <span class="nav-item-icon">
+                    <Icon
+                      name="chevron-down"
+                      size="none"
+                      aria-hidden="true"
+                    />
+                  </span>
+                </label>
+              </div>
+            ) : (
+              <label
+                for={itemData.dropdownId}
+                class="nav-item-trigger"
+                aria-controls={itemData.contentId}
+                tabindex="0"
+                aria-current={itemData.isCurrent ? "page" : undefined}
+              >
+                {itemData.name}
+                <span class="nav-item-icon">
+                  <Icon
+                    name="chevron-down"
+                    size="none"
+                    aria-hidden="true"
+                  />
+                </span>
+              </label>
+            )}
             <div
               id={itemData.contentId}
               class="nav-item-content"
@@ -98,7 +128,7 @@ function createNavItemData(item, level, parentGroupId) {
               aria-hidden="true"
             >
               <ul class="nav-list">
-                {itemData.children!.map((child) => {
+                {itemData.children!.map((child: any) => {
                   const childData = createNavItemData(child, "child", itemData.parentGroupId);
 
                   if (!childData.hasChildren) {
@@ -117,42 +147,91 @@ function createNavItemData(item, level, parentGroupId) {
                   }
 
                   return (
-                    <li class="nav-item nav-item--group">
-                      {childData.path ? (
-                        <a
-                          class="nav-item-group-heading"
-                          href={childData.path}
-                          target={childData.openInNewTab ? "_blank" : undefined}
-                          rel={childData.openInNewTab ? "noopener" : undefined}
+                    <li class="nav-item has-children">
+                      <input
+                        type="radio"
+                        name={childData.groupName}
+                        id={childData.dropdownId}
+                        class="nav-item-toggle"
+                        aria-expanded="false"
+                        aria-controls={childData.contentId}
+                        autocomplete="off"
+                      />
+                      {childData.hasSplitLink ? (
+                        <div class="nav-item-split">
+                          <a
+                            href={childData.path}
+                            class="nav-item-link"
+                            target={childData.openInNewTab ? "_blank" : undefined}
+                            rel={childData.openInNewTab ? "noopener" : undefined}
+                            aria-current={childData.isCurrent ? "page" : undefined}
+                          >
+                            {childData.name}
+                          </a>
+                          <label
+                            for={childData.dropdownId}
+                            class="nav-item-trigger nav-item-toggle-btn"
+                            aria-controls={childData.contentId}
+                            tabindex="0"
+                            aria-label={`Toggle ${childData.name} submenu`}
+                          >
+                            <span class="nav-item-icon">
+                              <Icon
+                                name="chevron-right"
+                                size="none"
+                                aria-hidden="true"
+                              />
+                            </span>
+                          </label>
+                        </div>
+                      ) : (
+                        <label
+                          for={childData.dropdownId}
+                          class="nav-item-trigger"
+                          aria-controls={childData.contentId}
+                          tabindex="0"
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
-                        </a>
-                      ) : (
-                        <span class="nav-item-group-heading">{childData.name}</span>
+                          <span class="nav-item-icon">
+                            <Icon
+                              name="chevron-right"
+                              size="none"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </label>
                       )}
-                      <ul class="nav-list nav-list--group">
-                        {childData.children!.map((grandChild) => {
-                          const grandChildData = createNavItemData(
-                            grandChild,
-                            "child",
-                            childData.parentGroupId
-                          );
+                      <div
+                        id={childData.contentId}
+                        class="nav-item-nested"
+                        role="region"
+                        aria-label={`${childData.name} submenu`}
+                        aria-hidden="true"
+                      >
+                        <ul class="nav-list">
+                          {childData.children!.map((grandChild: any) => {
+                            const grandChildData = createNavItemData(
+                              grandChild,
+                              "child",
+                              childData.parentGroupId
+                            );
 
-                          return (
-                            <li class="nav-item">
-                              <a
-                                href={grandChildData.path}
-                                target={grandChildData.openInNewTab ? "_blank" : undefined}
-                                rel={grandChildData.openInNewTab ? "noopener" : undefined}
-                                aria-current={grandChildData.isCurrent ? "page" : undefined}
-                              >
-                                {grandChildData.name}
-                              </a>
-                            </li>
-                          );
-                        })}
-                      </ul>
+                            return (
+                              <li class="nav-item">
+                                <a
+                                  href={grandChildData.path}
+                                  target={grandChildData.openInNewTab ? "_blank" : undefined}
+                                  rel={grandChildData.openInNewTab ? "noopener" : undefined}
+                                  aria-current={grandChildData.isCurrent ? "page" : undefined}
+                                >
+                                  {grandChildData.name}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
                     </li>
                   );
                 })}
@@ -170,11 +249,16 @@ function createNavItemData(item, level, parentGroupId) {
 
   let barGlobalHandlersBound = false;
 
-  function updateAriaStates(toggle, isExpanded) {
+  function updateAriaStates(toggle: any, isExpanded: any) {
     const contentId = toggle.getAttribute("aria-controls");
     const content = document.getElementById(contentId || "");
     const triggerId = toggle.getAttribute("id");
-    const trigger = document.querySelector(`label[for="${triggerId}"]`);
+    const barRoot = toggle.closest(".bar");
+    const toggleBtn = barRoot?.querySelector(`label.nav-item-toggle-btn[for="${triggerId}"]`);
+    const fullTrigger =
+      barRoot?.querySelector(
+        `label.nav-item-trigger:not(.nav-item-toggle-btn)[for="${triggerId}"]`
+      ) ?? null;
 
     toggle.setAttribute("aria-expanded", isExpanded.toString());
 
@@ -185,13 +269,17 @@ function createNavItemData(item, level, parentGroupId) {
       });
     }
 
-    if (trigger) {
-      trigger.setAttribute("aria-expanded", isExpanded.toString());
+    if (toggleBtn) {
+      toggleBtn.setAttribute("aria-expanded", isExpanded.toString());
+    }
+
+    if (fullTrigger) {
+      fullTrigger.setAttribute("aria-expanded", isExpanded.toString());
     }
   }
 
   // Handle toggle change events
-  function handleToggleChange(e) {
+  function handleToggleChange(e: any) {
     const target = e.target as HTMLInputElement;
 
     // Only handle checkboxes closing other checkboxes
@@ -217,7 +305,7 @@ function createNavItemData(item, level, parentGroupId) {
   }
 
   // Handle trigger click events
-  function handleTriggerClick(e) {
+  function handleTriggerClick(e: any) {
     const label = e.currentTarget as HTMLElement;
     const toggle = document.getElementById(label.getAttribute("for") || "") as HTMLInputElement;
 
@@ -229,12 +317,12 @@ function createNavItemData(item, level, parentGroupId) {
   }
 
   // Handle keyboard events
-  function handleKeydown(e) {
+  function handleKeydown(e: any) {
     if (e.key !== "Enter" && e.key !== " ") return;
 
     e.preventDefault();
     const label = e.currentTarget;
-    const toggle = document.getElementById(label.getAttribute("for") || "");
+    const toggle = document.getElementById(label.getAttribute("for") || "") as HTMLInputElement;
 
     if (toggle) {
       toggle.checked = !toggle.checked;
@@ -268,9 +356,11 @@ function createNavItemData(item, level, parentGroupId) {
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           document.querySelectorAll(".bar .nav-item-toggle").forEach((toggle) => {
-            if (toggle.checked) {
-              toggle.checked = false;
-              updateAriaStates(toggle, false);
+            const checkbox = toggle as HTMLInputElement;
+
+            if (checkbox.checked) {
+              checkbox.checked = false;
+              updateAriaStates(checkbox, false);
             }
           });
         }
@@ -286,12 +376,18 @@ function createNavItemData(item, level, parentGroupId) {
       navElement.dataset.barInitialized = "true";
 
       barNav.querySelectorAll(".nav-item-toggle").forEach((toggle) => {
-        const isChecked = toggle.checked;
-        updateAriaStates(toggle, isChecked);
-        toggle.addEventListener("change", handleToggleChange);
+        const checkbox = toggle as HTMLInputElement;
+        const isChecked = checkbox.checked;
+        updateAriaStates(checkbox, isChecked);
+        checkbox.addEventListener("change", handleToggleChange);
       });
 
-      barNav.querySelectorAll(".nav-item-trigger").forEach((trigger) => {
+      barNav.querySelectorAll(".nav-item-toggle-btn").forEach((trigger) => {
+        trigger.addEventListener("click", handleTriggerClick);
+        trigger.addEventListener("keydown", handleKeydown);
+      });
+
+      barNav.querySelectorAll(".nav-item.has-children > .nav-item-trigger").forEach((trigger) => {
         trigger.addEventListener("click", handleTriggerClick);
         trigger.addEventListener("keydown", handleKeydown);
       });
@@ -299,9 +395,8 @@ function createNavItemData(item, level, parentGroupId) {
       // Prevent clicks inside dropdown content from bubbling to document handler
       barNav.querySelectorAll(".nav-item-content, .nav-item-nested").forEach((content) => {
         content.addEventListener("click", (e) => {
-          // Don't stop if clicking directly on a trigger (let it handle itself)
           const target = e.target as HTMLElement;
-          if (!target.closest(".nav-item-trigger")) {
+          if (!target.closest(".nav-item-trigger") && !target.closest(".nav-item-link")) {
             e.stopPropagation();
           }
         });
@@ -337,7 +432,8 @@ function createNavItemData(item, level, parentGroupId) {
       }
 
       > .bar-list > .nav-item > a,
-      > .bar-list > .nav-item > .nav-item-trigger {
+      > .bar-list > .nav-item > .nav-item-trigger,
+      > .bar-list > .nav-item > .nav-item-split {
         border-radius: var(--radius-xs);
         color: var(--gray-0) !important;
         cursor: pointer;
@@ -361,11 +457,66 @@ function createNavItemData(item, level, parentGroupId) {
         color: var(--color-brand) !important;
       }
 
-      .nav-item > a[aria-current="page"],
-      .nav-item > .nav-item-trigger[aria-current="page"] {
-        text-decoration: none;
-        text-decoration-color: var(--color-text-muted);
-        text-underline-offset: 3px;
+      .nav-item-split {
+        align-items: center;
+        display: flex;
+        flex-wrap: nowrap;
+        min-width: 0;
+
+        .nav-item-link {
+          color: var(--gray-0) !important;
+          cursor: pointer;
+          display: block;
+          flex: 1 1 auto;
+          min-width: 0;
+          padding: 0 var(--spacing-xs) 0 0;
+          text-decoration: none;
+          transition: color var(--animation-normal) ease-in-out;
+          white-space: nowrap;
+
+          &:hover {
+            color: var(--color-brand) !important;
+          }
+        }
+
+        .nav-item-toggle-btn {
+          align-items: center;
+          aspect-ratio: 1;
+          border: 1px solid transparent;
+          border-radius: var(--radius-xs);
+          box-sizing: border-box;
+          cursor: pointer;
+          display: flex;
+          flex: 0 0 auto;
+          height: 1.75em;
+          justify-content: center;
+          margin-inline-end: 4px;
+          padding: 0;
+          width: 1.75em;
+          transition:
+            background var(--animation-normal) ease-in-out,
+            border-color var(--animation-normal) ease-in-out;
+
+          .nav-item-icon {
+            align-items: center;
+            display: flex;
+            justify-content: center;
+            line-height: 0;
+            top: 0;
+            margin: 0;
+          }
+        }
+
+        &:hover {
+          .nav-item-toggle-btn {
+            background: color-mix(in srgb, var(--color-state-hover), var(--color-text) 3%);
+          }
+        }
+
+        .nav-item-toggle-btn:hover {
+          background: color-mix(in srgb, var(--color-state-hover), var(--color-text) 8%);
+          border-color: var(--color-border);
+        }
       }
 
       .nav-item-trigger {
@@ -393,8 +544,14 @@ function createNavItemData(item, level, parentGroupId) {
         color: var(--color-text-strong);
       }
 
-      .nav-item-toggle:checked ~ .nav-item-trigger .nav-item-icon {
+      .nav-item-toggle:checked ~ .nav-item-trigger .nav-item-icon,
+      .nav-item-toggle:checked ~ .nav-item-split .nav-item-icon {
         transform: rotate(180deg);
+      }
+
+      .nav-item-content .nav-item-toggle:checked ~ .nav-item-trigger .nav-item-icon,
+      .nav-item-content .nav-item-toggle:checked ~ .nav-item-split .nav-item-icon {
+        transform: rotate(90deg);
       }
 
       .nav-item-toggle {
@@ -435,42 +592,65 @@ function createNavItemData(item, level, parentGroupId) {
         break-inside: avoid;
         display: block;
         padding-block: var(--spacing-sm);
-
-        &::after {
-          background: var(--color-border-subtle);
-          content: "";
-          display: block;
-          height: 1px;
-          width: 100%;
-        }
       }
 
-      a.nav-item-group-heading:hover {
-        color: var(--color-brand) !important;
+      .nav-item-content .nav-item.has-children {
+        position: relative;
       }
 
-      .nav-list--group {
-        column-count: 2;
-        column-gap: var(--spacing-xl);
-        padding-top: var(--spacing-sm);
-
-        > .nav-item {
-          break-inside: avoid;
-          max-width: 189px;
-          font-weight: var(--font-weight-normal);
-
-          &::after {
-            display: none;
-          }
-        }
+      .nav-item-nested {
+        background: var(--color-bg-inverse);
+        border: 1px solid var(--color-border-subtle);
+        border-radius: var(--radius-xs);
+        left: calc(100% + var(--spacing-md));
+        min-width: 200px;
+        padding: var(--spacing-md);
+        position: absolute;
+        top: -1px;
+        width: max-content;
+        z-index: calc(var(--layer-3) + 1);
       }
 
-      .nav-item > .nav-item-content > .nav-list {
-        column-count: 2;
-        column-gap: var(--spacing-2xl);
+      .nav-item-nested .nav-item {
+        padding-block: var(--spacing-sm);
+      }
+
+      .nav-item-content .nav-item > a,
+      .nav-item-content .nav-item > .nav-item-trigger,
+      .nav-item-content .nav-item-split {
+        border-radius: 0;
+      }
+      .nav-item-content .nav-item-split {
+        border-radius: 0;
+      }
+
+      .nav-item-content .nav-item > .nav-item-trigger,
+      .nav-item-nested .nav-item > .nav-item-trigger {
+        display: flex;
+        justify-content: space-between;
+        padding-inline-end: calc(var(--spacing-sm) + 2px);
       }
 
       .nav-item-content .nav-item > a {
+        color: var(--gray-12) !important;
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .nav-item-content .nav-item > a:not(:hover),
+      .nav-item-content .nav-item > .nav-item-trigger:not(:hover),
+      .nav-item-content .nav-item-split .nav-item-link:not(:hover) {
+        color: var(--gray-12) !important;
+      }
+
+      .nav-item-content .nav-item > a:hover,
+      .nav-item-content .nav-item > .nav-item-trigger:hover,
+      .nav-item-content .nav-item-split .nav-item-link:hover {
+        color: var(--color-brand) !important;
+      }
+
+      .nav-item-nested .nav-item > a {
         border-radius: 0;
         color: var(--gray-12) !important;
         width: 100%;
@@ -478,16 +658,17 @@ function createNavItemData(item, level, parentGroupId) {
         display: block;
       }
 
-      .nav-item-content .nav-item-group-heading,
-      .nav-item-content .nav-item > a,
-      .nav-item-content .nav-item-group-heading:not(:hover),
-      .nav-item-content .nav-item > a:not(:hover) {
+      .nav-item-nested .nav-item > a:not(:hover) {
         color: var(--gray-12) !important;
       }
 
-      .nav-item-content .nav-item-group-heading:hover,
-      .nav-item-content .nav-item > a:hover {
+      .nav-item-nested .nav-item > a:hover {
         color: var(--color-brand) !important;
+      }
+
+      .nav-item-nested .nav-item > .nav-item-trigger,
+      .nav-item-nested .nav-item-split .nav-item-link {
+        font-weight: var(--font-weight-normal);
       }
     }
   }
