@@ -31,8 +31,8 @@
     "colorError": "#f00"
   },
   "dark": {
-    "colorBrand": "#2d7272ff",
-    "colorBrandMuted": "#bc8315ff",
+    "colorBrand": "#dfba19ff",
+    "colorBrandMuted": "#9c7727ff",
     "colorBrandSubtle": "#6b7280",
     "colorBrandOn": "#000",
     "colorText": "#d1d5db",
@@ -47,8 +47,8 @@
     "colorLinkStrongHover": "#b45309",
     "colorBg": "#000",
     "colorBgSurface": "#242424",
-    "colorBgMuted": "#242424",
-    "colorBgAccent": "#003366",
+    "colorBgMuted": "#242424ff",
+    "colorBgAccent": "#2d7272ff",
     "colorBgHighlight": "rgba(223, 186, 25, 0.12)",
     "colorBgInverse": "#fff",
     "colorBorder": "#374151",
