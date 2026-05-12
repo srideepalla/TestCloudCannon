@@ -1,0 +1,26 @@
+label: Embed Gallery (SmugMug etc.)
+icon: collections
+description: >-
+  Full-width gallery section that renders an external embed snippet (SmugMug,
+  Flickr, Pixieset, or any iframe-based gallery). Use this when you want a
+  hosted gallery in place of the built-in Event Gallery Carousel.
+value:
+  _component: page-sections/carousels/embed-gallery
+  heading: Event Gallery
+  description: ""
+  embedCode: ""
+  maxWidth: xl
+  minHeight: 650
+  colorScheme: dark
+  backgroundColor: base
+preview:
+  text:
+    - Embed Gallery
+  subtext:
+    - key: heading
+  icon: collections
+picker_preview:
+  text: Embed Gallery (SmugMug etc.)
+  subtext: Full-width gallery rendered from an external embed snippet.
+_inputs_from_glob:
+  - /src/components/page-sections/carousels/embed-gallery/embed-gallery.cloudcannon.inputs.yml

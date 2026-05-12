@@ -26,23 +26,36 @@ function camelToKebab(str: string): string {
 }
 
 function generateThemeCSS(themeColors: Record<string, string>, themeSelector: string): string {
-  const cssVars = Object.entries(themeColors)
-    .map(([key, value]) => {
-      const cssVar = `--${camelToKebab(key)}`;
+  // Collect explicit per-token values into a map (only non-empty values).
+  // Lets brand color fan out to related tokens *as a fallback* — explicit values win.
+  const map: Record<string, string> = {};
 
-      // Handle special cases for brand colors
-      if (key === 'colorBrand') {
-        return `--color-brand:${value};--color-bg-brand:${value};`;
-      }
+  for (const [key, value] of Object.entries(themeColors)) {
+    if (value && String(value).trim().length > 0) {
+      map[camelToKebab(key)] = value;
+    }
+  }
 
-      if (key === 'colorBrandMuted') {
-        return `--color-brand-muted:${value};--color-bg-brand-muted:${value};`;
-      }
+  const brand = map['color-brand'];
+  const brandMuted = map['color-brand-muted'];
 
-      return `${cssVar}:${value};`;
-    })
+  if (brand) {
+    // Brand-driven fallbacks: applied only if the editor didn't set an explicit value.
+    map['color-bg-brand'] = map['color-bg-brand'] || brand;
+    map['color-bg-accent'] = map['color-bg-accent'] || brand;
+    map['color-link'] = map['color-link'] || brand;
+    map['color-focus-ring'] = map['color-focus-ring'] || brand;
+  }
+
+  if (brandMuted) {
+    map['color-bg-brand-muted'] = map['color-bg-brand-muted'] || brandMuted;
+    map['color-link-hover'] = map['color-link-hover'] || brandMuted;
+  }
+
+  const cssVars = Object.entries(map)
+    .map(([k, v]) => `--${k}:${v};`)
     .join('');
-  
+
   return `${themeSelector}{${cssVars}}`;
 }
 

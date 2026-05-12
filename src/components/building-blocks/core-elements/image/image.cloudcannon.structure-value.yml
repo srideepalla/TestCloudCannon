@@ -17,6 +17,8 @@ value:
   positionVertical: center
   positionHorizontal: center
   priority: false
+  link: ""
+  openInNewTab: false
 preview:
   text:
     - Image

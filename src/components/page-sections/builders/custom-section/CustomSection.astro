@@ -13,12 +13,18 @@ const {
   backgroundColor,
   backgroundImage,
   rounded = false,
+  brandColorOverride = "",
   useDefaultEditableBinding = false,
   class: className,
   _component,
   "data-children-prop": childrenDataProp,
   ...htmlAttributes
 } = Astro.props;
+
+const brandOverrideStyle =
+  brandColorOverride && String(brandColorOverride).trim().length > 0
+    ? `--color-brand:${brandColorOverride};--color-bg-brand:${brandColorOverride};--color-bg-accent:${brandColorOverride};--color-link:${brandColorOverride};`
+    : null;
 
 const {
   source = "",
@@ -43,6 +49,7 @@ const arrayDataAttributes =
 
 <section
   class:list={["custom-section", className]}
+  style={brandOverrideStyle}
   {...htmlAttributes}
 >
   <div

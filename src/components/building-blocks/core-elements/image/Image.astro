@@ -36,6 +36,8 @@ const {
   background = false,
   displayWidth = "100",
   alignX = "center",
+  link = "",
+  openInNewTab = false,
   useDefaultEditableBinding = false,
   class: className,
   "data-prop-src": customDataPropSrc,
@@ -43,6 +45,15 @@ const {
   _component,
   ...htmlAttributes
 } = Astro.props;
+
+const hasLink = typeof link === "string" && link.trim().length > 0;
+const linkProps = hasLink
+  ? {
+      href: link,
+      target: openInNewTab ? "_blank" : undefined,
+      rel: openInNewTab ? "noopener noreferrer" : undefined,
+    }
+  : null;
 
 const displayWidthClass = displayWidth === "50" ? "width-50" : "width-100";
 
@@ -162,7 +173,43 @@ if (
     ]}
   >
     {
-      shouldRenderOptimizedPicture ? (
+      hasLink ? (
+        <a
+          class="image-link"
+          {...linkProps}
+        >
+          {shouldRenderOptimizedPicture ? (
+            <Picture
+              src={imageSrc}
+              alt={normalizedAlt}
+              widths={filteredWidths}
+              sizes={sizes}
+              formats={["webp"]}
+              width={finalWidth}
+              height={finalHeight}
+              fit={useFit}
+              position={usePosition}
+              loading={priority ? "eager" : "lazy"}
+              decoding={priority ? "sync" : "async"}
+              fetchpriority={priority ? "high" : undefined}
+              {...dataAttributes}
+            />
+          ) : (
+            <picture>
+              <img
+                src={imageSrc}
+                alt={normalizedAlt}
+                loading={priority ? "eager" : "lazy"}
+                decoding={priority ? "sync" : "async"}
+                fetchpriority={priority ? "high" : undefined}
+                width={imageWidth}
+                height={imageHeight}
+                {...dataAttributes}
+              />
+            </picture>
+          )}
+        </a>
+      ) : shouldRenderOptimizedPicture ? (
         <Picture
           src={imageSrc}
           alt={normalizedAlt}
@@ -329,6 +376,17 @@ if (
 
         &.rounded {
           border-radius: var(--radius-lg);
+        }
+
+        > .image-link {
+          display: block;
+          line-height: 0;
+          transition: opacity var(--animation-normal) ease-in-out;
+        }
+
+        > .image-link:hover,
+        > .image-link:focus-visible {
+          opacity: 0.92;
         }
       }
     }

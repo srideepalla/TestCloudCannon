@@ -14,17 +14,30 @@ const {
   link = "",
   colorScheme = "inherit",
   brandColor = "#003366",
+  textColor = "",
+  subtitleColor = "",
+  accentColor = "",
+  buttonColor = "",
   class: className,
   _component,
   ...htmlAttributes
 } = Astro.props;
+
+const styleParts = [`--event-brand-color: ${brandColor};`];
+
+if (textColor) styleParts.push(`--event-text-color: ${textColor};`);
+if (subtitleColor) styleParts.push(`--event-subtitle-color: ${subtitleColor};`);
+if (accentColor) styleParts.push(`--event-accent-color: ${accentColor};`);
+if (buttonColor) styleParts.push(`--event-button-color: ${buttonColor};`);
+
+const inlineStyle = styleParts.join(" ");
 ---
 
 <Card
   rounded={true}
   colorScheme={colorScheme}
   class:list={["event-card", className]}
-  style={`--event-brand-color: ${brandColor};`}
+  style={inlineStyle}
   backgroundColor="base"
   {...htmlAttributes}
 >
@@ -54,6 +67,7 @@ const {
         <Text
           text={description}
           data-prop="description"
+          class="event-card-subtitle"
         />
         {
           link && (
@@ -63,6 +77,7 @@ const {
               variant="text-brand"
               uppercase={true}
               useDefaultEditableBinding={false}
+              class="event-card-cta"
             />
           )
         }
@@ -96,12 +111,12 @@ const {
     }
 
     .event-card-content {
-      color: var(--color-text-on-brand);
+      color: var(--event-text-color, var(--color-text-on-brand));
       padding: 2.5rem 3rem;
     }
 
     .event-card-date {
-      color: var(--color-brand);
+      color: var(--event-accent-color, var(--color-brand));
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-bold);
       text-transform: uppercase;
@@ -110,7 +125,7 @@ const {
 
     .event-card-content .heading {
       margin: 0;
-      color: var(--color-text-on-brand);
+      color: var(--event-text-color, var(--color-text-on-brand));
       font-weight: var(--font-weight-bold);
     }
 
@@ -120,8 +135,17 @@ const {
     }
     .event-card-content .text-inner,
     .event-card-content .text-inner p {
-      color: var(--color-text-on-brand);
+      color: var(
+        --event-subtitle-color,
+        var(--event-text-color, var(--color-text-on-brand))
+      );
       margin-bottom: var(--spacing-md);
+    }
+
+    .event-card .event-card-cta .button-inner,
+    .event-card .event-card-cta .button-inner:hover,
+    .event-card .event-card-cta .button-inner:focus {
+      color: var(--event-button-color, var(--color-brand));
     }
   }
 </style>

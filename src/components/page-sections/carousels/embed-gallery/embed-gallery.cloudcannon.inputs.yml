@@ -1,0 +1,65 @@
+heading:
+  type: text
+  comment: Optional heading shown above the gallery (e.g. "Event Gallery").
+description:
+  type: markdown
+  comment: Optional short description shown beneath the heading.
+  options:
+    blockquote: false
+    bold: true
+    italic: true
+    link: true
+    bulletedlist: false
+    numberedlist: false
+embedCode:
+  type: textarea
+  comment: >-
+    Paste the SmugMug, Flickr, Pixieset, or other gallery embed snippet here.
+    On SmugMug, use Tools → Share → Embed and copy the full <iframe> snippet.
+    Any iframe with width="100%" will scale responsively.
+maxWidth:
+  type: select
+  comment: Maximum content width for the gallery section.
+  options:
+    values:
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra Large (default)
+      - id: 2xl
+        name: 2XL
+      - id: 3xl
+        name: 3XL (full)
+minHeight:
+  type: number
+  comment: >-
+    Minimum height of the gallery in pixels on desktop. SmugMug galleries
+    typically render best at 600–800 px. Mobile falls back to 400 px.
+colorScheme:
+  type: select
+  comment: Color scheme for the gallery section.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color of the gallery section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

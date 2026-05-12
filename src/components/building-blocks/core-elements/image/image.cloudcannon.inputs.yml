@@ -11,6 +11,14 @@ source:
 alt:
   type: textarea
   comment: Alternative text for accessibility.
+link:
+  type: url
+  comment: >-
+    Optional. Make the image clickable by entering a URL — visitors who click
+    the image will be sent here. Leave empty for a non-clickable image.
+openInNewTab:
+  type: switch
+  comment: When the image is linked, open the destination in a new browser tab.
 sizes:
   type: text
   comment: Responsive sizes attribute for the image.

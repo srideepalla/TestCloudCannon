@@ -15,6 +15,10 @@ interface Card {
   link: string;
   colorScheme: string;
   brandColor: string;
+  textColor?: string;
+  subtitleColor?: string;
+  accentColor?: string;
+  buttonColor?: string;
 }
 
 const {
@@ -86,6 +90,10 @@ const thumbnails = typedCards.map((card) => ({
             description={card.description}
             link={card.link}
             brandColor={card.brandColor}
+            textColor={card.textColor}
+            subtitleColor={card.subtitleColor}
+            accentColor={card.accentColor}
+            buttonColor={card.buttonColor}
             colorScheme={card.colorScheme}
           />
         </CarouselSlide>

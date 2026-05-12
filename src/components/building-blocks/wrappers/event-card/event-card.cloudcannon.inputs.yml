@@ -23,7 +23,7 @@ eventPhoto.alt:
   comment: Alt text for the event photo.
 dateLabel:
   type: text
-  comment: 'Date, deadline text, or status shown above the event name (e.g. "March 31, 2026" or "NOW").'
+  comment: 'Date, deadline text, or status shown above the event name (e.g. "March 31, 2026" or "NOW"). Rendered after the "ENTRIES OPEN:" prefix.'
 name:
   type: text
   comment: Name of the event or awards program.
@@ -35,4 +35,16 @@ link:
   comment: URL for the "Learn More" button. Leave empty to hide the button.
 brandColor:
   type: color
-  comment: Brand color used as the background of the text panel.
+  comment: Background color of the text panel.
+textColor:
+  type: color
+  comment: Heading text color. Leave empty for default contrast color.
+subtitleColor:
+  type: color
+  comment: Subtitle/description text color. Leave empty to inherit from textColor.
+accentColor:
+  type: color
+  comment: Color for the small label above the heading. Leave empty to use brand color.
+buttonColor:
+  type: color
+  comment: Color for the call-to-action button text. Leave empty to use brand color.

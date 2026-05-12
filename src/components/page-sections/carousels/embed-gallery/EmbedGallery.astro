@@ -1,0 +1,123 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+
+const {
+  heading = "",
+  description = "",
+  embedCode = "",
+  maxWidth = "xl",
+  minHeight = 650,
+  colorScheme = "dark",
+  backgroundColor = "base",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const hasEmbed = typeof embedCode === "string" && embedCode.trim().length > 0;
+
+if (!_component && !hasEmbed) return;
+
+const minHeightStyle = `--embed-gallery-min-height: ${Number(minHeight) || 650}px;`;
+---
+
+<CustomSection
+  class:list={["embed-gallery", className]}
+  maxContentWidth={maxWidth}
+  paddingHorizontal="md"
+  paddingVertical="2xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  {
+    heading && (
+      <Heading
+        level="h2"
+        size="2xl"
+        alignX="center"
+        text={heading}
+        data-prop="heading"
+      />
+    )
+  }
+  {
+    description && (
+      <Text
+        alignX="center"
+        text={description}
+        data-prop="description"
+        size="md"
+      />
+    )
+  }
+
+  {
+    hasEmbed ? (
+      <div
+        class="embed-gallery__frame"
+        style={minHeightStyle}
+        data-prop="embedCode"
+        set:html={embedCode}
+      />
+    ) : (
+      <div class="embed-gallery__placeholder">
+        Paste a SmugMug, Flickr, Pixieset, or other gallery embed snippet into the "Embed Code" field.
+      </div>
+    )
+  }
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .embed-gallery .heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .embed-gallery .text {
+      max-width: 672px;
+      margin-inline: auto;
+    }
+
+    .embed-gallery__frame {
+      margin-top: var(--spacing-xl);
+      min-height: var(--embed-gallery-min-height, 650px);
+      width: 100%;
+    }
+
+    .embed-gallery__frame > iframe,
+    .embed-gallery__frame iframe {
+      border: 0;
+      display: block;
+      min-height: var(--embed-gallery-min-height, 650px);
+      width: 100%;
+    }
+
+    .embed-gallery__placeholder {
+      align-items: center;
+      background: var(--color-bg-surface);
+      border: 1px dashed var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      display: flex;
+      justify-content: center;
+      margin-top: var(--spacing-xl);
+      min-height: 220px;
+      padding: var(--spacing-xl);
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      .embed-gallery__frame,
+      .embed-gallery__frame > iframe,
+      .embed-gallery__frame iframe {
+        min-height: 400px;
+      }
+    }
+  }
+</style>

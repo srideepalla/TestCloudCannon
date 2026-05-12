@@ -12,6 +12,10 @@ value:
   link: null
   colorScheme: inherit
   brandColor: "#003366"
+  textColor: ""
+  subtitleColor: ""
+  accentColor: ""
+  buttonColor: ""
 preview:
   text:
     - key: name

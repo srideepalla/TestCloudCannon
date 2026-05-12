@@ -563,12 +563,16 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         display: none;
       }
 
-      .nav-item-toggle:checked ~ .nav-item-content {
+      .nav-item-toggle:checked ~ .nav-item-content,
+      .nav-item.has-children:hover > .nav-item-content,
+      .nav-item.has-children:focus-within > .nav-item-content {
         animation: grow-out-centered var(--animation-normal) ease-out forwards;
         display: block;
       }
 
-      .nav-item-toggle:checked ~ .nav-item-nested {
+      .nav-item-toggle:checked ~ .nav-item-nested,
+      .nav-item.has-children:hover > .nav-item-nested,
+      .nav-item.has-children:focus-within > .nav-item-nested {
         animation: grow-out var(--animation-normal) ease-out forwards;
         display: block;
       }
@@ -586,6 +590,16 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         transform: translateX(-50%);
         width: max-content;
         z-index: var(--layer-3);
+      }
+
+      /* Invisible bridge so cursor can travel from trigger to dropdown without losing hover */
+      .nav-item.has-children > .nav-item-content::before {
+        content: "";
+        height: var(--spacing-lg);
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: calc(-1 * var(--spacing-lg));
       }
 
       .nav-item-content .nav-item {

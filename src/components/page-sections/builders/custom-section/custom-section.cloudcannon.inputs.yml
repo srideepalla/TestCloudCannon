@@ -145,6 +145,17 @@ backgroundImage.positionHorizontal:
 rounded:
   type: switch
   comment: Whether to apply rounded corners to the custom section.
+brandColorOverride:
+  type: color
+  label: "Section Brand Color Override"
+  comment: >-
+    Optional. Override the site's primary brand color for this section only —
+    affects buttons, links, accents, and brand emphasis within this section.
+    Useful for sub-brand pages (e.g. SAGE uses a different yellow than the
+    primary brand). Leave empty to use the site-wide brand color.
+  options:
+    format: hex
+    alpha: true
 useDefaultEditableBinding:
   type: switch
   comment: Whether the custom section should use its default editable bindings.
