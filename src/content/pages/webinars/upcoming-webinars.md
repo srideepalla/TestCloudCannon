@@ -16,7 +16,7 @@ pageSections:
     label: Top Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
-        source: /src/assets/images/placeholder.png
+        source: /src/assets/images/wfw-2.png
         alt: Women|Future Webinars 2026 — Join us this summer banner
         sizes: '(max-width: 1280px) 100vw, 960px'
         widths:
@@ -444,7 +444,7 @@ pageSections:
     label: Bottom Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
-        source: /sr/assets/images/placeholder.png
+        source: /src/assets/images/wfw26-fc.jpg
         alt: Women|Future Webinars 2026 banner
         sizes: '(max-width: 1280px) 100vw, 960px'
         widths:
