@@ -12,7 +12,24 @@ quickLinks:
   type: array
   comment: "Navigation links shown in the Quick Links column (e.g. Blog through Contact Us)."
   options:
-    structures: _structures.links
+    structures:
+      values:
+        - label: Navigation Link
+          icon: link
+          value:
+            name: ""
+            path: ""
+            openInNewTab: false
+          _inputs:
+            name:
+              type: text
+              comment: "Display text for the navigation link."
+            path:
+              type: url
+              comment: "URL path for the navigation link."
+            openInNewTab:
+              type: switch
+              comment: "Open this link in a new browser tab (useful for external links like Blog or Store)."
 newsletterHeading:
   type: text
   comment: "Heading for the newsletter / stay connected column."
@@ -32,18 +49,14 @@ socials:
           icon: share
           value:
             icon: ""
-            link: ""
-            label: ""
+            url: ""
           _inputs:
             icon:
               type: text
               comment: "Icon name for the social media platform (e.g. social/linkedin)."
-            link:
+            url:
               type: url
               comment: "URL to the social media profile."
-            label:
-              type: text
-              comment: "Accessible label for the icon button (e.g. LinkedIn)."
 footerText:
   type: text
   comment: "Legal / copyright text shown at the bottom of the footer."
