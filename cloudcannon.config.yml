@@ -244,21 +244,73 @@ collections_config:
           width: 1920
           height: 1280
         cascade: true
-      brandColor:
+      $.light.colorBrand:
         type: color
-        comment: "Primary brand color (e.g. navbar, accents). Applied site-wide."
+        label: "Light Theme - Brand Color"
+        comment: "Primary brand color for light mode (buttons, accents)."
         options:
           format: hex
         cascade: true
-      brandColorMuted:
+      $.light.colorBrandMuted:
         type: color
-        comment: "Slightly darker shade of the brand color, used for hovers and muted accents."
+        label: "Light Theme - Brand Muted"
+        comment: "Muted brand color for light mode (hover states)."
         options:
           format: hex
         cascade: true
-      brandTextColor:
+      $.light.colorTextOnBrand:
         type: color
-        comment: "Text color that appears on top of the brand background (e.g. on primary buttons, navbar). Pick a color with strong contrast against the brand color."
+        label: "Light Theme - Text on Brand"
+        comment: "Text color on brand backgrounds in light mode."
+        options:
+          format: hex
+        cascade: true
+      $.light.colorBgAccent:
+        type: color
+        label: "Light Theme - Accent Background"
+        comment: "Accent background color for light mode."
+        options:
+          format: hex
+        cascade: true
+      $.light.colorLink:
+        type: color
+        label: "Light Theme - Link Color"
+        comment: "Link text color for light mode."
+        options:
+          format: hex
+        cascade: true
+      $.dark.colorBrand:
+        type: color
+        label: "Dark Theme - Brand Color"
+        comment: "Primary brand color for dark mode (buttons, accents)."
+        options:
+          format: hex
+        cascade: true
+      $.dark.colorBrandMuted:
+        type: color
+        label: "Dark Theme - Brand Muted"
+        comment: "Muted brand color for dark mode (hover states)."
+        options:
+          format: hex
+        cascade: true
+      $.dark.colorTextOnBrand:
+        type: color
+        label: "Dark Theme - Text on Brand"
+        comment: "Text color on brand backgrounds in dark mode."
+        options:
+          format: hex
+        cascade: true
+      $.dark.colorBgAccent:
+        type: color
+        label: "Dark Theme - Accent Background"
+        comment: "Accent background color for dark mode. Also controls the navigation background color."
+        options:
+          format: hex
+        cascade: true
+      $.dark.colorLink:
+        type: color
+        label: "Dark Theme - Link Color"
+        comment: "Link text color for dark mode."
         options:
           format: hex
         cascade: true

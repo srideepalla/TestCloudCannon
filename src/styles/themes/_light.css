@@ -1,41 +1,4 @@
 /* Light theme */
 [data-theme="light"] {
   color-scheme: light;
-
-  --color-brand: var(--gold);
-  --color-brand-muted: var(--gold-dark);
-  --color-brand-subtle: var(--gray-6);
-  --color-brand-on: var(--gray-0);
-
-  --color-text: var(--gray-8);
-  --color-text-strong: var(--gray-12);
-  --color-text-muted: var(--gold-darker);
-  --color-text-on-muted: var(--gray-12);
-  --color-text-on-brand: var(--gray-0);
-  --color-text-inverse: var(--gray-0);
-  --color-link: var(--blue-dark);
-  --color-link-hover: var(--gold);
-  --color-link-strong: var(--orange);
-  --color-link-strong-hover: var(--orange-dark);
-
-  --color-bg: var(--gray-0);
-  --color-bg-surface: var(--gray-1);
-  --color-bg-muted: var(--gray-2);
-  --color-bg-accent: var(--cream);
-  --color-bg-highlight: var(--gold-light);
-  --color-bg-brand: var(--color-brand);
-  --color-bg-brand-muted: var(--color-brand-muted);
-  --color-bg-inverse: var(--gray-12);
-
-  --color-border: var(--gray-3);
-  --color-border-inputs: var(--gray-5);
-  --color-border-strong: var(--gray-8);
-  --color-border-subtle: var(--gold-dark);
-
-  --color-state-hover: rgba(0, 0, 0, 0.04);
-  --color-state-active: rgba(0, 0, 0, 0.08);
-  --color-overlay: rgba(0, 0, 0, 0.5);
-
-  --color-focus-ring: rgba(223, 186, 25, 0.4);
-  --color-error: #f00;
 }

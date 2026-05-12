@@ -3,6 +3,7 @@ import Component from "@components/utils/renderBlock.astro";
 import type { ContentBlock } from "../../types";
 import "@styles/style.css";
 import SiteFonts from "@layouts/SiteFonts.astro";
+import themeData from "@data/theme.json";
 
 export const prerender = false;
 
@@ -20,6 +21,36 @@ if (Astro.request.url) {
     }
   }
 }
+
+// Generate theme CSS from theme.json
+function camelToKebab(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+function generateThemeCSS(themeColors: Record<string, string>, themeSelector: string): string {
+  const cssVars = Object.entries(themeColors)
+    .map(([key, value]) => {
+      const cssVar = `--${camelToKebab(key)}`;
+
+      // Handle special cases for brand colors
+      if (key === 'colorBrand') {
+        return `--color-brand:${value};--color-bg-brand:${value};`;
+      }
+
+      if (key === 'colorBrandMuted') {
+        return `--color-brand-muted:${value};--color-bg-brand-muted:${value};`;
+      }
+
+      return `${cssVar}:${value};`;
+    })
+    .join('');
+  
+  return `${themeSelector}{${cssVars}}`;
+}
+
+const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
+const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
+const rootThemeCSS = generateThemeCSS(themeData.light, 'html[data-theme]');
 ---
 
 <html
@@ -36,6 +67,10 @@ if (Astro.request.url) {
     <style is:inline>
       @layer reset, base, components, page-sections, utils, overrides;
     </style>
+    <style
+      is:inline
+      set:html={`${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
+    />
     <SiteFonts />
   </head>
   <body style="margin: 0;">

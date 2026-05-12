@@ -2,6 +2,7 @@
 import "@component-docs/styles/component-docs.css";
 import "@styles/style.css";
 import SiteFonts from "@layouts/SiteFonts.astro";
+import themeData from "@data/theme.json";
 import { z } from "zod/v4";
 
 const libraryLayoutSchema = z.object({
@@ -20,6 +21,36 @@ import RenderBlock from "@components/utils/renderBlock.astro";
 const props = libraryLayoutSchema.parse(Astro.props);
 const pageTitle = props.frontmatter?.title || "Component Library";
 const contentSections = props.frontmatter?.contentSections || [];
+
+// Generate theme CSS from theme.json
+function camelToKebab(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+}
+
+function generateThemeCSS(themeColors: Record<string, string>, themeSelector: string): string {
+  const cssVars = Object.entries(themeColors)
+    .map(([key, value]) => {
+      const cssVar = `--${camelToKebab(key)}`;
+
+      // Handle special cases for brand colors
+      if (key === 'colorBrand') {
+        return `--color-brand:${value};--color-bg-brand:${value};`;
+      }
+
+      if (key === 'colorBrandMuted') {
+        return `--color-brand-muted:${value};--color-bg-brand-muted:${value};`;
+      }
+
+      return `${cssVar}:${value};`;
+    })
+    .join('');
+  
+  return `${themeSelector}{${cssVars}}`;
+}
+
+const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
+const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
+const rootThemeCSS = generateThemeCSS(themeData.light, 'html[data-theme]');
 ---
 
 <!doctype html>
@@ -45,6 +76,10 @@ const contentSections = props.frontmatter?.contentSections || [];
     <style is:inline>
       @layer reset, base, components, page-sections, utils, overrides;
     </style>
+    <style
+      is:inline
+      set:html={`${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
+    />
     <SiteFonts />
     {
       import.meta.env.DEV ? (
