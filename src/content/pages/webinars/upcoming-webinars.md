@@ -145,7 +145,7 @@ pageSections:
         text: >-
           Sign up individually for each Women|Future Webinar session you wish to
           attend below:
-        level: h5
+        level: h1
         size: lg
         alignX: center
         iconPosition: before
@@ -157,14 +157,14 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers-2.png
+                source: /src/assets/images/june-website-1.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: landscape
+                aspectRatio: widescreen
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -185,16 +185,18 @@ pageSections:
                 variant: primary
                 uppercase: true
                 size: md
+              - _component: building-blocks/core-elements/spacer
+                size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/july-speakers.png
+                source: /src/assets/images/july-website-1.png
                 alt: Women|Future Webinar — July 15, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: landscape
+                aspectRatio: widescreen
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -215,16 +217,18 @@ pageSections:
                 variant: primary
                 uppercase: true
                 size: md
+              - _component: building-blocks/core-elements/spacer
+                size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/august-intro.png
+                source: /src/assets/images/august-website.png
                 alt: Women|Future Webinar — August 12, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: landscape
+                aspectRatio: widescreen
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
@@ -245,8 +249,10 @@ pageSections:
                 variant: primary
                 uppercase: true
                 size: md
-        gap: md
-    maxContentWidth: xl
+              - _component: building-blocks/core-elements/spacer
+                size: md
+        gap: lg
+    maxContentWidth: lg
     paddingHorizontal: lg
     paddingVertical: lg
     colorScheme: light
@@ -385,7 +391,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: Event Updates
+    formHeading: Email Updates
     formEmbed: >-
       <div style="overflow:hidden; height:790px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1q4-6ZPRHT2u19ve5YM3QVArif" title="WFW
@@ -418,13 +424,15 @@ pageSections:
     label: Follow Us
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: Follow Us
-        level: h2
+        text:
+        level: h4
         size: xl
         alignX: center
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: We post the latest updates on our social media pages and blog.
+        text: >-
+          **Follow Us!** We post the latest updates on our social media pages
+          and blog.
         alignX: center
       - _component: building-blocks/wrappers/button-group
         label: Social Links
