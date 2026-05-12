@@ -6,12 +6,106 @@ description: >-
   August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
   - _component: page-sections/heroes/hero-banner
-    heading: 'Invest in Your Growth: Attend the Women|Future Webinars Series'
+    heading: ' 2026 Stevie® Awards for Women in Business Program Webinar'
     text: >-
-      Join us for three inspiring webinars taking place across June, July, and
-      August 2026 — designed to empower, connect, and elevate women in business.
+      Every organization has accomplishments worthy of recognition, but
+      condensing your accolades into a Stevie Awards nomination that stands out
+      can be challenging. Join our free, live webinar about the 2026 Stevie®
+      Awards for Women in Business to learn more about the nomination and
+      judging processes, what’s new this year, and tips on how to craft a
+      success story that presents your achievements to the judges in the
+      strongest possible light.
+
+
+      You’ll also get guidance on selecting the right categories for your
+      achievements and have the opportunity to ask questions directly to Stevie
+      Awards Founder, Michael Gallagher, during a live Q&A.
+
+
+      ###### **Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br>Winning
+      Strategies for the 2026 Stevie® Awards for Women in Business**
+
+
+      <a
+      href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA"
+      target="_blank" rel="noopener" title="Register Now"><strong>Register
+      Now</strong></a>
     colorScheme: light
     backgroundColor: base
+  - _component: page-sections/builders/custom-section
+    label: Top Banner Image
+    contentSections:
+      - _component: building-blocks/core-elements/image
+        source: /src/assets/images/sate26-webinar-email-1.png
+        alt: Stevie Awards for Women in Business Webinar
+        sizes: '(max-width: 1280px) 100vw, 1280px'
+        widths:
+          - 640
+          - 1280
+          - 2560
+        width:
+        height:
+        rounded: false
+        aspectRatio: none
+        positionVertical: center
+        positionHorizontal: center
+        priority: false
+    maxContentWidth: xl
+    paddingHorizontal: 2xl
+    paddingVertical: md
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    useDefaultEditableBinding: true
+  - _component: page-sections/builders/custom-section
+    label: Intro
+    contentSections:
+      - _component: building-blocks/core-elements/text
+        text: >-
+          # Invest in Your Growth: Women\|Future Webinars Series
+
+
+          ##### **Join us for three inspiring webinars taking place across June,
+          July, and August 2026 — designed to empower, connect, and elevate
+          women in business.**
+
+
+          The Women\|Future Webinars (formerly the Women\|Future Conference) are
+          a series of free webinars hosted by the Stevie® Awards. The sessions
+          are designed for women small business owners, executives,
+          entrepreneurs, and anyone interested in starting a business.
+
+
+          Launched in 2018 in conjunction with the Stevie® Awards for Women in
+          Business, the Women\|Future Conference was created to give
+          high-achieving women professionals, thought leaders, and entrepreneurs
+          a place to connect, share ideas, and network. After a successful
+          seven-year run as a live conference, we transformed it into a webinar
+          series.
+
+
+          Register now to discover practical strategies to help you grow and
+          future-proof your organization, build credibility through business
+          awards, and get firsthand perspectives from women entrepreneurs who
+          have successfully built and scaled their businesses!
+        alignX: start
+    maxContentWidth: 2xl
+    paddingHorizontal: 2xl
+    paddingVertical: 2xl
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Top Banner Image
     contentSections:
@@ -41,49 +135,14 @@ pageSections:
     rounded: false
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
-    label: Intro
-    contentSections:
-      - _component: building-blocks/core-elements/text
-        text: >-
-          The Women|Future Webinars (formerly the Women|Future Conference) are a
-          series of free webinars hosted by the Stevie® Awards, the world's
-          premier business awards. The sessions are designed for women small
-          business owners, executives, entrepreneurs, and anyone interested in
-          starting a business.
-
-
-          Launched in 2018 in conjunction with the Stevie® Awards for Women in
-          Business, the Women|Future Conference was created to give
-          high-achieving women professionals, thought leaders, and entrepreneurs
-          a place to connect, share ideas, and network. After a successful
-          seven-year run as a live conference, we transformed it into a webinar
-          series.
-
-
-          Register now to discover practical strategies to help you grow and
-          future-proof your organization, build credibility through business
-          awards, and get firsthand perspectives from women entrepreneurs who
-          have successfully built and scaled their businesses!
-        alignX: start
-    maxContentWidth: 2xl
-    paddingHorizontal: 2xl
-    paddingVertical: 2xl
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    useDefaultEditableBinding: true
-  - _component: page-sections/builders/custom-section
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: Sign up individually for each webinar session you wish to attend below
-        level: h2
-        size: xl
+        text: >-
+          Sign up individually for each Women|Future Webinar session you wish to
+          attend below:
+        level: h5
+        size: lg
         alignX: center
         iconPosition: before
       - _component: building-blocks/wrappers/grid
@@ -109,7 +168,7 @@ pageSections:
                 text: June 17, 2026
                 level: h3
                 size: md
-                alignX: center
+                alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
@@ -139,7 +198,7 @@ pageSections:
                 text: July 15, 2026
                 level: h3
                 size: md
-                alignX: center
+                alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
@@ -169,7 +228,7 @@ pageSections:
                 text: August 12, 2026
                 level: h3
                 size: md
-                alignX: center
+                alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
@@ -468,7 +527,7 @@ pageSections:
       positionHorizontal: center
     rounded: false
     useDefaultEditableBinding: true
-pageHeading: Upcoming Webinars
+pageHeading: Webinars
 sidebarCollection: webinars
 sidebarBlocks: []
 draft: false
