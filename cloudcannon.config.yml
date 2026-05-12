@@ -255,211 +255,151 @@ collections_config:
         type: color
         label: "Brand Color"
         comment: "Primary brand color - buttons, accents, emphasis."
-        options:
-          format: hex
         cascade: true
       colorBrandMuted:
         type: color
         label: "Brand Muted"
         comment: "Muted brand color for hover states and secondary emphasis."
-        options:
-          format: hex
         cascade: true
       colorBrandSubtle:
         type: color
         label: "Brand Subtle"
         comment: "Subtle brand color for backgrounds and low-emphasis elements."
-        options:
-          format: hex
         cascade: true
       colorBrandOn:
         type: color
         label: "Text on Brand"
         comment: "Text/icon color that appears on brand-colored backgrounds."
-        options:
-          format: hex
         cascade: true
       colorText:
         type: color
         label: "Body Text"
         comment: "Default text color for body content."
-        options:
-          format: hex
         cascade: true
       colorTextStrong:
         type: color
         label: "Strong Text"
         comment: "High-emphasis text color for headings and important content."
-        options:
-          format: hex
         cascade: true
       colorTextMuted:
         type: color
         label: "Muted Text"
         comment: "De-emphasized text color for secondary information."
-        options:
-          format: hex
         cascade: true
       colorTextOnMuted:
         type: color
         label: "Text on Muted"
         comment: "Text color that appears on muted backgrounds."
-        options:
-          format: hex
         cascade: true
       colorTextOnBrand:
         type: color
         label: "Text on Brand Buttons"
         comment: "Text color on primary buttons and brand backgrounds."
-        options:
-          format: hex
         cascade: true
       colorTextInverse:
         type: color
         label: "Inverse Text"
         comment: "Text color for inverted/contrast sections."
-        options:
-          format: hex
         cascade: true
       colorLink:
         type: color
         label: "Link Color"
         comment: "Default hyperlink text color."
-        options:
-          format: hex
         cascade: true
       colorLinkHover:
         type: color
         label: "Link Hover"
         comment: "Hyperlink color on hover."
-        options:
-          format: hex
         cascade: true
       colorLinkStrong:
         type: color
         label: "Strong Link"
         comment: "High-emphasis link color for call-to-action links."
-        options:
-          format: hex
         cascade: true
       colorLinkStrongHover:
         type: color
         label: "Strong Link Hover"
         comment: "High-emphasis link hover color."
-        options:
-          format: hex
         cascade: true
       colorBg:
         type: color
         label: "Page Background"
         comment: "Main page background color."
-        options:
-          format: hex
         cascade: true
       colorBgSurface:
         type: color
         label: "Surface Background"
         comment: "Background color for cards, panels, and elevated surfaces."
-        options:
-          format: hex
         cascade: true
       colorBgMuted:
         type: color
         label: "Muted Background"
         comment: "Subtle background color for sections and containers."
-        options:
-          format: hex
         cascade: true
       colorBgAccent:
         type: color
         label: "Accent Background"
         comment: "Accent background color for highlighted sections."
-        options:
-          format: hex
         cascade: true
       $.dark.colorBgAccent:
         type: color
         label: "Navigation Background (Dark)"
         comment: "Background color for dark mode navigation and accent sections."
-        options:
-          format: hex
         cascade: true
       colorBgHighlight:
         type: color
         label: "Highlight Background"
         comment: "Background color for highlighted or selected items."
-        options:
-          format: hex
         cascade: true
       colorBgInverse:
         type: color
         label: "Inverse Background"
         comment: "Background color for inverted/contrast sections."
-        options:
-          format: hex
         cascade: true
       colorBorder:
         type: color
         label: "Border Color"
         comment: "Default border color for elements."
-        options:
-          format: hex
         cascade: true
       colorBorderInputs:
         type: color
         label: "Input Border"
         comment: "Border color for form inputs and textareas."
-        options:
-          format: hex
         cascade: true
       colorBorderStrong:
         type: color
         label: "Strong Border"
         comment: "High-contrast border color for emphasis."
-        options:
-          format: hex
         cascade: true
       colorBorderSubtle:
         type: color
         label: "Subtle Border"
         comment: "Low-contrast border color for dividers."
-        options:
-          format: hex
         cascade: true
       colorStateHover:
         type: color
         label: "Hover State"
         comment: "Overlay color for hover states."
-        options:
-          format: hex
         cascade: true
       colorStateActive:
         type: color
         label: "Active State"
         comment: "Overlay color for active/pressed states."
-        options:
-          format: hex
         cascade: true
       colorOverlay:
         type: color
         label: "Overlay"
         comment: "Semi-transparent overlay for modals and backdrops."
-        options:
-          format: hex
         cascade: true
       colorFocusRing:
         type: color
         label: "Focus Ring"
         comment: "Outline color for keyboard focus indicators."
-        options:
-          format: hex
         cascade: true
       colorError:
         type: color
         label: "Error Color"
         comment: "Color for error messages and validation."
-        options:
-          format: hex
         cascade: true
       openInNewTab:
         type: switch
