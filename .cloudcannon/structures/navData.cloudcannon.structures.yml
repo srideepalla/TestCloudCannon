@@ -7,6 +7,7 @@ navData:
       value:
         name: ""
         path: ""
+        openInNewTab: false
         children: []
       preview:
         text:
@@ -41,6 +42,7 @@ navData:
                 value:
                   name: ""
                   path: ""
+                  openInNewTab: false
                   children: []
                 preview:
                   text:
@@ -71,6 +73,7 @@ navData:
                           value:
                             name: ""
                             path: ""
+                            openInNewTab: false
                           preview:
                             text:
                               - key: name
