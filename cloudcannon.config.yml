@@ -251,73 +251,213 @@ collections_config:
           width: 1920
           height: 1280
         cascade: true
-      $.light.colorBrand:
+      colorBrand:
         type: color
-        label: "Light Theme - Brand Color"
-        comment: "Primary brand color for light mode (buttons, accents)."
+        label: "Brand Color"
+        comment: "Primary brand color - buttons, accents, emphasis."
         options:
           format: hex
         cascade: true
-      $.light.colorBrandMuted:
+      colorBrandMuted:
         type: color
-        label: "Light Theme - Brand Muted"
-        comment: "Muted brand color for light mode (hover states)."
+        label: "Brand Muted"
+        comment: "Muted brand color for hover states and secondary emphasis."
         options:
           format: hex
         cascade: true
-      $.light.colorTextOnBrand:
+      colorBrandSubtle:
         type: color
-        label: "Light Theme - Text on Brand"
-        comment: "Text color on brand backgrounds in light mode."
+        label: "Brand Subtle"
+        comment: "Subtle brand color for backgrounds and low-emphasis elements."
         options:
           format: hex
         cascade: true
-      $.light.colorBgAccent:
+      colorBrandOn:
         type: color
-        label: "Light Theme - Accent Background"
-        comment: "Accent background color for light mode."
+        label: "Text on Brand"
+        comment: "Text/icon color that appears on brand-colored backgrounds."
         options:
           format: hex
         cascade: true
-      $.light.colorLink:
+      colorText:
         type: color
-        label: "Light Theme - Link Color"
-        comment: "Link text color for light mode."
+        label: "Body Text"
+        comment: "Default text color for body content."
         options:
           format: hex
         cascade: true
-      $.dark.colorBrand:
+      colorTextStrong:
         type: color
-        label: "Dark Theme - Brand Color"
-        comment: "Primary brand color for dark mode (buttons, accents)."
+        label: "Strong Text"
+        comment: "High-emphasis text color for headings and important content."
         options:
           format: hex
         cascade: true
-      $.dark.colorBrandMuted:
+      colorTextMuted:
         type: color
-        label: "Dark Theme - Brand Muted"
-        comment: "Muted brand color for dark mode (hover states)."
+        label: "Muted Text"
+        comment: "De-emphasized text color for secondary information."
         options:
           format: hex
         cascade: true
-      $.dark.colorTextOnBrand:
+      colorTextOnMuted:
         type: color
-        label: "Dark Theme - Text on Brand"
-        comment: "Text color on brand backgrounds in dark mode."
+        label: "Text on Muted"
+        comment: "Text color that appears on muted backgrounds."
+        options:
+          format: hex
+        cascade: true
+      colorTextOnBrand:
+        type: color
+        label: "Text on Brand Buttons"
+        comment: "Text color on primary buttons and brand backgrounds."
+        options:
+          format: hex
+        cascade: true
+      colorTextInverse:
+        type: color
+        label: "Inverse Text"
+        comment: "Text color for inverted/contrast sections."
+        options:
+          format: hex
+        cascade: true
+      colorLink:
+        type: color
+        label: "Link Color"
+        comment: "Default hyperlink text color."
+        options:
+          format: hex
+        cascade: true
+      colorLinkHover:
+        type: color
+        label: "Link Hover"
+        comment: "Hyperlink color on hover."
+        options:
+          format: hex
+        cascade: true
+      colorLinkStrong:
+        type: color
+        label: "Strong Link"
+        comment: "High-emphasis link color for call-to-action links."
+        options:
+          format: hex
+        cascade: true
+      colorLinkStrongHover:
+        type: color
+        label: "Strong Link Hover"
+        comment: "High-emphasis link hover color."
+        options:
+          format: hex
+        cascade: true
+      colorBg:
+        type: color
+        label: "Page Background"
+        comment: "Main page background color."
+        options:
+          format: hex
+        cascade: true
+      colorBgSurface:
+        type: color
+        label: "Surface Background"
+        comment: "Background color for cards, panels, and elevated surfaces."
+        options:
+          format: hex
+        cascade: true
+      colorBgMuted:
+        type: color
+        label: "Muted Background"
+        comment: "Subtle background color for sections and containers."
+        options:
+          format: hex
+        cascade: true
+      colorBgAccent:
+        type: color
+        label: "Accent Background"
+        comment: "Accent background color for highlighted sections."
         options:
           format: hex
         cascade: true
       $.dark.colorBgAccent:
         type: color
-        label: "Dark Theme - Accent Background"
-        comment: "Accent background color for dark mode. Also controls the navigation background color."
+        label: "Navigation Background (Dark)"
+        comment: "Background color for dark mode navigation and accent sections."
         options:
           format: hex
         cascade: true
-      $.dark.colorLink:
+      colorBgHighlight:
         type: color
-        label: "Dark Theme - Link Color"
-        comment: "Link text color for dark mode."
+        label: "Highlight Background"
+        comment: "Background color for highlighted or selected items."
+        options:
+          format: hex
+        cascade: true
+      colorBgInverse:
+        type: color
+        label: "Inverse Background"
+        comment: "Background color for inverted/contrast sections."
+        options:
+          format: hex
+        cascade: true
+      colorBorder:
+        type: color
+        label: "Border Color"
+        comment: "Default border color for elements."
+        options:
+          format: hex
+        cascade: true
+      colorBorderInputs:
+        type: color
+        label: "Input Border"
+        comment: "Border color for form inputs and textareas."
+        options:
+          format: hex
+        cascade: true
+      colorBorderStrong:
+        type: color
+        label: "Strong Border"
+        comment: "High-contrast border color for emphasis."
+        options:
+          format: hex
+        cascade: true
+      colorBorderSubtle:
+        type: color
+        label: "Subtle Border"
+        comment: "Low-contrast border color for dividers."
+        options:
+          format: hex
+        cascade: true
+      colorStateHover:
+        type: color
+        label: "Hover State"
+        comment: "Overlay color for hover states."
+        options:
+          format: hex
+        cascade: true
+      colorStateActive:
+        type: color
+        label: "Active State"
+        comment: "Overlay color for active/pressed states."
+        options:
+          format: hex
+        cascade: true
+      colorOverlay:
+        type: color
+        label: "Overlay"
+        comment: "Semi-transparent overlay for modals and backdrops."
+        options:
+          format: hex
+        cascade: true
+      colorFocusRing:
+        type: color
+        label: "Focus Ring"
+        comment: "Outline color for keyboard focus indicators."
+        options:
+          format: hex
+        cascade: true
+      colorError:
+        type: color
+        label: "Error Color"
+        comment: "Color for error messages and validation."
         options:
           format: hex
         cascade: true
