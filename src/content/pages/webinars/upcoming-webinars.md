@@ -279,9 +279,9 @@ pageSections:
           and Stevie Award-winning women business leaders about topics including
           how to grow, maintain, or start a successful business, the value of
           entering business awards, and how to use storytelling techniques to
-          set your business apart from the competition. Join us to learn from
-          the women who do it best, expose yourself to new opportunities, and
-          **Cultivate Your Tomorrow!**
+          set your business apart from the competition. Learn from the women who
+          do it best, expose yourself to new opportunities, and **Cultivate Your
+          Tomorrow!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -340,10 +340,10 @@ pageSections:
           Our mission is to inspire and accelerate women in business by
           fostering professional and personal development through live,
           educational sessions. **Cultivate Your Tomorrow** is our tagline. We
-          chose this phrase because The Women|Future webinars encourage you to
+          chose this phrase because The Women\|Future webinars encourage you to
           not only embrace your tomorrow, but to walk away with inspiration and
           thought leadership to tackle your career, personal, and life
-          aspirations!
+          aspirations.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
