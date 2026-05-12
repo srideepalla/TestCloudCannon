@@ -39,7 +39,7 @@
   },
   {
     "group": "Page Sections",
-    "subcategoryOrder": ["heroes", "features", "info-blocks", "people", "ctas", "builders"]
+    "subcategoryOrder": ["heroes", "features", "carousels", "people", "builders"]
   },
   {
     "group": "Navigation"
