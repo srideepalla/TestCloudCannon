@@ -558,7 +558,24 @@ file_config:
         type: array
         comment: The links for the quick actions (menu from button on bottom right of screen) section.
         options:
-          structures: _structures.links
+          structures:
+            values:
+              - label: Navigation Link
+                icon: link
+                value:
+                  name: ""
+                  path: ""
+                  openInNewTab: false
+                _inputs:
+                  name:
+                    type: text
+                    comment: "Display text for the navigation link."
+                  path:
+                    type: url
+                    comment: "URL path for the navigation link."
+                  openInNewTab:
+                    type: switch
+                    comment: "Open this link in a new browser tab (useful for external links like Blog or Store)."
 _inputs:
   pageSections:
     comment: The main sections of the page.
