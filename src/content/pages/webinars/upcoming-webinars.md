@@ -1,29 +1,24 @@
 ---
 _schema: default
-title: "Women|Future Webinars"
-pageHeading: Upcoming Webinars
-sidebarCollection: webinars
-sidebarBlocks: []
-description: Join us for three inspiring webinars taking place across June, July, and August 2026 - designed to empower, connect, and elevate women in business.
-draft: false
+title: Women|Future Webinars
+description: >-
+  Join us for three inspiring webinars taking place across June, July, and
+  August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
   - _component: page-sections/heroes/hero-banner
-    heading: |-
-      Invest in Your Growth:
-      Attend the Women|Future Webinars Series
+    heading: 'Invest in Your Growth: Attend the Women|Future Webinars Series'
     text: >-
       Join us for three inspiring webinars taking place across June, July, and
       August 2026 — designed to empower, connect, and elevate women in business.
     colorScheme: light
     backgroundColor: base
-
   - _component: page-sections/builders/custom-section
     label: Top Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
         source: /src/assets/images/placeholder.png
-        alt: "Women|Future Webinars 2026 — Join us this summer banner"
-        sizes: "(max-width: 1280px) 100vw, 960px"
+        alt: Women|Future Webinars 2026 — Join us this summer banner
+        sizes: '(max-width: 1280px) 100vw, 960px'
         widths:
           - 640
           - 960
@@ -38,8 +33,13 @@ pageSections:
     paddingVertical: md
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Intro
     contentSections:
@@ -70,8 +70,13 @@ pageSections:
     paddingVertical: 2xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Webinar Sessions
     contentSections:
@@ -80,18 +85,18 @@ pageSections:
         level: h2
         size: xl
         alignX: center
+        iconPosition: before
       - _component: building-blocks/wrappers/grid
         label: Webinar Registration Cards
         layout: center
         minItemWidth: 280
         maxItemWidth: 400
-        gap: lg
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
                 source: /src/assets/images/wfc-webinars-logo-for-facebook.png
-                alt: "Women|Future Webinar — June 17, 2026"
-                sizes: "(max-width: 1280px) 100vw, 400px"
+                alt: Women|Future Webinar — June 17, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
@@ -101,16 +106,18 @@ pageSections:
                 positionHorizontal: center
                 priority: false
               - _component: building-blocks/core-elements/heading
-                text: "June 17, 2026"
+                text: June 17, 2026
                 level: h3
                 size: md
                 alignX: center
+                iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
                 hideText: false
-                link: https://events.zoom.us/ev/AmljafujHuxQPUQoG1wSs71fzndIiTwsvyzMaV75suSM3Nc0anP6~AiJxasmozRSvvd8Qx_RPaUGRwDgOuEEvWdw7eLeMK9tLMdS2RTxZYTPH_g
+                link: >-
+                  https://events.zoom.us/ev/AmljafujHuxQPUQoG1wSs71fzndIiTwsvyzMaV75suSM3Nc0anP6~AiJxasmozRSvvd8Qx_RPaUGRwDgOuEEvWdw7eLeMK9tLMdS2RTxZYTPH_g
                 openInNewTab: true
-                iconName: ""
+                iconName: ''
                 iconPosition: before
                 variant: primary
                 uppercase: true
@@ -118,8 +125,8 @@ pageSections:
           - contentSections:
               - _component: building-blocks/core-elements/image
                 source: /src/assets/images/wfc-webinars-logo-for-facebook.png
-                alt: "Women|Future Webinar — July 15, 2026"
-                sizes: "(max-width: 1280px) 100vw, 400px"
+                alt: Women|Future Webinar — July 15, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
@@ -129,16 +136,18 @@ pageSections:
                 positionHorizontal: center
                 priority: false
               - _component: building-blocks/core-elements/heading
-                text: "July 15, 2026"
+                text: July 15, 2026
                 level: h3
                 size: md
                 alignX: center
+                iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
                 hideText: false
-                link: https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+                link: >-
+                  https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
                 openInNewTab: true
-                iconName: ""
+                iconName: ''
                 iconPosition: before
                 variant: primary
                 uppercase: true
@@ -146,8 +155,8 @@ pageSections:
           - contentSections:
               - _component: building-blocks/core-elements/image
                 source: /src/assets/images/wfc-webinars-logo-for-facebook.png
-                alt: "Women|Future Webinar — August 12, 2026"
-                sizes: "(max-width: 1280px) 100vw, 400px"
+                alt: Women|Future Webinar — August 12, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
@@ -157,27 +166,35 @@ pageSections:
                 positionHorizontal: center
                 priority: false
               - _component: building-blocks/core-elements/heading
-                text: "August 12, 2026"
+                text: August 12, 2026
                 level: h3
                 size: md
                 alignX: center
+                iconPosition: before
               - _component: building-blocks/core-elements/button
                 text: Register Now
                 hideText: false
-                link: https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
+                link: >-
+                  https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
                 openInNewTab: true
-                iconName: ""
+                iconName: ''
                 iconPosition: before
                 variant: primary
                 uppercase: true
                 size: md
+        gap: lg
     maxContentWidth: 3xl
     paddingHorizontal: 2xl
     paddingVertical: 2xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Why Register
     contentSections:
@@ -186,6 +203,7 @@ pageSections:
         level: h2
         size: xl
         alignX: start
+        iconPosition: before
       - _component: building-blocks/core-elements/text
         text: >-
           Attendees gain practical takeaways from other successful entrepreneurs
@@ -201,8 +219,13 @@ pageSections:
     paddingVertical: xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Audience
     contentSections:
@@ -211,6 +234,7 @@ pageSections:
         level: h2
         size: xl
         alignX: start
+        iconPosition: before
       - _component: building-blocks/core-elements/text
         text: >-
           Our webinars are for ambitious, forward-thinking women professionals
@@ -226,8 +250,13 @@ pageSections:
     paddingVertical: xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Mission and Tagline
     contentSections:
@@ -236,6 +265,7 @@ pageSections:
         level: h2
         size: xl
         alignX: start
+        iconPosition: before
       - _component: building-blocks/core-elements/text
         text: >-
           Our mission is to inspire and accelerate women in business by
@@ -251,8 +281,13 @@ pageSections:
     paddingVertical: xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/features/split-list-form
     subheading: Partner With Us
     heading: Sponsorship Opportunities
@@ -263,43 +298,49 @@ pageSections:
       and entrepreneurs worldwide. Email
       [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) for 2026
       sponsorship opportunities, or complete the form.
-    list: {}
+    list:
+      _component: building-blocks/wrappers/article-link-list
+      stories: []
     buttonSections: []
     formHeading: WFW Partner Inquiries
     formEmbed: >-
       <div style="overflow:hidden; height:487px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1PTeidvLDSjOlEbhYaqPCMQrif" title="WFW
       Partner Inquiries" loading="lazy" scrolling="no" style="border:none;
-      width:100%; height:900px; margin-top:-80px; display:block;"></iframe></div>
+      width:100%; height:900px; margin-top:-80px;
+      display:block;"></iframe></div>
     formCardColorScheme: dark
     colorScheme: light
     backgroundColor: base
-
   - _component: page-sections/features/split-list-form
     subheading: Stay in the Loop
     heading: Join Our Mailing List
     description: >-
       Fill out your information below, and we'll send you important updates
       about the webinar series.
-    list: {}
+    list:
+      _component: building-blocks/wrappers/article-link-list
+      stories: []
     buttonSections: []
     formHeading: WFW Event Updates
     formEmbed: >-
       <div style="overflow:hidden; height:790px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1q4-6ZPRHT2u19ve5YM3QVArif" title="WFW
       Event Updates" loading="lazy" scrolling="no" style="border:none;
-      width:100%; height:1400px; margin-top:-80px; display:block;"></iframe></div>
+      width:100%; height:1400px; margin-top:-80px;
+      display:block;"></iframe></div>
     formCardColorScheme: dark
     colorScheme: light
     backgroundColor: base
-
   - _component: page-sections/features/split-list-form
     subheading: Get in Touch
     heading: Contact Us
     description: >-
       Questions about the Women|Future Webinars? Send us a message and a member
       of our team will get back to you.
-    list: {}
+    list:
+      _component: building-blocks/wrappers/article-link-list
+      stories: []
     buttonSections: []
     formHeading: WFW Contact Us
     formEmbed: >-
@@ -310,7 +351,6 @@ pageSections:
     formCardColorScheme: dark
     colorScheme: light
     backgroundColor: base
-
   - _component: page-sections/builders/custom-section
     label: Follow Us
     contentSections:
@@ -319,13 +359,12 @@ pageSections:
         level: h2
         size: xl
         alignX: center
+        iconPosition: before
       - _component: building-blocks/core-elements/text
         text: We post the latest updates on our social media pages and blog.
         alignX: center
       - _component: building-blocks/wrappers/button-group
         label: Social Links
-        direction: row
-        alignX: center
         buttonSections:
           - _component: building-blocks/core-elements/button
             text: LinkedIn
@@ -335,6 +374,7 @@ pageSections:
             iconName: social/linkedin
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
           - _component: building-blocks/core-elements/button
             text: Facebook
@@ -344,6 +384,7 @@ pageSections:
             iconName: social/facebook
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
           - _component: building-blocks/core-elements/button
             text: Instagram
@@ -353,6 +394,7 @@ pageSections:
             iconName: social/instagram
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
           - _component: building-blocks/core-elements/button
             text: X
@@ -362,6 +404,7 @@ pageSections:
             iconName: social/x
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
           - _component: building-blocks/core-elements/button
             text: YouTube
@@ -371,6 +414,7 @@ pageSections:
             iconName: social/youtube
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
           - _component: building-blocks/core-elements/button
             text: Blog
@@ -380,21 +424,29 @@ pageSections:
             iconName: rss
             iconPosition: before
             variant: ghost
+            uppercase: true
             size: lg
+        direction: row
+        alignX: center
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
     paddingVertical: xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
-
+    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Bottom Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
-        source: /src/assets/images/placeholder.png
-        alt: "Women|Future Webinars 2026 banner"
-        sizes: "(max-width: 1280px) 100vw, 960px"
+        source: /sr/assets/images/placeholder.png
+        alt: Women|Future Webinars 2026 banner
+        sizes: '(max-width: 1280px) 100vw, 960px'
         widths:
           - 640
           - 960
@@ -409,5 +461,15 @@ pageSections:
     paddingVertical: xl
     colorScheme: light
     backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
     rounded: false
+    useDefaultEditableBinding: true
+pageHeading: Upcoming Webinars
+sidebarCollection: webinars
+sidebarBlocks: []
+draft: false
 ---
