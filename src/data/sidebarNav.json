@@ -48,8 +48,8 @@
         "href": "/awards/top-5-awards/"
       },
       {
-        "name": "Winners' Circle",
-        "path": "/awards/2025-winnerscircle/"
+        "text": "Winners' Circle",
+        "href": "/awards/2025-winnerscircle/"
       }
     ]
   },
