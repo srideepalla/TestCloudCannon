@@ -1,7 +1,7 @@
 {
   "light": {
-    "colorBrand": "#dfba19",
-    "colorBrandMuted": "#b89a14",
+    "colorBrand": "#2d7272ff",
+    "colorBrandMuted": null,
     "colorBrandSubtle": "#4b5563",
     "colorBrandOn": "#fff",
     "colorText": "#1f2937",
@@ -31,8 +31,8 @@
     "colorError": "#f00"
   },
   "dark": {
-    "colorBrand": "#dfba19",
-    "colorBrandMuted": "#b89a14",
+    "colorBrand": "#2d7272ff",
+    "colorBrandMuted": "#bc8315ff",
     "colorBrandSubtle": "#6b7280",
     "colorBrandOn": "#000",
     "colorText": "#d1d5db",

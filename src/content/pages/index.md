@@ -408,52 +408,20 @@ pageSections:
       across every facet of work life.
     cards:
       - logo:
-          source: /src/assets/images/sate-hc.png
-          alt: Stevie Awards for Technology Excellence
+          source: /src/assets/images/iba-hc-w.png
+          alt: 'The International Business Awards® '
         eventPhoto:
-          source: /src/assets/images/54003424986-e236287c23-o.jpg
-          alt: The Stevie Awards for Technology Excellence
-        dateLabel: ''
-        name: The Stevie® Awards for Technology Excellence
+          source: /src/assets/images/iba.jpg
+          alt: 'The International Business Awards® '
+        dateLabel: NOW
+        name: 'The International Business Awards® '
         description: >-
-          The Stevie Awards for Technology Excellence celebrate the remarkable
-          accomplishments of individuals, teams, and organizations shaping the
-          future of technology across all industry sectors. Individuals and
-          organizations worldwide are eligible to enter - public and private,
-          for-profit and non-profit, large and small.
-        link: https://tech.stevieawards.com/
+          The International Business Awards are open to all organizations
+          worldwide, and include categories to honor accomplishments in all
+          aspects of work life.
+        link: https://iba.stevieawards.com/
         colorScheme: inherit
-        brandColor: '#295070'
-      - logo:
-          source: /src/assets/images/sawib-hc-0220.png
-          alt: Stevie Awards for Women in Business
-        eventPhoto:
-          source: /src/assets/images/53326016090-b15cd8eda3-o.jpg
-          alt: The Stevie Awards for Women in Business
-        dateLabel: ''
-        name: The Stevie® Awards for Women in Business
-        description: >-
-          The Stevie Awards for Women in Business are open to all organizations
-          worldwide, and recognize the achievements of women executives,
-          entrepreneurs, and the organizations they run.
-        link: https://women.stevieawards.com/
-        colorScheme: inherit
-        brandColor: '#2d7272'
-      - logo:
-          source: /src/assets/images/sascs-v2-hc-0220.png
-          alt: Stevie Awards for Sales & Customer Service
-        eventPhoto:
-          source: /src/assets/images/54444944057-6a339b8488-o.jpg
-          alt: The Stevie Awards for Sales & Customer Service
-        dateLabel: July 2026
-        name: The Stevie® Awards for Sales & Customer Service
-        description: >-
-          The Stevie Awards for Sales & Customer Service are open to all
-          organizations worldwide, and recognize the achievements of sales,
-          customer service, and call center professionals.
-        link: https://sales.stevieawards.comp
-        colorScheme: inherit
-        brandColor: '#99844b'
+        brandColor: '#003366'
       - logo:
           source: /src/assets/images/sage-hc-0220.png
           alt: Stevie Awards for Great Employers
@@ -471,12 +439,44 @@ pageSections:
         colorScheme: inherit
         brandColor: '#e67b2c'
       - logo:
+          source: /src/assets/images/sate-hc.png
+          alt: Stevie Awards for Technology Excellence
+        eventPhoto:
+          source: /src/assets/images/54003424986-e236287c23-o.jpg
+          alt: The Stevie Awards for Technology Excellence
+        dateLabel: NOW
+        name: The Stevie® Awards for Technology Excellence
+        description: >-
+          The Stevie Awards for Technology Excellence celebrate the remarkable
+          accomplishments of individuals, teams, and organizations shaping the
+          future of technology across all industry sectors. Individuals and
+          organizations worldwide are eligible to enter - public and private,
+          for-profit and non-profit, large and small.
+        link: https://tech.stevieawards.com/
+        colorScheme: inherit
+        brandColor: '#295070'
+      - logo:
+          source: /src/assets/images/sascs-v2-hc-0220.png
+          alt: Stevie Awards for Sales & Customer Service
+        eventPhoto:
+          source: /src/assets/images/54444944057-6a339b8488-o.jpg
+          alt: The Stevie Awards for Sales & Customer Service
+        dateLabel: July 15, 2026
+        name: The Stevie® Awards for Sales & Customer Service
+        description: >-
+          The Stevie Awards for Sales & Customer Service are open to all
+          organizations worldwide, and recognize the achievements of sales,
+          customer service, and call center professionals.
+        link: https://sales.stevieawards.comp
+        colorScheme: inherit
+        brandColor: '#99844b'
+      - logo:
           source: /src/assets/images/aba-hc-0220.png
           alt: The American Business Awards
         eventPhoto:
           source: /src/assets/images/54584034224-4f05dacbf1-o.jpg
           alt: The American Business Awards
-        dateLabel: NOW
+        dateLabel: October, 7 2026
         name: The American Business Awards®
         description: >-
           All U.S.-based organizations are eligible to participate in the top
@@ -485,12 +485,26 @@ pageSections:
         colorScheme: inherit
         brandColor: '#660000'
       - logo:
+          source: /src/assets/images/apsa-hc-0220.png
+          alt: Asia-Pacific Stevie Awards
+        eventPhoto:
+          source: /src/assets/images/54518906548-26884cbae4-o.jpg
+          alt: Asia-Pacific Stevie Awards
+        dateLabel: October 14, 2026
+        name: Asia-Pacific Stevie® Awards
+        description: >-
+          The Asia-Pacific Stevie Awards are open to all organizations in the 29
+          markets of the Asia-Pacific region.
+        link: https://asia.stevieawards.com
+        colorScheme: inherit
+        brandColor: '#a01310'
+      - logo:
           source: /src/assets/images/menasa-h-0420.png
           alt: Middle East & North Africa Stevie Awards
         eventPhoto:
           source: /src/assets/images/53565954489-6d7913fedb-o.jpg
           alt: The Middle East & North Africa Stevie Awards
-        dateLabel: September 2026
+        dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
         description: >-
           The Middle East & North Africa Stevie Awards recognize innovation in
@@ -500,26 +514,12 @@ pageSections:
         colorScheme: inherit
         brandColor: '#009848'
       - logo:
-          source: /src/assets/images/apsa-hc-0220.png
-          alt: Asia-Pacific Stevie Awards
-        eventPhoto:
-          source: /src/assets/images/54518906548-26884cbae4-o.jpg
-          alt: Asia-Pacific Stevie Awards
-        dateLabel: October 2026
-        name: Asia-Pacific Stevie® Awards
-        description: >-
-          The Asia-Pacific Stevie Awards are open to all organizations in the 29
-          markets of the Asia-Pacific region.
-        link: https://asia.stevieawards.com
-        colorScheme: inherit
-        brandColor: '#a01310'
-      - logo:
           source: /src/assets/images/gsa-hc-0220.png
           alt: The German Stevie Awards
         eventPhoto:
           source: /src/assets/images/54062370686-038444a2c2-o.jpg
           alt: The German Stevie Awards
-        dateLabel: ''
+        dateLabel: NOW
         name: The German Stevie® Awards
         description: >-
           The German Stevie Awards are open to all organizations in the European
