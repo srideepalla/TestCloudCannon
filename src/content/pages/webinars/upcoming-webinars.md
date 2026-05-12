@@ -8,18 +8,13 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: ' 2026 Stevie® Awards for Women in Business Program Webinar'
     text: >-
-      Every organization has accomplishments worthy of recognition, but
-      condensing your accolades into a Stevie Awards nomination that stands out
-      can be challenging. Join our free, live webinar about the 2026 Stevie®
-      Awards for Women in Business to learn more about the nomination and
-      judging processes, what’s new this year, and tips on how to craft a
-      success story that presents your achievements to the judges in the
-      strongest possible light.
-
-
-      You’ll also get guidance on selecting the right categories for your
-      achievements and have the opportunity to ask questions directly to Stevie
-      Awards Founder, Michael Gallagher, during a live Q&A.
+      Join our free, live webinar about the 2026 Stevie® Awards for Women in
+      Business to learn more about the nomination and judging processes, what’s
+      new this year, and tips on how to craft a success story that presents your
+      achievements to the judges in the strongest possible light. You’ll also
+      get guidance on selecting the right categories for your achievements and
+      have the opportunity to ask questions directly to Stevie Awards Founder,
+      Michael Gallagher, during a live Q&A.
 
 
       ###### **Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br>Winning
@@ -405,7 +400,7 @@ pageSections:
     subheading: Get in Touch
     heading: Contact Us
     description: >-
-      Questions about the Women|Future Webinars? Send us a message and a member
+      Questions about the Women\|Future Webinars? Send us a message and a member
       of our team will get back to you.
     list:
       _component: building-blocks/wrappers/article-link-list
