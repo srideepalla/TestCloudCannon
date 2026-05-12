@@ -233,7 +233,7 @@ pageSections:
       data-test-id="embedded-form-4efdd4d5-a101-48a9-a83a-de234d43d7e9"
       title="Form" scrolling="no" style="border: none; height: 100%; width:
       100%;"></iframe></div></div> </div>
-    formCardColorScheme: dark
+    formCardColorScheme: light
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/grid-videos
