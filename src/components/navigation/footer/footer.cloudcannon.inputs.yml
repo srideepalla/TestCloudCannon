@@ -12,7 +12,7 @@ quickLinks:
   type: array
   comment: "Navigation links shown in the Quick Links column (e.g. Blog through Contact Us)."
   options:
-    structures: _structures.linkItems
+    structures: _structures.links
 newsletterHeading:
   type: text
   comment: "Heading for the newsletter / stay connected column."
@@ -26,48 +26,24 @@ socials:
   type: array
   comment: "Social media links shown beneath the newsletter content."
   options:
-    structures: _structures.socialItems
+    structures:
+      values:
+        - label: Social Link
+          icon: share
+          value:
+            icon: ""
+            link: ""
+            label: ""
+          _inputs:
+            icon:
+              type: text
+              comment: "Icon name for the social media platform (e.g. social/linkedin)."
+            link:
+              type: url
+              comment: "URL to the social media profile."
+            label:
+              type: text
+              comment: "Accessible label for the icon button (e.g. LinkedIn)."
 footerText:
   type: text
   comment: "Legal / copyright text shown at the bottom of the footer."
-_structures:
-  linkItems:
-    values:
-      - label: Navigation Link
-        icon: link
-        value:
-          name: ""
-          path: ""
-          openInNewTab: false
-        _inputs:
-          name:
-            type: text
-            comment: "Display text for the navigation link."
-          path:
-            type: url
-            comment: "URL path for the navigation link."
-            options:
-              hide_link_to_file: true
-              hide_link_to_email_address: true
-              hide_link_to_telephone: true
-          openInNewTab:
-            type: switch
-            comment: "Open this link in a new browser tab (useful for external links like Blog or Store)."
-  socialItems:
-    values:
-      - label: Social Link
-        icon: share
-        value:
-          icon: ""
-          link: ""
-          label: ""
-        _inputs:
-          icon:
-            type: text
-            comment: "Icon name for the social media platform (e.g. social/linkedin)."
-          link:
-            type: url
-            comment: "URL to the social media profile."
-          label:
-            type: text
-            comment: "Accessible label for the icon button (e.g. LinkedIn)."

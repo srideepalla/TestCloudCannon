@@ -514,7 +514,7 @@ file_config:
         type: array
         comment: The links for the quick actions (menu from button on bottom right of screen) section.
         options:
-          structures: _structures.linkItems
+          structures: _structures.links
 _inputs:
   pageSections:
     comment: The main sections of the page.
