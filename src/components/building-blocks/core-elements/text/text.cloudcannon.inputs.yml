@@ -15,10 +15,6 @@ text:
     numberedlist: true
     indent: true
     outdent: true
-    left: "align-left"
-    center: "align-center"
-    right: "align-right"
-    justify: "align-justify"
     styles: /.cloudcannon/styles/editor.css
 size:
   type: select

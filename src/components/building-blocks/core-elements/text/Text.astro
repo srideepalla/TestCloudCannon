@@ -187,10 +187,10 @@ if (!_component && !hasText && !hasSlotContent) return;
           color: red;
         }
 
-        .align-left { text-align: left; }
-        .align-center { text-align: center; }
-        .align-right { text-align: right; }
-        .align-justify { text-align: justify; }
+        :global(.align-left) { text-align: left; }
+        :global(.align-center) { text-align: center; }
+        :global(.align-right) { text-align: right; }
+        :global(.align-justify) { text-align: justify; }
       }
     }
   }
