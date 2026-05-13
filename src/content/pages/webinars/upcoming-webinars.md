@@ -400,7 +400,7 @@ pageSections:
       Partner Inquiries" loading="lazy" scrolling="no" style="border:none;
       width:100%; height:900px; margin-top:-80px;
       display:block;"></iframe></div>
-    formCardColorScheme: dark
+    formCardColorScheme: light
     formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
@@ -421,7 +421,7 @@ pageSections:
       Event Updates" loading="lazy" scrolling="no" style="border:none;
       width:100%; height:1400px; margin-top:-80px;
       display:block;"></iframe></div>
-    formCardColorScheme: dark
+    formCardColorScheme: light
     formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
@@ -441,7 +441,7 @@ pageSections:
       src="https://share.hsforms.com/1JLe6ZTExSqS6ATMvwbHJqgrif" title="WFW
       Contact Us" loading="lazy" scrolling="no" style="border:none; width:100%;
       height:900px; margin-top:-50px; display:block;"></iframe></div>
-    formCardColorScheme: dark
+    formCardColorScheme: light
     formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
