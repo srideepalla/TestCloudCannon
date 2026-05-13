@@ -5,35 +5,42 @@
     {
       "name": "ABOUT",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "About Us",
           "path": "/about/about-us",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "FAQ",
           "path": "/about/faq",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Calendar",
           "path": "/about/calendar",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Staff",
           "path": "/about/staff",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Stevie Awards Update Newsletter",
           "path": "/about/newsletter",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Contact",
           "path": "/about/contact",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -41,66 +48,81 @@
     {
       "name": "THE AWARDS",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "Categories",
           "path": "/awards/categories/",
+          "openInNewTab": false,
           "children": [
             {
               "name": "Achievement Categories",
-              "path": "/Awards/Categories/achievement-categories/"
+              "path": "/Awards/Categories/achievement-categories/",
+              "openInNewTab": false
             },
             {
               "name": "Achievement in Communications, Marketing or PR",
-              "path": "/awards/categories/achievement-in-communications-marketing-pr-categories/"
+              "path": "/awards/categories/achievement-in-communications-marketing-pr-categories/",
+              "openInNewTab": false
             },
             {
               "name": "Artificial Intelligence (AI) and Technology Categories ",
-              "path": "/awards/categories/AI-Technology-Categories"
+              "path": "/awards/categories/AI-Technology-Categories",
+              "openInNewTab": false
             },
             {
               "name": "Company/Organization (Women-Owned or -Led) Awards Categories",
-              "path": "/awards/categories/Company-Organization-Awards-Categories"
+              "path": "/awards/categories/Company-Organization-Awards-Categories",
+              "openInNewTab": false
             },
             {
               "name": "Individual Women Awards Categories",
-              "path": "/awards/categories/Individual-Women-Awards-Categories/"
+              "path": "/awards/categories/Individual-Women-Awards-Categories/",
+              "openInNewTab": false
             },
             {
               "name": "Media Awards Categories",
-              "path": "/awards/categories/media-awards-categories/"
+              "path": "/awards/categories/media-awards-categories/",
+              "openInNewTab": false
             },
             {
               "name": "New Product & Service (Developed for/by Women) Awards Categories ",
-              "path": "/awards/categories/New-Product-Service-Awards-Categories"
+              "path": "/awards/categories/New-Product-Service-Awards-Categories",
+              "openInNewTab": false
             },
             {
               "name": "Social Media Categories ",
-              "path": "/awards/categories/Social-Media-Categories/"
+              "path": "/awards/categories/Social-Media-Categories/",
+              "openInNewTab": false
             },
             {
               "name": "Sustainability Categories",
-              "path": "/awards/categories/Sustainability-Categories"
+              "path": "/awards/categories/Sustainability-Categories",
+              "openInNewTab": false
             },
             {
               "name": "Thought Leadership Categories",
-              "path": "/awards/categories/Thought-Leadership-Categories/"
+              "path": "/awards/categories/Thought-Leadership-Categories/",
+              "openInNewTab": false
             }
           ]
         },
         {
           "name": "The Stevie® Award Trophy",
           "path": "/awards/thestevieaward/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "2025 Stevie Award Winners",
-          "path": "/awards/sawib-winners/",
+          "path": "/awards/2025-sawib-winners/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "The Top 5 Awards",
           "path": "/awards/top-5-awards/",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -108,40 +130,48 @@
     {
       "name": "ENTER",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "How To Enter",
           "path": "/enter/how-to-enter",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Regulations, Terms & Conditions",
           "path": "/enter/regulations-terms-conditions",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Entry Preparation Tips",
           "path": "/enter/entry-preparation-tips",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Entry Fees",
           "path": "/enter/entry-fees",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "10 Reasons to Enter",
           "path": "/enter/10-reasons-enter",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "How to Submit Winning Entries",
           "path": "/enter/how-to-submit-winning-entries",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "What's New & Different for 2026",
           "path": "/enter/whats-new-different",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -149,20 +179,24 @@
     {
       "name": "JUDGES",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "Apply to Be a Judge",
           "path": "/judges/you-be-the-judge",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Judging & Awards Process",
           "path": "/judges/judging-awards-process",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Judging Committees",
           "path": "/judges/judging-committees",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -170,15 +204,18 @@
     {
       "name": "SPONSORS",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "Become a Sponsor",
           "path": "/sponsors/become-sponsor/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Supporting Sponsorship",
           "path": "/sponsors/supporting-sponsorship/",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -186,25 +223,30 @@
     {
       "name": "PRESS",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "Media Inquiry",
           "path": "/press/media-inquiry/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Press Releases",
           "path": "/press/press-releases/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Press Clippings",
           "path": "/press/press-clippings/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Photos and Logos",
           "path": "/press/photos-and-logos/",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -212,15 +254,18 @@
     {
       "name": "TICKETS",
       "path": "",
+      "openInNewTab": false,
       "children": [
         {
           "name": "Awards Banquet",
           "path": "/tickets/awards-banquet/",
+          "openInNewTab": false,
           "children": []
         },
         {
           "name": "Watch Awards Presentations",
           "path": "/tickets/watch-awards-presentations/",
+          "openInNewTab": false,
           "children": []
         }
       ]
@@ -234,6 +279,7 @@
     {
       "name": "WEBINARS",
       "path": "/webinars/upcoming-webinars/",
+      "openInNewTab": false,
       "children": []
     }
   ],
