@@ -163,7 +163,7 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers.png
+                source: /src/assets/images/june-speakers-3.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
