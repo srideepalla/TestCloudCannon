@@ -421,11 +421,16 @@ pageSections:
     buttonSections: []
     formHeading:
     formEmbed: >-
-      <div style="overflow:hidden; height:790px; padding-top:20px;"><iframe
-      src="https://share.hsforms.com/1q4-6ZPRHT2u19ve5YM3QVArif" title="WFW
-      Event Updates" loading="lazy" scrolling="no" style="border:none;
-      width:100%; height:1400px; margin-top:-80px;
-      display:block;"></iframe></div>
+      <script charset="utf-8" type="text/javascript"
+      src="//js.hsforms.net/forms/embed/v2.js"></script>
+
+      <script>
+        hbspt.forms.create({
+          portalId: "35655",
+          formId: "ab8fba64-f447-4f6b-b5f6-f7b960cdd054",
+          region: "na1"
+        });
+      </script>
     formCardColorScheme: light
     formCardBackgroundColor: none
     colorScheme: light
