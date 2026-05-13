@@ -124,6 +124,12 @@
           "path": "/awards/top-5-awards/",
           "openInNewTab": false,
           "children": []
+        },
+        {
+          "name": "Winners' Circle",
+          "path": "/awards/2025-winnerscircle/",
+          "openInNewTab": false,
+          "children": []
         }
       ]
     },
