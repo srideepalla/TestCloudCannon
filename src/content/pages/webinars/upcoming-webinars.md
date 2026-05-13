@@ -401,7 +401,7 @@ pageSections:
       width:100%; height:900px; margin-top:-80px;
       display:block;"></iframe></div>
     formCardColorScheme: dark
-    formCardBackgroundColor: base
+    formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
@@ -422,7 +422,7 @@ pageSections:
       width:100%; height:1400px; margin-top:-80px;
       display:block;"></iframe></div>
     formCardColorScheme: dark
-    formCardBackgroundColor: base
+    formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
@@ -442,7 +442,7 @@ pageSections:
       Contact Us" loading="lazy" scrolling="no" style="border:none; width:100%;
       height:900px; margin-top:-50px; display:block;"></iframe></div>
     formCardColorScheme: dark
-    formCardBackgroundColor: base
+    formCardBackgroundColor: none
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/builders/custom-section
