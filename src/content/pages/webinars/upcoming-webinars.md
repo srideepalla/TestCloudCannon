@@ -41,10 +41,13 @@ pageSections:
         width:
         height:
         rounded: false
+        alignX: center
         aspectRatio: none
         positionVertical: center
         positionHorizontal: center
         priority: false
+        link: ''
+        openInNewTab: false
     maxContentWidth: xl
     paddingHorizontal: xl
     paddingVertical: sm
@@ -56,6 +59,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Intro
@@ -104,6 +108,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Top Banner Image
@@ -117,10 +122,13 @@ pageSections:
           - 960
           - 1920
         rounded: false
+        alignX: center
         aspectRatio: horizontal-strip
         positionVertical: center
         positionHorizontal: center
         priority: false
+        link: ''
+        openInNewTab: false
     maxContentWidth: xl
     paddingHorizontal: lg
     paddingVertical: md
@@ -132,6 +140,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Webinar Sessions
@@ -152,17 +161,20 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-website-1.png
+                source: /src/assets/images/june-speakers-2.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
                   - 800
                 rounded: true
-                aspectRatio: widescreen
+                alignX: center
+                aspectRatio: square
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
+                link: ''
+                openInNewTab: false
               - _component: building-blocks/core-elements/heading
                 text: June 17, 2026
                 level: h3
@@ -191,10 +203,13 @@ pageSections:
                   - 400
                   - 800
                 rounded: true
+                alignX: center
                 aspectRatio: widescreen
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
+                link: ''
+                openInNewTab: false
               - _component: building-blocks/core-elements/heading
                 text: July 15, 2026
                 level: h3
@@ -223,10 +238,13 @@ pageSections:
                   - 400
                   - 800
                 rounded: true
+                alignX: center
                 aspectRatio: widescreen
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
+                link: ''
+                openInNewTab: false
               - _component: building-blocks/core-elements/heading
                 text: August 12, 2026
                 level: h3
@@ -247,7 +265,7 @@ pageSections:
               - _component: building-blocks/core-elements/spacer
                 size: md
         gap: lg
-    maxContentWidth: lg
+    maxContentWidth: 2xl
     paddingHorizontal: lg
     paddingVertical: lg
     colorScheme: light
@@ -258,6 +276,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Why Register
@@ -289,6 +308,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Audience
@@ -320,6 +340,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Mission and Tagline
@@ -351,6 +372,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/features/split-list-form
     subheading: Partner With Us
@@ -374,6 +396,7 @@ pageSections:
       width:100%; height:900px; margin-top:-80px;
       display:block;"></iframe></div>
     formCardColorScheme: dark
+    formCardBackgroundColor: base
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
@@ -394,6 +417,7 @@ pageSections:
       width:100%; height:1400px; margin-top:-80px;
       display:block;"></iframe></div>
     formCardColorScheme: dark
+    formCardBackgroundColor: base
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
@@ -413,6 +437,7 @@ pageSections:
       Contact Us" loading="lazy" scrolling="no" style="border:none; width:100%;
       height:900px; margin-top:-50px; display:block;"></iframe></div>
     formCardColorScheme: dark
+    formCardBackgroundColor: base
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/builders/custom-section
@@ -505,6 +530,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Bottom Banner Image
@@ -518,10 +544,13 @@ pageSections:
           - 960
           - 1920
         rounded: false
+        alignX: center
         aspectRatio: horizontal-strip
         positionVertical: center
         positionHorizontal: center
         priority: false
+        link: ''
+        openInNewTab: false
     maxContentWidth: md
     paddingHorizontal: 2xl
     paddingVertical: xl
@@ -533,6 +562,7 @@ pageSections:
       positionVertical: top
       positionHorizontal: center
     rounded: false
+    brandColorOverride: ''
     useDefaultEditableBinding: true
 pageHeading: Webinars
 sidebarCollection: webinars
