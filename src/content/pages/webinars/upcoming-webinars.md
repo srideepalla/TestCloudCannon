@@ -124,7 +124,7 @@ pageSections:
           - 1920
         rounded: false
         alignX: center
-        aspectRatio: horizontal-strip
+        aspectRatio: none
         positionVertical: center
         positionHorizontal: center
         priority: false
