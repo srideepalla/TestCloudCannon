@@ -252,12 +252,6 @@
       ]
     },
     {
-      "name": "STORE",
-      "path": "https://stevieawards.myshopify.com/",
-      "openInNewTab": true,
-      "children": []
-    },
-    {
       "name": "TICKETS",
       "path": "",
       "openInNewTab": false,
@@ -275,6 +269,12 @@
           "children": []
         }
       ]
+    },
+    {
+      "name": "STORE",
+      "path": "https://stevieawards.myshopify.com/",
+      "openInNewTab": true,
+      "children": []
     },
     {
       "name": "WEBINARS",
