@@ -10,15 +10,15 @@ pageSections:
     subheading: Entries Now Open
     heading: The 23rd Annual Stevie® Awards for Women in Business
     description: >-
-      Recognize excellence in women-led achievement across every industry. The
+      Recognizing excellence in women-led achievement across every industry. The
       Stevie® Awards for Women in Business are the world’s premier business
       awards honoring female entrepreneurs, executives, employees, and the
       organizations they run.
 
 
-      Request your Entry Kit today to learn how to submit nominations to join
-      distinguished Stevie® Award winners such as AT&T Business, Salesforce,
-      It's a 10, and Watsons.
+      Request your entry kit today to learn how to submit nominations. Join the
+      pantheon of distinguished Stevie® Award winners such as AT&T Business,
+      Salesforce, It's a 10, and Watsons.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -49,18 +49,18 @@ pageSections:
     heading: Award Categories
     description: >-
       For more than 20 years, the Stevie® Awards for Women in Business have
-      shined a spotlight on women-owned and led organizations of every type and
-      size worldwide: large and small, public and private, for-profit and
-      non-profit. The 2025 competition attracted more than 1,500 nominations
-      submitted by organizations and individuals in 48 nations.
+      shined a spotlight on women and women-owned and led organizations of every
+      type and size worldwide: large and small, public and private, for-profit
+      and non-profit. The 2025 competition attracted more than 1,500 nominations
+      from 48 nations.
 
 
       Female entrepreneurs, executives, employees, and the organizations they
-      run, worldwide, are eligible to be nominated. With more than 150
+      run, worldwide, are eligible to be nominated. With more than 200
       categories spanning a wide range of workplace achievements, you can submit
-      nominations that showcase your organization's unique impact and values.
-      The 2026 program introduces new categories recognizing Women in Artificial
-      Intelligence, XYZ, and more.
+      nominations that showcase your unique impact and values. The 2026 program
+      introduces new categories recognizing achievements in artificial
+      intelligence and technology.
     list:
       _component: building-blocks/core-elements/list
       items:
@@ -121,14 +121,15 @@ pageSections:
       data-form-id="2ff4cb10-a9ba-4cd4-aa1f-a0de3a9f3530"
       data-portal-id="35655"></div>
     formCardColorScheme: light
+    formCardBackgroundColor: base
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
     heading: Past Winners in the Stevie® Awards for Women in Business
     description: >-
-      Each year, women-owned small and mid-sized businesses are recognized
-      alongside female leaders from global corporations such as IBM, Mastercard,
-      and Microsoft. Past winners include:
+      Each year, female small business owners and entrepreneurs are recognized
+      along with women executives from global corporations such as IBM,
+      Mastercard, and Microsoft. Past winners include:
     logos:
       - source: /src/assets/images/estelauder.png
         alt: estee
@@ -234,6 +235,7 @@ pageSections:
       title="Form" scrolling="no" style="border: none; height: 100%; width:
       100%;"></iframe></div></div> </div>
     formCardColorScheme: light
+    formCardBackgroundColor: base
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/grid-videos
@@ -290,7 +292,7 @@ pageSections:
           love the feedback from the judges; there aren't many awards that give
           you feedback and it is so valuable.
         authorName: Annette Densham
-        authorTitle: ', Founder & CEO, Award Writing Services, Indonesia'
+        authorTitle: ', Founder &amp; CEO, Award Writing Services, Indonesia'
         companyLogo:
           source: /src/assets/images/new-website-testimonial-logos-3-1.png
           alt:
@@ -336,7 +338,7 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
-    heading: Event Gallery
+    heading: 2025 Event Gallery
     description: >-
       Stevie Award Winners are celebrated around the world at our red-carpet
       awards galas, where they present an acceptance speech on stage before an
@@ -422,6 +424,10 @@ pageSections:
         link: https://iba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#003366'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/sage-hc-0220.png
           alt: Stevie Awards for Great Employers
@@ -438,6 +444,10 @@ pageSections:
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/sate-hc.png
           alt: Stevie Awards for Technology Excellence
@@ -455,6 +465,10 @@ pageSections:
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/sascs-v2-hc-0220.png
           alt: Stevie Awards for Sales & Customer Service
@@ -470,6 +484,10 @@ pageSections:
         link: https://sales.stevieawards.comp
         colorScheme: inherit
         brandColor: '#99844b'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/aba-hc-0220.png
           alt: The American Business Awards
@@ -484,6 +502,10 @@ pageSections:
         link: https://aba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#660000'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/apsa-hc-0220.png
           alt: Asia-Pacific Stevie Awards
@@ -498,6 +520,10 @@ pageSections:
         link: https://asia.stevieawards.com
         colorScheme: inherit
         brandColor: '#a01310'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/menasa-h-0420.png
           alt: Middle East & North Africa Stevie Awards
@@ -513,6 +539,10 @@ pageSections:
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
       - logo:
           source: /src/assets/images/gsa-hc-0220.png
           alt: The German Stevie Awards
@@ -528,6 +558,10 @@ pageSections:
         link: https://gsa.stevieawards.com/
         colorScheme: inherit
         brandColor: '#00209f'
+        textColor: ''
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
     colorScheme: light
     backgroundColor: base
 ---
