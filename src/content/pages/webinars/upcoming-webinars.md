@@ -46,8 +46,9 @@ pageSections:
         positionVertical: center
         positionHorizontal: center
         priority: false
-        link: ''
-        openInNewTab: false
+        link: >-
+          https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA?lmt=1778251334000
+        openInNewTab: true
     maxContentWidth: xl
     paddingHorizontal: xl
     paddingVertical: sm
@@ -127,8 +128,9 @@ pageSections:
         positionVertical: center
         positionHorizontal: center
         priority: false
-        link: ''
-        openInNewTab: false
+        link: >-
+          https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
+        openInNewTab: true
     maxContentWidth: xl
     paddingHorizontal: lg
     paddingVertical: md
@@ -161,7 +163,7 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers-2.png
+                source: /src/assets/images/june-speakers.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -169,12 +171,13 @@ pageSections:
                   - 800
                 rounded: true
                 alignX: center
-                aspectRatio: square
+                aspectRatio: portrait
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
-                link: ''
-                openInNewTab: false
+                link: >-
+                  https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
+                openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: June 17, 2026
                 level: h3
@@ -196,7 +199,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/july-website-1.png
+                source: /src/assets/images/june-speakers.png
                 alt: Women|Future Webinar — July 15, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -204,12 +207,13 @@ pageSections:
                   - 800
                 rounded: true
                 alignX: center
-                aspectRatio: widescreen
+                aspectRatio: portrait
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
-                link: ''
-                openInNewTab: false
+                link: >-
+                  https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+                openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: July 15, 2026
                 level: h3
@@ -231,7 +235,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/august-website.png
+                source: /src/assets/images/june-speakers.png
                 alt: Women|Future Webinar — August 12, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -239,12 +243,13 @@ pageSections:
                   - 800
                 rounded: true
                 alignX: center
-                aspectRatio: widescreen
+                aspectRatio: portrait
                 positionVertical: center
                 positionHorizontal: center
                 priority: false
-                link: ''
-                openInNewTab: false
+                link: >-
+                  https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
+                openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: August 12, 2026
                 level: h3
