@@ -13,7 +13,7 @@ value:
   width:
   height:
   rounded: false
-  alignX: start
+  alignX: center
   aspectRatio: none
   positionVertical: center
   positionHorizontal: center
