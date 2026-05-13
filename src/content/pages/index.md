@@ -353,9 +353,9 @@ pageSections:
       in Business at the Marriott Marquis Hotel in New York City. Finalists will
       be pre-announced in September, and the Gold, Silver, and Bronze Stevie
       Award placements among those Finalists will be revealed live during the
-      awards ceremony. ** ** Attendance is optional and not required to win, but
-      all Finalists are invited to join the ceremony, network with hundreds of
-      women business leaders and entrepreneurs worldwide, and enjoy professional
+      awards ceremony. Attendance is optional and not required to win, but all
+      Finalists are invited to join the ceremony, network with hundreds of women
+      business leaders and entrepreneurs worldwide, and enjoy professional
       photography and red carpet interviews. Gold Stevie Award winners will be
       invited to deliver an acceptance speech on stage.Visit our [FAQ
       page](/about/faq) for more details about the ceremony.
