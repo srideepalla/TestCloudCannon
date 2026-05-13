@@ -448,12 +448,6 @@ pageSections:
   - _component: page-sections/builders/custom-section
     label: Follow Us
     contentSections:
-      - _component: building-blocks/core-elements/heading
-        text:
-        level: h4
-        size: xl
-        alignX: center
-        iconPosition: before
       - _component: building-blocks/core-elements/text
         text: >-
           **Follow Us!** We post the latest updates on our social media pages
