@@ -388,12 +388,12 @@ pageSections:
       visibility during our webinars attended by hundreds of business leaders
       and entrepreneurs worldwide. Email
       [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) for 2026
-      sponsorship opportunities, or complete the form.
+      sponsorship opportunities, or complete the form below.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: Partner Inquiries
+    formHeading:
     formEmbed: >-
       <div style="overflow:hidden; height:487px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1PTeidvLDSjOlEbhYaqPCMQrif" title="WFW
@@ -408,13 +408,13 @@ pageSections:
     subheading: Stay in the Loop
     heading: Join Our Mailing List
     description: >-
-      Fill out your information below, and we'll send you important updates
-      about the webinar series.
+      Fill out your information below, and we'll send you important email
+      updates about the webinar series.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: Email Updates
+    formHeading:
     formEmbed: >-
       <div style="overflow:hidden; height:790px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1q4-6ZPRHT2u19ve5YM3QVArif" title="WFW
@@ -435,7 +435,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories: []
     buttonSections: []
-    formHeading: Contact Us
+    formHeading:
     formEmbed: >-
       <div style="overflow:hidden; height:460px; padding-top:20px;"><iframe
       src="https://share.hsforms.com/1JLe6ZTExSqS6ATMvwbHJqgrif" title="WFW
