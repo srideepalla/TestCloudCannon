@@ -350,10 +350,14 @@ pageSections:
 
       Winners in the 2026 competition will be revealed and celebrated on
       November 16 during the awards banquet of the 23rd Stevie Awards for Women
-      in Business at the Marriott Marquis Hotel in New York City. While
-      attendance is not required to win, all winners who attend have the
-      opportunity to deliver an acceptance speech on stage and be professionally
-      photographed and interviewed on our red carpet. Visit our [FAQ
+      in Business at the Marriott Marquis Hotel in New York City. Finalists will
+      be pre-announced in September, and the Gold, Silver, and Bronze Stevie
+      Award placements among those Finalists will be revealed live during the
+      awards ceremony. ** ** Attendance is optional and not required to win, but
+      all Finalists are invited to join the ceremony, network with hundreds of
+      women business leaders and entrepreneurs worldwide, and enjoy professional
+      photography and red carpet interviews. Gold Stevie Award winners will be
+      invited to deliver an acceptance speech on stage.Visit our [FAQ
       page](/about/faq) for more details about the ceremony.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg

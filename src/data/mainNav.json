@@ -269,6 +269,12 @@
           "children": []
         },
         {
+          "name": "2025 Event Gallery",
+          "path": "/tickets/event-gallery/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
           "name": "Watch Awards Presentations",
           "path": "/tickets/watch-awards-presentations/",
           "openInNewTab": false,
