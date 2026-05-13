@@ -71,3 +71,16 @@ backgroundColor:
         name: Accent
       - id: highlight
         name: Highlight
+
+formCardBackgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
