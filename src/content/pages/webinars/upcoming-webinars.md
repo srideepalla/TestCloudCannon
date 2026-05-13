@@ -395,11 +395,16 @@ pageSections:
     buttonSections: []
     formHeading:
     formEmbed: >-
-      <div style="overflow:hidden; height:487px; padding-top:20px;"><iframe
-      src="https://share.hsforms.com/1PTeidvLDSjOlEbhYaqPCMQrif" title="WFW
-      Partner Inquiries" loading="lazy" scrolling="no" style="border:none;
-      width:100%; height:900px; margin-top:-80px;
-      display:block;"></iframe></div>
+      <script charset="utf-8" type="text/javascript"
+      src="//js.hsforms.net/forms/embed/v2.js"></script>
+
+      <script>
+        hbspt.forms.create({
+          portalId: "35655",
+          formId: "3d37a276-f2c3-4a33-a511-b8586aa3c231",
+          region: "na1"
+        });
+      </script>
     formCardColorScheme: light
     formCardBackgroundColor: none
     colorScheme: light
