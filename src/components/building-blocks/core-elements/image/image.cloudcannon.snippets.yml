@@ -23,6 +23,10 @@ image:
       - editor_key: rounded
         type: boolean
         optional: true
+      - editor_key: alignX
+        type: string
+        optional: true
+        remove_empty: true
       - editor_key: aspectRatio
         type: string
         optional: true
