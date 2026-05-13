@@ -47,6 +47,7 @@ displayWidth:
 alignX:
   type: select
   comment: Horizontal alignment of the image when narrower than its container.
+  default: center
   options:
     values:
       - id: start

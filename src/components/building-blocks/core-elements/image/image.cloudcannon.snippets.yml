@@ -27,7 +27,6 @@ image:
         type: string
         optional: true
         remove_empty: true
-        default: center
       - editor_key: aspectRatio
         type: string
         optional: true
