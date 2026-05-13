@@ -150,9 +150,9 @@ pageSections:
       - _component: building-blocks/core-elements/heading
         text: >-
           Sign up individually for each Women|Future Webinar session you wish to
-          attend below:
+          attend:
         level: h1
-        size: lg
+        size: md
         alignX: center
         iconPosition: before
       - _component: building-blocks/wrappers/grid
@@ -163,7 +163,7 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers-3.png
+                source: /src/assets/images/june-websitespeakers.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -199,7 +199,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers.png
+                source: /src/assets/images/july-webbsitespeakers.png
                 alt: Women|Future Webinar — July 15, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -235,7 +235,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers.png
+                source: /src/assets/images/august-websitewebbsitespeakers.png
                 alt: Women|Future Webinar — August 12, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
