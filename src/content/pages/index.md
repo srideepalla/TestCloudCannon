@@ -309,17 +309,18 @@ pageSections:
           source: /src/assets/images/1-primary-b.webp
           alt: minutiae
       - quote: >-
-          To be recognised among such extraordinary women in business is an
-          honour - especially for work rooted in care, community, and
-          innovation. This nomination reflects not only my journey as a founder,
-          but also the work we do at Hoama Group, my commitment to mentoring
-          entrepreneurs, advocating for disabled leadership, and shaping what
-          care can be. I’m proud to represent the UK on a global stage.
-        authorName: Umbreen David
-        authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
+          Winning a Stevie Award in Achievement in Developing and Promoting
+          Women is such a powerful recognition of the work we do to elevate
+          emerging female leaders. It reinforces our belief that when women are
+          equipped with the right capabilities, confidence and coaching, they
+          transform not only their teams but entire organisations. This honour
+          fuels our mission to continue building pathways for women to rise with
+          clarity, courage and impact.
+        authorName: Angie Dunn
+        authorTitle: Founder & Coach, Agile Performance, Australia
         companyLogo:
-          source: /src/assets/images/1776687642441.jpg
-          alt: hoama
+          source: /src/assets/images/1630643398974.jpg
+          alt: Agile
       - quote: >-
           Winning Female Thought Leader of the Year is an incredible honor that
           validates the dedication and passion I pour into advancing mental
