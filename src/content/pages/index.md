@@ -275,9 +275,9 @@ pageSections:
           business to New York for the Stevie Awards for Women in Business in
           2017. I love the event and mixing with other amazing winners. It's
           always so well done and professional. The Stevie Awards process is one
-          of integrity, the judging is fair and the process is easy to follow. I
-          love the feedback from the judges; there aren't many awards that give
-          you feedback and it is so valuable.
+          of integrity, easy to follow, and the judging is fair. I love the
+          feedback from the judges; there aren't many awards that give you
+          feedback and it is so valuable.
         authorName: Annette Densham
         authorTitle: Founder & CEO, Award Writing Services, Indonesia
         companyLogo:
@@ -321,11 +321,11 @@ pageSections:
           source: /src/assets/images/images.jpg
           alt: chargeback
       - quote: >-
-          Winning the Female Thought Leader of the Year Stevie Award is an
-          incredible honor that validates the dedication and passion I pour into
-          advancing mental health and wellness in the workplace. For both myself
-          and my organization, this recognition is a testament to our commitment
-          to creating meaningful, human-centered benefits that support the
+          Winning Female Thought Leader of the Year is an incredible honor that
+          validates the dedication and passion I pour into advancing mental
+          health and wellness in the workplace. For both myself and my
+          organization, this recognition is a testament to our commitment to
+          creating meaningful, human-centered benefits that support the
           well-being of individuals globally. It inspires us to continue driving
           impactful change in the way mental health and wellness are understood
           and prioritized.
