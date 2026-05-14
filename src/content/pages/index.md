@@ -318,7 +318,7 @@ pageSections:
         authorName: Marissa Candy
         authorTitle: Founder/CEO, The Marketing Factory, Australia
         companyLogo:
-          source: /src/assets/images/tmp6iy5dkzx.webp
+          source: /src/assets/images/66161d2ba56a397eb560a8d6.jpg
           alt: Marketingfactory
       - quote: >-
           Winning Female Thought Leader of the Year is an incredible honor that
