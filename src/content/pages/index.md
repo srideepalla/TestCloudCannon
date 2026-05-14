@@ -258,17 +258,17 @@ pageSections:
     heading: Winner Testimonials
     testimonials:
       - quote: >-
-          Not only is the prestige of winning a Stevie Award high praise, but so
-          too is the honor of serving as an example to young female
-          entrepreneurs, showing them that they can create companies based on
-          authenticity, passion, and creativity, and that those companies can
-          thrive. I couldn't be more thrilled about this distinction and all the
-          forward progress it represents.
-        authorName: Amanda Lien
-        authorTitle: Founder, Minutiae Content Co., USA
+          Winning the Gold Stevie® Award for Female Executive of the Year is a
+          deeply personal honor, but it also highlights the exceptional work and
+          dedication of the Viderity team. This recognition not only celebrates
+          my leadership, but also elevates Viderity's reputation as a company
+          that values innovation, education, and delivering impactful solutions
+          to our clients.
+        authorName: Rachel Everett
+        authorTitle: CEO, Viderity, USA
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-1.png
-          alt: minutiae
+          source: /src/assets/images/logo-03.png
+          alt: viderity
       - quote: >-
           The opportunities the Stevies give to share and be involved is heads
           above many other award programs. I started taking other people in
@@ -284,17 +284,30 @@ pageSections:
           source: /src/assets/images/award-writing-services-logo-1.webp
           alt: awardwriting
       - quote: >-
-          Winning the Gold Stevie® Award for Female Executive of the Year is a
-          deeply personal honor, but it also highlights the exceptional work and
-          dedication of the Viderity team. This recognition not only celebrates
-          my leadership, but also elevates Viderity's reputation as a company
-          that values innovation, education, and delivering impactful solutions
-          to our clients.
-        authorName: Rachel Everett
-        authorTitle: CEO, Viderity, USA
+          This is my first Stevie Award, and I’m representing my company as
+          Co-founder and CEO. This is an international recognition as well as
+          more recognition for underrepresented people in business. Our Stevie
+          Awards are going to change the way the industry looks at our company.
+          There are a lot of women in leadership positions at Chargeback Gurus,
+          and this award shows that there is space for both women and men to
+          succeed in business together.
+        authorName: Srii Srinivasan
+        authorTitle: Co-Founder, Chargeback Gurus, USA
         companyLogo:
-          source: /src/assets/images/logo-03.png
-          alt: viderity
+          source: /src/assets/images/images.jpg
+          alt: chargeback
+      - quote: >-
+          Not only is the prestige of winning a Stevie Award high praise, but so
+          too is the honor of serving as an example to young female
+          entrepreneurs, showing them that they can create companies based on
+          authenticity, passion, and creativity, and that those companies can
+          thrive. I couldn't be more thrilled about this distinction and all the
+          forward progress it represents.
+        authorName: Amanda Lien
+        authorTitle: Founder, Minutiae Content Co., USA
+        companyLogo:
+          source: /src/assets/images/1-primary-b.webp
+          alt: minutiae
       - quote: >-
           To be recognised among such extraordinary women in business is an
           honour - especially for work rooted in care, community, and
@@ -307,19 +320,6 @@ pageSections:
         companyLogo:
           source: /src/assets/images/1776687642441.jpg
           alt: hoama
-      - quote: >-
-          This is my first Stevie Award, and I’m representing my company as
-          Co-founder and CEO.  This is an international recognition as well as
-          more recognition for underrepresented people in business. Our Stevie
-          Awards are going to change the way the industry looks at our company.
-          There are a lot of women in leadership positions at Chargeback Gurus,
-          and this award shows that there is space for both women and men to
-          succeed in business together.
-        authorName: Srii Srinivasan
-        authorTitle: Co-Founder, Chargeback Gurus, USA
-        companyLogo:
-          source: /src/assets/images/images.jpg
-          alt: chargeback
       - quote: >-
           Winning Female Thought Leader of the Year is an incredible honor that
           validates the dedication and passion I pour into advancing mental
