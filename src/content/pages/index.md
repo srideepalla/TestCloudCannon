@@ -309,18 +309,17 @@ pageSections:
           source: /src/assets/images/1-primary-b.webp
           alt: minutiae
       - quote: >-
-          Winning a Stevie Award in Achievement in Developing and Promoting
-          Women is such a powerful recognition of the work we do to elevate
-          emerging female leaders. It reinforces our belief that when women are
-          equipped with the right capabilities, confidence and coaching, they
-          transform not only their teams but entire organisations. This honour
-          fuels our mission to continue building pathways for women to rise with
-          clarity, courage and impact.
-        authorName: Angie Dunn
-        authorTitle: Founder & Coach, Agile Performance, Australia
+          Winning the Stevie Awards in several categories—like Gold for
+          Achievement in Healthcare Services Marketing and Silver for Podcast of
+          the Year—really highlights our commitment to shaking things up and
+          making sure our clients stand out. These awards are a testament to our
+          impact-driven approach, which is all about helping small to medium
+          enterprises flourish.
+        authorName: Marissa Candy
+        authorTitle: Founder/CEO, The Marketing Factory, Australia
         companyLogo:
-          source: /src/assets/images/1630643398974.jpg
-          alt: Agile
+          source: /src/assets/images/tmp6iy5dkzx.webp
+          alt: Marketingfactory
       - quote: >-
           Winning Female Thought Leader of the Year is an incredible honor that
           validates the dedication and passion I pour into advancing mental
