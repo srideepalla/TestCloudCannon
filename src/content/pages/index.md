@@ -147,8 +147,8 @@ pageSections:
         alt: bugbite
       - source: /src/assets/images/babylist.jpg
         alt: babylist
-      - source: /src/assets/images/megaworld.png
-        alt: Megaworld
+      - source: /src/assets/images/hiltonsupply.webp
+        alt: hilton
       - source: /src/assets/images/playwise.png
         alt: Playwise
       - source: /src/assets/images/IBA-Winner-Salesforce.png
@@ -157,12 +157,12 @@ pageSections:
         alt: Cognizant
       - source: /src/assets/images/nextivia.png
         alt: Nextivia
-      - source: /src/assets/images/hiltonsupply.webp
-        alt: hilton
       - source: /src/assets/images/susan-g-komen-logo-svg.png
         alt: susankomen
       - source: /src/assets/images/mastercard-logo.svg
         alt: mastercard
+      - source: /src/assets/images/att.jpg
+        alt: att
       - source: /src/assets/images/brandless.png
         alt: brandless
       - source: /src/assets/images/usercentrics.png
@@ -171,6 +171,8 @@ pageSections:
         alt: Telus
       - source: /src/assets/images/images-1.png
         alt: microsoft
+      - source: /src/assets/images/megaworld-logo-and-wordmark-svg-1.png
+        alt: Megaworld
       - source: /src/assets/images/images.png
         alt: purpol
       - source: /src/assets/images/vanguard-logo.png
@@ -179,8 +181,6 @@ pageSections:
         alt: sap
       - source: /src/assets/images/sunhope.webp
         alt: sun hope
-      - source: /src/assets/images/att.jpg
-        alt: att
       - source: /src/assets/images/buyfromablackwoman.png
         alt: buyfromblackwoman
       - source: /src/assets/images/IBA/es/IBA-Winner-IBM.png
@@ -294,7 +294,7 @@ pageSections:
         authorTitle: Founder & CEO, Award Writing Services, Indonesia
         companyLogo:
           source: /src/assets/images/award-writing-services-logo-1.webp
-          alt:
+          alt: awardwriting
       - quote: >-
           Winning the Gold Stevie® Award for Female Executive of the Year is a
           deeply personal honor, but it also highlights the exceptional work and
@@ -305,7 +305,7 @@ pageSections:
         authorName: Rachel Everett
         authorTitle: CEO, Viderity, USA
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-4.png
+          source: /src/assets/images/logo-03.png
           alt: viderity
       - quote: >-
           This is my first Stevie Award, and I’m representing my company as
@@ -318,7 +318,7 @@ pageSections:
         authorName: Srii Srinivasan
         authorTitle: Co-Founder, Chargeback Gurus, USA
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-5.png
+          source: /src/assets/images/images.jpg
           alt: chargeback
       - quote: >-
           Winning the Female Thought Leader of the Year Stevie Award is an
@@ -332,7 +332,7 @@ pageSections:
         authorName: Danae Goldsmith
         authorTitle: Sr. Director of Strategic Partnerships, Workplace Options, USA
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-7.png
+          source: /src/assets/images/images-2.png
           alt: workplaceoptions
     colorScheme: light
     backgroundColor: surface
