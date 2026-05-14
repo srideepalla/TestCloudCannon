@@ -169,8 +169,7 @@ pageSections:
         alt: Usercentrics
       - source: /src/assets/images/IBA-Winner-Telus.jpg
         alt: Telus
-      - source: >-
-          /src/assets/images/398df067-a804-4b24-85b8-4306e194273d-company-logoo-microsoft-logo.png
+      - source: /src/assets/images/images-1.png
         alt: microsoft
       - source: /src/assets/images/images.png
         alt: purpol
