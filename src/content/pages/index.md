@@ -291,8 +291,8 @@ pageSections:
           There are a lot of women in leadership positions at Chargeback Gurus,
           and this award shows that there is space for both women and men to
           succeed in business together.
-        authorName: Srii Srinivasan
-        authorTitle: Co-Founder, Chargeback Gurus, USA
+        authorName:
+        authorTitle: Srii Srinivasan, Co-Founder, Chargeback Gurus, USA
         companyLogo:
           source: /src/assets/images/images.jpg
           alt: chargeback
