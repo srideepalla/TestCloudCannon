@@ -294,7 +294,7 @@ pageSections:
         authorName: Annette Densham
         authorTitle: Founder & CEO, Award Writing Services, Indonesia
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-3-1.png
+          source: /src/assets/images/award-writing-services-logo-1.webp
           alt:
       - quote: >-
           Winning the Gold Stevie® Award for Female Executive of the Year is a
