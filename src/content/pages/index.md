@@ -270,18 +270,6 @@ pageSections:
           source: /src/assets/images/new-website-testimonial-logos-1.png
           alt: minutiae
       - quote: >-
-          To be recognised among such extraordinary women in business is an
-          honour - especially for work rooted in care, community, and
-          innovation. This nomination reflects not only my journey as a founder,
-          but also the work we do at Hoama Group, my commitment to mentoring
-          entrepreneurs, advocating for disabled leadership, and shaping what
-          care can be. I’m proud to represent the UK on a global stage.
-        authorName: Umbreen David
-        authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
-        companyLogo:
-          source: /src/assets/images/1776687642441.jpg
-          alt: hoama
-      - quote: >-
           The opportunities the Stevies give to share and be involved is heads
           above many other award programs. I started taking other people in
           business to New York for the Stevie Awards for Women in Business in
@@ -307,6 +295,18 @@ pageSections:
         companyLogo:
           source: /src/assets/images/logo-03.png
           alt: viderity
+      - quote: >-
+          To be recognised among such extraordinary women in business is an
+          honour - especially for work rooted in care, community, and
+          innovation. This nomination reflects not only my journey as a founder,
+          but also the work we do at Hoama Group, my commitment to mentoring
+          entrepreneurs, advocating for disabled leadership, and shaping what
+          care can be. I’m proud to represent the UK on a global stage.
+        authorName: Umbreen David
+        authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
+        companyLogo:
+          source: /src/assets/images/1776687642441.jpg
+          alt: hoama
       - quote: >-
           This is my first Stevie Award, and I’m representing my company as
           Co-founder and CEO.  This is an international recognition as well as
