@@ -280,7 +280,7 @@ pageSections:
         authorName: Umbreen David
         authorTitle: Managing Director, Hoama Group Ltd, United Kingdom
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-6.png
+          source: /src/assets/images/1776687642441.jpg
           alt: hoama
       - quote: >-
           The opportunities the Stevies give to share and be involved is heads
