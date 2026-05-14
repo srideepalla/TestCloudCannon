@@ -75,7 +75,7 @@ const {
                 data-editable="text"
                 data-prop="authorName"
               >
-                {item.authorName}
+                {item.authorName?.trim()}
               </span>
               {item.authorTitle && (
                 <span
@@ -83,7 +83,7 @@ const {
                   data-editable="text"
                   data-prop="authorTitle"
                 >
-                  , {item.authorTitle}
+                  , {item.authorTitle.replace(/^[\s,]+/, "")}
                 </span>
               )}
             </Text>
@@ -143,6 +143,10 @@ const {
     }
     .grid-testimonials__logo .image-inner img {
       height: 40px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      margin-inline: auto;
     }
 
     .grid-testimonials .slide {

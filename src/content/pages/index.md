@@ -268,7 +268,7 @@ pageSections:
         authorName: Amanda Lien
         authorTitle: Founder, Minutiae Content Co., USA
         companyLogo:
-          source: /uploads/new-website-testimonial-logos-1.png
+          source: /src/assets/images/new-website-testimonial-logos-1.png
           alt: minutiae
       - quote: >-
           To be recognised among such extraordinary women in business is an
@@ -292,7 +292,7 @@ pageSections:
           love the feedback from the judges; there aren't many awards that give
           you feedback and it is so valuable.
         authorName: Annette Densham
-        authorTitle: ', Founder &amp; CEO, Award Writing Services, Indonesia'
+        authorTitle: Founder & CEO, Award Writing Services, Indonesia
         companyLogo:
           source: /src/assets/images/new-website-testimonial-logos-3-1.png
           alt:
