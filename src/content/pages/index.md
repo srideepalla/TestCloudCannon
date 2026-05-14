@@ -267,7 +267,7 @@ pageSections:
         authorName: Rachel Everett
         authorTitle: CEO, Viderity, USA
         companyLogo:
-          source: /src/assets/images/logo-03.png
+          source: /src/assets/images/logo-04.png
           alt: viderity
       - quote: >-
           The opportunities the Stevies give to share and be involved is heads
@@ -281,7 +281,7 @@ pageSections:
         authorName: Annette Densham
         authorTitle: Founder & CEO, Award Writing Services, Indonesia
         companyLogo:
-          source: /src/assets/images/award-writing-services-logo-1.webp
+          source: /src/assets/images/new-website-testimonial-logos-8.png
           alt: awardwriting
       - quote: >-
           This is my first Stevie Award, and I’m representing my company as
@@ -291,8 +291,8 @@ pageSections:
           There are a lot of women in leadership positions at Chargeback Gurus,
           and this award shows that there is space for both women and men to
           succeed in business together.
-        authorName:
-        authorTitle: Srii Srinivasan, Co-Founder, Chargeback Gurus, USA
+        authorName: Srii Srinivasan
+        authorTitle: Co-Founder, Chargeback Gurus, USA
         companyLogo:
           source: /src/assets/images/images.jpg
           alt: chargeback
