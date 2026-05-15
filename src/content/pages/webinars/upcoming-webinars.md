@@ -163,7 +163,7 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-websitespeakers.png
+                source: /src/assets/images/june-websitespeakers-2.png
                 alt: Women|Future Webinar — June 17, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -199,7 +199,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/july-webbsitespeakers.png
+                source: /src/assets/images/july-webbsitespeakers-1.png
                 alt: Women|Future Webinar — July 15, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
@@ -235,7 +235,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/august-websitewebbsitespeakers.png
+                source: /src/assets/images/august-websitewebbsitespeakers-1.png
                 alt: Women|Future Webinar — August 12, 2026
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
