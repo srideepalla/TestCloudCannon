@@ -177,6 +177,22 @@ const pageDescription = description || seoData.description;
     margin-top: 0;
   }
 
+  @media (width < 1024px) {
+    .collection-section .split > .split-inner,
+    .collection-section .split > .split-inner.gap-6xl {
+      gap: var(--spacing-3xl) !important;
+    }
+
+    .collection-section .collection-content {
+      margin-top: 0;
+    }
+
+    .collection-section .collection-content > :first-child,
+    .collection-section .collection-content .collection-title {
+      margin-top: 0 !important;
+    }
+  }
+
   .breadcrumb-bar a {
     font-size: var(--font-size-sm);
     color: var(--color-link-strong);
@@ -223,10 +239,16 @@ const pageDescription = description || seoData.description;
   }
 
   .sidebar-blocks {
-    margin-top: var(--spacing-lg);
+    margin-top: -4px;
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-lg);
+    gap: 0;
+    align-items: center;
+  }
+
+  .sidebar-blocks .embed-wrapper {
+    width: 100%;
+    max-width: 280px;
   }
 
   .sidebar-blocks > :global(*) {
