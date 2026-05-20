@@ -381,7 +381,7 @@ pageSections:
     useDefaultEditableBinding: true
   - _component: page-sections/features/split-list-form
     subheading: Partner With Us
-    heading: Sponsorship Opportunities
+    heading: Partnership Inquiries
     description: >-
       Increase your brand exposure to a global community of women professionals!
       Sponsors get highlighted on our website, social media, emails, and
