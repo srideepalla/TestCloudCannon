@@ -70,30 +70,24 @@ pageSections:
           # Invest in Your Growth: Women\|Future Webinars Series
 
 
-          The Women\|Future Webinars (formerly the Women\|Future Conference) are
-          a series of free webinars hosted by the Stevie® Awards. The sessions
-          are designed for women small business owners, executives,
-          entrepreneurs, and anyone interested in starting a business.
+          The Women\|Future Webinars (formerly Women\|Future Conference) are a
+          series of free webinars hosted by the Stevie® Awards designed for
+          women small business owners, executives, entrepreneurs, and anyone
+          interested in starting a business. Launched in 2018 in conjunction
+          with the Stevie® Awards for Women in Business, the Women\|Future
+          Conference was created to give high-achieving women professionals,
+          thought leaders, and entrepreneurs a place to connect, share ideas,
+          and network. After a successful seven-year run as a conference, we
+          transformed it into a webinar series.
 
 
-          Launched in 2018 in conjunction with the Stevie® Awards for Women in
-          Business, the Women\|Future Conference was created to give
-          high-achieving women professionals, thought leaders, and entrepreneurs
-          a place to connect, share ideas, and network. After a successful
-          seven-year run as a conference, we transformed it into a webinar
-          series. Register now to discover practical strategies to help you
-          **grow and future-proof your organization, build credibility through
-          business awards, and get firsthand perspectives from women
-          entrepreneurs** who have successfully built and scaled their
-          businesses!
+          **Register now to discover practical strategies to help you grow and
+          future-proof your organization, build credibility through business
+          awards, and get firsthand perspectives from women entrepreneurs who
+          have successfully built and scaled their businesses!**
 
 
-          ##### **Join us for three inspiring webinars taking place across June,
-          July, and August 2026 — designed to empower, connect, and elevate
-          women in business.**
-
-
-          <a
+          #### <a
           href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
           target="_blank" rel="noopener" title="Register Now"><strong>Register
           Now</strong></a>
@@ -174,7 +168,7 @@ pageSections:
                 positionHorizontal: center
                 priority: false
                 link: >-
-                  https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
+                  https://events.zoom.us/ev/AmljafujHuxQPUQoG1wSs71fzndIiTwsvyzMaV75suSM3Nc0anP6~AiJxasmozRSvvd8Qx_RPaUGRwDgOuEEvWdw7eLeMK9tLMdS2RTxZYTPH_g
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: June 17, 2026, 2:00 PM EDT
@@ -349,7 +343,7 @@ pageSections:
                 positionHorizontal: center
                 priority: false
                 link: >-
-                  https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+                  https://events.zoom.us/ev/AgMvkxPuVGqaJG8UnMzHrEP2OG_FwK0e-T-WfOjjVqD-vFUTpKjq~AgHoVfkdIAFPIChHE0EubOa2RmUel6Yzsg8jDifVhqrTU5NcTfKrpgWGmw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: July 15, 2026, 2:00 PM AEST
@@ -385,7 +379,7 @@ pageSections:
                 positionHorizontal: center
                 priority: false
                 link: >-
-                  https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
+                  https://events.zoom.us/ev/AuCOsl1aXISslCYe2oTPDYFa7_VgzAW7ga5BqHZ9KCOmTxXV4F9p~AnhEHulMBWOJKVuOy5xUcq8J99JwEpG7HgNWMdn2LTEzHwj8-lKRJP8ADw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
                 text: August 12, 2026 2:00 pm AEST
