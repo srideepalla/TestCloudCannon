@@ -142,7 +142,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Sign up individually for each webinar session you wish to attend:'
+        text: 'Sign up individually for each webinar you wish to attend:'
         level: h1
         size: md
         alignX: center
@@ -281,7 +281,7 @@ pageSections:
       - _component: building-blocks/core-elements/heading
         text: >-
           Are you located in the APAC region? Register for these AEST-friendly
-          webinars so you can attend live:
+          sessions so you can attend live:
         level: h1
         size: md
         alignX: center
