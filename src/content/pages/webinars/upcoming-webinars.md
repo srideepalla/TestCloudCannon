@@ -6,7 +6,7 @@ description: >-
   August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
   - _component: page-sections/heroes/hero-banner
-    heading: ' 2026 Stevie® Awards for Women in Business Program Webinar'
+    heading: 2026 Stevie® Awards for Women in Business Program Webinar
     text: >-
       Join our free, live webinar about the 2026 Stevie® Awards for Women in
       Business to learn more about the nomination and judging processes, what’s
@@ -17,7 +17,7 @@ pageSections:
       Michael Gallagher, during a live Q&A.
 
 
-      ###### **Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br>Winning
+      ###### **Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br />Winning
       Strategies for the 2026 Stevie® Awards for Women in Business**
 
 
@@ -148,9 +148,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: >-
-          Sign up individually for each Women|Future Webinar session you wish to
-          attend:
+        text: 'Sign up individually for each webinar session you wish to attend:'
         level: h1
         size: md
         alignX: center
@@ -179,7 +177,7 @@ pageSections:
                   https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: June 17, 2026
+                text: June 17, 2026, 2:00 PM EDT
                 level: h3
                 size: md
                 alignX: start
@@ -215,7 +213,7 @@ pageSections:
                   https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: July 15, 2026
+                text: July 15, 2026, 2:00 PM EDT
                 level: h3
                 size: md
                 alignX: start
@@ -251,7 +249,7 @@ pageSections:
                   https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: August 12, 2026
+                text: August 12, 2026, 2:00 PM EDT
                 level: h3
                 size: md
                 alignX: start
@@ -261,6 +259,145 @@ pageSections:
                 hideText: false
                 link: >-
                   https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
+                openInNewTab: true
+                iconName: ''
+                iconPosition: before
+                variant: primary
+                uppercase: true
+                size: md
+              - _component: building-blocks/core-elements/spacer
+                size: md
+        gap: lg
+    maxContentWidth: 2xl
+    paddingHorizontal: lg
+    paddingVertical: lg
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    brandColorOverride: ''
+    useDefaultEditableBinding: true
+  - _component: page-sections/builders/custom-section
+    label: Webinar Sessions
+    contentSections:
+      - _component: building-blocks/core-elements/heading
+        text: >-
+          Are you located in the APAC region? Register for these AEST-friendly
+          webinars so you can attend live:
+        level: h1
+        size: md
+        alignX: center
+        iconPosition: before
+      - _component: building-blocks/wrappers/grid
+        label: Webinar Registration Cards
+        layout: center
+        minItemWidth: 100
+        maxItemWidth: 281
+        items:
+          - contentSections:
+              - _component: building-blocks/core-elements/image
+                source: /src/assets/images/june-speakers-4.png
+                alt: Women|Future Webinar — June 17, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
+                widths:
+                  - 400
+                  - 800
+                rounded: true
+                alignX: center
+                aspectRatio: portrait
+                positionVertical: center
+                positionHorizontal: center
+                priority: false
+                link: >-
+                  https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
+                openInNewTab: true
+              - _component: building-blocks/core-elements/heading
+                text: June 17, 2026, 2:00 PM AEST
+                level: h3
+                size: md
+                alignX: start
+                iconPosition: before
+              - _component: building-blocks/core-elements/button
+                text: Register Now
+                hideText: false
+                link: >-
+                  https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
+                openInNewTab: true
+                iconName: ''
+                iconPosition: before
+                variant: primary
+                uppercase: true
+                size: md
+              - _component: building-blocks/core-elements/spacer
+                size: md
+          - contentSections:
+              - _component: building-blocks/core-elements/image
+                source: /src/assets/images/july-speakers-1.png
+                alt: Women|Future Webinar — July 15, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
+                widths:
+                  - 400
+                  - 800
+                rounded: true
+                alignX: center
+                aspectRatio: portrait
+                positionVertical: center
+                positionHorizontal: center
+                priority: false
+                link: >-
+                  https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+                openInNewTab: true
+              - _component: building-blocks/core-elements/heading
+                text: July 15, 2026, 2:00 PM AEST
+                level: h3
+                size: md
+                alignX: start
+                iconPosition: before
+              - _component: building-blocks/core-elements/button
+                text: Register Now
+                hideText: false
+                link: >-
+                  https://events.zoom.us/ev/AgMvkxPuVGqaJG8UnMzHrEP2OG_FwK0e-T-WfOjjVqD-vFUTpKjq~AgHoVfkdIAFPIChHE0EubOa2RmUel6Yzsg8jDifVhqrTU5NcTfKrpgWGmw
+                openInNewTab: true
+                iconName: ''
+                iconPosition: before
+                variant: primary
+                uppercase: true
+                size: md
+              - _component: building-blocks/core-elements/spacer
+                size: md
+          - contentSections:
+              - _component: building-blocks/core-elements/image
+                source: /src/assets/images/august-speakers-1.png
+                alt: Women|Future Webinar — August 12, 2026
+                sizes: '(max-width: 1280px) 100vw, 400px'
+                widths:
+                  - 400
+                  - 800
+                rounded: true
+                alignX: center
+                aspectRatio: portrait
+                positionVertical: center
+                positionHorizontal: center
+                priority: false
+                link: >-
+                  https://events.zoom.us/ev/AifOiXZUPUHAw0ZB191vF8OyFehF8FiN4KkgvpepR9QMWVZIOgvB~Aqq28QvSWy2pYeebC-sErBarrMWVU-jqqyX_nU-zpz7xC-hydm0ZrmB6-w
+                openInNewTab: true
+              - _component: building-blocks/core-elements/heading
+                text: August 12, 2026 2:00 pm AEST
+                level: h3
+                size: md
+                alignX: start
+                iconPosition: before
+              - _component: building-blocks/core-elements/button
+                text: Register Now
+                hideText: false
+                link: >-
+                  https://events.zoom.us/ev/AuCOsl1aXISslCYe2oTPDYFa7_VgzAW7ga5BqHZ9KCOmTxXV4F9p~AnhEHulMBWOJKVuOy5xUcq8J99JwEpG7HgNWMdn2LTEzHwj8-lKRJP8ADw
                 openInNewTab: true
                 iconName: ''
                 iconPosition: before
