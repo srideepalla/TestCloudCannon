@@ -67,7 +67,7 @@ pageSections:
     contentSections:
       - _component: building-blocks/core-elements/text
         text: >-
-          # Invest in Your Growth: Women\|Future Webinars Series
+          # Invest in Your Growth: Women\|Future Webinars
 
 
           The Women\|Future Webinars (formerly Women\|Future Conference) are a
