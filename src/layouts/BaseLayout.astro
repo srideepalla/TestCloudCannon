@@ -62,6 +62,11 @@ function generateThemeCSS(themeColors: Record<string, string>, themeSelector: st
 const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
 const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
 const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
+
+const siteOrigin = "https://women.stevieawards.com";
+const rawPath = Astro.url.pathname;
+const enPath = rawPath.startsWith("/es/") ? rawPath.slice(3) : rawPath === "/es" ? "/" : rawPath;
+const esPath = "/es" + enPath;
 ---
 
 <!doctype html>
@@ -232,6 +237,10 @@ const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
         ],
       }}
     />
+
+    <link rel="alternate" hreflang="en" href={`${siteOrigin}${enPath}`} />
+    <link rel="alternate" hreflang="es" href={`${siteOrigin}${esPath}`} />
+    <link rel="alternate" hreflang="x-default" href={`${siteOrigin}${enPath}`} />
 
     <StructuredData site={seoData} />
 
