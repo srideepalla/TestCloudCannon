@@ -129,7 +129,7 @@ const {
                       aria-label={
                         social.label || `Visit our ${social.icon.replace(/^.*\//, "")} page`
                       }
-                      openInNewTab={true}
+                      openInNewTab={social.openInNewTab !== false}
                       useDefaultEditableBinding={false}
                     />
                   ))}

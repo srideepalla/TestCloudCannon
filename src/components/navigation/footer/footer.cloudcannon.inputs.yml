@@ -49,14 +49,18 @@ socials:
           icon: share
           value:
             icon: ""
-            url: ""
+            link: ""
+            openInNewTab: true
           _inputs:
             icon:
               type: text
               comment: "Icon name for the social media platform (e.g. social/linkedin)."
-            url:
+            link:
               type: url
               comment: "URL to the social media profile."
+            openInNewTab:
+              type: switch
+              comment: "Open this link in a new browser tab (recommended for external social media links)."
 footerText:
   type: text
   comment: "Legal / copyright text shown at the bottom of the footer."

@@ -349,10 +349,18 @@ collections_config:
       heading:
         type: text
         comment: "Heading shown above this group of sidebar links (e.g. 'About', 'Awards')."
+      navbarBgColor:
+        type: color
+        label: "Navbar Background Color"
+        comment: "Background color for the main navigation bar. This applies globally across both light and dark themes."
+        options:
+          format: hex
+          alpha: true
+        cascade: true
       colorBrand:
         type: color
         label: "Primary Brand Color"
-        comment: "Primary brand color. Drives buttons, links, focus rings, navbar/accent, and any other brand-emphasis surfaces (unless that token is set explicitly below)."
+        comment: "Primary brand color. Drives buttons, links, focus rings, and any other brand-emphasis surfaces (unless that token is set explicitly below)."
         options:
           format: hex
           alpha: true
@@ -487,16 +495,8 @@ collections_config:
         cascade: true
       colorBgAccent:
         type: color
-        label: "Navbar / Accent Background"
-        comment: "Background color for the navigation bar and accent sections. Leave empty to inherit the Primary Brand Color."
-        options:
-          format: hex
-          alpha: true
-        cascade: true
-      $.dark.colorBgAccent:
-        type: color
-        label: "Navbar Background (Dark mode)"
-        comment: "Dark-mode override for the navigation bar background. Leave empty to inherit the Primary Brand Color."
+        label: "Accent Background"
+        comment: "Background color for the ccent sections. Leave empty to inherit the Primary Brand Color."
         options:
           format: hex
           alpha: true

@@ -7,6 +7,7 @@ socials:
       value:
         icon: ""
         link: ""
+        openInNewTab: true
       preview:
         text:
           - key: icon
@@ -27,3 +28,6 @@ socials:
         link:
           type: text
           comment: URL for the social media link.
+        openInNewTab:
+          type: switch
+          comment: Open this link in a new browser tab (recommended for external social media links).
