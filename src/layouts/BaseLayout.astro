@@ -13,6 +13,7 @@ export interface Props {
   keywords?: string[] | null;
   image?: string | null;
   canonical?: string | null;
+  noindex?: boolean;
 }
 
 const props = Astro.props;
@@ -20,7 +21,7 @@ const formattedTitle = seoData.titleFormat.replace("{title}", props.title);
 const pageDescription = props.description || seoData.description;
 const pageImage = props.image || seoData.logoSource;
 const pageKeywords = props.keywords?.join(", ") || seoData.keywords;
-
+ 
 // Generate theme CSS from theme.json
 function camelToKebab(str: string): string {
   return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
@@ -214,6 +215,7 @@ const esPath = "/es" + enPath;
     <SEO
       title={formattedTitle}
       description={pageDescription}
+      noindex={props.noindex ?? false}
       openGraph={{
         basic: {
           title: formattedTitle,
