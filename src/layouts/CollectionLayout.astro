@@ -1,4 +1,6 @@
 ---
+import ArticleSchema from "@components/utils/ArticleSchema.astro";
+import BreadcrumbSchema from "@components/utils/BreadcrumbSchema.astro";
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 import Footer from "@components/navigation/footer/Footer.astro";
 import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
@@ -52,6 +54,19 @@ const Content = entry ? (await render(entry)).Content : null;
 const pageSections = entry?.data?.pageSections ?? [];
 const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];
 const pageDescription = description || seoData.description;
+
+const siteOrigin = "https://women.stevieawards.com";
+const sectionPath = `/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`;
+const breadcrumbItems = [
+  { name: "Home", url: `${siteOrigin}/` },
+  ...(sidebar?.heading
+    ? [{ name: sidebar.heading, url: `${siteOrigin}${sectionPath}` }]
+    : []),
+  { name: title, url: Astro.url.href },
+];
+
+const articleDate = entry?.data?.date ?? null;
+const articleAuthor = entry?.data?.author ?? null;
 ---
 
 <Layout
@@ -60,6 +75,25 @@ const pageDescription = description || seoData.description;
   image={image}
   noindex={noindex}
 >
+  <BreadcrumbSchema
+    slot="head"
+    items={breadcrumbItems}
+  />
+
+  {
+    articleDate && (
+      <ArticleSchema
+        slot="head"
+        headline={title}
+        description={pageDescription}
+        image={image}
+        datePublished={articleDate}
+        author={articleAuthor}
+        url={Astro.url.href}
+      />
+    )
+  }
+
   <MainNavigation {...mainNavData} />
 
   <CustomSection

@@ -87,6 +87,41 @@ const esPath = "/es" + enPath;
       type="image/svg+xml"
       href="/favicon.webp"
     />
+    <link
+      rel="apple-touch-icon"
+      href="/favicon.webp"
+    />
+    <link
+      rel="manifest"
+      href="/manifest.webmanifest"
+    />
+    <meta
+      name="theme-color"
+      content="#dfba19"
+    />
+
+    <!-- Resource hints for third-party origins -->
+    <link
+      rel="preconnect"
+      href="https://www.googletagmanager.com"
+    />
+    <link
+      rel="dns-prefetch"
+      href="https://www.googletagmanager.com"
+    />
+    <link
+      rel="dns-prefetch"
+      href="https://connect.facebook.net"
+    />
+    <link
+      rel="dns-prefetch"
+      href="https://snap.licdn.com"
+    />
+    <link
+      rel="dns-prefetch"
+      href="https://js.hsforms.net"
+    />
+
     <style
       is:inline
       set:html={`${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
@@ -221,9 +256,13 @@ const esPath = "/es" + enPath;
           title: formattedTitle,
           type: "website",
           image: pageImage,
+          url: props.canonical || Astro.url.href,
         },
         optional: {
           description: pageDescription,
+          siteName: seoData.name,
+          locale: rawPath.startsWith("/es") ? "es_ES" : "en_US",
+          localeAlternate: rawPath.startsWith("/es") ? ["en_US"] : ["es_ES"],
         },
       }}
       twitter={{
