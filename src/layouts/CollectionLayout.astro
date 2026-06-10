@@ -74,6 +74,7 @@ const articleAuthor = entry?.data?.author ?? null;
   description={pageDescription}
   image={image}
   noindex={noindex}
+  ogType={articleDate ? "article" : "website"}
 >
   <BreadcrumbSchema
     slot="head"

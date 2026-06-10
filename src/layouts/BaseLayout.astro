@@ -14,13 +14,19 @@ export interface Props {
   image?: string | null;
   canonical?: string | null;
   noindex?: boolean;
+  ogType?: "website" | "article";
 }
 
 const props = Astro.props;
 const formattedTitle = seoData.titleFormat.replace("{title}", props.title);
 const pageDescription = props.description || seoData.description;
-const pageImage = props.image || seoData.logoSource;
+const pageImageRaw = props.image || seoData.logoSource;
+// Open Graph requires absolute URLs for images.
+const pageImage = pageImageRaw.startsWith("http")
+  ? pageImageRaw
+  : new URL(pageImageRaw, Astro.site ?? "https://women.stevieawards.com").href;
 const pageKeywords = props.keywords?.join(", ") || seoData.keywords;
+const ogType = props.ogType ?? "website";
  
 // Generate theme CSS from theme.json
 function camelToKebab(str: string): string {
@@ -69,11 +75,13 @@ const siteOrigin = "https://women.stevieawards.com";
 const rawPath = Astro.url.pathname;
 const enPath = rawPath.startsWith("/es/") ? rawPath.slice(3) : rawPath === "/es" ? "/" : rawPath;
 const esPath = "/es" + enPath;
+const isSpanish = rawPath === "/es" || rawPath.startsWith("/es/");
+const htmlLang = isSpanish ? "es" : "en";
 ---
 
 <!doctype html>
 <html
-  lang="en"
+  lang={htmlLang}
   data-theme="dark"
 >
   <head>
@@ -254,15 +262,18 @@ const esPath = "/es" + enPath;
       openGraph={{
         basic: {
           title: formattedTitle,
-          type: "website",
+          type: ogType,
           image: pageImage,
           url: props.canonical || Astro.url.href,
         },
         optional: {
           description: pageDescription,
           siteName: seoData.name,
-          locale: rawPath.startsWith("/es") ? "es_ES" : "en_US",
-          localeAlternate: rawPath.startsWith("/es") ? ["en_US"] : ["es_ES"],
+          locale: isSpanish ? "es_ES" : "en_US",
+          localeAlternate: isSpanish ? ["en_US"] : ["es_ES"],
+        },
+        image: {
+          alt: formattedTitle,
         },
       }}
       twitter={{
