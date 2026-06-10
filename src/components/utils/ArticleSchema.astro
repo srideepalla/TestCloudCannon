@@ -1,0 +1,41 @@
+---
+import seoData from "@data/seo.json";
+
+export interface Props {
+  headline: string;
+  description?: string | null;
+  image?: string | null;
+  datePublished?: Date | null;
+  dateModified?: Date | null;
+  author?: string | null;
+  url: string;
+}
+
+const { headline, description, image, datePublished, dateModified, author, url } = Astro.props;
+
+const toAbsolute = (src?: string | null) =>
+  src ? (src.startsWith("http") ? src : seoData.url + src) : undefined;
+
+const structuredData: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline,
+  mainEntityOfPage: { "@type": "WebPage", "@id": url },
+  publisher: {
+    "@type": "Organization",
+    name: seoData.name,
+    logo: { "@type": "ImageObject", url: seoData.url + seoData.logoSource },
+  },
+};
+
+if (description) structuredData.description = description;
+if (image) structuredData.image = toAbsolute(image);
+if (datePublished) structuredData.datePublished = datePublished.toISOString();
+structuredData.dateModified = (dateModified ?? datePublished)?.toISOString();
+if (author) structuredData.author = { "@type": "Person", name: author };
+---
+
+<script
+  type="application/ld+json"
+  set:html={JSON.stringify(structuredData)}
+/>
