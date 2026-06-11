@@ -22,7 +22,9 @@ pageSections:
             }" style="height: 1000px;"><iframe src="https://js.hsforms.net/ui-forms-embed-components-app/frame.html?_hsPortalId=35655&amp;_hsFormId=8c8fe571-1bef-44a9-b3f0-31964149cdfc&amp;_hsIsQa=false&amp;_hsHublet=na1&amp;_hsDisableScriptloader=true&amp;_hsDisableRedirect=true&amp;_hsInstanceId=5f74d8e2-1d0c-450b-b91c-8724e65f22d1&amp;_hsUtk=c9d14285c0c99ecef07fc6ffb25c22fa"   loading="lazy" data-test-id="embedded-form-8c8fe571-1bef-44a9-b3f0-31964149cdfc" title="Form" scrolling="no" style="border: none; height: 100%; width: 100%;"></iframe></div>
           </div>
     description: |+
-
+      Solicite gratis el kit de inscripción de los American Business Awards y
+      reciba la guía completa con plazos, categorías y consejos para preparar
+      candidaturas ganadoras.
 
     list:
       _component: building-blocks/core-elements/list

@@ -2,6 +2,10 @@
 title: >-
   Comité de Evaluación de los Premios de Comunicación Corporativa/RRPP y
   Publicaciones
+description: >-
+  Conozca a los miembros del comité de evaluación de los premios de comunicación
+  corporativa, relaciones con inversores, relaciones públicas y publicaciones de
+  los Stevie® Awards.
 pageSections:
   - _component: page-sections/people/staff-grid
     staff:

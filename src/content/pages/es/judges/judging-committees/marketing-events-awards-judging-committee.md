@@ -1,5 +1,9 @@
 ---
 title: Comité de Evaluación de los Premios de Marketing y Eventos
+description: >-
+  Conozca a los miembros del comité de evaluación de los premios de marketing y
+  eventos de los Stevie® Awards, expertos internacionales en marca,
+  comunicación y experiencia del cliente.
 pageSections:
   - _component: page-sections/people/staff-grid
     staff:
