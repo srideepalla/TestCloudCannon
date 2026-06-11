@@ -272,7 +272,7 @@ pageSections:
       stories:
         - image:
             source: /src/assets/images/es/iba25-winners-1.webp
-            alt: IBA25 Winner Announcement
+            alt: Anuncio de los ganadores de la 22.ª edición de los International Business Awards® 2025
           title: >-
             Se anuncian los ganadores de los Premios Internacionales de
             Negocios® 2025
@@ -280,7 +280,7 @@ pageSections:
             https://blog.stevieawards.com/blog/stevie-awards-announce-winners-in-the-22nd-annual-international-business-awards-from-across-the-globe
         - image:
             source: /src/assets/images/es/iba25-winners-9.webp
-            alt: ''
+            alt: Anuncio de los ganadores del Grand Stevie® en los International Business Awards® 2025
           title: >-
             Anunciados los ganadores del Grand Stevie® en la 22.ª edición de los
             International Business Awards®
@@ -288,7 +288,7 @@ pageSections:
             https://blog.stevieawards.com/blog/grand-stevie-winners-announced-in-22nd-international-business-awards
         - image:
             source: /src/assets/images/es/ibagsa25-pc-horizontal.webp
-            alt: People's Choice
+            alt: Ganadores de los premios Stevie® People's Choice 2025 a las empresas favoritas
           title: >-
             Anunciados los ganadores de los premios Stevie® 2025 People's Choice
             a las empresas favoritas en los International Business Awards y los
@@ -381,59 +381,59 @@ pageSections:
        Los ganadores del concurso de 2026 podrán conectar y establecer contactos con cientos de profesionales de organizaciones líderes en la gala de celebración de este año, que se celebrará el 11 de agosto en XYZ. Aunque la asistencia no es obligatoria para ganar, todos los ganadores que asistan tendrán la oportunidad de pronunciar un discurso de agradecimiento en el escenario y ser fotografiados e entrevistados por profesionales en nuestra alfombra roja. Visite nuestra página de preguntas frecuentes para obtener más detalles sobre la ceremonia.
     images:
       - source: /src/assets/images/IBA/es/IBA25-Winner-1.jpg
-        alt: IBA Winner
+        alt: Grupo de ganadores en la alfombra roja de los International Business Awards® 2025 sosteniendo trofeos Stevie de oro
       - source: /src/assets/images/IBA/es/IBA25-Winner-2.jpg
-        alt: IBA Winner
+        alt: Dos ganadores de los International Business Awards® 2025 sosteniendo sus trofeos Stevie de oro en la alfombra roja
       - source: /src/assets/images/IBA/es/IBA25-Winner-3.jpg
-        alt: IBA Winner
+        alt: Ganadora pronunciando su discurso de agradecimiento en el atril de los International Business Awards® 2025 en Lisboa
       - source: /src/assets/images/IBA/es/IBA25-Winner-4.jpg
-        alt: IBA Winner
+        alt: Ganador en esmoquin dando su discurso de agradecimiento en el atril de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-5.jpg
-        alt: IBA Winner
+        alt: Ganador con traje azul claro y su trofeo Stevie de oro en el atril de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-6.jpg
-        alt: IBA Winner
+        alt: Dos ganadores, uno en esmoquin y una mujer con vestido rosa, sosteniendo trofeos Stevie en la alfombra roja del evento 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-7.jpg
-        alt: IBA Winner
+        alt: Ganador en esmoquin sonriendo con su trofeo Stevie de oro en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-8.jpg
-        alt: IBA Winner
+        alt: Ganadora con vestido negro sosteniendo su trofeo Stevie en el atril de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-9.jpg
-        alt: IBA Winner
+        alt: Ganador pronunciando su discurso de agradecimiento junto a otro galardonado en los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-10.jpg
-        alt: IBA Winner
+        alt: Tres ganadoras en el atril, una sosteniendo una tarjeta de felicitación, en los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-11.jpg
-        alt: IBA Winner
+        alt: Grupo de ganadores en traje de gala posando en la gala de los International Business Awards® 2025 en Lisboa
       - source: /src/assets/images/IBA/es/IBA25-Winner-12.jpg
-        alt: IBA Winner
+        alt: Ganador con chaqueta azul siendo entrevistado en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-13.jpg
-        alt: IBA Winner
+        alt: Ganadora con blusa color crema sosteniendo su trofeo Stevie de oro en la alfombra roja del evento 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-14.jpg
-        alt: IBA Winner
+        alt: Dos ganadores celebrando con los brazos en alto y sus trofeos Stevie de oro en los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-15.jpg
-        alt: IBA Winner
+        alt: Equipo de ganadores celebrando con su trofeo Stevie en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-16.jpg
-        alt: IBA Winner
+        alt: Ganadora sonriente sosteniendo su trofeo Stevie de oro en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-17.jpg
-        alt: IBA Winner
+        alt: Ganador en esmoquin recibiendo su trofeo Stevie en el escenario de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-18.jpg
-        alt: IBA Winner
+        alt: Grupo de ganadores posando juntos con sus trofeos Stevie en la gala de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-19.jpg
-        alt: IBA Winner
+        alt: Ganadora pronunciando su discurso de agradecimiento en el atril de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-20.jpg
-        alt: IBA Winner
+        alt: Ganador con traje oscuro alzando su trofeo Stevie de oro en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/IBA25-Winner-20.jpg
-        alt: IBA Winner
+        alt: Dos ganadores celebrando juntos con sus trofeos Stevie en la gala de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-21.jpg
-        alt: IBA Winner
+        alt: Ganadora con vestido de gala sosteniendo su trofeo Stevie en el atril de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-22.jpg
-        alt: IBA Winner
+        alt: Ganador siendo entrevistado en la alfombra roja de los International Business Awards® 2025 con su trofeo Stevie
       - source: /src/assets/images/IBA/es/IBA25-Winner-23.jpg
-        alt: IBA Winner
+        alt: Equipo de ganadores posando con varios trofeos Stevie en la alfombra roja de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-24.jpg
-        alt: IBA Winner
+        alt: Ganadora emocionada con la mano en el corazón al recibir su trofeo Stevie en los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-25.jpg
-        alt: IBA Winner
+        alt: Ganador con traje claro sosteniendo su trofeo Stevie de oro en el escenario de los International Business Awards® 2025
       - source: /src/assets/images/IBA/es/IBA25-Winner-26.jpg
-        alt: IBA Winner
+        alt: Grupo de ganadores celebrando con sus trofeos Stevie al cierre de la gala de los International Business Awards® 2025
   - _component: page-sections/carousels/card-carousel
     colorScheme: light
     backgroundColor: base
