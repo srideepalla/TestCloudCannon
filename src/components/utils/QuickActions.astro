@@ -170,7 +170,9 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       border-radius: var(--radius-lg);
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       width: 100%;
-      max-width: 450px;
+      /* Cap to the viewport (with symmetric 2xl margins) so the panel never
+         overflows the left edge on screens narrower than 450px. */
+      max-width: min(450px, calc(100vw - var(--spacing-2xl) * 2));
       margin: 0;
       padding: var(--spacing-xl);
     }
