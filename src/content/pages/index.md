@@ -1,10 +1,7 @@
 ---
 _schema: default
 title: The Stevie® Awards for Women in Business
-description: >-
-  The Stevie® Awards for Women in Business honor female entrepreneurs,
-  executives, employees, and the organizations they run worldwide. Entries are
-  now open—request your entry kit today.
+description: ''
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
@@ -363,46 +360,46 @@ pageSections:
       page](/about/faq) for more details about the ceremony.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
-        alt: Three women smiling on the red carpet at the Stevie Awards for Women in Business gala, one holding a gold Stevie Award trophy
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916595357-599f7d59f1-o.jpg
-        alt: Stevie Award winner delivering an acceptance speech at the podium during the Stevie Awards for Women in Business ceremony
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54917823675-a9d1ed6fb2-o.jpg
-        alt: Guests gathered in the hotel ballroom during the Stevie Awards for Women in Business gala awards banquet
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54918360318-b10dcd9644-c.jpg
-        alt: Smiling Stevie Award winner holding her gold trophy on stage at the Stevie Awards for Women in Business
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54917393358-366f6fa088-c.jpg
-        alt: Three women business leaders posing together with a Stevie Award on the red carpet at the awards gala
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916338927-00570f987a-c.jpg
-        alt: Woman in a black and gold sequined dress holding her Stevie Award trophy at the Stevie Awards for Women in Business gala
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916648132-f200ae58b9-c.jpg
-        alt: Stevie Award winner giving an acceptance speech at the podium, shown on the big screen behind the stage
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54917504235-794764395d-c.jpg
-        alt: Woman in black with a gold belt raising her Stevie Award trophy on the red carpet at the awards gala
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54918161986-de7349a180-c.jpg
-        alt: Stevie Award winner holding her crystal trophy at the podium during the awards ceremony
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54917476150-6663f49413-c.jpg
-        alt: Four women business leaders posing with two Stevie Award trophies on the red carpet at the awards gala
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54918360373-824165dbfc-c.jpg
-        alt: Woman in a one-shoulder black gown delivering an acceptance speech at the Stevie Awards for Women in Business
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916228917-5dda7cc82f-o.jpg
-        alt: Four women in pink and blush gowns holding a gold Stevie Award trophy on the red carpet at the awards gala
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54918136961-54ce8a17c7-c.jpg
-        alt: Emotional Stevie Award winner with hand on heart giving her acceptance speech at the podium during the ceremony
+        alt: ''
         thumbnail: ''
       - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
-        alt: Woman in a black dress holding her gold Stevie Award trophy on the red carpet at the Stevie Awards for Women in Business gala
+        alt: ''
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
