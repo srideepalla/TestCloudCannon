@@ -32,6 +32,7 @@ Object.entries(componentImports).forEach(([path, module]) => {
 interface SidebarLink {
   text: string;
   href: string;
+  openInNewTab?: boolean;
 }
 
 interface Props {
@@ -49,7 +50,7 @@ const { title, pageHeading, description, image, collection, entry, noindex } = A
 const sidebar = (sidebarNavData as Record<string, { heading: string; links: SidebarLink[] }>)[
   collection
 ];
-const sidebarNavItems = sidebar?.links.map((link) => ({ name: link.text, path: link.href })) ?? [];
+const sidebarNavItems = sidebar?.links.map((link) => ({ name: link.text, path: link.href, openInNewTab: link.openInNewTab })) ?? [];
 const Content = entry ? (await render(entry)).Content : null;
 const pageSections = entry?.data?.pageSections ?? [];
 const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];

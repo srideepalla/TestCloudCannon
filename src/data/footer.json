@@ -35,23 +35,28 @@
   "socials": [
     {
       "icon": "social/linkedin",
-      "link": "https://www.linkedin.com/company/the-stevie-awards"
+      "link": "https://www.linkedin.com/company/the-stevie-awards",
+      "openInNewTab": true
     },
     {
       "icon": "social/x",
-      "link": "https://x.com/thestevieawards"
+      "link": "https://x.com/thestevieawards",
+      "openInNewTab": true
     },
     {
       "icon": "social/facebook",
-      "link": "https://www.facebook.com/TheStevieAwards/"
+      "link": "https://www.facebook.com/TheStevieAwards/",
+      "openInNewTab": true
     },
     {
       "icon": "social/instagram",
-      "link": "https://www.instagram.com/thestevieawards/"
+      "link": "https://www.instagram.com/thestevieawards/",
+      "openInNewTab": true
     },
     {
       "icon": "social/youtube",
-      "link": "https://www.youtube.com/user/TheStevies"
+      "link": "https://www.youtube.com/user/TheStevies",
+      "openInNewTab": true
     }
   ],
   "footerText": "Questions? Problems? <a href='/About/contact'>Contact Us</a>. Read Our <a href='/refund-policy'>Refunds & Delivery Policy</a>. Our privacy policy is <a href='/privacy'>available here</a>. Copyright © 2026 Stevie Awards, Inc. All Rights Reserved. American Business Awards and International Business Awards are registered trademarks of Stevie Awards, Inc."

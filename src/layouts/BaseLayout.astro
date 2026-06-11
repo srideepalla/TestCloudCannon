@@ -67,9 +67,20 @@ function generateThemeCSS(themeColors: Record<string, string>, themeSelector: st
   return `${themeSelector}{${cssVars}}`;
 }
 
+function generateGlobalThemeCSS(): string {
+  const vars: string[] = [];
+  
+  if (themeData.navbarBgColor) {
+    vars.push(`--navbar-bg-color:${themeData.navbarBgColor};`);
+  }
+  
+  return vars.length ? `html[data-theme]{${vars.join('')}}` : '';
+}
+
 const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
 const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
 const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
+const globalThemeCSS = generateGlobalThemeCSS();
 
 const siteOrigin = "https://women.stevieawards.com";
 const rawPath = Astro.url.pathname;
@@ -132,7 +143,7 @@ const htmlLang = isSpanish ? "es" : "en";
 
     <style
       is:inline
-      set:html={`${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
+      set:html={`${globalThemeCSS}${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
     />
     <meta
       name="generator"

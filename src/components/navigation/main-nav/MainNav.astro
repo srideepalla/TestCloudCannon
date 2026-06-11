@@ -38,8 +38,8 @@ const mobileNavData = [
   maxContentWidth="3xl"
   paddingHorizontal="lg"
   paddingVertical="none"
-  colorScheme="dark"
-  backgroundColor="accent"
+  colorScheme=""
+  backgroundColor=""
   class:list={["main-nav", className]}
   {...htmlAttributes}
   useDefaultEditableBinding={false}
@@ -75,7 +75,7 @@ const mobileNavData = [
 <style is:global>
   @layer page-sections {
     .main-nav {
-      background-color: var(--color-bg-accent);
+      background-color: var(--navbar-bg-color, var(--color-bg-accent));
       padding-block: var(--spacing-md);
       position: sticky;
       top: 0;

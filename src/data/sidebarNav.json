@@ -4,27 +4,33 @@
     "links": [
       {
         "text": "About Us",
-        "href": "/about/about-us"
+        "href": "/about/about-us",
+        "openInNewTab": false
       },
       {
         "text": "Calendar",
-        "href": "/about/calendar"
+        "href": "/about/calendar",
+        "openInNewTab": false
       },
       {
         "text": "FAQ",
-        "href": "/about/faq"
+        "href": "/about/faq",
+        "openInNewTab": false
       },
       {
         "text": "Staff",
-        "href": "/about/staff"
+        "href": "/about/staff",
+        "openInNewTab": false
       },
       {
         "text": "Newsletter",
-        "href": "/about/newsletter"
+        "href": "/about/newsletter",
+        "openInNewTab": false
       },
       {
         "text": "Contact",
-        "href": "/about/contact"
+        "href": "/about/contact",
+        "openInNewTab": false
       }
     ]
   },
@@ -33,23 +39,28 @@
     "links": [
       {
         "text": "The Stevie Award",
-        "href": "/awards/thestevieaward"
+        "href": "/awards/thestevieaward",
+        "openInNewTab": false
       },
       {
         "text": "Categories",
-        "href": "/awards/categories"
+        "href": "/awards/categories",
+        "openInNewTab": false
       },
       {
         "text": "Winners",
-        "href": "/awards/2025-sawib-winners/"
+        "href": "/awards/2025-sawib-winners/",
+        "openInNewTab": false
       },
       {
         "text": "Top 5 Awards",
-        "href": "/awards/top-5-awards/"
+        "href": "/awards/top-5-awards/",
+        "openInNewTab": false
       },
       {
         "text": "Winners' Circle",
-        "href": "/awards/2025-winnerscircle/"
+        "href": "/awards/2025-winnerscircle/",
+        "openInNewTab": false
       }
     ]
   },
@@ -58,31 +69,38 @@
     "links": [
       {
         "text": "10 Reasons to Enter",
-        "href": "/enter/10-reasons-enter"
+        "href": "/enter/10-reasons-enter",
+        "openInNewTab": false
       },
       {
         "text": "Entry Fees",
-        "href": "/enter/entry-fees"
+        "href": "/enter/entry-fees",
+        "openInNewTab": false
       },
       {
         "text": "Entry Preparation Tips",
-        "href": "/enter/entry-preparation-tips"
+        "href": "/enter/entry-preparation-tips",
+        "openInNewTab": false
       },
       {
         "text": "How to Submit Winning Entries",
-        "href": "/enter/how-to-submit-winning-entries"
+        "href": "/enter/how-to-submit-winning-entries",
+        "openInNewTab": false
       },
       {
         "text": "How To Enter",
-        "href": "/enter/how-to-enter"
+        "href": "/enter/how-to-enter",
+        "openInNewTab": false
       },
       {
         "text": "Regulations, Terms & Conditions",
-        "href": "/enter/regulations-terms-conditions"
+        "href": "/enter/regulations-terms-conditions",
+        "openInNewTab": false
       },
       {
         "text": "What's New & Different for 2026",
-        "href": "/enter/whats-new-different"
+        "href": "/enter/whats-new-different",
+        "openInNewTab": false
       }
     ]
   },
@@ -91,15 +109,18 @@
     "links": [
       {
         "text": "Apply to Be a Judge",
-        "href": "/judges/you-be-the-judge"
+        "href": "/judges/you-be-the-judge",
+        "openInNewTab": false
       },
       {
         "text": "Judging & Awards Process",
-        "href": "/judges/judging-awards-process"
+        "href": "/judges/judging-awards-process",
+        "openInNewTab": false
       },
       {
         "text": "Judging Committees",
-        "href": "/judges/judging-committees"
+        "href": "/judges/judging-committees",
+        "openInNewTab": false
       }
     ]
   },
@@ -108,19 +129,23 @@
     "links": [
       {
         "text": "Media Inquiries",
-        "href": "/press/media-inquiry"
+        "href": "/press/media-inquiry",
+        "openInNewTab": false
       },
       {
         "text": "Press Releases",
-        "href": "/press/press-releases"
+        "href": "/press/press-releases",
+        "openInNewTab": false
       },
       {
         "text": "Press Clippings",
-        "href": "/press/press-clippings"
+        "href": "/press/press-clippings",
+        "openInNewTab": false
       },
       {
         "text": "Photos & Logos",
-        "href": "/press/photos-and-logos"
+        "href": "/press/photos-and-logos",
+        "openInNewTab": false
       }
     ]
   },
@@ -129,15 +154,18 @@
     "links": [
       {
         "text": "Awards Banquet",
-        "href": "/tickets/awards-banquet"
+        "href": "/tickets/awards-banquet",
+        "openInNewTab": false
       },
       {
         "text": "2025 Event Gallery",
-        "href": "/tickets/event-gallery"
+        "href": "/tickets/event-gallery",
+        "openInNewTab": false
       },
       {
         "text": "Watch the Awards Presentations",
-        "href": "/tickets/watch-awards-presentations"
+        "href": "/tickets/watch-awards-presentations",
+        "openInNewTab": false
       }
     ]
   },
@@ -146,11 +174,13 @@
     "links": [
       {
         "text": "Become a Sponsor",
-        "href": "/sponsors/become-sponsor"
+        "href": "/sponsors/become-sponsor",
+        "openInNewTab": false
       },
       {
         "text": "Supporting Sponsorship",
-        "href": "/sponsors/supporting-sponsorship"
+        "href": "/sponsors/supporting-sponsorship",
+        "openInNewTab": false
       }
     ]
   },
@@ -159,7 +189,8 @@
     "links": [
       {
         "text": "Upcoming Webinars",
-        "href": "/webinars/upcoming-webinars"
+        "href": "/webinars/upcoming-webinars",
+        "openInNewTab": false
       }
     ]
   }

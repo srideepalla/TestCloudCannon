@@ -3,15 +3,18 @@
   "links": [
     {
       "text": "Sponsor",
-      "href": "/sponsors/become-a-sponsor"
+      "href": "/sponsors/become-a-sponsor",
+      "openInNewTab": false
     },
     {
       "text": "Contact Us",
-      "href": "/about/contact"
+      "href": "/about/contact",
+      "openInNewTab": false
     },
     {
       "text": "Request Your Entry Kit",
-      "href": "/enter/request-the-entry-kit"
+      "href": "/enter/request-the-entry-kit",
+      "openInNewTab": false
     }
   ]
 }

@@ -7,6 +7,7 @@ export interface SocialLink {
   icon: string;
   link: string;
   label?: string;
+  openInNewTab?: boolean;
 }
 
 export interface NavButton {

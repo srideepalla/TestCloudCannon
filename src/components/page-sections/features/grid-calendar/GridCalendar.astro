@@ -8,13 +8,8 @@ import GridItem from "@wrappers/grid/GridItem.astro";
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-function getUpcomingEvents() {
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-
-  return calendarData.events
-    .filter((e) => new Date(e.date).getTime() >= todayUTC)
-    .map((e) => {
+function getEvents() {
+  return calendarData.events.map((e) => {
       const d = new Date(e.date);
 
       return {
@@ -45,7 +40,7 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-const resolvedEvents: CalendarEvent[] = getUpcomingEvents();
+const resolvedEvents: CalendarEvent[] = getEvents();
 
 const hasEvents = resolvedEvents.length > 0;
 

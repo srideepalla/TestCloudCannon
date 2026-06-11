@@ -132,6 +132,8 @@ function hasCurrentChild(item) {
                                     <li class="nav-item">
                                       <a
                                         href={grandChild.path}
+                                        target={grandChild.openInNewTab ? "_blank" : undefined}
+                                        rel={grandChild.openInNewTab ? "noopener" : undefined}
                                         aria-current={
                                           isCurrentPage(grandChild) ? "page" : undefined
                                         }
@@ -150,6 +152,8 @@ function hasCurrentChild(item) {
                         <li class="nav-item">
                           <a
                             href={child.path || "#"}
+                            target={child.openInNewTab ? "_blank" : undefined}
+                            rel={child.openInNewTab ? "noopener" : undefined}
                             aria-current={childIsCurrent ? "page" : undefined}
                           >
                             <span class="nav-item-label">{child.name}</span>
@@ -167,6 +171,8 @@ function hasCurrentChild(item) {
             <li class="nav-item">
               <a
                 href={item.path || "#"}
+                target={item.openInNewTab ? "_blank" : undefined}
+                rel={item.openInNewTab ? "noopener" : undefined}
                 aria-current={isCurrent ? "page" : undefined}
               >
                 <span class="nav-item-label">{item.name}</span>

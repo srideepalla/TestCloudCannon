@@ -12,6 +12,7 @@ _structures:
         value:
           name: null
           path: null
+          openInNewTab: false
           children: null
         _inputs:
           name:
@@ -24,6 +25,9 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: Open this link in a new browser tab.
           children:
             type: array
             comment: Optional nested navigation items (level 2).
@@ -36,6 +40,7 @@ _structures:
         value:
           name: null
           path: null
+          openInNewTab: false
           children: null
         _inputs:
           name:
@@ -48,6 +53,9 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: Open this link in a new browser tab.
           children:
             type: array
             comment: Optional nested navigation items (level 3, final level).
@@ -60,6 +68,7 @@ _structures:
         value:
           name: null
           path: null
+          openInNewTab: false
         _inputs:
           name:
             type: text
@@ -71,3 +80,6 @@ _structures:
               hide_link_to_file: true
               hide_link_to_email_address: true
               hide_link_to_telephone: true
+          openInNewTab:
+            type: switch
+            comment: Open this link in a new browser tab.
