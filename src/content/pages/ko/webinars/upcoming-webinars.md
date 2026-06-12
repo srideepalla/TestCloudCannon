@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: 여성|향후 웨비나
-description: 2026년 6월, 7월, 8월에 걸쳐 진행되는 세 차례의 유익한 웨비나에 여러분을 초대합니다. 이 웨비나는 비즈니스 현장에서 활동하는 여성들의 역량을 강화하고, 서로 연결하며, 한 단계 더 성장할 수 있도록 돕기 위해 마련되었습니다.
+description: 2026년 6월, 7월, 8월에 걸쳐 진행되는 세 차례의 유익한 웨비나에 여러분을 초대합니다. 이 행사는 비즈니스 현장에서 활동하는 여성들의 역량을 강화하고, 서로 연결하며, 한 단계 더 성장할 수 있도록 돕기 위해 마련되었습니다.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: 2026 스티비® 어워드 ‘여성 기업인 부문’ 프로그램 웨비나
@@ -56,7 +56,7 @@ pageSections:
 
           Women\|Future 웨비나(구 Women\|Future 컨퍼런스)는 스티비® 어워즈(Stevie® Awards)가 주최하는 무료 웨비나 시리즈로, 여성 소상공인, 경영진, 기업가 및 창업에 관심 있는 모든 분들을 위해 마련되었습니다. 2018년 '스티비® 여성 비즈니스 어워드(Stevie® Awards for Women in Business)'와 함께 시작된 'Women\|Future 컨퍼런스'는 뛰어난 성과를 거둔 여성 전문가, 사상 리더, 기업가들이 서로 소통하고 아이디어를 공유하며 인맥을 형성할 수 있는 장을 마련하기 위해 만들어졌습니다. 7년간 성공적인 컨퍼런스로 운영된 후, 이제 웨비나 시리즈로 새롭게 태어났습니다.
 
-          **지금 등록하여 조직을 성장시키고 미래에 대비할 수 있는 실용적인 전략을 알아보고, 비즈니스 어워드를 통해 신뢰도를 구축하며, 성공적으로 사업을 설립하고 확장한 여성 기업가들의 생생한 경험을 직접 들어보세요!**
+          **지금 등록하여 조직을 성장시키고 미래에 대비할 수 있는 실용적인 전략을 알아보고, 비즈니스 어워드를 통해 신뢰도를 쌓으며, 성공적으로 사업을 구축하고 확장한 여성 기업가들의 생생한 경험을 직접 들어보세요!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="지금 등록하기"><strong>지금 등록하기</strong></a>
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 참가자들은 성공적인 기업가들과 스티비 어워드(Stevie Award) 수상 경력이 있는 여성 비즈니스 리더들로부터 성공적인 사업을 성장·유지·창업하는 방법, 비즈니스 어워드 참가의 가치, 스토리텔링 기법을 활용해 경쟁사와 차별화하는 방법 등 다양한 주제에 대한 실질적인 노하우를 얻을 수 있습니다. 이 분야 최고의 여성들로부터 배우고, 새로운 기회를 접하며, **당신의 내일을 가꾸어 나가세요!**
+        text: 참가자들은 성공적인 기업가들과 스티비 어워드(Stevie Award) 수상 경력이 있는 여성 비즈니스 리더들로부터 성공적인 사업을 성장·유지·창업하는 방법, 비즈니스 어워드 참가의 가치, 스토리텔링 기법을 활용해 경쟁사와 차별화하는 방법 등 다양한 주제에 대한 실질적인 노하우를 얻을 수 있습니다. 이 분야 최고의 여성들로부터 배우고, 새로운 기회를 접하며, **당신의 내일을 가꿔보세요!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 당사의 웨비나는 다양한 산업 분야와 경력 단계에 있는 야심차고 선구적인 여성 전문가들을 대상으로 합니다. 전 세계의 열정적인 여성들이 이 웨비나에 참여하여, 성공한 사업가 및 기업가들로부터 가장 중요한 주제에 대한 새로운 통찰력을 얻고 있습니다. 참가자 구성은 CEO, 창업자, 소상공인, 기업가, 임원, 이사, 관리자뿐만 아니라 이직 준비 중이거나 경력 전환을 시작하는 여성들로 이루어져 있습니다.
+        text: 당사의 웨비나는 다양한 산업 분야와 경력 단계에 있는 야심차고 선구적인 여성 전문가들을 대상으로 합니다. 전 세계의 열정적인 여성들이 이 웨비나에 참여하여, 성공한 사업주와 기업가들로부터 가장 중요한 주제에 대한 새로운 통찰력을 얻고 있습니다. 참가자 구성은 CEO, 창업자, 소상공인, 기업가, 임원, 이사, 관리자뿐만 아니라 이직 준비 중이거나 경력 전환을 시작하는 여성들로 이루어져 있습니다.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 저희의 사명은 실시간 교육 세션을 통해 전문적·개인적 성장을 도모함으로써 비즈니스 현장에서 활약하는 여성들에게 영감을 주고 그들의 발전을 가속화하는 것입니다. **'내일을 가꾸세요(Cultivate Your Tomorrow)'**는 저희의 슬로건입니다. 'The Women\|Future' 웨비나는 여러분이 내일을 받아들일 뿐만 아니라, 경력, 개인적 목표, 그리고 삶의 포부를 실현하기 위한 영감과 통찰력을 얻어 가실 수 있도록 돕기 때문에 이 문구를 선택했습니다.
+        text: 저희의 사명은 실시간 교육 세션을 통해 전문적·개인적 성장을 도모함으로써 비즈니스 현장에서 활약하는 여성들에게 영감을 주고 그들의 발전을 가속화하는 것입니다. **'내일을 가꾸세요(Cultivate Your Tomorrow)'**는 저희의 슬로건입니다. 'The Women\|Future' 웨비나는 여러분이 단순히 내일을 맞이하는 것을 넘어, 경력, 개인적 목표, 그리고 삶의 포부를 실현하기 위한 영감과 사고 리더십을 얻어 가실 수 있도록 돕기 때문에 이 문구를 선택했습니다.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

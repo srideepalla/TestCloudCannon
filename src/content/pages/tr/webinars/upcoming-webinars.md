@@ -1,12 +1,12 @@
 ---
 _schema: default
 title: Kadınlar | Gelecek Web Seminerleri
-description: 2026 yılının Haziran, Temmuz ve Ağustos aylarında düzenlenecek, iş dünyasındaki kadınları güçlendirmek, birbirleriyle bağlantı kurmalarını sağlamak ve kariyerlerini ilerletmek amacıyla tasarlanan üç ilham verici web seminerine katılın.
+description: 2026 yılının Haziran, Temmuz ve Ağustos aylarında düzenlenecek ve iş dünyasındaki kadınları güçlendirmek, birbirleriyle bağlantı kurmalarını sağlamak ve kariyerlerini ilerletmek amacıyla tasarlanan üç ilham verici web seminerine katılın.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: 2026 Stevie® İş Dünyasındaki Kadınlar Ödülleri Programı Web Semineri
     text: |-
-      2026 Stevie® İş Dünyasında Kadınlar Ödülleri hakkında düzenlediğimiz ücretsiz canlı web seminerimize katılın; adaylık ve değerlendirme süreçleri, bu yılki yenilikler ve başarılarınızı jüriye en etkili şekilde sunacak bir başarı öyküsü hazırlamaya yönelik ipuçları hakkında daha fazla bilgi edinin. Ayrıca, başarılarınız için doğru kategorileri seçme konusunda rehberlik alacak ve canlı soru-cevap oturumu sırasında Stevie Ödülleri Kurucusu Michael Gallagher'a doğrudan soru sorma fırsatı bulacaksınız.
+      2026 Stevie® İş Dünyasındaki Kadınlar Ödülleri hakkında düzenlediğimiz ücretsiz canlı web seminerimize katılın; adaylık ve değerlendirme süreçleri, bu yılki yenilikler ve başarılarınızı jüriye en etkili şekilde sunacak bir başarı öyküsü hazırlamaya yönelik ipuçları hakkında daha fazla bilgi edinin. Ayrıca, başarılarınıza uygun kategorileri seçme konusunda rehberlik alacak ve canlı soru-cevap oturumu sırasında Stevie Ödülleri Kurucusu Michael Gallagher'a doğrudan soru sorma fırsatı bulacaksınız.
 
       ###### **18 Haziran 2026, 11:00 - 12:00 (ET)<br />2026 Stevie® İş Dünyasındaki Kadınlar Ödülleri için Kazanma Stratejileri**
 
@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Kendi Gelişiminize Yatırım Yapın: Women\|Future Web Seminerleri
 
-          Women\|Future Web Seminerleri (eski adıyla Women\|Future Konferansı), Stevie® Ödülleri tarafından düzenlenen ve kadın küçük işletme sahipleri, yöneticiler, girişimciler ile iş kurmakla ilgilenen herkes için tasarlanmış bir dizi ücretsiz web semineridir. 2018 yılında Stevie® Awards for Women in Business ile birlikte başlatılan Women\|Future Konferansı, başarılı kadın profesyonellere, düşünce liderlerine ve girişimcilere bağlantı kurma, fikir paylaşma ve ağ oluşturma fırsatı sunmak amacıyla oluşturuldu. Yedi yıl boyunca başarılı bir konferans olarak devam ettikten sonra, bunu bir web semineri serisine dönüştürdük.
+          Women\|Future Web Seminerleri (eski adıyla Women\|Future Konferansı), Stevie® Ödülleri tarafından düzenlenen ve kadın küçük işletme sahipleri, yöneticiler, girişimciler ile iş kurmakla ilgilenen herkes için tasarlanmış bir dizi ücretsiz web semineridir. 2018 yılında Stevie® Awards for Women in Business ile birlikte başlatılan Women\|Future Konferansı, başarılı kadın profesyonellere, fikir liderlerine ve girişimcilere bağlantı kurma, fikir paylaşma ve ağ oluşturma fırsatı sunmak amacıyla oluşturuldu. Yedi yıl boyunca başarılı bir konferans olarak devam ettikten sonra, bunu bir web semineri serisine dönüştürdük.
 
           **Şimdi kaydolun ve kuruluşunuzu büyütmenize ve geleceğe hazırlamanıza, iş ödülleri aracılığıyla güvenilirlik kazanmanıza ve işlerini başarıyla kurup büyütmüş kadın girişimcilerin ilk elden bakış açılarını öğrenmenize yardımcı olacak pratik stratejileri keşfedin!**
 
@@ -109,7 +109,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Katılmak istediğiniz her web semineri için ayrı ayrı kaydolun:'
+        text: 'Katılmak istediğiniz her bir web semineri için ayrı ayrı kaydolun:'
         level: h1
         size: md
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Katılımcılar, başarılı bir işletmeyi nasıl büyütecekleri, sürdürecekleri veya kuracakları, iş ödüllerine katılmanın önemi ve hikâye anlatımı tekniklerini kullanarak işletmelerini rakiplerinden nasıl farklı kılabilecekleri gibi konularda, diğer başarılı girişimcilerden ve Stevie Ödülü sahibi kadın iş liderlerinden pratik bilgiler edinecekler. Bu konuda en iyiler olan kadınlardan öğrenin, yeni fırsatlara açık olun ve **Yarını Şekillendirin!**
+        text: Katılımcılar, başarılı bir işletmeyi nasıl büyütecekleri, sürdürecekleri veya kuracakları, iş ödüllerine katılmanın önemi ve hikaye anlatımı tekniklerini kullanarak işletmelerini rakiplerinden nasıl farklı kılabilecekleri gibi konularda, diğer başarılı girişimcilerden ve Stevie Ödülü sahibi kadın iş liderlerinden pratik bilgiler edinecekler. Bu konuda en iyiler olan kadınlardan öğrenin, yeni fırsatlara açık olun ve **Yarını Şekillendirin!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Web seminerlerimiz, farklı sektörlerden ve kariyer aşamalarından hırslı, ileri görüşlü kadın profesyonellere yöneliktir. Dünyanın dört bir yanından azimli kadınlar, en önemli konularda başarılı işletme sahipleri ve girişimcilerden yeni bakış açıları edinmek için bu web seminerlerine katılmaktadır. Katılımcılar arasında CEO'lar, kurucular, küçük işletme sahipleri, girişimciler, üst düzey yöneticiler, direktörler ve yöneticilerin yanı sıra iş arayan veya kariyer geçişi sürecinde olan kadınlar da bulunmaktadır.
+        text: Web seminerlerimiz, farklı sektörlerden ve kariyer aşamalarından gelen, hırslı ve ileri görüşlü kadın profesyonellere yöneliktir. Dünyanın dört bir yanından azimli kadınlar, en önemli konularda başarılı işletme sahipleri ve girişimcilerden yeni bakış açıları edinmek için bu web seminerlerine katılmaktadır. Katılımcılar arasında CEO'lar, kurucular, küçük işletme sahipleri, girişimciler, üst düzey yöneticiler, direktörler ve yöneticilerin yanı sıra iş arayan veya kariyer geçişi sürecinde olan kadınlar da bulunmaktadır.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Misyonumuz, canlı eğitim oturumları aracılığıyla mesleki ve kişisel gelişimi destekleyerek iş dünyasındaki kadınlara ilham vermek ve ilerlemelerini hızlandırmaktır. **Cultivate Your Tomorrow** (Yarını Yetiştir) sloganımızdır. Bu cümleyi seçtik çünkü The Women\|Future web seminerleri, sizi sadece yarını kucaklamaya değil, aynı zamanda kariyer, kişisel ve yaşam hedeflerinize ulaşmak için ilham ve düşünce liderliği ile donatmaya teşvik eder.
+        text: Misyonumuz, canlı eğitim oturumları aracılığıyla mesleki ve kişisel gelişimi destekleyerek iş dünyasındaki kadınlara ilham vermek ve ilerlemelerini hızlandırmaktır. **Cultivate Your Tomorrow** (Yarınınızı Şekillendirin) sloganımızdır. Bu cümleyi seçtik çünkü The Women\|Future web seminerleri, sizi sadece yarınınızı kucaklamaya değil, aynı zamanda kariyer, kişisel ve yaşam hedeflerinize ulaşmak için ilham ve düşünce liderliği ile donatmaya teşvik eder.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -467,7 +467,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Gelişmelerden haberdar olun
     heading: Bültenimize abone olun
-    description: Aşağıdaki bilgileri doldurun; web semineri dizisiyle ilgili önemli güncellemeleri e-posta yoluyla size göndereceğiz.
+    description: Aşağıdaki bilgileri doldurun; web semineri dizisiyle ilgili önemli güncellemeleri size e-posta yoluyla göndereceğiz.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

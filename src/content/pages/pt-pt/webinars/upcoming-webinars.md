@@ -109,7 +109,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Inscreva-se individualmente em cada webinar em que deseja participar:'
+        text: 'Inscreva-se individualmente em cada webinar em que pretenda participar:'
         level: h1
         size: md
         alignX: center
@@ -240,7 +240,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Encontra-se na região da Ásia-Pacífico? Inscreva-se nestas sessões com horários compatíveis com o AEST para poder assistir em direto:'
+        text: 'Encontra-se na região da Ásia-Pacífico? Inscreva-se nestas sessões com horários compatíveis com o AEST para poder assistir ao vivo:'
         level: h1
         size: md
         alignX: center
@@ -336,7 +336,7 @@ pageSections:
                 link: https://events.zoom.us/ev/AuCOsl1aXISslCYe2oTPDYFa7_VgzAW7ga5BqHZ9KCOmTxXV4F9p~AnhEHulMBWOJKVuOy5xUcq8J99JwEpG7HgNWMdn2LTEzHwj8-lKRJP8ADw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: 12 de agosto de 2026, 14h00 AEST
+                text: 12 de agosto de 2026, 14h00 (AEST)
                 level: h3
                 size: md
                 alignX: start
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Os participantes ficam a conhecer dicas práticas de outras empreendedoras de sucesso e de mulheres líderes empresariais vencedoras do Prémio Stevie sobre temas que incluem como expandir, manter ou iniciar um negócio de sucesso, a importância de participar em prémios empresariais e como utilizar técnicas de narrativa para diferenciar o seu negócio da concorrência. Aprenda com as mulheres que o fazem melhor, exponha-se a novas oportunidades e **Cultive o seu amanhã!**
+        text: Os participantes ficam a conhecer dicas práticas de outras empreendedoras de sucesso e de mulheres líderes empresariais vencedoras do Prémio Stevie sobre temas que incluem como fazer crescer, manter ou iniciar um negócio de sucesso, a importância de participar em prémios empresariais e como utilizar técnicas de storytelling para diferenciar o seu negócio da concorrência. Aprenda com as mulheres que o fazem melhor, exponha-se a novas oportunidades e **Cultive o seu amanhã!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: A nossa missão é inspirar e impulsionar as mulheres no mundo dos negócios, promovendo o desenvolvimento profissional e pessoal através de sessões educativas ao vivo. **Cultive o seu amanhã** é o nosso lema. Escolhemos esta frase porque os webinars The Women\|Future o encorajam não só a abraçar o seu amanhã, mas também a sair com inspiração e liderança de pensamento para enfrentar as suas aspirações profissionais, pessoais e de vida.
+        text: A nossa missão é inspirar e impulsionar as mulheres no mundo dos negócios, promovendo o desenvolvimento profissional e pessoal através de sessões educativas ao vivo. **Cultive o seu amanhã** é o nosso lema. Escolhemos esta frase porque os webinars The Women\|Future o encorajam não só a abraçar o seu amanhã, mas também a sair com inspiração e liderança inovadora para enfrentar as suas aspirações profissionais, pessoais e de vida.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Seja nosso parceiro
     heading: Consultas sobre parcerias
-    description: Aumente a visibilidade da sua marca junto de uma comunidade global de mulheres profissionais! Os patrocinadores são destacados no nosso site, nas redes sociais e nos e-mails, além de obterem visibilidade durante os nossos webinars, que contam com a participação de centenas de líderes empresariais e empreendedoras de todo o mundo. Envie um e-mail para [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) para saber mais sobre as oportunidades de patrocínio para 2026 ou preencha o formulário abaixo.
+    description: Aumente a exposição da sua marca junto de uma comunidade global de mulheres profissionais! Os patrocinadores são destacados no nosso site, nas redes sociais e nos e-mails, além de obterem visibilidade durante os nossos webinars, que contam com a participação de centenas de líderes empresariais e empreendedoras de todo o mundo. Envie um e-mail para [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) para obter informações sobre oportunidades de patrocínio para 2026 ou preencha o formulário abaixo.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []
@@ -489,7 +489,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Entre em contacto
     heading: Contacte-nos
-    description: Tem alguma dúvida sobre os webinars «Women\|Future»? Envie-nos uma mensagem e um membro da nossa equipa entrará em contacto consigo.
+    description: Tem alguma dúvida sobre os webinars Women\|Future? Envie-nos uma mensagem e um membro da nossa equipa entrará em contacto consigo.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

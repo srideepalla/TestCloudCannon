@@ -8,7 +8,7 @@ pageSections:
     text: |-
       Únete a nuestro seminario web gratuito en vivo sobre los Premios Stevie® 2026 para Mujeres en los Negocios para conocer más detalles sobre los procesos de nominación y evaluación, las novedades de este año y consejos sobre cómo elaborar una historia de éxito que presente tus logros ante el jurado de la mejor manera posible. También recibirá orientación para seleccionar las categorías adecuadas para sus logros y tendrá la oportunidad de hacer preguntas directamente al fundador de los Premios Stevie, Michael Gallagher, durante una sesión de preguntas y respuestas en vivo.
 
-      ###### **En vivo el 18 de junio de 2026, de 11:00 a. m. a 12:00 p. m. (hora del Este)<br/>Estrategias ganadoras para los Premios Stevie® 2026 para Mujeres en los Negocios**
+      ###### **En vivo el 18 de junio de 2026, de 11:00 a. m. a 12:00 p. m. (hora del Este)<br />Estrategias ganadoras para los Premios Stevie® 2026 para Mujeres en los Negocios**
 
       <a href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA" target="_blank" rel="noopener" title="Regístrese ahora"><strong>Regístrese ahora</strong></a>
     colorScheme: light
@@ -56,7 +56,7 @@ pageSections:
 
           Los Webinarios Women\|Future (antes conocidos como Conferencia Women\|Future) son una serie de webinarios gratuitos organizados por los Premios Stevie® y diseñados para mujeres propietarias de pequeñas empresas, ejecutivas, emprendedoras y cualquier persona interesada en iniciar un negocio. Lanzada en 2018 junto con los Premios Stevie® para Mujeres en los Negocios, la Conferencia Women\|Future se creó para brindar a las profesionales de alto rendimiento, líderes de opinión y emprendedoras un lugar para conectarse, compartir ideas y establecer contactos. Tras siete años de éxito como conferencia, la transformamos en una serie de seminarios web.
 
-          **¡Inscríbase ahora para descubrir estrategias prácticas que le ayudarán a hacer crecer su organización y prepararla para el futuro, a generar credibilidad a través de premios empresariales y a conocer de primera mano las perspectivas de mujeres emprendedoras que han creado y ampliado con éxito sus negocios!**
+          **¡Inscríbase ahora para descubrir estrategias prácticas que le ayudarán a hacer crecer su organización y prepararla para el futuro, a generar credibilidad a través de premios empresariales y a conocer de primera mano las perspectivas de mujeres emprendedoras que han creado y expandido con éxito sus negocios!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="Regístrate ahora"><strong>Regístrate ahora</strong></a>
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Las asistentes obtendrán consejos prácticos de otras emprendedoras exitosas y de mujeres líderes empresariales galardonadas con los premios Stevie sobre temas que incluyen cómo hacer crecer, mantener o iniciar un negocio exitoso, la importancia de participar en premios empresariales y cómo utilizar técnicas de narración para diferenciar su negocio de la competencia. Aprende de las mujeres que lo hacen mejor, ábrete a nuevas oportunidades y **¡cultiva tu futuro!**
+        text: Las asistentes obtendrán consejos prácticos de otras emprendedoras exitosas y de mujeres líderes empresariales galardonadas con los premios Stevie sobre temas que incluyen cómo hacer crecer, mantener o iniciar un negocio exitoso, la importancia de participar en premios empresariales y cómo utilizar técnicas de narración para diferenciar tu negocio de la competencia. Aprende de las mujeres que mejor lo hacen, ábrete a nuevas oportunidades y **¡cultiva tu futuro!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Nuestra misión es inspirar y impulsar a las mujeres en el mundo de los negocios, fomentando su desarrollo profesional y personal a través de sesiones educativas en vivo. **Cultiva tu futuro** es nuestro lema. Elegimos esta frase porque los seminarios web de The Women\|Future te animan no solo a abrazar tu futuro, sino también a salir de ellos con inspiración y liderazgo intelectual para hacer frente a tus aspiraciones profesionales, personales y de vida.
+        text: Nuestra misión es inspirar y impulsar a las mujeres en el mundo de los negocios, fomentando su desarrollo profesional y personal a través de sesiones educativas en vivo. **Cultiva tu futuro** es nuestro lema. Elegimos esta frase porque los seminarios web de The Women\|Future te animan no solo a abrazar tu futuro, sino también a salir de ellos con inspiración y liderazgo intelectual para abordar tus aspiraciones profesionales, personales y de vida.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

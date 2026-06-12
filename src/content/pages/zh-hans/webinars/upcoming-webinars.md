@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: 2026年“史蒂维®”女性商业奖项目网络研讨会
     text: |-
-      欢迎参加我们关于“2026年史蒂维®女性商业奖”的免费在线研讨会，深入了解提名和评审流程、今年的最新动态，以及如何撰写成功案例，以最有力地向评委展示您的成就。 您还将获得关于如何根据自身成就选择合适奖项类别的指导，并有机会在现场问答环节中直接向史蒂维奖创始人迈克尔·加拉格尔提问。
+      欢迎参加我们关于“2026年史蒂维®女性商业奖”的免费在线研讨会，深入了解提名和评审流程、今年的最新动态，以及如何撰写成功案例，以最有力地向评委展示您的成就。 您还将获得关于如何为您的成就选择合适奖项类别的指导，并有机会在现场问答环节中直接向史蒂维奖创始人迈克尔·加拉格尔提问。
 
       ###### **2026年6月18日 上午11:00 - 12:00（美国东部时间）<br/>2026年史蒂维®女性商业奖制胜策略**
 
@@ -54,9 +54,9 @@ pageSections:
         text: |-
           # 投资于您的成长：Women\|Future 网络研讨会
 
-          Women\|Future 网络研讨会（前身为 Women\|Future 峰会）是由 Stevie® 奖主办的一系列免费网络研讨会，专为女性小企业主、高管、企业家以及任何对创业感兴趣的人士而设计。 “Women\|Future 峰会”于 2018 年与“Stevie® 商业女性奖”同期推出，旨在为成就斐然的女性专业人士、思想领袖和企业家提供一个交流、分享创意及拓展人脉的平台。在成功举办七届峰会后，我们将其转型为系列网络研讨会。
+          Women\|Future 网络研讨会（前身为 Women\|Future 峰会）是由 Stevie® 奖主办的一系列免费网络研讨会，专为女性小企业主、高管、企业家以及任何对创业感兴趣的人士而设计。 “Women\|Future 峰会”于 2018 年与“Stevie® 商业女性奖”同期推出，旨在为成就斐然的女性专业人士、思想领袖和企业家提供一个交流、分享创意及拓展人脉的平台。在作为线下峰会成功举办七年后，我们将其转型为系列网络研讨会。
 
-          **立即注册，探索实用的策略，助您发展并为组织构建未来竞争力，通过商业奖项建立公信力，并聆听成功创建并扩展业务的女性企业家们分享的第一手经验！**
+          **立即注册，探索实用的策略，助您发展并为组织构建未来竞争力，通过商业奖项建立信誉，并从成功创建和扩展业务的女性企业家那里获得第一手见解！**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="立即注册"><strong>立即注册</strong></a>
         alignX: center
@@ -109,7 +109,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 请针对您想参加的每场网络研讨会分别注册：
+        text: 请针对您想参加的每场网络研讨会分别报名：
         level: h1
         size: md
         alignX: center
@@ -240,7 +240,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 您位于亚太地区吗？请注册这些适合澳大利亚东部标准时间（AEST）的场次，以便您能实时参与：
+        text: 您位于亚太地区吗？请注册这些适合澳大利亚东部标准时间（AEST）的场次，以便您能在线参与：
         level: h1
         size: md
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 与会者将从其他成功的企业家以及斯蒂维奖（Stevie Award）得主——女性商业领袖那里获得实用的经验分享，内容涵盖如何发展、维持或创办一家成功的企业，参与商业奖项评选的价值，以及如何运用讲故事的技巧让您的企业脱颖而出。 向最优秀的女性学习，发掘新机遇，**开创您的未来！**
+        text: 与会者将从其他成功的企业家以及斯蒂维奖（Stevie Award）得主——女性商业领袖那里获得实用的经验分享，内容涵盖如何发展、维持或创办一家成功的企业，参与商业奖项评选的价值，以及如何运用讲故事的技巧让您的企业从竞争中脱颖而出。 向最优秀的女性学习，发掘新机遇，**开创您的未来！**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 我们的网络研讨会面向各行各业、处于不同职业阶段的、有抱负且富有远见的女性专业人士。世界各地的积极进取的女性都会参加这些研讨会，从成功的企业主和创业者那里获得关于最关键议题的新视角。 参会者涵盖首席执行官、创始人、小企业主、创业者、高管、董事及经理，同时也包括正在求职或正处于职业转型期的女性。
+        text: 我们的网络研讨会面向各行各业、处于不同职业阶段的、充满抱负且具有前瞻思维的女性专业人士。世界各地的积极进取的女性都会参加这些研讨会，从成功的企业主和创业者那里获得关于最重要议题的新视角。 参会者涵盖首席执行官、创始人、小企业主、创业者、高管、董事及经理，同时也包括正在求职或正处于职业转型期的女性。
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: 与我们合作
     heading: 合作咨询
-    description: 让您的品牌在全球女性职业人士群体中获得更广泛的曝光！赞助商将在我们的网站、社交媒体和电子邮件中获得突出展示，并在由全球数百位商业领袖和企业家参与的网络研讨会上获得曝光机会。 如需了解2026年的赞助机会，请发送邮件至 [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com)，或填写下方表格。
+    description: 让您的品牌在全球女性职业人士群体中获得更广泛的曝光！赞助商将在我们的网站、社交媒体和电子邮件中获得突出展示，并在我们的网络研讨会上获得曝光机会——这些研讨会将吸引来自全球的数百位商业领袖和企业家参与。 如需了解2026年赞助机会，请发送邮件至 [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com)，或填写下方表格。
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

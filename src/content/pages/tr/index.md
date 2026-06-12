@@ -104,7 +104,7 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Stevie® İş Dünyasındaki Kadınlar Ödülleri'nin Geçmiş Kazananları
+    heading: Stevie® İş Dünyasında Kadınlar Ödülleri'nin Geçmiş Kazananları
     description: 'Her yıl, kadın küçük işletme sahipleri ve girişimciler, IBM, Mastercard ve Microsoft gibi küresel şirketlerin kadın yöneticileriyle birlikte onurlandırılıyor. Geçmişteki kazananlar arasında şunlar yer alıyor:'
     logos:
       - source: /src/assets/images/estelauder.png
@@ -196,7 +196,7 @@ pageSections:
     heading: Stevie Ödülü'nü Kazanmak 2025 Yılı Kazananlarımız İçin Ne Anlama Geliyor?
     videos:
       - youtubeId: UqX5Q9pE6io
-        title: 'Distruptor Brand, 2025 Stevie® İş Dünyasında Kadınlar Ödülleri’nde birincilik kazandı '
+        title: 'Distruptor Brand, 2025 Stevie® İş Dünyasında Kadınlar Ödülleri’nde ödül kazandı '
       - youtubeId: wvSEt0yvIqs
         title: Green Panther Skincare, 2025 Stevie® İş Dünyasında Kadınlar Ödülleri'nde ödül kazandı
       - youtubeId: fS5Q7wiWcJs
@@ -247,9 +247,9 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: 2025 Etkinlik Galerisi
     description: |-
-      Stevie Ödülü kazananları, dünya çapında düzenlenen kırmızı halı ödül törenlerinde kutlanır; bu törenlerde, yüzlerce girişimci ve yöneticiden oluşan bir seyirci kitlesi önünde sahnede teşekkür konuşması yaparlar. 2025 Finalistleri arasında Altın, Gümüş ve Bronz Stevie Ödülü kazananları, 10 Kasım'da New York'ta düzenlenen ve dünya çapından yaklaşık 600 aday, jüri üyesi ve konuğun katıldığı bir ödül galasında açıklandı.
+      Stevie Ödülü kazananları, dünya çapında düzenlenen kırmızı halı ödül törenlerinde kutlanır; bu törenlerde yüzlerce girişimci ve yöneticiden oluşan bir seyirci kitlesi önünde sahnede teşekkür konuşması yaparlar. 2025 Finalistleri arasında Altın, Gümüş ve Bronz Stevie Ödülü kazananları, 10 Kasım'da New York'ta düzenlenen ve dünya çapından yaklaşık 600 aday, jüri üyesi ve konuğun katıldığı bir ödül galasında açıklandı.
 
-      2026 yarışmasının kazananları, 16 Kasım'da New York City'deki Marriott Marquis Hotel'de düzenlenecek 23. Stevie Awards for Women in Business ödül yemeğinde açıklanacak ve kutlanacak. Finalistler Eylül ayında önceden duyurulacak ve bu finalistler arasında Altın, Gümüş ve Bronz Stevie Ödülleri'nin sahipleri ödül töreninde canlı olarak açıklanacak. Katılım isteğe bağlıdır ve kazanmak için zorunlu değildir, ancak tüm finalistler törene katılmaya, dünya çapında yüzlerce kadın iş lideri ve girişimciyle ağ kurmaya ve profesyonel fotoğraf çekimleri ile kırmızı halı röportajlarının keyfini çıkarmaya davetlidir. Altın Stevie Ödülü kazananları, sahnede bir teşekkür konuşması yapmak üzere davet edilecek. Törenle ilgili daha fazla bilgi için [SSS sayfamızı](/about/faq) ziyaret edin.
+      2026 yarışmasının kazananları, 16 Kasım'da New York City'deki Marriott Marquis Hotel'de düzenlenecek 23. Stevie Awards for Women in Business ödül yemeğinde açıklanacak ve kutlanacak. Finalistler Eylül ayında önceden duyurulacak ve bu finalistler arasında Altın, Gümüş ve Bronz Stevie Ödülü kazananları ödül töreninde canlı olarak açıklanacak. Katılım isteğe bağlıdır ve kazanmak için zorunlu değildir, ancak tüm finalistler törene katılmaya, dünya çapında yüzlerce kadın iş lideri ve girişimciyle ağ kurmaya ve profesyonel fotoğraf çekimleri ile kırmızı halı röportajlarının keyfini çıkarmaya davetlidir. Altın Stevie Ödülü kazananları, sahnede bir kabul konuşması yapmak üzere davet edilecek. Törenle ilgili daha fazla bilgi için [SSS sayfamızı](/about/faq) ziyaret edin.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: Stevie Teknoloji Mükemmelliği Ödülleri, tüm sektörlerde teknolojinin geleceğini şekillendiren bireylerin, ekiplerin ve kuruluşların olağanüstü başarılarını onurlandırmaktadır. Dünyanın dört bir yanından bireyler ve kuruluşlar – kamu ve özel sektörden, kâr amacı güden ve gütmeyen, büyük ve küçük ölçekli – bu ödüllere aday olabilir.
+        description: Stevie Teknoloji Mükemmellik Ödülleri, tüm sektörlerde teknolojinin geleceğini şekillendiren bireylerin, ekiplerin ve kuruluşların olağanüstü başarılarını onurlandırmaktadır. Dünyanın her yerinden bireyler ve kuruluşlar – kamu ve özel sektörden, kâr amacı güden ve gütmeyen, büyük ve küçük – bu ödüllere aday olabilir.
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
@@ -403,7 +403,7 @@ pageSections:
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
-        description: Orta Doğu ve Kuzey Afrika Stevie Ödülleri, MENA bölgesindeki 18 ülkedeki her türden kuruluşta işyerinde sergilenen yenilikçiliği ödüllendirmektedir.
+        description: Orta Doğu ve Kuzey Afrika Stevie Ödülleri, MENA bölgesindeki 18 ülkede her türden kuruluşta işyerinde sergilenen yenilikçiliği ödüllendirmektedir.
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'

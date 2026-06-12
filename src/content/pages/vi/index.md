@@ -10,7 +10,7 @@ pageSections:
     subheading: Đăng ký hiện đã mở
     heading: Lễ trao giải Stevie® lần thứ 23 dành cho Phụ nữ trong Kinh doanh
     description: |-
-      Vinh danh những thành tựu xuất sắc do phụ nữ dẫn dắt trên mọi lĩnh vực. Giải thưởng Stevie® dành cho Phụ nữ trong Kinh doanh là giải thưởng kinh doanh hàng đầu thế giới, vinh danh các nữ doanh nhân, nhà điều hành, nhân viên và các tổ chức do họ lãnh đạo.
+      Vinh danh những thành tựu xuất sắc do phụ nữ dẫn dắt trong mọi lĩnh vực. Giải thưởng Stevie® dành cho Phụ nữ trong Kinh doanh là giải thưởng kinh doanh hàng đầu thế giới, vinh danh các nữ doanh nhân, nhà điều hành, nhân viên và các tổ chức do họ lãnh đạo.
 
       Hãy yêu cầu bộ tài liệu tham gia ngay hôm nay để tìm hiểu cách nộp hồ sơ đề cử. Hãy gia nhập danh sách những người chiến thắng Giải thưởng Stevie® danh giá như AT&T Business, Salesforce, It's a 10 và Watsons.
     buttonSections:
@@ -63,13 +63,13 @@ pageSections:
         - text: Các hạng mục giải thưởng dành cho phụ nữ cá nhân
           iconName: four-pointed-star
           iconColor: brand
-        - text: Các hạng mục giải thưởng Truyền thông (do phụ nữ sáng lập/phát triển)
+        - text: Các hạng mục giải thưởng Truyền thông (do phụ nữ sáng lập/dành cho phụ nữ)
           iconName: four-pointed-star
           iconColor: brand
         - text: Các hạng mục giải thưởng Sản phẩm & Dịch vụ Mới (Được phát triển dành cho/bởi phụ nữ)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Các danh mục trên mạng xã hội
+        - text: Các danh mục mạng xã hội
           iconName: four-pointed-star
           iconColor: brand
         - text: Các hạng mục về phát triển bền vững
@@ -183,7 +183,7 @@ pageSections:
         - image:
             source: /src/assets/images/54918164611-3912a076b1-c.jpg
             alt: Women Future Webinars
-          title: Đăng ký tham gia chuỗi hội thảo trực tuyến Women|Future 2026
+          title: Đăng ký tham gia chuỗi hội thảo trực tuyến Women|Future năm 2026
           link: https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
@@ -196,9 +196,9 @@ pageSections:
     heading: Giải thưởng Stevie có ý nghĩa như thế nào đối với các nhà vô địch năm 2025 của chúng tôi
     videos:
       - youtubeId: UqX5Q9pE6io
-        title: 'Thương hiệu Distruptor giành giải thưởng tại Lễ trao giải Stevie® 2025 dành cho Phụ nữ trong Kinh doanh '
+        title: 'Thương hiệu Distruptor đoạt giải tại Lễ trao giải Stevie® 2025 dành cho Phụ nữ trong Kinh doanh '
       - youtubeId: wvSEt0yvIqs
-        title: Green Panther Skincare đoạt giải tại Giải thưởng Stevie® 2025 dành cho Phụ nữ trong Kinh doanh
+        title: Green Panther Skincare giành giải thưởng tại Lễ trao giải Stevie® 2025 dành cho Phụ nữ trong Kinh doanh
       - youtubeId: fS5Q7wiWcJs
         title: Clearpath Learning Group giành giải thưởng Stevie® Awards 2025 dành cho Phụ nữ trong Kinh doanh
     colorScheme: light
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: Giải thưởng Stevie về Xuất sắc trong Công nghệ vinh danh những thành tựu đáng chú ý của các cá nhân, đội ngũ và tổ chức đang định hình tương lai của công nghệ trên mọi lĩnh vực ngành nghề. Các cá nhân và tổ chức trên toàn thế giới đều có thể tham gia — bao gồm cả tổ chức công và tư, tổ chức vì lợi nhuận và phi lợi nhuận, quy mô lớn và nhỏ.
+        description: Giải thưởng Stevie về Xuất sắc trong Công nghệ vinh danh những thành tựu nổi bật của các cá nhân, đội ngũ và tổ chức đang định hình tương lai của công nghệ trên mọi lĩnh vực ngành nghề. Các cá nhân và tổ chức trên toàn thế giới đều có thể tham gia — bao gồm cả tổ chức công và tư, có mục đích lợi nhuận và phi lợi nhuận, quy mô lớn và nhỏ.
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'

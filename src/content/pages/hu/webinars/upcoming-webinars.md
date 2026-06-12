@@ -1,12 +1,12 @@
 ---
 _schema: default
 title: Nők|Jövőbeli webináriumok
-description: Csatlakozzon hozzánk három inspiráló webináriumunkra, amelyekre 2026 júniusában, júliusában és augusztusában kerül sor – ezeket azzal a céllal szervezzük, hogy támogassuk, összekössük és elősegítsük az üzleti életben tevékenykedő nők fejlődését.
+description: Csatlakozzon hozzánk három inspiráló webináriumra, amelyekre 2026 júniusában, júliusában és augusztusában kerül sor – ezeket azzal a céllal szervezzük, hogy támogassuk, összekössük és előmozdítsuk a nők szerepét az üzleti életben.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: A 2026-os Stevie® Awards for Women in Business program webináriuma
     text: |-
-      Csatlakozzon ingyenes, élő webináriumunkhoz a 2026-os Stevie® Awards for Women in Business díjról, hogy többet tudjon meg a jelölési és elbírálási folyamatokról, az idei újdonságokról, valamint tippeket kapjon ahhoz, hogyan állítson össze olyan sikertörténetet, amely a lehető legkedvezőbb fényben mutatja be eredményeit a zsűrinek. Emellett útmutatást kap az eredményeihez leginkább illő kategóriák kiválasztásához, és lehetőséget arra, hogy élő kérdések és válaszok során közvetlenül kérdéseket tegyen fel a Stevie Awards alapítójának, Michael Gallaghernek.
+      Csatlakozzon ingyenes, élő webináriumunkhoz a 2026-os Stevie® Awards for Women in Business díjról, hogy többet tudjon meg a jelölési és elbírálási folyamatokról, az idei újdonságokról, valamint tippeket kapjon ahhoz, hogyan állítson össze olyan sikertörténetet, amely a lehető legkedvezőbb fényben mutatja be eredményeit a zsűrinek. Emellett útmutatást kap a teljesítményéhez leginkább illő kategóriák kiválasztásához, és lehetőséget arra, hogy élő kérdések és válaszok során közvetlenül kérdéseket tegyen fel a Stevie Awards alapítójának, Michael Gallaghernek.
 
       ###### **Élőben 2026. június 18-án, 11:00–12:00 (ET)<br />Nyerő stratégiák a 2026-os Stevie® Awards for Women in Business díjra**
 
@@ -54,9 +54,9 @@ pageSections:
         text: |-
           # Fektessen be a fejlődésébe: Women\|Future webináriumok
 
-          A Women\|Future webináriumok (korábban Women\|Future konferencia) a Stevie® Awards által szervezett ingyenes webinárium-sorozat, amelyet kisvállalkozás-tulajdonosok, vezetők, vállalkozók és minden vállalkozásindítás iránt érdeklődő hölgy számára terveztek. A Women\|Future Conference-t 2018-ban indították el a Stevie® Awards for Women in Business-szel együttműködésben azzal a céllal, hogy a kiemelkedő teljesítményt nyújtó női szakemberek, véleményvezérek és vállalkozók számára teret biztosítsanak a kapcsolatépítéshez, az ötletek megosztásához és a hálózatépítéshez. A konferencia hét éves sikeres működése után webinárium-sorozattá alakítottuk át.
+          A Women\|Future webináriumok (korábban Women\|Future konferencia) a Stevie® Awards által szervezett ingyenes webinárium-sorozat, amelyet kisvállalkozásokat vezető nők, vezetők, vállalkozók és minden vállalkozásalapítás iránt érdeklődő számára hoztak létre. A Women\|Future Conference-t 2018-ban indították el a Stevie® Awards for Women in Business-szel együttműködésben azzal a céllal, hogy a kiemelkedő eredményeket elérő női szakemberek, véleményvezérek és vállalkozók számára teret biztosítsanak a kapcsolatépítéshez, az ötletek megosztásához és a hálózatépítéshez. A konferencia hét évnyi sikeres működése után webinárium-sorozattá alakítottuk át.
 
-          **Regisztráljon most, és ismerje meg azokat a gyakorlati stratégiákat, amelyek segítenek a szervezet növekedésében és jövőbiztosításában, az üzleti díjakon keresztül hitelességet építeni, valamint első kézből származó perspektívákat kapni olyan női vállalkozóktól, akik sikeresen felépítették és bővítették vállalkozásukat!**
+          **Regisztráljon most, és ismerje meg azokat a gyakorlati stratégiákat, amelyek segítenek a szervezet növekedésében és jövőbiztosításában, az üzleti díjakon keresztül hitelességet építeni, valamint első kézből származó perspektívákat kapni olyan női vállalkozóktól, akik sikeresen felépítették és bővítették vállalkozásaikat!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="Regisztráljon most"><strong>Regisztráljon most</strong></a>
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: A résztvevők gyakorlati tanácsokat kapnak más sikeres vállalkozóktól és Stevie-díjjal kitüntetett női üzleti vezetőktől olyan témákban, mint a sikeres vállalkozás felépítése, fenntartása vagy elindítása, az üzleti díjakra való jelentkezés jelentősége, valamint az, hogyan lehet a történetmesélés technikáit felhasználni a vállalkozás versenyelőnyének kiemelésére. Tanuljon a legjobbaktól, nyissa meg magát az új lehetőségek előtt, és **építse fel a jövőjét!**
+        text: A résztvevők gyakorlati tanácsokat kapnak más sikeres vállalkozóktól és Stevie-díjjal kitüntetett női üzleti vezetőktől olyan témákban, mint a sikeres vállalkozás felépítése, fenntartása vagy elindítása, az üzleti díjakra való nevezés jelentősége, valamint az, hogyan lehet a történetmesélés technikáit felhasználni arra, hogy vállalkozásuk kiemelkedjen a versenytársak közül. Tanuljon a legjobbaktól, nyissa meg magát az új lehetőségek előtt, és **építse fel a jövőjét!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Webináriumaink ambiciózus, előrelátó hölgy szakembereknek szólnak, függetlenül az iparágtól és a karrierjük jelenlegi szakaszától. A világ minden tájáról érkező, céltudatos hölgyek vesznek részt a webináriumokon, hogy sikeres vállalkozóktól és cégtulajdonosoktól új nézőpontokat szerezzenek a számukra legfontosabb témákban. A résztvevők között egyaránt megtalálhatók vezérigazgatók, alapítók, kisvállalkozások tulajdonosai, vállalkozók, vezetők, igazgatók és menedzserek, valamint olyan nők, akik éppen állásváltás előtt állnak vagy karrierjük átalakításába kezdenek.
+        text: Webináriumaink ambiciózus, előrelátó hölgy szakembereknek szólnak, függetlenül az iparágtól és a karrierjük jelenlegi szakaszától. A világ minden tájáról érkező, céltudatos hölgyek vesznek részt a webináriumokon, hogy sikeres vállalkozóktól és cégtulajdonosoktól új nézőpontokat szerezzenek a számukra legfontosabb témákról. A résztvevők között egyaránt megtalálhatók vezérigazgatók, alapítók, kisvállalkozások tulajdonosai, vállalkozók, vezetők, igazgatók és menedzserek, valamint olyan nők, akik éppen állásváltás előtt állnak vagy karrierjük átalakításába kezdenek.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Küldetésünk, hogy élő, oktató jellegű foglalkozásokon keresztül elősegítsük a nők szakmai és személyes fejlődését, ezzel ösztönözve és támogatva őket az üzleti életben. **Cultivate Your Tomorrow** (Építsd a holnapodat!) – ez a szlogenünk. Ezt a mondatot választottuk, mert a The Women\|Future webináriumok arra ösztönöznek, hogy ne csak fogadd el a holnapodat, hanem inspirációval és gondolati vezetéssel távozz, hogy megvalósíthasd karrierbeli, személyes és életbeli törekvéseidet.
+        text: Küldetésünk, hogy élő, oktatási célú foglalkozásokon keresztül elősegítsük a nők szakmai és személyes fejlődését, ezzel ösztönözve és támogatva őket az üzleti életben. **Cultivate Your Tomorrow** (Építsd a holnapodat!) – ez a szlogenünk. Ezt a mondatot választottuk, mert a The Women\|Future webináriumok arra ösztönöznek, hogy ne csak fogadja el a holnapját, hanem inspirációval és gondolati vezetéssel távozzon, hogy megvalósíthassa karrierbeli, személyes és életcéljait.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Legyen partnerünk
     heading: Partnerkapcsolatokkal kapcsolatos érdeklődés
-    description: Növelje márkája ismertségét a női szakemberek globális közösségében! A szponzorokat kiemelten bemutatjuk weboldalunkon, közösségi média felületeinken és hírleveleinkben, valamint megjelennek a világszerte több száz üzleti vezető és vállalkozó részvételével megrendezett webináriumainkon is. Kérjük, küldjön e-mailt a [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) címre a 2026-os szponzorálási lehetőségekkel kapcsolatban, vagy töltse ki az alábbi űrlapot.
+    description: Növelje márkája ismertségét a női szakemberek globális közösségében! A szponzorok kiemelt megjelenést kapnak weboldalunkon, közösségi média felületeinken és hírleveleinkben, valamint láthatóságot biztosítunk számukra a világszerte több száz üzleti vezető és vállalkozó részvételével zajló webináriumainkon. Kérjük, írjon e-mailt a [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) címre a 2026-os szponzorálási lehetőségekkel kapcsolatban, vagy töltse ki az alábbi űrlapot.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

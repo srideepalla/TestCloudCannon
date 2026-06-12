@@ -7,10 +7,10 @@ pageSections:
     backgroundImage:
       source: /src/assets/images/54917709518-2ffd87eb40-o.jpg
       alt: Stevie® Awards for Women in Business  ceremony
-    subheading: 참가 신청 접수 시작
+    subheading: 접수 시작
     heading: 제23회 연례 스티비® 여성 기업인 어워드
     description: |-
-      모든 산업 분야에서 여성 리더들의 탁월한 성과를 기립니다. ‘스티비® 여성 비즈니스 어워드(Stevie® Awards for Women in Business)’는 여성 기업가, 경영진, 직원 및 그들이 이끄는 조직을 기리는 세계 최고의 비즈니스 시상식입니다.
+      모든 산업 분야에서 여성 리더들의 탁월한 성과를 기립니다. ‘스티비® 여성 비즈니스 어워드(Stevie® Awards for Women in Business)’는 여성 기업가, 임원, 직원 및 그들이 이끄는 조직을 기리는 세계 최고의 비즈니스 시상식입니다.
 
       오늘 바로 참가 신청서를 요청하여 후보 추천 방법을 알아보세요. AT&T Business, Salesforce, It's a 10, Watsons 등 저명한 스티비® 어워드 수상자들의 대열에 합류하십시오.
     buttonSections:
@@ -42,7 +42,7 @@ pageSections:
     subheading: 여성 소유 기업, 여성 기업가 등을 추천해 주세요
     heading: 시상 부문
     description: |-
-      지난 20년 이상, ‘스티비® 여성 기업인 어워드(Stevie® Awards for Women in Business)’는 전 세계 모든 유형과 규모의 여성 및 여성이 소유하고 이끄는 조직—대기업부터 중소기업까지, 상장기업과 비상장기업, 영리 및 비영리 단체를 아우르며—에 주목해 왔습니다. 2025년 대회에는 48개국에서 1,500건 이상의 후보 추천이 접수되었습니다.
+      지난 20년 이상, ‘스티비® 여성 기업인 어워드(Stevie® Awards for Women in Business)’는 전 세계 모든 유형과 규모의 여성 및 여성 소유·경영 기업과 단체—대기업부터 중소기업, 상장기업부터 비상장기업, 영리 단체부터 비영리 단체에 이르기까지—를 조명해 왔습니다. 2025년 대회에는 48개국에서 1,500건 이상의 후보 추천이 접수되었습니다.
 
       전 세계의 여성 기업가, 임원, 직원 및 그들이 운영하는 조직은 누구나 후보로 추천될 수 있습니다. 직장에서의 다양한 성과를 아우르는 200개 이상의 부문이 마련되어 있으므로, 여러분의 독창적인 영향력과 가치를 보여줄 수 있는 후보를 추천해 주십시오. 2026년 프로그램에서는 인공지능 및 기술 분야의 성과를 인정하는 새로운 부문이 도입됩니다.
     list:
@@ -54,7 +54,7 @@ pageSections:
         - text: 커뮤니케이션, 마케팅 또는 홍보 부문에서의 성과
           iconName: four-pointed-star
           iconColor: brand
-        - text: 인공지능(AI) 및 기술 분야 (2026년 신규)
+        - text: 인공지능(AI) 및 기술 분야 (2026년 신설)
           iconName: four-pointed-star
           iconColor: brand
         - text: 기업/단체 (여성 소유 또는 여성 경영) 부문
@@ -247,9 +247,9 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: 2025 행사 갤러리
     description: |-
-      스티비 어워드 수상자들은 전 세계에서 열리는 레드카펫 시상식 갈라에서 축하를 받으며, 수백 명의 기업가와 경영진이 지켜보는 가운데 무대에 올라 수상 소감을 전합니다. 2025년 최종 후보자 중 스티비 어워드 금상, 은상, 동상 수상자가 11월 10일 뉴욕시에서 열린 시상식 만찬에서 발표되었으며, 이 자리에는 전 세계에서 온 약 600명의 후보자, 심사위원 및 내빈이 참석했습니다.
+      스티비 어워드 수상자들은 전 세계에서 열리는 레드카펫 시상식 갈라에서 수백 명의 기업가와 경영진이 지켜보는 가운데 무대에 올라 수상 소감을 발표하며 그 영예를 누립니다. 2025년 최종 후보자 중 스티비 어워드 금상, 은상, 동상 수상자가 11월 10일 뉴욕시에서 열린 시상식 만찬에서 발표되었으며, 이 자리에는 전 세계에서 온 약 600명의 후보자, 심사위원 및 내빈이 참석했습니다.
 
-      2026년 대회 수상자들은 11월 16일 뉴욕시 메리어트 마르키스 호텔에서 열리는 제23회 스티비 여성 기업인 어워드 시상 만찬에서 공개되고 축하받을 예정입니다. 최종 후보 명단은 9월에 사전 발표되며, 이들 최종 후보 중 금상, 은상, 동상 수상자는 시상식 현장에서 실시간으로 공개될 예정이다. 참석은 선택 사항이며 수상에 필수 조건은 아니지만, 모든 최종 후보자는 시상식에 참석하여 전 세계 수백 명의 여성 비즈니스 리더 및 기업가들과 네트워킹을 나누고, 전문 사진 촬영 및 레드카펫 인터뷰의 기회를 누릴 수 있습니다. 골드 스티비 어워드 수상자들은 무대에서 수상 소감을 발표하도록 초청됩니다. 시상식에 대한 자세한 내용은 [FAQ 페이지](/about/faq)를 참조해 주십시오.
+      2026년 대회 수상자들은 11월 16일 뉴욕시 메리어트 마르퀴스 호텔에서 열리는 제23회 스티비 여성 기업인 어워드 시상 만찬에서 공개되고 축하받을 예정입니다. 최종 후보 명단은 9월에 사전 발표되며, 이들 최종 후보 중 금상, 은상, 동상 수상자는 시상식 현장에서 실시간으로 공개될 예정이다. 참석은 선택 사항이며 수상에 필수 조건은 아니지만, 모든 최종 후보자는 시상식에 참석하여 전 세계 수백 명의 여성 비즈니스 리더 및 기업가들과 네트워킹을 나누고, 전문 사진 촬영 및 레드카펫 인터뷰의 기회를 누릴 수 있습니다. 골드 스티비 어워드 수상자들은 무대에서 수상 소감을 발표하도록 초청됩니다. 시상식에 대한 자세한 내용은 [FAQ 페이지](/about/faq)를 참조해 주십시오.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -323,7 +323,7 @@ pageSections:
           alt: The Stevie Awards for Great Employers
         dateLabel: NOW
         name: The Stevie® Awards for Great Employers
-        description: ‘스티브 어워드(Stevie Awards) – 훌륭한 고용주 부문’은 전 세계 모든 조직이 참가할 수 있으며, 일하기 가장 좋은 세계 최고의 기업과, 훌륭한 근무 환경을 조성하고 발전시키는 데 기여하는 인사팀 및 전문가, 인사 분야의 성과, 신제품 및 서비스, 그리고 협력업체를 선정하여 시상합니다.
+        description: ‘스티브 어워드(Stevie Awards) – 훌륭한 고용주 부문’은 전 세계 모든 조직이 참가할 수 있으며, 일하기 가장 좋은 세계 최고의 기업과, 훌륭한 근무 환경을 조성하고 발전시키는 데 기여하는 인사팀 및 전문가, 인사 분야의 성과, 신제품 및 서비스, 그리고 협력사를 선정하여 시상합니다.
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
@@ -355,7 +355,7 @@ pageSections:
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
         name: The Stevie® Awards for Sales & Customer Service
-        description: ‘스티비 영업 및 고객 서비스 어워드’는 전 세계 모든 조직이 참가할 수 있으며, 영업, 고객 서비스 및 콜센터 전문가들의 성과를 기리는 시상식입니다.
+        description: ‘스티비 영업 및 고객 서비스 어워드(Stevie Awards for Sales & Customer Service)’는 전 세계 모든 조직이 참가할 수 있으며, 영업, 고객 서비스 및 콜센터 전문가들의 성과를 기리는 시상식입니다.
         link: https://sales.stevieawards.comp
         colorScheme: inherit
         brandColor: '#99844b'
@@ -403,7 +403,7 @@ pageSections:
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
-        description: 중동 및 북아프리카 스티비 어워드는 MENA 지역 18개국에 걸쳐 있는 모든 유형의 조직에서 이루어지는 업무 환경 혁신을 선정하여 시상합니다.
+        description: 중동 및 북아프리카 스티비 어워드는 MENA 지역 18개국에 위치한 모든 유형의 조직에서 이루어지는 업무 환경 혁신을 선정하여 시상합니다.
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'

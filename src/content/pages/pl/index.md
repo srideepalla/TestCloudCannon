@@ -44,14 +44,14 @@ pageSections:
     description: |-
       Od ponad 20 lat nagrody Stevie® Awards for Women in Business zwracają uwagę na kobiety oraz organizacje na całym świecie, niezależnie od ich rodzaju i wielkości, które są własnością kobiet lub przez nie kierowane: duże i małe, publiczne i prywatne, nastawione na zysk i non-profit. W konkursie w 2025 roku zgłoszono ponad 1500 kandydatur z 48 krajów.
 
-      Do nominacji kwalifikują się kobiety-przedsiębiorczynie, kadra kierownicza, pracownice oraz organizacje, którymi kierują, z całego świata. Dzięki ponad 200 kategoriom obejmującym szeroki zakres osiągnięć w miejscu pracy, możesz zgłaszać nominacje, które podkreślą Twój wyjątkowy wpływ i wartości. Program na rok 2026 wprowadza nowe kategorie uznające osiągnięcia w dziedzinie sztucznej inteligencji i technologii.
+      Do nominacji kwalifikują się kobiety-przedsiębiorcy, kadra kierownicza, pracownice oraz organizacje, którymi kierują, z całego świata. Dzięki ponad 200 kategoriom obejmującym szeroki zakres osiągnięć w miejscu pracy, możesz zgłaszać nominacje, które podkreślą Twój wyjątkowy wpływ i wartości. Program na rok 2026 wprowadza nowe kategorie uznające osiągnięcia w dziedzinie sztucznej inteligencji i technologii.
     list:
       _component: building-blocks/core-elements/list
       items:
         - text: Kategorie osiągnięć
           iconName: four-pointed-star
           iconColor: brand
-        - text: Osiągnięcia w kategoriach komunikacji, marketingu lub public relations
+        - text: Osiągnięcia w kategorii komunikacji, marketingu lub public relations
           iconName: four-pointed-star
           iconColor: brand
         - text: Sztuczna inteligencja (AI) i kategorie technologiczne (nowość w 2026 r.)
@@ -178,7 +178,7 @@ pageSections:
         - image:
             source: /src/assets/images/persistent-sheshapesai-logo.webp
             alt: Persistent and Stevie Awards Honor Female Leaders
-          title: Ogłoszono finalistów konkursu SheShapesAI organizowanego przez firmę Persistent podczas 22. dorocznej edycji konkursu Stevie® Awards for Women in Business
+          title: Ogłoszono finalistów konkursu SheShapesAI organizowanego przez firmę Persistent podczas 22. dorocznej gali Stevie® Awards for Women in Business
           link: https://blog.stevieawards.com/blog/finalists-announced-in-persistents-sheshapesai-awards-at-the-22nd-annual-stevie-awards-for-women-in-business
         - image:
             source: /src/assets/images/54918164611-3912a076b1-c.jpg
@@ -196,7 +196,7 @@ pageSections:
     heading: Co oznacza zdobycie nagrody Stevie dla naszych laureatów z 2025 roku
     videos:
       - youtubeId: UqX5Q9pE6io
-        title: 'Marka Distruptor zdobyła nagrodę w konkursie Stevie® Awards for Women in Business 2025 '
+        title: 'Marka Distruptor zdobyła nagrodę w konkursie Stevie® Awards 2025 dla kobiet w biznesie '
       - youtubeId: wvSEt0yvIqs
         title: Marka Green Panther Skincare zdobyła nagrodę w konkursie Stevie® Awards for Women in Business 2025
       - youtubeId: fS5Q7wiWcJs
@@ -247,9 +247,9 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: Galeria wydarzeń z 2025 roku
     description: |-
-      Laureaci nagród Stevie są honorowani na całym świecie podczas uroczystych gal wręczenia nagród z czerwonym dywanem, gdzie wygłaszają przemówienia na scenie przed publicznością złożoną z setek przedsiębiorców i kadry kierowniczej. Złote, srebrne i brązowe nagrody Stevie Award dla finalistów z 2025 roku ogłoszono podczas uroczystej gali wręczenia nagród, w której 10 listopada w Nowym Jorku wzięło udział prawie 600 nominowanych, sędziów i gości z całego świata.
+      Laureaci nagrody Stevie Award są honorowani na całym świecie podczas uroczystych gal wręczenia nagród z czerwonym dywanem, gdzie wygłaszają przemówienia na scenie przed publicznością złożoną z setek przedsiębiorców i kadry kierowniczej. Złote, srebrne i brązowe nagrody Stevie Award dla finalistów z 2025 roku ogłoszono podczas uroczystej gali wręczenia nagród, w której 10 listopada w Nowym Jorku wzięło udział prawie 600 nominowanych, sędziów i gości z całego świata.
 
-      Zwycięzcy konkursu w 2026 roku zostaną ogłoszeni i uhonorowani 16 listopada podczas uroczystej gali wręczenia nagród 23. edycji Stevie Awards for Women in Business w hotelu Marriott Marquis w Nowym Jorku. Finaliści zostaną ogłoszeni we wrześniu, a zdobywczynie złotych, srebrnych i brązowych nagród Stevie Award spośród tych finalistek zostaną ujawnione na żywo podczas ceremonii wręczenia nagród. Udział w uroczystości jest dobrowolny i nie jest wymagany do wygrania nagrody, ale wszyscy finaliści są zaproszeni do udziału w ceremonii, nawiązania kontaktów z setkami kobiet-liderów biznesu i przedsiębiorców z całego świata oraz skorzystania z profesjonalnej sesji zdjęciowej i wywiadów na czerwonym dywanie. Zwyciężczynie Złotej Nagrody Stevie zostaną zaproszone do wygłoszenia przemówienia na scenie. Odwiedź naszą [stronę z często zadawanymi pytaniami](/about/faq), aby uzyskać więcej informacji na temat ceremonii.
+      Zwycięzcy konkursu w 2026 roku zostaną ogłoszeni i uhonorowani 16 listopada podczas uroczystej gali wręczenia nagród 23. edycji Stevie Awards for Women in Business w hotelu Marriott Marquis w Nowym Jorku. Finaliści zostaną ogłoszeni we wrześniu, a zdobywczynie złotych, srebrnych i brązowych nagród Stevie Award spośród tych finalistek zostaną ujawnione na żywo podczas ceremonii wręczenia nagród. Udział w uroczystości jest opcjonalny i nie jest wymagany do wygrania nagrody, ale wszystkie finalistki są zaproszone do udziału w ceremonii, nawiązania kontaktów z setkami kobiet-liderów biznesu i przedsiębiorców z całego świata oraz skorzystania z profesjonalnej sesji zdjęciowej i wywiadów na czerwonym dywanie. Zwyciężczynie Złotej Nagrody Stevie zostaną zaproszone do wygłoszenia przemówienia na scenie. Odwiedź naszą [stronę z często zadawanymi pytaniami](/about/faq), aby uzyskać więcej informacji na temat ceremonii.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: Poznaj inne konkursy w ramach nagród Stevie® Awards
-    description: Niezależnie od tego, za co Twoja organizacja chce zdobyć uznanie, w programie Stevie Awards znajdzie się odpowiednia kategoria. Od osiągnięć poszczególnych specjalistów i zespołów po sukcesy działów i całej firmy – każdy z naszych dziewięciu programów nagród obejmuje setki kategorii, w których doceniamy doskonałość we wszystkich aspektach życia zawodowego.
+    description: Niezależnie od tego, za co Twoja organizacja chce zdobyć uznanie, w programie Stevie Awards znajdziesz odpowiednią kategorię. Od osiągnięć poszczególnych specjalistów i zespołów po sukcesy działów i całej firmy – każdy z naszych dziewięciu programów nagród obejmuje setki kategorii, w których doceniamy doskonałość we wszystkich aspektach życia zawodowego.
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png
@@ -323,7 +323,7 @@ pageSections:
           alt: The Stevie Awards for Great Employers
         dateLabel: NOW
         name: The Stevie® Awards for Great Employers
-        description: Konkurs „Stevie Awards for Great Employers” jest otwarty dla wszystkich organizacji z całego świata i ma na celu wyróżnienie najlepszych pracodawców na świecie, a także zespołów i specjalistów ds. kadr, osiągnięć w dziedzinie HR, nowych produktów i usług oraz dostawców, którzy przyczyniają się do tworzenia i rozwijania doskonałych miejsc pracy.
+        description: Konkurs Stevie Awards dla najlepszych pracodawców jest otwarty dla wszystkich organizacji z całego świata i ma na celu wyróżnienie najlepszych firm na świecie, w których warto pracować, a także zespołów i specjalistów ds. kadr, osiągnięć w dziedzinie HR, nowych produktów i usług oraz dostawców, którzy przyczyniają się do tworzenia i rozwijania doskonałych miejsc pracy.
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
@@ -371,7 +371,7 @@ pageSections:
           alt: The American Business Awards
         dateLabel: October, 7 2026
         name: The American Business Awards®
-        description: Wszystkie organizacje z siedzibą w Stanach Zjednoczonych mogą wziąć udział w prestiżowym programie nagród biznesowych w USA.
+        description: Wszystkie organizacje z siedzibą w Stanach Zjednoczonych mogą wziąć udział w tym prestiżowym programie nagród biznesowych w USA.
         link: https://aba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#660000'

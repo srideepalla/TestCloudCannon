@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: Webinar Wanita|Masa Depan
-description: Sertai kami untuk tiga webinar inspirasi yang akan diadakan pada bulan Jun, Julai, dan Ogos 2026 – direka untuk memberdaya, menghubungkan, dan meningkatkan kedudukan wanita dalam perniagaan.
+description: Sertai kami untuk tiga webinar inspirasi yang akan diadakan pada bulan Jun, Julai, dan Ogos 2026 – direka untuk memberdaya, menghubungkan, dan meningkatkan wanita dalam perniagaan.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Webinar Program Anugerah Stevie® 2026 untuk Wanita dalam Perniagaan
@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Laburkan untuk Pertumbuhan Anda: Webinar Women\|Future
 
-          Webinar Women\|Future (dahulunya Persidangan Women\|Future) adalah satu siri webinar percuma yang dihoskan oleh Stevie® Awards yang direka untuk pemilik perniagaan kecil wanita, eksekutif, usahawan, dan sesiapa sahaja yang berminat untuk memulakan perniagaan. Dilancarkan pada tahun 2018 bersamaan dengan Anugerah Stevie® untuk Wanita dalam Perniagaan, Persidangan Women|Future dicipta untuk memberi ruang kepada profesional wanita yang cemerlang, pemimpin pemikiran, dan usahawan untuk berhubung, berkongsi idea, dan menjalin rangkaian. Selepas tujuh tahun berjaya dijalankan sebagai persidangan, kami mengubahnya menjadi siri webinar.
+          Webinar Women\|Future (dahulunya Persidangan Women\|Future) adalah satu siri webinar percuma yang dihoskan oleh Stevie® Awards yang direka untuk pemilik perniagaan kecil wanita, eksekutif, usahawan, dan sesiapa sahaja yang berminat untuk memulakan perniagaan. Dilancarkan pada tahun 2018 bersamaan dengan Anugerah Stevie® untuk Wanita dalam Perniagaan, Persidangan Women|Future dicipta untuk memberi ruang kepada profesional wanita yang cemerlang, pemimpin pemikiran, dan usahawan untuk berhubung, berkongsi idea, dan menjalin rangkaian. Selepas tujuh tahun berjaya dijalankan sebagai persidangan, kami menukarnya kepada siri webinar.
 
           **Daftar sekarang untuk menemui strategi praktikal yang membantu anda mengembangkan dan memastikan masa depan organisasi anda, membina kredibiliti melalui anugerah perniagaan, dan mendapatkan pandangan langsung daripada usahawan wanita yang telah berjaya membina dan mengembangkan perniagaan mereka!**
 
@@ -240,7 +240,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Adakah anda berada di rantau APAC? Daftarkan untuk sesi mesra AEST ini supaya anda boleh menghadiri secara langsung:'
+        text: 'Adakah anda berada di rantau APAC? Daftar untuk sesi mesra AEST ini supaya anda boleh menghadiri secara langsung:'
         level: h1
         size: md
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Para peserta akan mendapat pembelajaran praktikal daripada usahawan berjaya lain dan wanita pemimpin perniagaan pemenang Anugerah Stevie mengenai topik termasuk cara mengembangkan, mengekalkan, atau memulakan perniagaan yang berjaya, nilai menyertai anugerah perniagaan, dan cara menggunakan teknik penceritaan untuk membezakan perniagaan anda daripada pesaing. Belajarlah daripada wanita yang terbaik, terdedah kepada peluang baharu, dan **Budayakan Masa Depan Anda!**
+        text: Para peserta akan mendapat pembelajaran praktikal daripada usahawan berjaya lain dan wanita pemimpin perniagaan pemenang Anugerah Stevie mengenai topik termasuk cara mengembangkan, mengekalkan, atau memulakan perniagaan yang berjaya, nilai penyertaan dalam anugerah perniagaan, dan cara menggunakan teknik penceritaan untuk membezakan perniagaan anda daripada pesaing. Belajarlah daripada wanita yang terbaik, terdedah kepada peluang baharu, dan **Budayakan Masa Depan Anda!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -489,7 +489,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Hubungi kami
     heading: Hubungi Kami
-    description: Ada soalan tentang Webinar Women|Future? Hantarkan mesej kepada kami dan seorang ahli pasukan kami akan menghubungi anda.
+    description: Ada soalan tentang Webinar Women|Future? Hantarkan mesej kepada kami dan seorang ahli pasukan kami akan menghubungi anda semula.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

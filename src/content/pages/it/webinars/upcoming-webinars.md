@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Webinar sul programma degli Stevie® Awards 2026 per le donne nel mondo degli affari
     text: |-
-      Partecipa al nostro webinar gratuito in diretta sugli Stevie® Awards for Women in Business 2026 per scoprire di più sulle procedure di candidatura e di valutazione, sulle novità di quest'anno e per ricevere consigli su come redigere una storia di successo che presenti i tuoi risultati alla giuria nella luce migliore possibile. Riceverai inoltre indicazioni su come selezionare le categorie più adatte ai tuoi risultati e avrai l'opportunità di porre domande direttamente al fondatore degli Stevie Awards, Michael Gallagher, durante una sessione di domande e risposte dal vivo.
+      Partecipa al nostro webinar gratuito in diretta sugli Stevie® Awards for Women in Business 2026 per scoprire di più sulle procedure di candidatura e di valutazione, sulle novità di quest'anno e per ricevere consigli su come redigere una storia di successo che presenti i tuoi risultati alla giuria nella luce migliore possibile. Riceverai inoltre indicazioni su come selezionare le categorie più adatte ai tuoi risultati e avrai l'opportunità di porre domande direttamente al fondatore degli Stevie Awards, Michael Gallagher, durante una sessione di domande e risposte in diretta.
 
       ###### **In diretta il 18 giugno 2026, dalle 11:00 alle 12:00 (ET)<br/>Strategie vincenti per gli Stevie® Awards for Women in Business 2026**
 
@@ -56,7 +56,7 @@ pageSections:
 
           I webinar Women\|Future (precedentemente noti come Women\|Future Conference) sono una serie di webinar gratuiti organizzati dagli Stevie® Awards e pensati per le donne titolari di piccole imprese, dirigenti, imprenditrici e chiunque sia interessato ad avviare un'attività. Lanciata nel 2018 in collaborazione con gli Stevie® Awards for Women in Business, la Women\|Future Conference è stata creata per offrire a professioniste di successo, leader di pensiero e imprenditrici un luogo in cui connettersi, condividere idee e fare networking. Dopo sette anni di successo come conferenza, l'abbiamo trasformata in una serie di webinar.
 
-          **Iscriviti ora per scoprire strategie pratiche che ti aiuteranno a far crescere la tua organizzazione e a renderla a prova di futuro, a costruire credibilità attraverso i premi aziendali e a ottenere prospettive di prima mano da imprenditrici che hanno costruito e fatto crescere con successo le loro attività!**
+          **Iscriviti ora per scoprire strategie pratiche che ti aiuteranno a far crescere e rendere la tua organizzazione a prova di futuro, a costruire credibilità attraverso i premi aziendali e a ottenere prospettive di prima mano da imprenditrici che hanno costruito e fatto crescere con successo le loro attività!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="Registrati ora"><strong>Registrati ora</strong></a>
         alignX: center
@@ -240,7 +240,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Ti trovi nella regione APAC? Iscriviti a queste sessioni in orario AEST per poter partecipare in diretta:'
+        text: 'Ti trovi nella regione APAC? Iscriviti a queste sessioni con orari compatibili con l''AEST per poter partecipare in diretta:'
         level: h1
         size: md
         alignX: center
@@ -302,7 +302,7 @@ pageSections:
                 link: https://events.zoom.us/ev/AgMvkxPuVGqaJG8UnMzHrEP2OG_FwK0e-T-WfOjjVqD-vFUTpKjq~AgHoVfkdIAFPIChHE0EubOa2RmUel6Yzsg8jDifVhqrTU5NcTfKrpgWGmw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: 15 luglio 2026, ore 14:00 (AEST)
+                text: 15 luglio 2026, ore 14:00 (ora di Sydney)
                 level: h3
                 size: md
                 alignX: start
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: I nostri webinar sono rivolti a donne professioniste ambiziose e lungimiranti, provenienti da diversi settori e in diverse fasi della carriera. Donne motivate da tutto il mondo partecipano ai webinar per acquisire nuove prospettive su argomenti di grande rilevanza, grazie alle testimonianze di imprenditrici e titolari d’azienda di successo. Le partecipanti sono un mix di amministratrici delegate, fondatrici, titolari di piccole imprese, imprenditrici, dirigenti, direttrici e manager, oltre a donne in fase di transizione lavorativa o che stanno avviando un cambio di carriera.
+        text: I nostri webinar sono rivolti a donne professioniste ambiziose e lungimiranti, provenienti da diversi settori e in diverse fasi della carriera. Donne motivate da tutto il mondo partecipano ai webinar per acquisire nuove prospettive su argomenti di grande rilevanza, grazie alle testimonianze di imprenditrici e titolari di aziende di successo. Le partecipanti sono un mix di amministratrici delegate, fondatrici, titolari di piccole imprese, imprenditrici, dirigenti, direttrici e manager, oltre a donne in fase di transizione lavorativa o che stanno avviando un cambio di carriera.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Zainwestuj w swój rozwój: Webinaria Women\|Future
 
-          Webinaria Women\|Future (dawniej konferencja Women\|Future) to seria bezpłatnych webinariów organizowanych przez Stevie® Awards, skierowanych do kobiet prowadzących małe firmy, kadry kierowniczej, przedsiębiorczyń oraz wszystkich osób zainteresowanych założeniem własnej działalności. Konferencja Women\|Future, uruchomiona w 2018 roku w połączeniu z nagrodami Stevie® Awards for Women in Business, została stworzona, aby zapewnić kobietom odnoszącym sukcesy zawodowe, liderkom opinii i przedsiębiorczyniom miejsce do nawiązywania kontaktów, dzielenia się pomysłami i budowania sieci kontaktów. Po siedmiu latach sukcesów jako konferencja przekształciliśmy ją w serię webinarów.
+          Webinaria Women\|Future (dawniej konferencja Women\|Future) to seria bezpłatnych webinariów organizowanych przez Stevie® Awards, skierowanych do kobiet prowadzących małe firmy, kadry kierowniczej, przedsiębiorczyń oraz wszystkich osób zainteresowanych założeniem własnej działalności. Konferencja Women\|Future, uruchomiona w 2018 roku we współpracy z organizacją Stevie® Awards for Women in Business, została stworzona, aby zapewnić kobietom odnoszącym sukcesy zawodowe, liderkom opinii i przedsiębiorczyniom miejsce do nawiązywania kontaktów, dzielenia się pomysłami i budowania sieci kontaktów. Po siedmiu latach sukcesów jako konferencja przekształciliśmy ją w serię webinarów.
 
           **Zarejestruj się już teraz, aby poznać praktyczne strategie, które pomogą Ci rozwijać i zabezpieczyć Twoją organizację na przyszłość, budować wiarygodność dzięki nagrodom biznesowym oraz uzyskać informacje z pierwszej ręki od kobiet-przedsiębiorców, które z sukcesem zbudowały i rozwinęły swoje firmy!**
 
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 'Uczestnicy zdobędą praktyczną wiedzę od innych odnoszących sukcesy przedsiębiorców oraz kobiet-liderów biznesu, laureatek nagrody Stevie Award, na takie tematy jak: jak rozwijać, utrzymać lub założyć odnoszącą sukcesy firmę, jakie korzyści płyną z udziału w konkursach biznesowych oraz jak wykorzystać techniki opowiadania historii, by wyróżnić swoją firmę na tle konkurencji. Ucz się od kobiet, które robią to najlepiej, otwórz się na nowe możliwości i **buduj swoją przyszłość!**'
+        text: 'Uczestnicy zdobędą praktyczną wiedzę od innych odnoszących sukcesy przedsiębiorców oraz kobiet-liderów biznesu, laureatek nagrody Stevie, na takie tematy jak: jak rozwijać, utrzymać lub założyć odnoszącą sukcesy firmę, jakie korzyści płyną z udziału w konkursach biznesowych oraz jak wykorzystać techniki opowiadania historii, by wyróżnić swoją firmę na tle konkurencji. Ucz się od kobiet, które robią to najlepiej, otwórz się na nowe możliwości i **buduj swoją przyszłość!**'
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Nasze webinaria są skierowane do ambitnych, myślących przyszłościowo kobiet z różnych branż i na różnych etapach kariery. Kobiety z całego świata, które chcą się rozwijać, uczestniczą w tych webinariach, aby poznać nowe spojrzenie na najważniejsze tematy od odnoszących sukcesy właścicielek firm i przedsiębiorczyń. Wśród uczestniczek znajdują się prezeski, założycielki, właścicielki małych firm, przedsiębiorczynie, kadra kierownicza, dyrektorzy i menedżerki, a także kobiety w okresie między zmianą pracy lub rozpoczynające zmianę kariery.
+        text: Nasze webinaria są skierowane do ambitnych, myślących przyszłościowo kobiet z różnych branż i na różnych etapach kariery. Kobiety z całego świata, które dążą do osiągnięcia sukcesu, uczestniczą w tych webinariach, aby poznać nowe spojrzenie na najważniejsze tematy od odnoszących sukcesy właścicielek firm i przedsiębiorczyń. Wśród uczestniczek znajdują się prezeski, założycielki, właścicielki małych firm, przedsiębiorczynie, kadra kierownicza, dyrektorzy i menedżerki, a także kobiety w okresie między pracą a zmianą kariery.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Naszą misją jest inspirowanie kobiet w biznesie i wspieranie ich rozwoju poprzez promowanie rozwoju zawodowego i osobistego w ramach prowadzonych na żywo sesji edukacyjnych. **Cultivate Your Tomorrow** to nasze hasło przewodnie. Wybraliśmy to zdanie, ponieważ webinaria The Women\|Future zachęcają nie tylko do otwarcia się na przyszłość, ale także do czerpania inspiracji i zdobycia wiedzy, które pomogą zrealizować aspiracje zawodowe, osobiste i życiowe.
+        text: Naszą misją jest inspirowanie kobiet w biznesie i wspieranie ich rozwoju poprzez promowanie rozwoju zawodowego i osobistego w ramach prowadzonych na żywo sesji edukacyjnych. **Cultivate Your Tomorrow** to nasze hasło przewodnie. Wybraliśmy to zdanie, ponieważ webinaria The Women\|Future zachęcają nie tylko do otwarcia się na przyszłość, ale także do czerpania inspiracji i zdobycia wiedzy, które pomogą w realizacji aspiracji zawodowych, osobistych i życiowych.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -444,7 +444,7 @@ pageSections:
     useDefaultEditableBinding: true
   - _component: page-sections/features/split-list-form
     subheading: Zostań naszym partnerem
-    heading: Zapytania dotyczące współpracy
+    heading: Zapytania dotyczące partnerstwa
     description: Zwiększ rozpoznawalność swojej marki wśród globalnej społeczności kobiet-profesjonalistek! Sponsorzy są wyróżniani na naszej stronie internetowej, w mediach społecznościowych i wiadomościach e-mailowych, a także zyskują widoczność podczas naszych webinarów, w których uczestniczą setki liderów biznesu i przedsiębiorców z całego świata. Wyślij e-mail na adres [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com), aby uzyskać informacje na temat możliwości sponsoringu w 2026 r., lub wypełnij poniższy formularz.
     list:
       _component: building-blocks/wrappers/article-link-list
@@ -467,7 +467,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Bądź na bieżąco
     heading: Zapisz się do naszego newslettera
-    description: Wpisz swoje dane poniżej, a my będziemy wysyłać Ci ważne wiadomości e-mail z aktualnościami na temat serii webinariów.
+    description: Wpisz swoje dane poniżej, a my będziemy wysyłać Ci e-maile z ważnymi informacjami na temat serii webinariów.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Invista no seu crescimento: Webinars Women\|Future
 
-          Os Webinars Women\|Future (anteriormente conhecidos como Conferência Women\|Future) são uma série de webinars gratuitos organizados pelo Stevie® Awards, voltados para mulheres proprietárias de pequenas empresas, executivas, empreendedoras e qualquer pessoa interessada em abrir um negócio. Lançada em 2018 em parceria com o Stevie® Awards for Women in Business, a Women\|Future Conference foi criada para oferecer às profissionais de alto desempenho, líderes de pensamento e empreendedoras um espaço para se conectarem, compartilharem ideias e fazerem networking. Após sete anos de sucesso como conferência, transformamos o evento em uma série de webinars.
+          Os Webinars Women\|Future (anteriormente conhecidos como Conferência Women\|Future) são uma série de webinars gratuitos organizados pelo Stevie® Awards, voltados para mulheres proprietárias de pequenas empresas, executivas, empreendedoras e qualquer pessoa interessada em abrir um negócio. Lançada em 2018 em conjunto com o Stevie® Awards for Women in Business, a Women\|Future Conference foi criada para oferecer às profissionais de alto desempenho, líderes de pensamento e empreendedoras um espaço para se conectarem, compartilharem ideias e fazerem networking. Após sete anos de sucesso como conferência, transformamos o evento em uma série de webinars.
 
           **Inscreva-se agora para descobrir estratégias práticas que ajudarão você a expandir e preparar sua organização para o futuro, construir credibilidade por meio de prêmios empresariais e obter perspectivas em primeira mão de mulheres empreendedoras que construíram e expandiram seus negócios com sucesso!**
 
@@ -240,7 +240,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Você está na região da Ásia-Pacífico? Inscreva-se nessas sessões com horários compatíveis com o AEST para poder participar ao vivo:'
+        text: 'Você está na região da Ásia-Pacífico? Inscreva-se nessas sessões com horários compatíveis com o fuso horário AEST para poder participar ao vivo:'
         level: h1
         size: md
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Os participantes aprendem lições práticas com outras empreendedoras de sucesso e mulheres líderes empresariais vencedoras do Prêmio Stevie sobre temas que incluem como expandir, manter ou iniciar um negócio de sucesso, a importância de se inscrever em prêmios empresariais e como usar técnicas de narrativa para diferenciar sua empresa da concorrência. Aprenda com as mulheres que fazem isso da melhor maneira, exponha-se a novas oportunidades e **Cultive o seu amanhã!**
+        text: Os participantes aprendem lições práticas com outras empreendedoras de sucesso e mulheres líderes empresariais vencedoras do Prêmio Stevie sobre temas que incluem como expandir, manter ou iniciar um negócio de sucesso, a importância de participar de prêmios empresariais e como usar técnicas de narrativa para diferenciar sua empresa da concorrência. Aprenda com as mulheres que fazem isso da melhor maneira, exponha-se a novas oportunidades e **Cultive o seu amanhã!**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Nossos webinars são voltados para mulheres profissionais ambiciosas e com visão de futuro, de diversos setores e em diferentes fases da carreira. Mulheres motivadas de todo o mundo participam dos webinars para obter novas perspectivas sobre os temas mais relevantes, apresentadas por empresárias e empreendedoras de sucesso. As participantes são uma mistura de CEOs, fundadoras, proprietárias de pequenas empresas, empreendedoras, executivas, diretoras e gerentes, bem como mulheres em transição de emprego ou iniciando uma mudança de carreira.
+        text: Nossos webinars são voltados para mulheres profissionais ambiciosas e com visão de futuro, de diversos setores e em diferentes fases da carreira. Mulheres motivadas de todo o mundo participam dos webinars para obter novas perspectivas sobre os temas mais relevantes, apresentadas por empresárias e empreendedoras de sucesso. As participantes são uma mistura de CEOs, fundadoras, proprietárias de pequenas empresas, empreendedoras, executivas, diretoras e gerentes, bem como mulheres em transição entre empregos ou iniciando uma mudança de carreira.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

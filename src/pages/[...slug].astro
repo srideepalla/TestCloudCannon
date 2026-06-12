@@ -4,6 +4,7 @@ import mainNavData from "@data/mainNav.json";
 import CollectionLayout from "@layouts/CollectionLayout.astro";
 import Page from "@layouts/Page.astro";
 import { draftFilter } from "@utils/draft-filter";
+import LocalizedLink from "@components/utils/LocalizedLink.astro";
 import { getCollection, render, type CollectionEntry } from "astro:content";
 
 const componentImports = {
@@ -18,6 +19,9 @@ Object.entries(componentImports).forEach(([path, module]) => {
 
   mdxComponents[fileName] = (module as any).default;
 });
+
+// Localize internal links inside rendered markdown/MDX bodies (keeps the locale).
+mdxComponents.a = LocalizedLink;
 
 // Collections that should use the sidebar layout
 const SIDEBAR_COLLECTIONS = [

@@ -15,7 +15,7 @@ pageSections:
       立即索取參賽指南，了解提名方式。加入 AT&T Business、Salesforce、It's a 10 及 Watsons 等傑出 Stevie® 獎得主之列。
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: 索取參賽套件
+        text: 索取參賽資料包
         hideText: false
         link: /enter/request-the-entry-kit/
         openInNewTab: false
@@ -42,7 +42,7 @@ pageSections:
     subheading: 提名女性經營的企業、女性創業家及其他相關人士
     heading: 獎項類別
     description: |-
-      二十多年來，「史蒂維®女性商業獎」始終致力於聚焦全球各地各類型及規模的女性，以及由女性擁有或領導的組織：無論規模大小、公營或私營、營利或非營利。 2025年的評選活動共收到來自48個國家的1,500多項提名。
+      二十多年來，「史蒂維®女性商業獎」始終致力於聚焦全球各類型及規模的女性，以及由女性擁有或領導的組織：無論規模大小、公營或私營、營利或非營利。 2025年的評選活動共收到來自48個國家的1,500多項提名。
 
       全球各地的女企業家、高階主管、員工及其所領導的組織，皆具備提名資格。本獎項設有超過200個獎項類別，涵蓋廣泛的職場成就，您可提交提名，展現您獨特的影響力與價值觀。2026年度的評選計畫將新增獎項類別，以表彰在人工智慧與科技領域的成就。
     list:
@@ -196,11 +196,11 @@ pageSections:
     heading: 對我們的 2025 年得獎者而言，贏得史蒂夫獎意味著什麼
     videos:
       - youtubeId: UqX5Q9pE6io
-        title: Distruptor Brand 榮獲 2025 年 Stevie® 女性企業家大獎
+        title: Distruptor Brand 榮獲 2025 年 Stevie® 女性企業家獎
       - youtubeId: wvSEt0yvIqs
-        title: Green Panther Skincare 榮獲 2025 年 Stevie® 女性企業家大獎
+        title: Green Panther Skincare 榮獲 2025 年 Stevie® 女性企業家獎
       - youtubeId: fS5Q7wiWcJs
-        title: Clearpath Learning Group 榮獲 2025 年 Stevie® 商業女性大獎
+        title: Clearpath Learning Group 榮獲 2025 年 Stevie® 女性企業家獎
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
@@ -247,9 +247,9 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: 2025 年活動圖輯
     description: |-
-      史蒂維獎得主將在我們於世界各地舉辦的紅毯頒獎晚會上接受祝賀，並在數百名企業家和高管組成的觀眾面前，於舞台上發表獲獎感言。 2025年決選名單中的史蒂維金獎、銀獎及銅獎得主，已於11月10日在紐約市舉行的頒獎晚宴上揭曉，現場匯聚了來自世界各地近600位提名者、評審及嘉賓。
+      史蒂夫獎得主將在全球各地的紅毯頒獎晚宴上接受祝賀，並在數百名企業家和高階主管的見證下，於舞台上發表得獎感言。 2025年入圍名單中的史蒂維金獎、銀獎及銅獎得主，已於11月10日在紐約市舉行的頒獎晚宴上揭曉，現場匯聚了來自世界各地近600位提名者、評審及嘉賓。
 
-      2026年競賽的獲獎者將於11月16日，在紐約市萬豪馬奎斯酒店舉行的第23屆「史蒂維女性商業獎」頒獎晚宴上揭曉並接受祝賀。 決選名單將於九月預先公布，而決選名單中的金、銀、銅史蒂維獎得主名單將於頒獎典禮現場揭曉。 出席典禮屬自願性質，並非獲獎必要條件，但所有決選入圍者均受邀參與典禮，與來自全球的數百位女性商業領袖及企業家交流，並享受專業攝影及紅毯專訪服務。 史蒂維金獎得主將受邀上台發表得獎感言。如需了解典禮的更多詳情，請造訪我們的 [常見問題頁面](/about/faq)。
+      2026年競賽的獲獎者將於11月16日，在紐約市萬豪馬奎斯酒店舉行的第23屆「史蒂維女性商業獎」頒獎晚宴上揭曉並接受祝賀。 決選名單將於九月預先公布，而決選名單中的金、銀、銅史蒂維獎得主名單將於頒獎典禮現場揭曉。 出席典禮並非強制要求，亦非獲獎必要條件，但所有決選入圍者均受邀參與典禮，與來自全球的數百位女性商業領袖及企業家交流，並享受專業攝影及紅毯專訪服務。 史蒂維金獎得主將受邀上台發表得獎感言。如需了解典禮的更多詳情，請瀏覽我們的 [常見問題頁面](/about/faq)。
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: 探索其他 Stevie® 獎項競賽
-    description: 無論您的組織希望在哪些領域獲得肯定，史蒂夫獎（Stevie Awards）都有相應的獎項類別。從個人專業人士、團隊，到部門乃至全公司的成就，我們九大獎項計畫中的每個類別皆設有數百個獎項，旨在表彰職場各層面的卓越表現。
+    description: 無論貴組織希望在哪些領域獲得認可，史蒂夫獎（Stevie Awards）都有相應的獎項類別。從個人專業人士、團隊，到部門乃至全公司的成就，我們九大獎項計畫中的每個類別皆設有數百個獎項，旨在表彰職場生活各個層面的卓越表現。
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png
@@ -307,7 +307,7 @@ pageSections:
           alt: 'The International Business Awards® '
         dateLabel: NOW
         name: 'The International Business Awards® '
-        description: 「國際商業大獎」向全球所有組織開放，並設有各類獎項，旨在表彰工作生活各個層面的卓越成就。
+        description: 「國際商業大獎」向全球所有組織開放，並設有各類獎項，旨在表彰職場各領域的卓越成就。
         link: https://iba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#003366'
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: 「史蒂維科技卓越獎」旨在表彰那些在各產業領域中，為塑造科技未來做出傑出貢獻的個人、團隊及組織。全球各地的個人與組織皆可報名參選，不論是公營或私營、營利或非營利、大型或小型機構皆符合資格。
+        description: 「史蒂維科技卓越獎」旨在表彰那些在各產業領域中，為塑造科技未來做出傑出貢獻的個人、團隊及組織。全球各地的個人與組織皆可報名參選，無論是公營或私營、營利或非營利、大型或小型機構皆符合資格。
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
@@ -355,7 +355,7 @@ pageSections:
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
         name: The Stevie® Awards for Sales & Customer Service
-        description: 「史蒂維銷售與客戶服務獎」開放給全球所有組織參與，旨在表彰銷售、客戶服務及客服中心專業人員的卓越成就。
+        description: 「史蒂維銷售與客戶服務獎」向全球所有組織開放，旨在表彰銷售、客戶服務及客服中心專業人員的卓越成就。
         link: https://sales.stevieawards.comp
         colorScheme: inherit
         brandColor: '#99844b'
@@ -403,7 +403,7 @@ pageSections:
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
-        description: 「中東與北非史蒂夫獎」旨在表彰中東與北非地區 18 個國家各類型組織在職場中的創新成果。
+        description: 「中東與北非史蒂維獎」旨在表彰中東與北非地區 18 個國家各類型組織在職場中的創新成果。
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'

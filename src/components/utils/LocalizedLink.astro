@@ -1,0 +1,12 @@
+---
+// Drop-in replacement for the `a` element inside rendered MDX/markdown content.
+// Prefixes internal links with the current locale so body links keep the language
+// (e.g. on /ar/about/x, [text](/enter/) -> /ar/enter/). External links, anchors,
+// mailto/tel, and already-localized paths pass through unchanged.
+import { localizePath } from "@utils/i18n";
+
+const { href, ...rest } = Astro.props;
+const localizedHref = localizePath(href, Astro.url.pathname);
+---
+
+<a href={localizedHref} {...rest}><slot /></a>

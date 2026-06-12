@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: Penghargaan Stevie® Tahunan ke-23 untuk Wanita di Dunia Bisnis
-description: Pendaftaran untuk Stevie® Awards ke-23 bagi Wanita di Dunia Bisnis dibuka pada 12 Mei. Pantau terus untuk menghargai prestasi para pengusaha dan eksekutif wanita di seluruh dunia.
+description: Pendaftaran untuk Stevie® Awards ke-23 bagi Wanita dalam Dunia Bisnis dibuka pada 12 Mei. Pantau terus untuk menghargai prestasi para pengusaha dan eksekutif wanita di seluruh dunia.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Nantikan kabar selanjutnya!

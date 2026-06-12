@@ -44,7 +44,7 @@ pageSections:
     description: |-
       Há mais de 20 anos, o Stevie® Awards for Women in Business vem destacando mulheres e organizações de todos os tipos e tamanhos, em todo o mundo, que sejam de propriedade ou lideradas por mulheres: grandes e pequenas, públicas e privadas, com ou sem fins lucrativos. A edição de 2025 atraiu mais de 1.500 indicações de 48 países.
 
-      Empreendedoras, executivas, funcionárias e as organizações que elas dirigem, em todo o mundo, são elegíveis para serem indicadas. Com mais de 200 categorias abrangendo uma ampla gama de realizações no ambiente de trabalho, você pode enviar indicações que mostrem seu impacto e seus valores únicos. O programa de 2026 introduz novas categorias que reconhecem realizações em inteligência artificial e tecnologia.
+      Empreendedoras, executivas, funcionárias e as organizações que elas dirigem, em todo o mundo, são elegíveis para serem indicadas. Com mais de 200 categorias abrangendo uma ampla gama de conquistas no ambiente de trabalho, você pode enviar indicações que mostrem seu impacto e seus valores únicos. O programa de 2026 introduz novas categorias que reconhecem conquistas em inteligência artificial e tecnologia.
     list:
       _component: building-blocks/core-elements/list
       items:
@@ -60,7 +60,7 @@ pageSections:
         - text: Categorias de prêmios para empresas/organizações (de propriedade ou lideradas por mulheres)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Categorias dos prêmios individuais para mulheres
+        - text: Categorias dos prêmios individuais femininos
           iconName: four-pointed-star
           iconColor: brand
         - text: Categorias do Prêmio Mídia (Desenvolvido para/por Mulheres)
@@ -245,11 +245,11 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
-    heading: Galeria de eventos de 2025
+    heading: Galeria de Eventos de 2025
     description: |-
       Os vencedores do Prêmio Stevie são homenageados em todo o mundo em nossas cerimônias de gala com tapete vermelho, onde proferem um discurso de agradecimento no palco diante de uma plateia de centenas de empreendedores e executivos. As classificações em ouro, prata e bronze do Prêmio Stevie entre as finalistas de 2025 foram anunciadas em um banquete de gala com a presença de quase 600 indicadas, jurados e convidados de todo o mundo, realizado em 10 de novembro na cidade de Nova York.
 
-      Os vencedores da competição de 2026 serão revelados e homenageados no dia 16 de novembro, durante o banquete de premiação da 23ª edição do Stevie Awards for Women in Business, no Marriott Marquis Hotel, em Nova York. As finalistas serão pré-anunciadas em setembro, e as colocações nos prêmios Stevie de Ouro, Prata e Bronze entre essas finalistas serão reveladas ao vivo durante a cerimônia de premiação. A participação é opcional e não é obrigatória para ganhar, mas todas as finalistas estão convidadas a participar da cerimônia, interagir com centenas de mulheres líderes empresariais e empreendedoras de todo o mundo e desfrutar de sessões de fotos profissionais e entrevistas no tapete vermelho. As vencedoras do Prêmio Stevie de Ouro serão convidadas a proferir um discurso de agradecimento no palco. Visite nossa [página de perguntas frequentes](/about/faq) para obter mais detalhes sobre a cerimônia.
+      Os vencedores da competição de 2026 serão revelados e homenageados no dia 16 de novembro, durante o banquete de premiação da 23ª edição do Stevie Awards for Women in Business, no Marriott Marquis Hotel, em Nova York. As finalistas serão pré-anunciadas em setembro, e as colocações nos prêmios Stevie de Ouro, Prata e Bronze entre essas finalistas serão reveladas ao vivo durante a cerimônia de premiação. A participação é opcional e não é obrigatória para ganhar, mas todas as finalistas são convidadas a participar da cerimônia, interagir com centenas de mulheres líderes empresariais e empreendedoras de todo o mundo e desfrutar de sessões de fotos profissionais e entrevistas no tapete vermelho. As vencedoras do Prêmio Stevie de Ouro serão convidadas a proferir um discurso de agradecimento no palco. Visite nossa [página de perguntas frequentes](/about/faq) para obter mais detalhes sobre a cerimônia.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: Conheça outras competições do Stevie® Awards
-    description: Seja qual for o motivo pelo qual sua organização deseja ser reconhecida, há um programa e uma categoria do Stevie Awards para isso. Desde profissionais individuais e equipes até departamentos e conquistas em toda a empresa, cada um dos nossos nove programas de premiação conta com centenas de categorias que reconhecem a excelência em todas as facetas da vida profissional.
+    description: Seja qual for o motivo pelo qual sua organização deseja ser reconhecida, há um programa e uma categoria do Stevie Awards para isso. Desde profissionais individuais e equipes até departamentos e conquistas em toda a empresa, cada um dos nossos nove programas de prêmios conta com centenas de categorias que reconhecem a excelência em todas as facetas da vida profissional.
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png

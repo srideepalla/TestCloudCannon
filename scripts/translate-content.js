@@ -297,76 +297,157 @@ async function translateObject(obj, targetLang) {
   return applyTranslations(obj, translationsWithPaths);
 }
 
-// Translate a markdown/MDX body as plain text. DeepL (without tag_handling)
-// preserves markdown syntax, inline HTML, and self-closing JSX such as <Anchor/>.
-// Fenced code blocks and MDX import/export lines are protected from translation.
+// Translate a markdown/MDX body, block by block, so a tag problem in one paragraph
+// only keeps THAT paragraph in English instead of reverting the whole body.
+//  - Multi-line constructs that must never be translated (code fences, <Embed> form
+//    blocks, <script>, import/export) are protected file-wide first.
+//  - The body is split into blocks on blank lines. Per block, inline HTML elements
+//    (<a>, <strong>, <u>, ...) are pulled out and translated in isolation with
+//    tag_handling=html (so their inner text translates but tags stay intact); the
+//    surrounding prose is translated as plain text.
+//  - A block is only used if its tags survived exactly (</> counts + tag multiset);
+//    otherwise that single block falls back to its English source.
+//  - All block proses and all elements are sent in just two batched DeepL calls.
 async function translateMarkdownBody(body, targetLang) {
   if (!body || body.trim() === '') return body;
 
-  const protectedChunks = [];
-  const protect = (match) => {
-    protectedChunks.push(match);
-    return `@@PB${protectedChunks.length - 1}@@`;
+  // Normalize HTML entities so encoding differences (&amp; vs &, &#x27; vs ', etc.)
+  // don't cause false tag mismatches when comparing a translated element to its
+  // original — DeepL keeps &amp; in hrefs, and we must not reject the element for it.
+  const normEnt = (s) => s
+    .replace(/&amp;/g, '&')
+    .replace(/&#x27;/g, "'")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&nbsp;/g, ' ');
+
+  const tagsOf = (s) => (normEnt(s).match(/<[^>]*>/g) || []).map((t) => t.replace(/\s+/g, ' ')).sort();
+  // Translated `a` is "clean" vs original `b` only if (after entity normalization) it
+  // has the same < and > counts (catches stray/duplicated `<` like `<<span`) AND the
+  // same tag multiset.
+  const cleanTags = (a, b) => {
+    const na = normEnt(a);
+    const nb = normEnt(b);
+    if ((na.match(/</g) || []).length !== (nb.match(/</g) || []).length) return false;
+    if ((na.match(/>/g) || []).length !== (nb.match(/>/g) || []).length) return false;
+    const x = tagsOf(a);
+    const y = tagsOf(b);
+    return x.length === y.length && x.every((t, i) => t === y[i]);
   };
-  const working = body
-    .replace(/```[\s\S]*?```/g, protect)                 // fenced code blocks
-    // Complete inline HTML elements: protect so DeepL can't drop, reorder, or cross
-    // their tags with markdown emphasis (all of which produce invalid MDX). Their
-    // inner text is left in the source language.
-    .replace(/<(a|strong|em|b|i|u|span)\b[^>]*>[\s\S]*?<\/\1>/gi, protect)
-    .replace(/^[ \t]*(?:import|export)\s.*$/gm, protect); // MDX import/export statements
 
-  if (working.trim() === '') return body;
+  // Batch DeepL call. Returns an array of translated strings, or null on failure.
+  const deeplChunk = async (texts, useHtml) => {
+    try {
+      const params = new URLSearchParams();
+      texts.forEach((t) => params.append('text', t));
+      params.append('target_lang', LANGUAGE_MAP[targetLang]);
+      params.append('source_lang', 'EN');
+      params.append('preserve_formatting', '1');
+      if (useHtml) params.append('tag_handling', 'html');
 
-  try {
-    const params = new URLSearchParams();
-    params.append('text', working);
-    params.append('target_lang', LANGUAGE_MAP[targetLang]);
-    params.append('source_lang', 'EN');
-    params.append('preserve_formatting', '1');
+      const response = await fetch(`${DEEPL_API_URL}/v2/translate`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `DeepL-Auth-Key ${DEEPL_API_KEY}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: params,
+      });
 
-    const response = await fetch(`${DEEPL_API_URL}/v2/translate`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `DeepL-Auth-Key ${DEEPL_API_KEY}`,
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: params
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`❌ DeepL API Error ${response.status} (body): ${errorText}`);
-      return body; // keep the original body on failure
+      if (!response.ok) {
+        console.error(`❌ DeepL API Error ${response.status} (body): ${await response.text()}`);
+        return null;
+      }
+      const data = await response.json();
+      // Return raw text: keep &amp; in hrefs and entities intact so elements match
+      // their originals; entities in visible text render fine in MDX.
+      return data.translations.map((t) => t.text);
+    } catch (error) {
+      console.error('Body translation error:', error.message);
+      return null;
     }
+  };
 
-    const data = await response.json();
-    // Decode the HTML entities DeepL emits in html mode (apostrophes, ampersands, etc.)
-    const translated = data.translations[0].text
-      .replace(/&#x27;/g, "'")
-      .replace(/&#39;/g, "'")
-      .replace(/&quot;/g, '"')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/&amp;/g, '&');
-
-    // Safety net: if the translation did not preserve the exact set of HTML/JSX tags,
-    // DeepL mangled the markup (happens when markdown bold abuts inline tags, especially
-    // in RTL languages). Keep the original English body rather than emit invalid MDX
-    // that would break the build.
-    const tagList = (s) => (s.match(/<[^>]+>/g) || []).map((t) => t.replace(/\s+/g, ' ')).sort();
-    const srcTags = tagList(working);
-    const outTags = tagList(translated);
-    if (srcTags.length !== outTags.length || srcTags.some((t, i) => t !== outTags[i])) {
-      console.warn(`⚠️  Body tag mismatch (${targetLang}) — keeping English body for this file`);
-      return body;
+  // DeepL caps texts per request (~50); chunk so big pages don't exceed it.
+  const deepl = async (texts, useHtml) => {
+    if (texts.length === 0) return [];
+    const out = [];
+    for (let i = 0; i < texts.length; i += 45) {
+      const part = await deeplChunk(texts.slice(i, i + 45), useHtml);
+      if (part == null) return null;
+      out.push(...part);
     }
+    return out;
+  };
 
-    // Restore protected chunks
-    return translated.replace(/@@PB(\d+)@@/g, (_, i) => protectedChunks[Number(i)]);
-  } catch (error) {
-    console.error('Body translation error:', error.message);
-    return body; // keep the original body on failure
-  }
+  // File-wide: protect multi-line constructs (also keeps them from being split).
+  const verbatim = [];
+  const keepV = (m) => { verbatim.push(m); return `@@V${verbatim.length - 1}@@`; };
+  const protectedBody = body
+    .replace(/```[\s\S]*?```/g, keepV)
+    .replace(/<Embed\b[\s\S]*?<\/Embed>/gi, keepV)
+    .replace(/<script\b[\s\S]*?<\/script>/gi, keepV)
+    .replace(/^[ \t]*(?:import|export)\s.*$/gm, keepV);
+
+  // Split into segments on blank lines AND on <br>/<hr> (CRLF-aware). Separators
+  // (odd indices) — blank lines and the void tags themselves — are preserved verbatim,
+  // so <br> is never sent to DeepL (it silently drops them, especially in long lists).
+  const parts = protectedBody.split(/(\r?\n[ \t]*\r?\n|<br\s*\/?>|<hr\s*\/?>)/gi);
+  const blocks = parts.map((part, idx) => {
+    if (idx % 2 === 1 || part == null || part.trim() === '') return { sep: true, text: part };
+    const els = [];
+    const raws = [];
+    const prose = part
+      .replace(/<(a|strong|em|b|i|u|span)\b[^>]*>[\s\S]*?<\/\1>/gi, (m) => {
+        els.push(m);
+        return `@@E${els.length - 1}@@`;
+      })
+      // Self-closing JSX (<Video/>, <Anchor/>, <img/>) — keep verbatim, not translated
+      // (DeepL drops them or alters their attributes).
+      .replace(/<[A-Za-z][^>]*\/>/g, (m) => {
+        raws.push(m);
+        return `@@R${raws.length - 1}@@`;
+      });
+    return { sep: false, original: part, prose, els, raws };
+  });
+
+  // Two batched calls: every block's prose (plain), every block's elements (html).
+  const proseInputs = blocks.filter((b) => !b.sep).map((b) => b.prose);
+  const elementInputs = blocks.filter((b) => !b.sep).flatMap((b) => b.els);
+  const proseOut = await deepl(proseInputs, false);
+  const elemOut = elementInputs.length ? await deepl(elementInputs, true) : [];
+  if (proseOut == null || elemOut == null) return body; // hard failure -> keep English body
+
+  let pi = 0;
+  let ei = 0;
+  const result = blocks
+    .map((b) => {
+      if (b.sep) return b.text;
+      const tProse = proseOut[pi++];
+      const myElems = b.els.map((el) => {
+        const t = elemOut[ei++];
+        return cleanTags(t, el) ? t : el; // keep English element if html mode mangled it
+      });
+      // All placeholders must survive, else restoration leaves a stray token.
+      let ok = tProse != null;
+      for (let k = 0; k < b.els.length && ok; k++) {
+        if (!tProse.includes(`@@E${k}@@`)) ok = false;
+      }
+      for (let k = 0; k < b.raws.length && ok; k++) {
+        if (!tProse.includes(`@@R${k}@@`)) ok = false;
+      }
+      if (!ok) return b.original;
+      const reconstructed = tProse
+        .replace(/@@E(\d+)@@/g, (_, i) => myElems[Number(i)])
+        .replace(/@@R(\d+)@@/g, (_, i) => b.raws[Number(i)]);
+      // Per-block safety: the reconstructed block must have the same tags as the
+      // original; otherwise keep the English block.
+      return cleanTags(reconstructed, b.original) ? reconstructed : b.original;
+    })
+    .join('');
+
+  // Restore file-wide protected constructs.
+  return result.replace(/@@V(\d+)@@/g, (_, i) => verbatim[Number(i)]);
 }
 
 async function translateMarkdownFile(filePath, targetLang, contentHashes, sourceRoot = 'src/content/pages', targetPrefix = '') {

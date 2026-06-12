@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Webinar Program Penghargaan Stevie® 2026 untuk Wanita di Dunia Bisnis
     text: |-
-      Ikuti webinar langsung gratis kami tentang Stevie® Awards for Women in Business 2026 untuk mengetahui lebih lanjut mengenai proses nominasi dan penjurian, hal-hal baru tahun ini, serta tips menyusun kisah sukses yang menampilkan prestasi Anda kepada para juri dengan cara yang paling meyakinkan. Anda juga akan mendapatkan panduan dalam memilih kategori yang tepat untuk prestasi Anda dan berkesempatan mengajukan pertanyaan langsung kepada Pendiri Stevie Awards, Michael Gallagher, selama sesi tanya jawab langsung.
+      Ikuti webinar langsung gratis kami tentang Stevie® Awards for Women in Business 2026 untuk mengetahui lebih lanjut mengenai proses nominasi dan penjurian, hal-hal baru tahun ini, serta tips menyusun kisah sukses yang memaparkan prestasi Anda kepada para juri dengan cara yang paling meyakinkan. Anda juga akan mendapatkan panduan dalam memilih kategori yang tepat untuk prestasi Anda dan berkesempatan mengajukan pertanyaan langsung kepada Pendiri Stevie Awards, Michael Gallagher, selama sesi tanya jawab langsung.
 
       ###### **Langsung pada 18 Juni 2026, pukul 11.00 - 12.00 (ET)<br />Strategi Menang untuk Penghargaan Stevie® 2026 untuk Wanita dalam Bisnis**
 
@@ -54,9 +54,9 @@ pageSections:
         text: |-
           # Investasikan pada Pertumbuhan Anda: Webinar Women\|Future
 
-          Webinar Women\|Future (sebelumnya dikenal sebagai Women\|Future Conference) adalah rangkaian webinar gratis yang diselenggarakan oleh Stevie® Awards, dirancang khusus untuk pemilik usaha kecil perempuan, eksekutif, wirausahawan, dan siapa pun yang tertarik untuk memulai bisnis. Diluncurkan pada tahun 2018 bersamaan dengan Stevie® Awards for Women in Business, Women\|Future Conference diciptakan untuk memberikan ruang bagi para profesional wanita berprestasi, pemimpin pemikiran, dan wirausahawan untuk terhubung, berbagi ide, dan menjalin jaringan. Setelah tujuh tahun sukses diselenggarakan sebagai konferensi, kami mengubahnya menjadi rangkaian webinar.
+          Webinar Women\|Future (sebelumnya dikenal sebagai Women\|Future Conference) adalah rangkaian webinar gratis yang diselenggarakan oleh Stevie® Awards, dirancang khusus untuk pemilik usaha kecil perempuan, eksekutif, wirausahawan, dan siapa pun yang tertarik untuk memulai bisnis. Diluncurkan pada tahun 2018 bersamaan dengan Stevie® Awards for Women in Business, Women\|Future Conference diciptakan untuk memberikan ruang bagi para profesional wanita berprestasi, pemimpin pemikiran, dan wirausahawan untuk terhubung, berbagi ide, dan membangun jaringan. Setelah tujuh tahun sukses diselenggarakan sebagai konferensi, kami mengubahnya menjadi rangkaian webinar.
 
-          **Daftar sekarang untuk menemukan strategi praktis yang dapat membantu Anda mengembangkan dan mempersiapkan organisasi Anda menghadapi masa depan, membangun kredibilitas melalui penghargaan bisnis, serta mendapatkan wawasan langsung dari para wirausahawan wanita yang telah berhasil membangun dan mengembangkan bisnis mereka!**
+          **Daftar sekarang untuk menemukan strategi praktis yang membantu Anda mengembangkan dan mempersiapkan organisasi Anda menghadapi masa depan, membangun kredibilitas melalui penghargaan bisnis, serta mendapatkan perspektif langsung dari wirausahawan wanita yang telah berhasil membangun dan mengembangkan bisnis mereka!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="Daftar Sekarang"><strong>Daftar Sekarang</strong></a>
         alignX: center
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Webinar kami ditujukan bagi para profesional wanita yang ambisius dan visioner dari berbagai industri dan tahap karier. Para wanita berprestasi dari seluruh dunia mengikuti webinar ini untuk mendapatkan sudut pandang baru mengenai topik-topik penting dari para pemilik bisnis dan wirausahawan sukses. Peserta webinar ini terdiri dari CEO, pendiri, pemilik usaha kecil, wirausahawan, eksekutif, direktur, dan manajer, serta para wanita yang sedang mencari pekerjaan atau memulai transisi karier.
+        text: Webinar kami ditujukan bagi para profesional wanita yang ambisius dan berpikiran maju dari berbagai industri dan tahap karier. Para wanita berprestasi dari seluruh dunia mengikuti webinar ini untuk mendapatkan sudut pandang baru mengenai topik-topik penting dari para pemilik bisnis dan wirausahawan sukses. Peserta webinar ini terdiri dari CEO, pendiri, pemilik usaha kecil, wirausahawan, eksekutif, direktur, dan manajer, serta para wanita yang sedang mencari pekerjaan atau memulai transisi karier.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Misi kami adalah menginspirasi dan mempercepat kemajuan perempuan di dunia bisnis dengan mendorong pengembangan profesional dan pribadi melalui sesi-sesi edukatif secara langsung. **Cultivate Your Tomorrow** adalah tagline kami. Kami memilih frasa ini karena webinar The Women\|Future mendorong Anda tidak hanya untuk merangkul masa depan Anda, tetapi juga untuk pulang dengan membawa inspirasi dan kepemimpinan pemikiran untuk mewujudkan aspirasi karier, pribadi, dan hidup Anda.
+        text: Misi kami adalah menginspirasi dan mempercepat kemajuan perempuan di dunia bisnis dengan mendorong pengembangan profesional dan pribadi melalui sesi-sesi edukatif secara langsung. **Cultivate Your Tomorrow** adalah tagline kami. Kami memilih frasa ini karena webinar The Women\|Future mendorong Anda tidak hanya untuk merangkul masa depan Anda, tetapi juga untuk pulang dengan inspirasi dan kepemimpinan pemikiran guna mewujudkan aspirasi karier, pribadi, dan hidup Anda.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

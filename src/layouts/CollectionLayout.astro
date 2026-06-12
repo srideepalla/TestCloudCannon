@@ -6,6 +6,7 @@ import Footer from "@components/navigation/footer/Footer.astro";
 import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
 import Side from "@components/navigation/side/Side.astro";
 import MainComponent from "@components/utils/MainComponent.astro";
+import LocalizedLink from "@components/utils/LocalizedLink.astro";
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
 import footerData from "@data/footer.json";
@@ -15,6 +16,7 @@ import sidebarNavData from "@data/sidebarNav.json";
 import Layout from "@layouts/BaseLayout.astro";
 import Split from "@wrappers/split/Split.astro";
 import { render } from "astro:content";
+import { getCurrentLocale, localizeData, localizeText, localizePath } from "@utils/i18n";
 
 const componentImports = {
   ...import.meta.glob("../components/building-blocks/**/*.astro", { eager: true }),
@@ -28,6 +30,9 @@ Object.entries(componentImports).forEach(([path, module]) => {
 
   mdxComponents[fileName] = (module as any).default;
 });
+
+// Localize internal links inside rendered markdown/MDX bodies (keeps the locale).
+mdxComponents.a = LocalizedLink;
 
 interface SidebarLink {
   text: string;
@@ -50,7 +55,10 @@ const { title, pageHeading, description, image, collection, entry, noindex } = A
 const sidebar = (sidebarNavData as Record<string, { heading: string; links: SidebarLink[] }>)[
   collection
 ];
-const sidebarNavItems = sidebar?.links.map((link) => ({ name: link.text, path: link.href, openInNewTab: link.openInNewTab })) ?? [];
+const locale = getCurrentLocale(Astro.url.pathname);
+const sidebarNavItems = sidebar?.links.map((link) => ({ name: localizeText(link.text, locale), path: link.href, openInNewTab: link.openInNewTab })) ?? [];
+const sidebarHeading = localizeText(sidebar?.heading, locale);
+const homeLabel = localizeText("Home", locale);
 const Content = entry ? (await render(entry)).Content : null;
 const pageSections = entry?.data?.pageSections ?? [];
 const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];
@@ -96,7 +104,7 @@ const articleAuthor = entry?.data?.author ?? null;
     )
   }
 
-  <MainNavigation {...mainNavData} />
+  <MainNavigation {...localizeData(mainNavData, locale)} />
 
   <CustomSection
     colorScheme="dark"
@@ -106,9 +114,9 @@ const articleAuthor = entry?.data?.author ?? null;
     paddingVertical="sm"
     class="breadcrumb-bar"
   >
-    <a href="/">Home</a>
+    <a href={localizePath("/", Astro.url.pathname)}>{homeLabel}</a>
     <span class="breadcrumb-sep">&gt;</span>
-    <a href={`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`}>{sidebar?.heading}</a>
+    <a href={localizePath(`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`, Astro.url.pathname)}>{sidebarHeading}</a>
     <span class="breadcrumb-sep">&gt;</span>
     <span class="breadcrumb-current">{title}</span>
   </CustomSection>
@@ -203,7 +211,7 @@ const articleAuthor = entry?.data?.author ?? null;
     </CustomSection>
   </main>
 
-  <Footer {...footerData} />
+  <Footer {...localizeData(footerData, locale)} />
 </Layout>
 
 <style is:global>

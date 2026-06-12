@@ -10,7 +10,7 @@ pageSections:
     subheading: Pendaftaran Telah Dibuka
     heading: Penghargaan Stevie® Tahunan ke-23 untuk Wanita di Dunia Bisnis
     description: |-
-      Menghargai keunggulan dalam pencapaian yang dipimpin oleh perempuan di seluruh sektor industri. Stevie® Awards for Women in Business adalah ajang penghargaan bisnis terkemuka di dunia yang menghormati para wirausahawan perempuan, eksekutif, karyawan, serta organisasi yang mereka pimpin.
+      Menghargai keunggulan dalam pencapaian yang dipimpin oleh perempuan di seluruh sektor industri. Stevie® Awards for Women in Business adalah penghargaan bisnis terkemuka di dunia yang menghormati para wirausahawan perempuan, eksekutif, karyawan, serta organisasi yang mereka pimpin.
 
       Ajukan kit pendaftaran Anda hari ini untuk mengetahui cara mengajukan nominasi. Bergabunglah dengan jajaran pemenang Stevie® Awards yang terkemuka seperti AT&T Business, Salesforce, It's a 10, dan Watsons.
     buttonSections:
@@ -173,7 +173,7 @@ pageSections:
         - image:
             source: /src/assets/images/wib-winners.webp
             alt: SAWIB25 Winner Announcement
-          title: Diumumkan Pemenang Penghargaan Stevie® Tahunan ke-22 untuk Wanita dalam Bisnis
+          title: Diumumkan Pemenang Penghargaan Stevie® Tahunan ke-22 untuk Wanita di Dunia Bisnis
           link: https://blog.stevieawards.com/blog/winners-in-the-22nd-annual-stevie-awards-for-women-in-business-announced
         - image:
             source: /src/assets/images/persistent-sheshapesai-logo.webp
@@ -323,7 +323,7 @@ pageSections:
           alt: The Stevie Awards for Great Employers
         dateLabel: NOW
         name: The Stevie® Awards for Great Employers
-        description: Penghargaan Stevie untuk Perusahaan Terbaik terbuka bagi semua organisasi di seluruh dunia, dan memberikan pengakuan kepada perusahaan-perusahaan terbaik di dunia sebagai tempat kerja, serta tim dan profesional SDM, prestasi di bidang SDM, produk dan layanan baru, serta pemasok yang turut berperan dalam menciptakan dan mendorong terciptanya lingkungan kerja yang unggul.
+        description: Penghargaan Stevie untuk Perusahaan Terbaik terbuka bagi semua organisasi di seluruh dunia, dan memberikan pengakuan kepada perusahaan-perusahaan terbaik di dunia sebagai tempat bekerja, serta tim dan profesional SDM, prestasi di bidang SDM, produk dan layanan baru, serta pemasok yang turut berperan dalam menciptakan dan mendorong terciptanya lingkungan kerja yang unggul.
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: Stevie Awards for Technology Excellence memberikan penghargaan atas pencapaian luar biasa yang diraih oleh individu, tim, dan organisasi yang turut membentuk masa depan teknologi di seluruh sektor industri. Individu dan organisasi dari seluruh dunia berhak untuk mendaftar—baik dari sektor publik maupun swasta, nirlaba maupun komersial, serta skala besar maupun kecil.
+        description: Stevie Awards for Technology Excellence memberikan penghargaan atas pencapaian luar biasa yang diraih oleh individu, tim, dan organisasi yang turut membentuk masa depan teknologi di seluruh sektor industri. Individu dan organisasi dari seluruh dunia berhak untuk mengikuti ajang ini—baik dari sektor publik maupun swasta, nirlaba maupun komersial, serta skala besar maupun kecil.
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
@@ -371,7 +371,7 @@ pageSections:
           alt: The American Business Awards
         dateLabel: October, 7 2026
         name: The American Business Awards®
-        description: Semua organisasi yang bermarkas di Amerika Serikat berhak mengikuti program penghargaan bisnis terkemuka di Amerika Serikat.
+        description: Semua organisasi yang berkedudukan di Amerika Serikat berhak mengikuti program penghargaan bisnis terkemuka di Amerika Serikat.
         link: https://aba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#660000'

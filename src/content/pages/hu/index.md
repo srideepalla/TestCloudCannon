@@ -42,7 +42,7 @@ pageSections:
     subheading: Jelöljön női tulajdonban lévő vállalkozásokat, vállalkozókat és egyebeket
     heading: Díjkategóriák
     description: |-
-      Több mint 20 éve a Stevie® Awards for Women in Business díj világszerte reflektorfénybe állítja a nőket, valamint a nők tulajdonában lévő és általuk vezetett szervezeteket, függetlenül azok típusától és méretétől: legyenek azok nagyok vagy kicsik, állami vagy magánszférában működőek, nyereségérdekelt vagy nonprofit szervezetek. A 2025-ös versenyre 48 országból több mint 1500 jelölés érkezett.
+      Több mint 20 éve a Stevie® Awards for Women in Business díj világszerte reflektorfénybe állítja a nőket, valamint a nők tulajdonában lévő és általuk vezetett szervezeteket, függetlenül azok típusától és méretétől: legyenek azok nagyok vagy kicsik, állami vagy magánszférában működő, nyereségérdekelt vagy nonprofit szervezetek. A 2025-ös versenyre 48 országból több mint 1500 jelölés érkezett.
 
       Női vállalkozók, vezetők, alkalmazottak és az általuk vezetett szervezetek világszerte jelölhetők. Több mint 200 kategória, amely a munkahelyi eredmények széles skáláját fedi le, lehetővé teszi, hogy olyan jelöléseket nyújtson be, amelyek bemutatják egyedi hatását és értékeit. A 2026-os program új kategóriákat vezet be, amelyek elismerik a mesterséges intelligencia és a technológia terén elért eredményeket.
     list:
@@ -66,7 +66,7 @@ pageSections:
         - text: A „Média (nők által és nőknek készített)” díj kategóriái
           iconName: four-pointed-star
           iconColor: brand
-        - text: Új termékek és szolgáltatások (nők számára vagy nők által kifejlesztett) díjkategóriák
+        - text: Új termékek és szolgáltatások (nők számára vagy nők által fejlesztett) díjak kategóriái
           iconName: four-pointed-star
           iconColor: brand
         - text: Közösségi média kategóriák
@@ -183,7 +183,7 @@ pageSections:
         - image:
             source: /src/assets/images/54918164611-3912a076b1-c.jpg
             alt: Women Future Webinars
-          title: Jelentkezzen a 2026-os Women|Future webináriumokra
+          title: Jelentkezzen be a 2026-os Women|Future webináriumokra
           link: https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
@@ -247,9 +247,9 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: 2025-ös rendezvénygaléria
     description: |-
-      A Stevie-díj nyerteseit világszerte ünneplik vörös szőnyeges díjátadó gáláinkon, ahol több száz vállalkozó és vezető előtt mondanak köszönőbeszédet a színpadon. A 2025-ös döntősök között elért arany-, ezüst- és bronz Stevie-díjas helyezéseket november 10-én, New Yorkban, egy gálaműsor keretében hirdették ki, amelyen közel 600 jelölt, zsűritag és vendég vett részt a világ minden tájáról.
+      A Stevie-díj nyerteseit világszerte ünneplik vörös szőnyeges díjátadó gáláinkon, ahol több száz vállalkozó és vezető előtt mondanak köszönőbeszédet a színpadon. A 2025-ös döntősök között elért arany-, ezüst- és bronz Stevie-díjas helyezéseket november 10-én, New Yorkban, egy díjátadó gálavacsorán hirdették ki, amelyen közel 600 jelölt, zsűritag és vendég vett részt a világ minden tájáról.
 
-      A 2026-os verseny nyerteseit november 16-án, a 23. Stevie Awards for Women in Business díjátadó gálán hirdetik ki és ünneplik a New York-i Marriott Marquis Hotelben. A döntősöket szeptemberben hirdetik ki előzetesen, az arany-, ezüst- és bronz Stevie-díjakat pedig a díjátadó ünnepségen élőben adják át. A részvétel nem kötelező és nem feltétele a nyerésnek, de minden döntőst meghívunk az ünnepségre, hogy kapcsolatokat építsen ki több száz női üzleti vezetővel és vállalkozóval világszerte, valamint élvezze a professzionális fotózást és a vörös szőnyeges interjúkat. Az arany Stevie-díj nyerteseit meghívjuk, hogy a színpadon mondjanak köszönőbeszédet. További részletek az ünnepségről a [GYIK oldalunkon](/about/faq) találhatók.
+      A 2026-os verseny nyerteseit november 16-án, a 23. Stevie Awards for Women in Business díjátadó banketten hirdetik ki és ünneplik a New York-i Marriott Marquis Hotelben. A döntősöket szeptemberben hirdetik ki előzetesen, az arany-, ezüst- és bronz Stevie-díjakat pedig a díjátadó ünnepségen élőben adják át a döntősöknek. A részvétel nem kötelező és nem feltétele a nyerésnek, de minden döntőst meghívunk az ünnepségre, hogy kapcsolatokat építsen ki több száz női üzleti vezetővel és vállalkozóval világszerte, valamint élvezze a professzionális fotózást és a vörös szőnyeges interjúkat. Az arany Stevie-díj nyerteseit meghívjuk, hogy a színpadon mondjanak köszönőbeszédet. További részletek az ünnepségről a [GYIK oldalunkon](/about/faq) találhatók.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: Fedezze fel a többi Stevie® Awards versenyt
-    description: 'Bármiért is szeretne elismerést szerezni a szervezetük, biztosan találnak hozzá megfelelő Stevie Awards-programot és kategóriát. Az egyéni szakemberektől és csapatoktól kezdve az osztályokig és a vállalati szintű eredményekig: kilenc díjprogramunk mindegyike több száz kategóriát kínál, amelyek a munka világának minden területén elismerik a kiválóságot.'
+    description: 'Bármiért is szeretne elismerést szerezni a szervezete, biztosan talál hozzá megfelelő Stevie Awards-programot és kategóriát. Az egyéni szakemberektől és csapatoktól kezdve az osztályokig és a vállalati szintű eredményekig: kilenc díjprogramunk mindegyike több száz kategóriát kínál, amelyek a munka világának minden területén elismerik a kiválóságot.'
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png
@@ -307,7 +307,7 @@ pageSections:
           alt: 'The International Business Awards® '
         dateLabel: NOW
         name: 'The International Business Awards® '
-        description: Az International Business Awards pályázatra világszerte minden szervezet jelentkezhet, és olyan kategóriákat tartalmaz, amelyek a munka világának minden területén elért eredményeket ismerik el.
+        description: Az International Business Awards pályázatra világszerte minden szervezet jelentkezhet, és a díj kategóriái a munka világának minden területén elért eredményeket ismerik el.
         link: https://iba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#003366'
@@ -323,7 +323,7 @@ pageSections:
           alt: The Stevie Awards for Great Employers
         dateLabel: NOW
         name: The Stevie® Awards for Great Employers
-        description: A „Stevie Awards for Great Employers” díjra világszerte minden szervezet pályázhat; a díjjal a világ legjobb munkahelyeit, valamint azokat a HR-csapatokat és szakembereket, HR-teljesítményeket, új termékeket és szolgáltatásokat, továbbá beszállítókat ismerik el, amelyek hozzájárulnak a kiváló munkahelyek kialakításához és fejlesztéséhez.
+        description: A „Stevie Awards for Great Employers” díjra világszerte minden szervezet pályázhat; a díjjal a világ legjobb munkahelyeit, valamint azokat a HR-csapatokat és szakembereket, HR-teljesítményeket, új termékeket és szolgáltatásokat, továbbá beszállítókat ismerik el, akik hozzájárulnak a kiváló munkahelyek kialakításához és fejlesztéséhez.
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
@@ -403,7 +403,7 @@ pageSections:
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
-        description: A Közel-Kelet és Észak-Afrika Stevie-díjak a MENA-régió 18 országában működő, bármilyen típusú szervezetek munkahelyi innovációit ismerik el.
+        description: A Közel-Kelet és Észak-Afrika Stevie-díjak a MENA-régió 18 országában működő, mindenféle típusú szervezetek munkahelyi innovációit ismerik el.
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'

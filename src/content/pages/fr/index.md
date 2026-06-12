@@ -44,14 +44,14 @@ pageSections:
     description: |-
       Depuis plus de 20 ans, les Stevie® Awards for Women in Business mettent à l'honneur les femmes ainsi que les organisations de tous types et de toutes tailles, partout dans le monde, qu'elles soient dirigées ou détenues par des femmes : grandes ou petites, publiques ou privées, à but lucratif ou non lucratif. L'édition 2025 a attiré plus de 1 500 candidatures provenant de 48 pays.
 
-      Les femmes entrepreneurs, cadres, employées et les organisations qu'elles dirigent, partout dans le monde, peuvent être nominées. Avec plus de 200 catégories couvrant un large éventail de réalisations professionnelles, vous pouvez soumettre des candidatures qui mettent en valeur votre impact et vos valeurs uniques. L'édition 2026 introduit de nouvelles catégories récompensant les réalisations dans le domaine de l'intelligence artificielle et de la technologie.
+      Les femmes entrepreneurs, cadres, employées et les organisations qu'elles dirigent, partout dans le monde, peuvent être nominées. Avec plus de 200 catégories couvrant un large éventail de réalisations professionnelles, vous pouvez soumettre des candidatures qui mettent en valeur votre impact et vos valeurs uniques. L'édition 2026 introduit de nouvelles catégories récompensant les réalisations dans les domaines de l'intelligence artificielle et de la technologie.
     list:
       _component: building-blocks/core-elements/list
       items:
         - text: Catégories de réalisations
           iconName: four-pointed-star
           iconColor: brand
-        - text: Réalisations dans les catégories Communication, Marketing ou Relations publiques
+        - text: Réussite dans les catégories Communication, Marketing ou Relations publiques
           iconName: four-pointed-star
           iconColor: brand
         - text: Intelligence artificielle (IA) et catégories technologiques (Nouveautés 2026)
@@ -66,7 +66,7 @@ pageSections:
         - text: Catégories des prix « Media » (conçus pour/par des femmes)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Catégories des prix récompensant les nouveaux produits et services (conçus pour/par des femmes)
+        - text: Catégories des prix des nouveaux produits et services (conçus pour/par des femmes)
           iconName: four-pointed-star
           iconColor: brand
         - text: Catégories de réseaux sociaux
@@ -104,7 +104,7 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Anciennes lauréates des Stevie® Awards pour les femmes d'affaires
+    heading: Anciennes lauréates des Stevie® Awards for Women in Business
     description: 'Chaque année, des femmes chefs de petites entreprises et des entrepreneuses sont mises à l''honneur aux côtés de femmes cadres supérieures issues de multinationales telles qu''IBM, Mastercard et Microsoft. Parmi les lauréates des éditions précédentes, on peut citer :'
     logos:
       - source: /src/assets/images/estelauder.png
@@ -193,7 +193,7 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/grid-videos
-    heading: Ce que signifie pour nos lauréats 2025 le fait de remporter un Stevie Award
+    heading: Ce que signifie remporter un Stevie Award pour nos lauréats 2025
     videos:
       - youtubeId: UqX5Q9pE6io
         title: 'La marque Distruptor remporte un prix aux Stevie® Awards 2025 pour les femmes dans le monde des affaires '
@@ -355,7 +355,7 @@ pageSections:
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
         name: The Stevie® Awards for Sales & Customer Service
-        description: Les Stevie Awards for Sales & Customer Service sont ouverts à toutes les organisations du monde entier et récompensent les réalisations des professionnels de la vente, du service client et des centres d'appels.
+        description: Les Stevie Awards for Sales & Customer Service sont ouverts à toutes les entreprises du monde entier et récompensent les réalisations des professionnels de la vente, du service client et des centres d'appels.
         link: https://sales.stevieawards.comp
         colorScheme: inherit
         brandColor: '#99844b'
@@ -387,7 +387,7 @@ pageSections:
           alt: Asia-Pacific Stevie Awards
         dateLabel: October 14, 2026
         name: Asia-Pacific Stevie® Awards
-        description: Les Stevie Awards de la région Asie-Pacifique sont ouverts à toutes les organisations implantées sur les 29 marchés de la région Asie-Pacifique.
+        description: Les Stevie Awards de la région Asie-Pacifique sont ouverts à toutes les organisations présentes sur les 29 marchés de la région Asie-Pacifique.
         link: https://asia.stevieawards.com
         colorScheme: inherit
         brandColor: '#a01310'

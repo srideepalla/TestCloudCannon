@@ -12,7 +12,7 @@ pageSections:
     description: |-
       Reconocimiento a la excelencia en los logros liderados por mujeres en todos los sectores. Los Premios Stevie® para Mujeres en los Negocios son los premios empresariales más prestigiosos del mundo, que rinden homenaje a las emprendedoras, ejecutivas y empleadas, así como a las organizaciones que dirigen.
 
-      Solicite hoy mismo su kit de inscripción para saber cómo presentar nominaciones. Únase al panteón de distinguidas ganadoras de los Premios Stevie®, como AT&T Business, Salesforce, It's a 10 y Watsons.
+      Solicite hoy mismo su kit de inscripción para saber cómo presentar sus nominaciones. Únase al panteón de distinguidas ganadoras de los Premios Stevie®, como AT&T Business, Salesforce, It's a 10 y Watsons.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Solicita tu kit de inscripción
@@ -42,9 +42,9 @@ pageSections:
     subheading: Nomina a empresas dirigidas por mujeres, emprendedoras y más
     heading: Categorías de los premios
     description: |-
-      Desde hace más de 20 años, los Premios Stevie® para Mujeres Empresarias han puesto el foco en las mujeres y en las organizaciones de todo tipo y tamaño dirigidas o propiedad de mujeres en todo el mundo: grandes y pequeñas, públicas y privadas, con y sin fines de lucro. La edición de 2025 atrajo más de 1500 nominaciones de 48 países.
+      Desde hace más de 20 años, los Premios Stevie® para Mujeres en los Negocios han puesto el foco en las mujeres y en las organizaciones de todo tipo y tamaño, en todo el mundo, que son propiedad de mujeres o están dirigidas por ellas: grandes y pequeñas, públicas y privadas, con y sin fines de lucro. La edición de 2025 atrajo más de 1500 nominaciones de 48 países.
 
-      Las emprendedoras, ejecutivas, empleadas y las organizaciones que dirigen en todo el mundo pueden ser nominadas. Con más de 200 categorías que abarcan una amplia gama de logros en el ámbito laboral, puede presentar nominaciones que destaquen su impacto y valores únicos. El programa de 2026 introduce nuevas categorías que reconocen los logros en inteligencia artificial y tecnología.
+      Las emprendedoras, ejecutivas, empleadas y las organizaciones que dirigen en todo el mundo pueden ser nominadas. Con más de 200 categorías que abarcan una amplia gama de logros en el ámbito laboral, puede presentar nominaciones que destaquen su impacto y sus valores únicos. El programa de 2026 introduce nuevas categorías que reconocen los logros en inteligencia artificial y tecnología.
     list:
       _component: building-blocks/core-elements/list
       items:
@@ -63,7 +63,7 @@ pageSections:
         - text: Categorías de los premios individuales para mujeres
           iconName: four-pointed-star
           iconColor: brand
-        - text: Categorías de los Premios «Media» (creados por y para mujeres)
+        - text: Categorías de los premios «Media (Desarrollado para/por mujeres)»
           iconName: four-pointed-star
           iconColor: brand
         - text: Categorías de los premios a los nuevos productos y servicios (desarrollados para o por mujeres)
@@ -249,7 +249,7 @@ pageSections:
     description: |-
       Los ganadores de los Premios Stevie son homenajeados en todo el mundo en nuestras galas de entrega de premios con alfombra roja, donde pronuncian un discurso de agradecimiento en el escenario ante un público compuesto por cientos de empresarios y ejecutivos. Los premios Stevie de Oro, Plata y Bronce entre las finalistas de 2025 se anunciaron en una cena de gala a la que asistieron cerca de 600 nominadas, jueces e invitados de todo el mundo el 10 de noviembre en la ciudad de Nueva York.
 
-      Los ganadores de la edición de 2026 se darán a conocer y se les rendirá homenaje el 16 de noviembre durante la cena de entrega de los 23.º Premios Stevie para Mujeres Empresarias, que se celebrará en el Hotel Marriott Marquis de la ciudad de Nueva York. Las finalistas se darán a conocer en septiembre, y los premios Stevie de Oro, Plata y Bronce entre esas finalistas se revelarán en vivo durante la ceremonia de entrega de premios. La asistencia es opcional y no es un requisito para ganar, pero se invita a todas las finalistas a participar en la ceremonia, establecer contactos con cientos de mujeres líderes empresariales y emprendedoras de todo el mundo, y disfrutar de sesiones de fotografía profesional y entrevistas en la alfombra roja. Las ganadoras del Premio Stevie de Oro serán invitadas a pronunciar un discurso de aceptación en el escenario. Visite nuestra [página de preguntas frecuentes](/about/faq) para obtener más detalles sobre la ceremonia.
+      Los ganadores de la edición de 2026 se darán a conocer y se les rendirá homenaje el 16 de noviembre durante la cena de entrega de premios de la 23.ª edición de los Premios Stevie para Mujeres Empresarias, que se celebrará en el Hotel Marriott Marquis de la ciudad de Nueva York. Las finalistas se darán a conocer en septiembre, y los premios Stevie de Oro, Plata y Bronce entre esas finalistas se revelarán en vivo durante la ceremonia de entrega de premios. La asistencia es opcional y no es un requisito para ganar, pero se invita a todas las finalistas a participar en la ceremonia, establecer contactos con cientos de mujeres líderes empresariales y emprendedoras de todo el mundo, y disfrutar de sesiones de fotografía profesional y entrevistas en la alfombra roja. Las ganadoras del Premio Stevie de Oro serán invitadas a pronunciar un discurso de aceptación en el escenario. Visite nuestra [página de preguntas frecuentes](/about/faq) para obtener más detalles sobre la ceremonia.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -403,7 +403,7 @@ pageSections:
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
         name: The Middle East & North Africa Stevie® Awards
-        description: Los Premios Stevie de Oriente Medio y el Norte de África reconocen la innovación en el ámbito laboral en organizaciones de todo tipo de 18 países de la región MENA.
+        description: Los premios Stevie de Oriente Medio y el Norte de África reconocen la innovación en el ámbito laboral en organizaciones de todo tipo de 18 países de la región MENA.
         link: https://mena.stevieawards.com/
         colorScheme: inherit
         brandColor: '#009848'

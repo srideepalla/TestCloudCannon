@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: 女性｜今後のウェビナー
-description: 2026年6月、7月、8月に開催される、ビジネス界の女性を力づけ、つながりを深め、さらなる高みへと導く3つの刺激的なウェビナーに、ぜひご参加ください。
+description: 2026年6月、7月、8月に開催される、ビジネス界の女性を力づけ、つながりを深め、さらなる高みへと導く3つの刺激的なウェビナーにぜひご参加ください。
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: 「2026年 スティービー® アワード・フォー・ウィメン・イン・ビジネス」プログラム ウェビナー
@@ -54,9 +54,9 @@ pageSections:
         text: |-
           # 自身の成長に投資しよう：Women\|Future ウェビナー
 
-          Women\|Future ウェビナー（旧 Women\|Future カンファレンス）は、スティービー®・アワードが主催する無料のウェビナーシリーズで、女性の中小企業経営者、経営幹部、起業家、および起業に関心のあるすべての方を対象としています。 2018年に「Stevie® Awards for Women in Business」と連動して開始された「Women\|Future Conference」は、高い実績を持つ女性プロフェッショナル、オピニオンリーダー、起業家が交流し、アイデアを共有し、ネットワークを築く場を提供するために創設されました。7年間にわたりカンファレンスとして成功を収めた後、現在はウェビナーシリーズへと形態を変えました。
+          Women\|Future ウェビナー（旧 Women\|Future カンファレンス）は、スティービー®・アワードが主催する無料のウェビナーシリーズで、女性の中小企業経営者、経営幹部、起業家、および起業に関心のあるすべての方を対象としています。 2018年に「Stevie® Awards for Women in Business」と連動して開始された「Women\|Future Conference」は、高い実績を持つ女性プロフェッショナル、オピニオンリーダー、起業家が交流し、アイデアを共有し、ネットワークを築く場を提供するために創設されました。7年間にわたりカンファレンスとして成功を収めた後、現在はウェビナーシリーズへと形を変えています。
 
-          **今すぐ登録して、組織の成長と将来への備え、ビジネスアワードを通じた信頼性の構築に役立つ実践的な戦略を学び、ビジネスの立ち上げと拡大に成功した女性起業家たちから直接の知見を得ましょう！**
+          **今すぐ登録して、組織の成長と将来への備え、ビジネスアワードを通じた信頼性の構築に役立つ実践的な戦略を学び、ビジネスを成功裏に立ち上げ拡大させた女性起業家たちから直接の知見を得ましょう！**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="今すぐ登録"><strong>今すぐ登録</strong></a>
         alignX: center
@@ -377,7 +377,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 参加者は、成功を収めた起業家やスティービー賞受賞の女性ビジネスリーダーたちから、ビジネスの成長・維持・立ち上げの方法、ビジネスアワードへの参加の価値、ストーリーテリングの手法を活用して競合他社との差別化を図る方法など、実践的な知見を得ることができます。 トップクラスの女性たちから学び、新たなチャンスに触れ、**あなたの未来を育てましょう！**
+        text: 参加者は、成功を収めた起業家やスティービー賞受賞の女性ビジネスリーダーたちから、ビジネスの成長・維持・立ち上げの方法、ビジネスアワードへの参加の価値、ストーリーテリングの手法を活用して競合他社との差別化を図る方法など、実践的な知見を得ることができます。 トップクラスの女性たちから学び、新たなチャンスに触れ、**あなたの未来を切り拓きましょう！**
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -421,13 +421,13 @@ pageSections:
     label: Mission and Tagline
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 私たちのミッションとキャッチフレーズ
+        text: 私たちのミッションとキャッチコピー
         level: h2
         size: xl
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: 私たちの使命は、ライブ形式の教育セッションを通じて、ビジネスウーマンの専門的・個人的な成長を促進し、彼女たちに刺激を与え、キャリアの加速を支援することです。 **「Cultivate Your Tomorrow（あなたの明日を育む）」**が私たちのキャッチフレーズです。このフレーズを選んだ理由は、The Women\|Futureのウェビナーが、単に明日を受け入れるだけでなく、キャリアやプライベート、人生における目標に取り組むためのインスピレーションと思想的リーダーシップを持ち帰れるよう促すものだからです。
+        text: 私たちの使命は、ライブ形式の教育セッションを通じて、ビジネスウーマンの専門的・個人的な成長を促進し、彼女たちに刺激を与え、キャリアを加速させることです。 **「Cultivate Your Tomorrow（あなたの明日を育む）」**が私たちのキャッチフレーズです。このフレーズを選んだ理由は、The Women\|Futureのウェビナーが、単に明日を受け入れるだけでなく、キャリアやプライベート、人生における目標に取り組むためのインスピレーションと思想的リーダーシップを持ち帰れるよう促すものだからです。
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: パートナーとしてご協力ください
     heading: パートナーシップに関するお問い合わせ
-    description: 世界中の女性プロフェッショナルコミュニティに向けて、貴社のブランド認知度を高めましょう！スポンサー企業様は、当団体のウェブサイト、ソーシャルメディア、メールマガジンで特集されるほか、世界中のビジネスリーダーや起業家数百名が参加するウェビナーでも広く紹介されます。 2026年のスポンサーシップに関するお問い合わせは、[Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) までメールでお送りいただくか、以下のフォームにご記入ください。
+    description: 世界中の女性プロフェッショナルコミュニティに向けて、貴社のブランド認知度を高めましょう！スポンサー企業様は、当団体のウェブサイト、ソーシャルメディア、メールマガジンで特集されるほか、世界中の数百名ものビジネスリーダーや起業家が参加するウェビナーでも紹介されます。 2026年のスポンサーシップに関するお問い合わせは、[Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) までメールをお送りいただくか、以下のフォームにご記入ください。
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

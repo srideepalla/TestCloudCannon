@@ -5,7 +5,7 @@ description: Заявките за участие в 23-тото годишно 
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Останете на линия!
-    text: На 12 май стартира приемът на кандидатури за 23-ите годишни награди „Стиви®“ за жени в бизнеса.
+    text: На 12 май стартира приемането на кандидатури за 23-ите годишни награди „Стиви®“ за жени в бизнеса.
     colorScheme: light
     backgroundColor: surface
     _variation_id: component-1774812957378-328

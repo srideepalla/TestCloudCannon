@@ -10,7 +10,7 @@ pageSections:
     subheading: Sono aperte le iscrizioni
     heading: La 23ª edizione degli Stevie® Awards per le donne nel mondo degli affari
     description: |-
-      Un riconoscimento all’eccellenza delle realizzazioni guidate da donne in ogni settore. Gli Stevie® Awards for Women in Business sono i premi aziendali più prestigiosi al mondo dedicati alle imprenditrici, alle dirigenti, alle lavoratrici e alle organizzazioni da loro guidate.
+      Un riconoscimento all’eccellenza delle realizzazioni guidate da donne in ogni settore. Gli Stevie® Awards for Women in Business sono i premi aziendali più prestigiosi al mondo che rendono omaggio alle imprenditrici, alle dirigenti, alle lavoratrici e alle organizzazioni da loro guidate.
 
       Richiedi oggi stesso il kit di partecipazione per scoprire come presentare le candidature. Entra a far parte dell'olimpo delle illustri vincitrici degli Stevie® Award, tra cui AT&T Business, Salesforce, It's a 10 e Watsons.
     buttonSections:
@@ -198,7 +198,7 @@ pageSections:
       - youtubeId: UqX5Q9pE6io
         title: 'Il marchio Disruptor si aggiudica uno Stevie® Award 2025 nella categoria "Donne nel mondo degli affari" '
       - youtubeId: wvSEt0yvIqs
-        title: Green Panther Skincare si aggiudica uno Stevie® Award 2025 nella categoria "Donne nel mondo degli affari"
+        title: Green Panther Skincare si aggiudica un premio agli Stevie® Awards 2025 dedicati alle donne nel mondo degli affari
       - youtubeId: fS5Q7wiWcJs
         title: Clearpath Learning Group si aggiudica uno Stevie® Award 2025 nella categoria "Donne nel mondo degli affari"
     colorScheme: light
@@ -249,7 +249,7 @@ pageSections:
     description: |-
       I vincitori degli Stevie Award vengono celebrati in tutto il mondo durante le nostre serate di gala con tappeto rosso, dove tengono un discorso di ringraziamento sul palco davanti a un pubblico composto da centinaia di imprenditori e dirigenti. I vincitori degli Stevie Award d'oro, d'argento e di bronzo tra i finalisti del 2025 sono stati annunciati in occasione di un banchetto di gala a cui hanno partecipato quasi 600 candidati, giudici e ospiti provenienti da tutto il mondo il 10 novembre a New York City.
 
-      I vincitori dell'edizione 2026 saranno svelati e festeggiati il 16 novembre durante il banchetto di premiazione della 23ª edizione degli Stevie Awards for Women in Business presso il Marriott Marquis Hotel di New York City. Le finaliste saranno preannunciate a settembre, mentre i vincitori degli Stevie Award d'oro, d'argento e di bronzo tra le finaliste saranno rivelati in diretta durante la cerimonia di premiazione. La partecipazione è facoltativa e non è richiesta per vincere, ma tutte le finaliste sono invitate a partecipare alla cerimonia, a fare networking con centinaia di donne leader d'azienda e imprenditrici di tutto il mondo e a godersi il servizio fotografico professionale e le interviste sul tappeto rosso. Le vincitrici dello Stevie Award d'oro saranno invitate a tenere un discorso di ringraziamento sul palco. Visita la nostra [pagina delle domande frequenti](/about/faq) per maggiori dettagli sulla cerimonia.
+      I vincitori dell'edizione 2026 saranno svelati e festeggiati il 16 novembre durante il banchetto di premiazione della 23ª edizione degli Stevie Awards for Women in Business presso il Marriott Marquis Hotel di New York City. Le finaliste saranno preannunciate a settembre, mentre i vincitori degli Stevie Award d'oro, d'argento e di bronzo tra le finaliste saranno rivelati in diretta durante la cerimonia di premiazione. La partecipazione è facoltativa e non è richiesta per vincere, ma tutte le finaliste sono invitate a partecipare alla cerimonia, a fare networking con centinaia di donne leader nel mondo degli affari e imprenditrici di tutto il mondo e a godersi il servizio fotografico professionale e le interviste sul tappeto rosso. Le vincitrici dello Stevie Award d'oro saranno invitate a tenere un discorso di ringraziamento sul palco. Visita la nostra [pagina delle domande frequenti](/about/faq) per maggiori dettagli sulla cerimonia.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: 'Gli Stevie Awards for Technology Excellence rendono omaggio agli straordinari risultati raggiunti da singoli individui, team e organizzazioni che stanno plasmando il futuro della tecnologia in tutti i settori industriali. Possono partecipare persone e organizzazioni di tutto il mondo: pubbliche e private, a scopo di lucro e senza scopo di lucro, grandi e piccole.'
+        description: 'Gli Stevie Awards for Technology Excellence rendono omaggio agli straordinari risultati raggiunti da singoli individui, team e organizzazioni che stanno plasmando il futuro della tecnologia in tutti i settori industriali. Possono partecipare persone e organizzazioni di tutto il mondo: enti pubblici e privati, a scopo di lucro e senza scopo di lucro, grandi e piccoli.'
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
@@ -355,7 +355,7 @@ pageSections:
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
         name: The Stevie® Awards for Sales & Customer Service
-        description: Gli Stevie Awards per le vendite e il servizio clienti sono aperti a tutte le organizzazioni del mondo e premiano i risultati ottenuti dai professionisti dei settori vendite, servizio clienti e call center.
+        description: Gli Stevie Awards per le vendite e il servizio clienti sono aperti a tutte le organizzazioni del mondo e premiano i risultati ottenuti dai professionisti delle vendite, del servizio clienti e dei call center.
         link: https://sales.stevieawards.comp
         colorScheme: inherit
         brandColor: '#99844b'
@@ -387,7 +387,7 @@ pageSections:
           alt: Asia-Pacific Stevie Awards
         dateLabel: October 14, 2026
         name: Asia-Pacific Stevie® Awards
-        description: Gli Stevie Awards dell'Asia-Pacifico sono aperti a tutte le organizzazioni presenti nei 29 mercati della regione Asia-Pacifico.
+        description: Gli Asia-Pacific Stevie Awards sono aperti a tutte le organizzazioni presenti nei 29 mercati della regione Asia-Pacifico.
         link: https://asia.stevieawards.com
         colorScheme: inherit
         brandColor: '#a01310'

@@ -4,9 +4,9 @@ title: Webinaires « Femmes | Avenir »
 description: Rejoignez-nous pour trois webinaires inspirants qui se tiendront en juin, juillet et août 2026, conçus pour autonomiser, mettre en relation et valoriser les femmes dans le monde des affaires.
 pageSections:
   - _component: page-sections/heroes/hero-banner
-    heading: Webinaire sur le programme des Stevie® Awards 2026 pour les femmes d'affaires
+    heading: Webinaire sur le programme des Stevie® Awards 2026 pour les femmes dans le monde des affaires
     text: |-
-      Participez à notre webinaire gratuit en direct consacré aux Stevie® Awards for Women in Business 2026 pour en savoir plus sur les procédures de candidature et d'évaluation, découvrir les nouveautés de cette année et obtenir des conseils pour rédiger un dossier de candidature qui mettra en valeur vos réalisations auprès du jury. Vous bénéficierez également de conseils pour choisir les catégories les mieux adaptées à vos réalisations et aurez l'occasion de poser des questions directement au fondateur des Stevie Awards, Michael Gallagher, lors d'une session de questions-réponses en direct.
+      Participez à notre webinaire gratuit en direct consacré aux Stevie® Awards for Women in Business 2026 pour en savoir plus sur les procédures de candidature et d'évaluation, découvrir les nouveautés de cette année et obtenir des conseils pour rédiger un dossier de candidature qui mettra en valeur vos réalisations auprès du jury. Vous bénéficierez également de conseils pour choisir les catégories les plus adaptées à vos réalisations et aurez l'occasion de poser directement vos questions au fondateur des Stevie Awards, Michael Gallagher, lors d'une session de questions-réponses en direct.
 
       ###### **En direct le 18 juin 2026, de 11 h 00 à 12 h 00 (heure de l'Est)<br/>Stratégies gagnantes pour les Stevie® Awards for Women in Business 2026**
 
@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Investissez dans votre développement : Webinaires Women\|Future
 
-          Les webinaires Women\|Future (anciennement Women\|Future Conference) sont une série de webinaires gratuits organisés par les Stevie® Awards et destinés aux femmes chefs de petites entreprises, aux cadres, aux entrepreneuses et à toute personne souhaitant créer son entreprise. Lancée en 2018 en collaboration avec les Stevie® Awards for Women in Business, la Women\|Future Conference a été créée pour offrir aux femmes professionnelles, aux leaders d'opinion et aux entrepreneuses de haut niveau un lieu où se rencontrer, partager des idées et nouer des contacts. Après sept années de succès en tant que conférence, nous l'avons transformée en une série de webinaires.
+          Les webinaires Women\|Future (anciennement Women\|Future Conference) sont une série de webinaires gratuits organisés par les Stevie® Awards et destinés aux femmes chefs de petites entreprises, aux cadres, aux entrepreneuses et à toute personne souhaitant créer son entreprise. Lancée en 2018 en collaboration avec les Stevie® Awards for Women in Business, la Women\|Future Conference a été créée pour offrir aux femmes professionnelles, leaders d'opinion et entrepreneuses accomplies un lieu où se rencontrer, échanger des idées et nouer des contacts. Après sept années de succès en tant que conférence, nous l'avons transformée en une série de webinaires.
 
           **Inscrivez-vous dès maintenant pour découvrir des stratégies pratiques qui vous aideront à développer votre organisation et à la préparer pour l'avenir, à renforcer votre crédibilité grâce à des prix d'excellence, et à bénéficier des témoignages de femmes entrepreneurs qui ont réussi à créer et à développer leur entreprise !**
 
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Nos webinaires s'adressent aux femmes professionnelles ambitieuses et tournées vers l'avenir, tous secteurs confondus et à toutes les étapes de leur carrière. Des femmes dynamiques du monde entier y participent afin d'acquérir de nouvelles perspectives sur des sujets essentiels, présentés par des chefs d'entreprise et des entrepreneuses qui ont réussi. Le public se compose de PDG, de fondatrices, de propriétaires de petites entreprises, d’entrepreneuses, de cadres supérieures, de directrices et de responsables, ainsi que de femmes en transition professionnelle ou en début de reconversion.
+        text: Nos webinaires s'adressent aux femmes professionnelles ambitieuses et tournées vers l'avenir, tous secteurs et stades de carrière confondus. Des femmes dynamiques du monde entier y participent afin d'acquérir de nouvelles perspectives sur des sujets essentiels, présentés par des chefs d'entreprise et des entrepreneuses qui ont réussi. Le public se compose de PDG, de fondatrices, de propriétaires de petites entreprises, d’entrepreneuses, de cadres supérieures, de directrices et de responsables, ainsi que de femmes en transition professionnelle ou en début de carrière.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Notre mission est d’inspirer et de soutenir les femmes dans le monde des affaires en favorisant leur épanouissement professionnel et personnel grâce à des sessions éducatives en direct. **Cultivez votre avenir** est notre slogan. Nous avons choisi cette phrase car les webinaires The Women\|Future vous encouragent non seulement à embrasser votre avenir, mais aussi à en retirer l'inspiration et une vision novatrice pour réaliser vos aspirations professionnelles, personnelles et de vie.
+        text: Notre mission est d’inspirer et de soutenir les femmes dans le monde des affaires en favorisant leur développement professionnel et personnel grâce à des sessions éducatives en direct. **Cultivez votre avenir** est notre slogan. Nous avons choisi cette phrase car les webinaires The Women\|Future vous encouragent non seulement à embrasser votre avenir, mais aussi à en retirer l'inspiration et une vision novatrice pour réaliser vos aspirations professionnelles, personnelles et de vie.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl

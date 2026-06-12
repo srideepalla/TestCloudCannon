@@ -1,7 +1,7 @@
 ---
 _schema: default
 title: Anugerah Stevie® Tahunan ke-23 untuk Wanita dalam Perniagaan
-description: Pendaftaran penyertaan bagi Anugerah Stevie® Tahunan ke-23 untuk Wanita dalam Perniagaan dibuka pada 12 Mei. Nantikan untuk mengiktiraf pencapaian usahawan dan eksekutif wanita di seluruh dunia.
+description: Pendaftaran untuk Anugerah Stevie® Tahunan ke-23 bagi Wanita dalam Perniagaan dibuka pada 12 Mei. Nantikan untuk mengiktiraf pencapaian usahawan dan eksekutif wanita di seluruh dunia.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Tetap Bersama Kami!

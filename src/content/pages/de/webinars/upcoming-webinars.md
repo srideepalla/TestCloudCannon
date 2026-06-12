@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Webinar zum Programm „Stevie® Awards for Women in Business 2026“
     text: |-
-      Nehmen Sie an unserem kostenlosen Live-Webinar zu den Stevie® Awards for Women in Business 2026 teil und erfahren Sie mehr über das Nominierungs- und Bewertungsverfahren, die Neuheiten in diesem Jahr sowie Tipps, wie Sie eine Erfolgsgeschichte verfassen, die Ihre Leistungen den Juroren im bestmöglichen Licht präsentiert. Außerdem erhalten Sie Hilfestellung bei der Auswahl der richtigen Kategorien für Ihre Leistungen und haben die Möglichkeit, während einer Live-Fragerunde direkt Fragen an den Gründer der Stevie Awards, Michael Gallagher, zu stellen.
+      Nehmen Sie an unserem kostenlosen Live-Webinar zu den „2026 Stevie® Awards for Women in Business“ teil und erfahren Sie mehr über das Nominierungs- und Bewertungsverfahren, die Neuheiten in diesem Jahr sowie Tipps, wie Sie eine Erfolgsgeschichte verfassen, die Ihre Leistungen den Juroren im bestmöglichen Licht präsentiert. Außerdem erhalten Sie Hilfestellung bei der Auswahl der richtigen Kategorien für Ihre Leistungen und haben die Möglichkeit, während einer Live-Fragerunde direkt Fragen an den Gründer der Stevie Awards, Michael Gallagher, zu stellen.
 
       ###### **Live am 18. Juni 2026, 11:00–12:00 Uhr (ET)<br/>Erfolgsstrategien für die Stevie® Awards for Women in Business 2026**
 
@@ -54,9 +54,9 @@ pageSections:
         text: |-
           # Investieren Sie in Ihr Wachstum: Women\|Future-Webinare
 
-          Die Women\|Future-Webinare (ehemals Women\|Future-Konferenz) sind eine Reihe kostenloser Webinare, die von den Stevie® Awards veranstaltet werden und sich an Kleinunternehmerinnen, Führungskräfte, Unternehmerinnen sowie alle richten, die sich für die Gründung eines Unternehmens interessieren. Die Women\|Future Conference wurde 2018 in Zusammenarbeit mit den Stevie® Awards for Women in Business ins Leben gerufen, um leistungsstarken weiblichen Fachkräften, Vordenkerinnen und Unternehmerinnen einen Ort zu bieten, an dem sie Kontakte knüpfen, Ideen austauschen und sich vernetzen können. Nach sieben erfolgreichen Jahren als Konferenz haben wir sie in eine Webinar-Reihe umgewandelt.
+          Die Women\|Future-Webinare (ehemals Women\|Future-Konferenz) sind eine Reihe kostenloser Webinare, die von den Stevie® Awards veranstaltet werden und sich an Kleinunternehmerinnen, Führungskräfte, Unternehmerinnen sowie alle richten, die daran interessiert sind, ein Unternehmen zu gründen. Die Women\|Future Conference wurde 2018 in Zusammenarbeit mit den Stevie® Awards for Women in Business ins Leben gerufen, um leistungsstarken weiblichen Fachkräften, Vordenkerinnen und Unternehmerinnen einen Ort zu bieten, an dem sie Kontakte knüpfen, Ideen austauschen und sich vernetzen können. Nach sieben erfolgreichen Jahren als Konferenz haben wir sie in eine Webinar-Reihe umgewandelt.
 
-          **Melden Sie sich jetzt an und entdecken Sie praktische Strategien, die Ihnen helfen, Ihr Unternehmen zu vergrößern und zukunftssicher zu machen, durch Unternehmensauszeichnungen Glaubwürdigkeit aufzubauen und Einblicke aus erster Hand von Unternehmerinnen zu erhalten, die ihre Unternehmen erfolgreich aufgebaut und skaliert haben!**
+          **Melden Sie sich jetzt an, um praktische Strategien zu entdecken, die Ihnen helfen, Ihr Unternehmen zu vergrößern und zukunftssicher zu machen, durch Unternehmensauszeichnungen Glaubwürdigkeit aufzubauen und Einblicke aus erster Hand von Unternehmerinnen zu erhalten, die ihre Unternehmen erfolgreich aufgebaut und skaliert haben!**
 
           #### <a href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg" target="_blank" rel="noopener" title="Jetzt registrieren"><strong>Jetzt registrieren</strong></a>
         alignX: center
@@ -109,7 +109,7 @@ pageSections:
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Melden Sie sich für jedes Webinar, an dem Sie teilnehmen möchten, einzeln an:'
+        text: 'Melden Sie sich für jedes Webinar, an dem Sie teilnehmen möchten, separat an:'
         level: h1
         size: md
         alignX: center
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Unsere Webinare richten sich an ambitionierte, zukunftsorientierte berufstätige Frauen aus verschiedenen Branchen und in unterschiedlichen Karrierestufen. Engagierte Frauen aus aller Welt nehmen an den Webinaren teil, um von erfolgreichen Geschäftsinhaberinnen und Unternehmerinnen neue Perspektiven zu den Themen zu gewinnen, die für sie am wichtigsten sind. Zu den Teilnehmerinnen zählen CEOs, Gründerinnen, Kleinunternehmerinnen, Unternehmerinnen, Führungskräfte, Direktorinnen und Managerinnen sowie Frauen, die gerade zwischen zwei Jobs stehen oder eine berufliche Neuorientierung anstreben.
+        text: Unsere Webinare richten sich an ambitionierte, zukunftsorientierte berufstätige Frauen aus verschiedenen Branchen und in unterschiedlichen Karrierestufen. Engagierte Frauen aus aller Welt nehmen an den Webinaren teil, um von erfolgreichen Geschäftsinhaberinnen und Unternehmerinnen neue Perspektiven zu den für sie wichtigsten Themen zu gewinnen. Zu den Teilnehmerinnen zählen CEOs, Gründerinnen, Kleinunternehmerinnen, Unternehmerinnen, Führungskräfte, Direktorinnen und Managerinnen sowie Frauen, die sich gerade in einer beruflichen Übergangsphase befinden oder eine berufliche Neuorientierung anstreben.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -427,7 +427,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Unsere Mission ist es, Frauen in der Geschäftswelt zu inspirieren und zu fördern, indem wir ihre berufliche und persönliche Entwicklung durch Live-Schulungen unterstützen. **Cultivate Your Tomorrow** lautet unser Slogan. Wir haben diesen Satz gewählt, weil die Webinare von The Women\|Future Sie dazu ermutigen, nicht nur Ihre Zukunft anzunehmen, sondern auch Inspiration und Vordenkerqualitäten mitzunehmen, um Ihre beruflichen, persönlichen und lebensbezogenen Ziele anzugehen.
+        text: Unsere Mission ist es, Frauen in der Geschäftswelt zu inspirieren und zu fördern, indem wir ihre berufliche und persönliche Entwicklung durch Live-Fortbildungsveranstaltungen unterstützen. **Cultivate Your Tomorrow** lautet unser Slogan. Wir haben diesen Satz gewählt, weil die Webinare von The Women\|Future Sie dazu ermutigen, nicht nur Ihre Zukunft anzunehmen, sondern auch Inspiration und Vordenkerrolle mitzunehmen, um Ihre beruflichen, persönlichen und lebensbezogenen Ziele anzugehen.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Werden Sie unser Partner
     heading: Anfragen zur Partnerschaft
-    description: Steigern Sie die Sichtbarkeit Ihrer Marke in einer globalen Community berufstätiger Frauen! Sponsoren werden auf unserer Website, in den sozialen Medien und in E-Mails vorgestellt und erhalten Präsenz während unserer Webinare, an denen Hunderte von Führungskräften und Unternehmerinnen weltweit teilnehmen. Senden Sie eine E-Mail an [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com), um Informationen zu Sponsoring-Möglichkeiten für 2026 zu erhalten, oder füllen Sie das untenstehende Formular aus.
+    description: Steigern Sie die Sichtbarkeit Ihrer Marke in einer globalen Community berufstätiger Frauen! Sponsoren werden auf unserer Website, in den sozialen Medien und in E-Mails hervorgehoben und erhalten Präsenz während unserer Webinare, an denen Hunderte von Führungskräften und Unternehmerinnen weltweit teilnehmen. Senden Sie eine E-Mail an [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com), um Informationen zu Sponsoring-Möglichkeiten für 2026 zu erhalten, oder füllen Sie das untenstehende Formular aus.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

@@ -12,7 +12,7 @@ pageSections:
     description: |-
       Reconhecendo a excelência nas conquistas lideradas por mulheres em todos os setores. Os Stevie® Awards for Women in Business são os prémios empresariais mais prestigiados do mundo, que homenageiam mulheres empresárias, executivas, colaboradoras e as organizações que dirigem.
 
-      Solicite hoje mesmo o seu kit de inscrição para saber como submeter as nomeações. Junte-se ao panteão de ilustres vencedores dos Prémios Stevie®, tais como a AT&T Business, a Salesforce, a It's a 10 e a Watsons.
+      Solicite hoje mesmo o seu kit de inscrição para saber como submeter as nomeações. Junte-se ao panteão de vencedores de prestígio dos Prémios Stevie®, tais como a AT&T Business, a Salesforce, a It's a 10 e a Watsons.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Solicite o seu kit de inscrição
@@ -245,9 +245,9 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
-    heading: Galeria de eventos de 2025
+    heading: Galeria de Eventos de 2025
     description: |-
-      Os vencedores dos Prémios Stevie são homenageados em todo o mundo nas nossas cerimónias de gala com tapete vermelho, onde proferem um discurso de agradecimento no palco perante uma audiência de centenas de empreendedores e executivos. As classificações em ouro, prata e bronze do Prémio Stevie entre as finalistas de 2025 foram anunciadas num banquete de gala de entrega de prémios, que contou com a presença de quase 600 nomeadas, jurados e convidados de todo o mundo, no dia 10 de novembro, em Nova Iorque.
+      Os vencedores dos Prémios Stevie são homenageados em todo o mundo nas nossas cerimónias de entrega de prémios com tapete vermelho, onde proferem um discurso de agradecimento no palco perante uma audiência de centenas de empresários e executivos. As classificações em ouro, prata e bronze do Prémio Stevie entre as finalistas de 2025 foram anunciadas num banquete de gala de entrega de prémios, que contou com a presença de quase 600 nomeadas, jurados e convidados de todo o mundo, no dia 10 de novembro, em Nova Iorque.
 
       Os vencedores da competição de 2026 serão revelados e homenageados no dia 16 de novembro, durante o banquete de entrega dos 23.ºs Prémios Stevie para Mulheres nos Negócios, no Marriott Marquis Hotel, em Nova Iorque. As finalistas serão pré-anunciadas em setembro, e os vencedores dos Prémios Stevie de Ouro, Prata e Bronze entre essas finalistas serão revelados ao vivo durante a cerimónia de entrega de prémios. A presença é opcional e não é obrigatória para ganhar, mas todas as finalistas são convidadas a participar na cerimónia, a estabelecer contactos com centenas de mulheres líderes empresariais e empreendedoras de todo o mundo e a desfrutar de fotografia profissional e entrevistas no tapete vermelho. As vencedoras do Prémio Stevie de Ouro serão convidadas a proferir um discurso de aceitação no palco. Visite a nossa [página de perguntas frequentes](/about/faq) para obter mais detalhes sobre a cerimónia.
     images:

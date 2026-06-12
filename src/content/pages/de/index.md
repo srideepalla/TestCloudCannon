@@ -10,7 +10,7 @@ pageSections:
     subheading: Anmeldung jetzt möglich
     heading: Die 23. jährlichen Stevie® Awards für Frauen in der Wirtschaft
     description: |-
-      Anerkennung herausragender Leistungen von Frauen in allen Branchen. Die Stevie® Awards for Women in Business sind die weltweit führenden Business-Auszeichnungen, mit denen Unternehmerinnen, Führungskräfte, Mitarbeiterinnen und die von ihnen geleiteten Unternehmen geehrt werden.
+      Anerkennung herausragender Leistungen von Frauen in allen Branchen. Die Stevie® Awards for Women in Business sind die weltweit führenden Wirtschaftspreise, mit denen Unternehmerinnen, Führungskräfte, Mitarbeiterinnen und die von ihnen geleiteten Unternehmen geehrt werden.
 
       Fordern Sie noch heute Ihr Anmeldepaket an, um zu erfahren, wie Sie Nominierungen einreichen können. Schließen Sie sich dem Kreis der angesehenen Stevie®-Award-Gewinner wie AT&T Business, Salesforce, It's a 10 und Watsons an.
     buttonSections:
@@ -57,7 +57,7 @@ pageSections:
         - text: Künstliche Intelligenz (KI) und Technologiebereiche (Neu für 2026)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Unternehmen/Organisation (im Besitz von Frauen oder unter weiblicher Leitung) – Preiskategorien
+        - text: Unternehmen/Organisation (im Besitz von oder unter der Leitung von Frauen) – Preiskategorien
           iconName: four-pointed-star
           iconColor: brand
         - text: Kategorien der Einzelauszeichnungen für Frauen
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: Entdecken Sie weitere Stevie®-Awards-Wettbewerbe
-    description: 'Ganz gleich, wofür Ihre Organisation eine Auszeichnung anstrebt – es gibt einen entsprechenden Stevie-Award und eine passende Kategorie dafür. Von einzelnen Fachkräften und Teams bis hin zu Abteilungen und unternehmensweiten Erfolgen: Jedes unserer neun Award-Programme umfasst Hunderte von Kategorien, mit denen herausragende Leistungen in allen Bereichen des Arbeitslebens gewürdigt werden.'
+    description: 'Ganz gleich, wofür Ihre Organisation eine Auszeichnung anstrebt – es gibt einen passenden Stevie-Award und eine passende Kategorie dafür. Von einzelnen Fachkräften und Teams bis hin zu Abteilungen und unternehmensweiten Leistungen: Jedes unserer neun Award-Programme umfasst Hunderte von Kategorien, mit denen herausragende Leistungen in allen Bereichen des Arbeitslebens gewürdigt werden.'
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png
@@ -371,7 +371,7 @@ pageSections:
           alt: The American Business Awards
         dateLabel: October, 7 2026
         name: The American Business Awards®
-        description: Alle in den USA ansässigen Organisationen sind zur Teilnahme an dem renommiertesten Unternehmenspreis der USA berechtigt.
+        description: Alle in den USA ansässigen Organisationen sind berechtigt, an dem renommiertesten Unternehmenspreis der USA teilzunehmen.
         link: https://aba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#660000'

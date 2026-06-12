@@ -5,6 +5,7 @@ import MainComponent from "@components/utils/MainComponent.astro";
 import footerData from "@data/footer.json";
 import mainNavData from "@data/mainNav.json";
 import Layout from "@layouts/BaseLayout.astro";
+import { getCurrentLocale, localizeData } from "@utils/i18n";
 
 import type { ContentBlock } from "../types";
 
@@ -44,6 +45,11 @@ const keywords = frontmatter?.keywords ?? keywordsProp;
 const image = frontmatter?.image ?? imageProp;
 const canonical = frontmatter?.canonical ?? canonicalProp;
 const sections = frontmatter?.pageSections ?? [];
+
+// Translate the header/footer labels into the current locale (no-op on English).
+const locale = getCurrentLocale(Astro.url.pathname);
+const localizedNav = localizeData(mainNav, locale);
+const localizedFooter = localizeData(footer, locale);
 ---
 
 <Layout
@@ -53,7 +59,7 @@ const sections = frontmatter?.pageSections ?? [];
   image={image}
   canonical={canonical}
 >
-  <MainNavigation {...mainNav} />
+  <MainNavigation {...localizedNav} />
 
   <main>
     {
@@ -69,7 +75,7 @@ const sections = frontmatter?.pageSections ?? [];
     }
     <slot />
   </main>
-  <Footer {...footer} />
+  <Footer {...localizedFooter} />
 </Layout>
 
 <style is:global>

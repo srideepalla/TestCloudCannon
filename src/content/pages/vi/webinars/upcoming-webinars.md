@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Hội thảo trực tuyến về Chương trình Giải thưởng Stevie® 2026 dành cho Phụ nữ trong Kinh doanh
     text: |-
-      Hãy tham gia hội thảo trực tuyến miễn phí của chúng tôi về Giải thưởng Stevie® 2026 dành cho Phụ nữ trong Kinh doanh để tìm hiểu thêm về quy trình đề cử và chấm điểm, những điểm mới trong năm nay, cũng như các mẹo về cách xây dựng câu chuyện thành công nhằm giới thiệu thành tích của bạn đến ban giám khảo một cách ấn tượng nhất. Bạn cũng sẽ nhận được hướng dẫn về cách chọn hạng mục phù hợp với thành tích của mình và có cơ hội đặt câu hỏi trực tiếp với Người sáng lập Giải thưởng Stevie, Michael Gallagher, trong phần hỏi đáp trực tiếp.
+      Hãy tham gia hội thảo trực tuyến miễn phí của chúng tôi về Giải thưởng Stevie® 2026 dành cho Phụ nữ trong Kinh doanh để tìm hiểu thêm về quy trình đề cử và chấm giải, những điểm mới trong năm nay, cũng như các mẹo về cách xây dựng một câu chuyện thành công nhằm giới thiệu thành tích của bạn đến ban giám khảo một cách ấn tượng nhất. Bạn cũng sẽ nhận được hướng dẫn về cách chọn các hạng mục phù hợp với thành tích của mình và có cơ hội đặt câu hỏi trực tiếp với Người sáng lập Giải thưởng Stevie, Michael Gallagher, trong phần hỏi đáp trực tiếp.
 
       ###### **Trực tiếp vào ngày 18 tháng 6 năm 2026, từ 11:00 sáng đến 12:00 trưa (Giờ Miền Đông)<br />Chiến lược chiến thắng cho Giải thưởng Stevie® 2026 dành cho Phụ nữ trong Kinh doanh**
 
@@ -54,7 +54,7 @@ pageSections:
         text: |-
           # Đầu tư vào sự phát triển của bạn: Chuỗi hội thảo trực tuyến Women\|Future
 
-          Chuỗi hội thảo trực tuyến Women\|Future (trước đây là Hội nghị Women\|Future) là chuỗi hội thảo trực tuyến miễn phí do Giải thưởng Stevie® tổ chức, dành cho các nữ chủ doanh nghiệp nhỏ, giám đốc điều hành, doanh nhân và bất kỳ ai quan tâm đến việc khởi nghiệp. Ra mắt vào năm 2018 cùng với Giải thưởng Stevie® dành cho Phụ nữ trong Kinh doanh, Hội nghị Women\|Future được thành lập nhằm tạo ra một không gian cho các chuyên gia nữ thành đạt, các nhà lãnh đạo tư tưởng và doanh nhân kết nối, chia sẻ ý tưởng và mở rộng mạng lưới. Sau bảy năm thành công dưới dạng hội nghị, chúng tôi đã chuyển đổi nó thành chuỗi hội thảo trực tuyến.
+          Chuỗi hội thảo trực tuyến Women\|Future (trước đây là Hội nghị Women\|Future) là chuỗi hội thảo trực tuyến miễn phí do Giải thưởng Stevie® tổ chức, dành cho các nữ chủ doanh nghiệp nhỏ, giám đốc điều hành, doanh nhân và bất kỳ ai quan tâm đến việc khởi nghiệp. Ra mắt vào năm 2018 cùng với Giải thưởng Stevie® dành cho Phụ nữ trong Kinh doanh, Hội nghị Women\|Future được thành lập nhằm tạo ra một không gian cho các chuyên gia nữ thành đạt, các nhà lãnh đạo tư tưởng và doanh nhân kết nối, chia sẻ ý tưởng và mở rộng mạng lưới. Sau bảy năm thành công với hình thức hội nghị, chúng tôi đã chuyển đổi nó thành chuỗi hội thảo trực tuyến.
 
           **Đăng ký ngay để khám phá các chiến lược thực tiễn giúp bạn phát triển và chuẩn bị cho tương lai của tổ chức, xây dựng uy tín thông qua các giải thưởng kinh doanh, và nhận được những góc nhìn trực tiếp từ các nữ doanh nhân đã thành công trong việc xây dựng và mở rộng doanh nghiệp của họ!**
 
@@ -302,7 +302,7 @@ pageSections:
                 link: https://events.zoom.us/ev/AgMvkxPuVGqaJG8UnMzHrEP2OG_FwK0e-T-WfOjjVqD-vFUTpKjq~AgHoVfkdIAFPIChHE0EubOa2RmUel6Yzsg8jDifVhqrTU5NcTfKrpgWGmw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: Ngày 15 tháng 7 năm 2026, 14:00 (giờ AEST)
+                text: Ngày 15 tháng 7 năm 2026, 14:00 giờ AEST
                 level: h3
                 size: md
                 alignX: start
@@ -336,7 +336,7 @@ pageSections:
                 link: https://events.zoom.us/ev/AuCOsl1aXISslCYe2oTPDYFa7_VgzAW7ga5BqHZ9KCOmTxXV4F9p~AnhEHulMBWOJKVuOy5xUcq8J99JwEpG7HgNWMdn2LTEzHwj8-lKRJP8ADw
                 openInNewTab: true
               - _component: building-blocks/core-elements/heading
-                text: Ngày 12 tháng 8 năm 2026, 14:00 giờ AEST
+                text: Ngày 12 tháng 8 năm 2026, 14:00 (giờ AEST)
                 level: h3
                 size: md
                 alignX: start
@@ -402,7 +402,7 @@ pageSections:
         alignX: start
         iconPosition: before
       - _component: building-blocks/core-elements/text
-        text: Các buổi hội thảo trực tuyến của chúng tôi dành cho những nữ chuyên gia đầy tham vọng và có tầm nhìn xa trông rộng, thuộc mọi ngành nghề và ở mọi giai đoạn sự nghiệp. Những phụ nữ năng động trên khắp thế giới tham gia các buổi hội thảo này để tiếp thu những góc nhìn mới mẻ về các chủ đề quan trọng nhất từ các chủ doanh nghiệp và nhà khởi nghiệp thành công. Người tham dự bao gồm các CEO, nhà sáng lập, chủ doanh nghiệp nhỏ, doanh nhân, giám đốc điều hành, giám đốc và quản lý, cũng như những phụ nữ đang trong giai đoạn chuyển đổi nghề nghiệp hoặc chuẩn bị bắt đầu một sự nghiệp mới.
+        text: Các buổi hội thảo trực tuyến của chúng tôi dành cho những nữ chuyên gia đầy tham vọng và có tầm nhìn xa trông rộng, thuộc mọi ngành nghề và ở mọi giai đoạn sự nghiệp. Những phụ nữ năng động trên khắp thế giới tham gia các buổi hội thảo này để tiếp thu những góc nhìn mới mẻ về các chủ đề quan trọng nhất từ các chủ doanh nghiệp và nhà khởi nghiệp thành công. Người tham dự bao gồm các CEO, nhà sáng lập, chủ doanh nghiệp nhỏ, doanh nhân, giám đốc điều hành, giám đốc và quản lý, cũng như những phụ nữ đang trong giai đoạn chuyển việc hoặc bắt đầu quá trình chuyển đổi sự nghiệp.
         alignX: start
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -445,7 +445,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Hãy hợp tác cùng chúng tôi
     heading: Thông tin về hợp tác
-    description: Hãy mở rộng tầm ảnh hưởng của thương hiệu đến cộng đồng các nữ chuyên gia trên toàn cầu! Các nhà tài trợ sẽ được giới thiệu nổi bật trên trang web, mạng xã hội và email của chúng tôi, đồng thời được quảng bá rộng rãi trong các hội thảo trực tuyến với sự tham gia của hàng trăm nhà lãnh đạo doanh nghiệp và doanh nhân trên toàn thế giới. Gửi email đến [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) để tìm hiểu về các cơ hội tài trợ năm 2026, hoặc điền vào biểu mẫu bên dưới.
+    description: Hãy mở rộng tầm ảnh hưởng của thương hiệu đến cộng đồng các nữ chuyên gia trên toàn cầu! Các nhà tài trợ sẽ được giới thiệu nổi bật trên trang web, mạng xã hội và email của chúng tôi, đồng thời được quảng bá trong các buổi hội thảo trực tuyến với sự tham gia của hàng trăm nhà lãnh đạo doanh nghiệp và doanh nhân trên toàn thế giới. Gửi email đến [Lindsey@stevieawards.com](mailto:Lindsey@stevieawards.com) để tìm hiểu về các cơ hội tài trợ năm 2026, hoặc điền vào biểu mẫu bên dưới.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []
@@ -489,7 +489,7 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Liên hệ với chúng tôi
     heading: Liên hệ với chúng tôi
-    description: Bạn có thắc mắc gì về chuỗi hội thảo trực tuyến Women\|Future không? Hãy gửi tin nhắn cho chúng tôi và một thành viên trong đội ngũ của chúng tôi sẽ liên hệ lại với bạn.
+    description: Bạn có thắc mắc về chuỗi hội thảo trực tuyến Women\|Future? Hãy gửi tin nhắn cho chúng tôi và một thành viên trong đội ngũ của chúng tôi sẽ liên hệ lại với bạn.
     list:
       _component: building-blocks/wrappers/article-link-list
       stories: []

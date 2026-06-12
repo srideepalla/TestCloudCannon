@@ -44,7 +44,7 @@ pageSections:
     description: |-
       20多年来，“史蒂维®女性商业奖”一直致力于向全球各类规模的女性及女性拥有和领导的组织聚焦：无论规模大小、性质公私、营利与否。 2025年的评选活动吸引了来自48个国家的1,500多份提名。
 
-      全球范围内的女性企业家、高管、员工及其所领导的组织均有资格获得提名。赛事设有200多个奖项类别，涵盖广泛的职场成就，您可提交提名，展示您独特的影响力和价值观。2026年赛事将新增奖项类别，以表彰在人工智能和技术领域的成就。
+      全球范围内的女性企业家、高管、员工及其所领导的组织均有资格获得提名。奖项设有200多个类别，涵盖广泛的职场成就，您可以提交提名，展示您独特的影响力和价值观。2026年的评选将新增类别，以表彰在人工智能和技术领域的成就。
     list:
       _component: building-blocks/core-elements/list
       items:
@@ -173,7 +173,7 @@ pageSections:
         - image:
             source: /src/assets/images/wib-winners.webp
             alt: SAWIB25 Winner Announcement
-          title: 第22届年度“史蒂维®”女性商业奖获奖名单揭晓
+          title: 第22届“史蒂维®”女性商业奖获奖名单揭晓
           link: https://blog.stevieawards.com/blog/winners-in-the-22nd-annual-stevie-awards-for-women-in-business-announced
         - image:
             source: /src/assets/images/persistent-sheshapesai-logo.webp
@@ -297,7 +297,7 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/carousels/card-carousel
     heading: 探索其他Stevie®奖项评选
-    description: 无论您的组织希望在哪个领域获得认可，Stevie Awards 都有相应的奖项计划和类别。从个人专业人士和团队，到各部门乃至全公司的成就，我们九大奖项计划中的每一项都设有数百个类别，旨在表彰职场生活的各个方面所取得的卓越成就。
+    description: 无论您的组织希望在哪个领域获得认可，Stevie Awards 都有相应的奖项计划和类别。从个人专业人士和团队，到各部门乃至全公司的成就，我们九大奖项计划中的每一项都设有数百个类别，旨在表彰职场生活的各个方面的卓越成就。
     cards:
       - logo:
           source: /src/assets/images/iba-hc-w.png
@@ -323,7 +323,7 @@ pageSections:
           alt: The Stevie Awards for Great Employers
         dateLabel: NOW
         name: The Stevie® Awards for Great Employers
-        description: “史蒂维最佳雇主奖”面向全球所有组织开放，旨在表彰全球最佳雇主，以及那些致力于打造和推动卓越工作环境的人力资源团队、专业人士、人力资源成就、新产品与服务，以及供应商。
+        description: “史蒂维最佳雇主奖”面向全球所有组织开放，旨在表彰全球最佳雇主，以及那些致力于打造和推动卓越工作环境的人力资源团队、专业人士、人力资源成就、新产品与服务，以及相关供应商。
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
@@ -339,7 +339,7 @@ pageSections:
           alt: The Stevie Awards for Technology Excellence
         dateLabel: NOW
         name: The Stevie® Awards for Technology Excellence
-        description: “史蒂维卓越技术奖”旨在表彰那些在各行各业塑造技术未来、取得非凡成就的个人、团队和组织。全球范围内的个人和组织均可报名参选——无论公营还是私营、营利还是非营利、规模大小皆可。
+        description: “史蒂维科技卓越奖”旨在表彰那些在各行各业塑造科技未来、取得非凡成就的个人、团队和组织。全球范围内的个人和组织均可报名参选——无论公营还是私营、营利还是非营利、规模大小皆可。
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
@@ -371,7 +371,7 @@ pageSections:
           alt: The American Business Awards
         dateLabel: October, 7 2026
         name: The American Business Awards®
-        description: 所有总部位于美国的组织均有资格参加美国顶级商业奖项评选活动。
+        description: 所有总部位于美国的组织均有资格参与美国顶级商业奖项评选活动。
         link: https://aba.stevieawards.com/
         colorScheme: inherit
         brandColor: '#660000'
