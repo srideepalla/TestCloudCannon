@@ -582,15 +582,15 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         display: none;
       }
 
-      /* Closing waits 250ms before a quick fade-out, fully gone at 330ms,
+      /* Closing waits 80ms before a quick fade-out, fully gone at 140ms,
          so brief cursor slips off the menu don't snap it shut */
       .nav-item-toggle ~ .nav-item-content {
         display: none;
         opacity: 0;
         transition:
-          display 0s allow-discrete 0.33s,
-          visibility 0s 0.33s,
-          opacity 0.08s ease 0.25s;
+          display 0s allow-discrete 0.14s,
+          visibility 0s 0.14s,
+          opacity 0.06s ease 0.08s;
         visibility: hidden;
       }
 
@@ -603,19 +603,19 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
           opacity 0.08s ease;
       }
 
-      /* Nested fly-outs get a longer 450ms grace (gone at 530ms) since the
+      /* Nested fly-outs get a longer 200ms grace (gone at 260ms) since the
          diagonal path from trigger to fly-out crosses neighboring items */
       .nav-item-toggle ~ .nav-item-nested {
         display: none;
         opacity: 0;
         transition:
-          display 0s allow-discrete 0.53s,
-          visibility 0s 0.53s,
-          opacity 0.08s ease 0.45s;
+          display 0s allow-discrete 0.26s,
+          visibility 0s 0.26s,
+          opacity 0.06s ease 0.2s;
         visibility: hidden;
       }
 
-      /* Opening waits 80ms so sweeping the cursor across the bar doesn't flash menus.
+      /* Opening waits 40ms so sweeping the cursor across the bar doesn't flash menus.
          :has(:focus-visible) instead of :focus-within so keyboard focus holds a menu
          open but the lingering focus from a mouse click doesn't pin it */
       .nav-item-toggle:checked ~ .nav-item-content,
@@ -628,8 +628,8 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         opacity: 1;
         transition:
           display 0s allow-discrete,
-          visibility 0s 0.08s,
-          opacity var(--animation-normal) ease 0.08s;
+          visibility 0s 0.04s,
+          opacity 0.12s ease 0.04s;
         visibility: visible;
       }
 
