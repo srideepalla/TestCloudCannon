@@ -564,23 +564,55 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         display: none;
       }
 
-      .nav-item-toggle ~ .nav-item-content,
+      /* Closing waits 250ms before a quick fade-out, fully gone at 400ms,
+         so brief cursor slips off the menu don't snap it shut */
+      .nav-item-toggle ~ .nav-item-content {
+        display: none;
+        opacity: 0;
+        transition:
+          display 0s allow-discrete 0.4s,
+          visibility 0s 0.4s,
+          opacity 0.15s ease 0.25s;
+        visibility: hidden;
+      }
+
+      /* Nested fly-outs get a longer 450ms grace (gone at 600ms) since the
+         diagonal path from trigger to fly-out crosses neighboring items */
       .nav-item-toggle ~ .nav-item-nested {
         display: none;
+        opacity: 0;
+        transition:
+          display 0s allow-discrete 0.6s,
+          visibility 0s 0.6s,
+          opacity 0.15s ease 0.45s;
+        visibility: hidden;
       }
 
+      /* Opening waits 80ms so sweeping the cursor across the bar doesn't flash menus */
       .nav-item-toggle:checked ~ .nav-item-content,
       .nav-item.has-children:hover > .nav-item-content,
-      .nav-item.has-children:focus-within > .nav-item-content {
-        animation: grow-out-centered var(--animation-normal) ease-out forwards;
-        display: block;
-      }
-
+      .nav-item.has-children:focus-within > .nav-item-content,
       .nav-item-toggle:checked ~ .nav-item-nested,
       .nav-item.has-children:hover > .nav-item-nested,
       .nav-item.has-children:focus-within > .nav-item-nested {
-        animation: grow-out var(--animation-normal) ease-out forwards;
         display: block;
+        opacity: 1;
+        transition:
+          display 0s allow-discrete,
+          visibility 0s 0.08s,
+          opacity var(--animation-normal) ease 0.08s;
+        visibility: visible;
+      }
+
+      @starting-style {
+        .nav-item-toggle:checked ~ .nav-item-content,
+        .nav-item.has-children:hover > .nav-item-content,
+        .nav-item.has-children:focus-within > .nav-item-content,
+        .nav-item-toggle:checked ~ .nav-item-nested,
+        .nav-item.has-children:hover > .nav-item-nested,
+        .nav-item.has-children:focus-within > .nav-item-nested {
+          opacity: 0;
+        }
       }
 
       .nav-item > .nav-item-content {
@@ -606,6 +638,16 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         position: absolute;
         right: 0;
         top: calc(-1 * var(--spacing-lg));
+      }
+
+      /* Invisible halo around open panels so slightly overshooting an edge
+         doesn't start the close timer */
+      .nav-item > .nav-item-content::after,
+      .nav-item-nested::before {
+        content: "";
+        inset: -16px;
+        position: absolute;
+        z-index: -1;
       }
 
       .nav-item-content .nav-item {
