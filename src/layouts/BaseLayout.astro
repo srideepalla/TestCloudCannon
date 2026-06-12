@@ -126,7 +126,8 @@ if (currentLocale) {
 
 const localeMeta = currentLocale ? LOCALES[currentLocale] : DEFAULT_LOCALE;
 const htmlLang = localeMeta.htmlLang;
-const htmlDir = localeMeta.dir;
+// Note: we intentionally do NOT set dir="rtl" on <html> — the design keeps the
+// layout unmirrored (logo left, nav/actions right) with Arabic/Persian text only.
 
 const ogLocale = localeMeta.ogLocale;
 const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).map((l) => l.ogLocale)].filter(
@@ -137,7 +138,6 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
 <!doctype html>
 <html
   lang={htmlLang}
-  dir={htmlDir}
   data-theme="dark"
 >
   <head>

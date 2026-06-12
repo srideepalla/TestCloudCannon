@@ -309,6 +309,10 @@ async function translateMarkdownBody(body, targetLang) {
   };
   const working = body
     .replace(/```[\s\S]*?```/g, protect)                 // fenced code blocks
+    // Complete inline HTML elements: protect so DeepL can't drop, reorder, or cross
+    // their tags with markdown emphasis (all of which produce invalid MDX). Their
+    // inner text is left in the source language.
+    .replace(/<(a|strong|em|b|i|u|span)\b[^>]*>[\s\S]*?<\/\1>/gi, protect)
     .replace(/^[ \t]*(?:import|export)\s.*$/gm, protect); // MDX import/export statements
 
   if (working.trim() === '') return body;
@@ -319,9 +323,6 @@ async function translateMarkdownBody(body, targetLang) {
     params.append('target_lang', LANGUAGE_MAP[targetLang]);
     params.append('source_lang', 'EN');
     params.append('preserve_formatting', '1');
-    // html handling keeps inline HTML/JSX tags (<a>, <strong>, <Anchor/>) balanced
-    // and repositions them grammatically (important for RTL languages).
-    params.append('tag_handling', 'html');
 
     const response = await fetch(`${DEEPL_API_URL}/v2/translate`, {
       method: 'POST',
@@ -346,6 +347,18 @@ async function translateMarkdownBody(body, targetLang) {
       .replace(/&quot;/g, '"')
       .replace(/&nbsp;/g, ' ')
       .replace(/&amp;/g, '&');
+
+    // Safety net: if the translation did not preserve the exact set of HTML/JSX tags,
+    // DeepL mangled the markup (happens when markdown bold abuts inline tags, especially
+    // in RTL languages). Keep the original English body rather than emit invalid MDX
+    // that would break the build.
+    const tagList = (s) => (s.match(/<[^>]+>/g) || []).map((t) => t.replace(/\s+/g, ' ')).sort();
+    const srcTags = tagList(working);
+    const outTags = tagList(translated);
+    if (srcTags.length !== outTags.length || srcTags.some((t, i) => t !== outTags[i])) {
+      console.warn(`⚠️  Body tag mismatch (${targetLang}) — keeping English body for this file`);
+      return body;
+    }
 
     // Restore protected chunks
     return translated.replace(/@@PB(\d+)@@/g, (_, i) => protectedChunks[Number(i)]);

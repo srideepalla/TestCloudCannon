@@ -59,6 +59,19 @@ function localeHref(langCode: string, allCodes: string[]) {
   if (!langCode || langCode.toLowerCase() === "en") return basePath || "/";
   return `/${langCode}${basePath}`;
 }
+
+// For the language-switcher trigger: return the current page's language
+// { label, flag } based on the URL prefix, or null when on the base (English) path.
+function activeLocaleDisplay(children) {
+  const langs = (children ?? []).map((c) => createNavItemData(c, "child", ""));
+  const codes = langs.map((l) => l.langCode).filter((c) => c && c.toLowerCase() !== "en");
+  const firstSegment = currentPath.split("/").filter(Boolean)[0];
+  if (!firstSegment || !codes.includes(firstSegment)) return null;
+  const match = langs.find(
+    (l) => l.langCode && l.langCode.toLowerCase() === firstSegment.toLowerCase()
+  );
+  return match ? { label: match.langCode.toUpperCase(), flag: match.flag } : null;
+}
 ---
 
 <input
@@ -162,13 +175,19 @@ function localeHref(langCode: string, allCodes: string[]) {
                 <div class="nav-item-trigger-content">
                   {itemData.currentFlag && (
                     <Image
-                      source={`/src/assets/images/${itemData.currentFlag}.svg`}
+                      source={`/src/assets/images/${
+                        (itemData._component === "navigation/language-switcher" &&
+                          activeLocaleDisplay(itemData.children)?.flag) ||
+                        itemData.currentFlag
+                      }.svg`}
                       alt=""
                       aria-hidden="true"
                       class="lang-flag"
                     />
                   )}
-                  {itemData.name}
+                  {itemData._component === "navigation/language-switcher"
+                    ? (activeLocaleDisplay(itemData.children)?.label ?? itemData.name)
+                    : itemData.name}
                 </div>
                 <span class="nav-item-icon">
                   <Icon

@@ -38,6 +38,15 @@ const localeHref = (langCode: string) => {
   return `/${langCode}${basePath}`;
 };
 
+// Reflect the language of the current page in the trigger button (label + flag),
+// falling back to the configured defaults (English) on the unprefixed base path.
+const activeLanguage =
+  firstSegment && localeCodes.includes(firstSegment)
+    ? languages.find((l) => l.langCode && l.langCode.toLowerCase() === firstSegment.toLowerCase())
+    : null;
+const displayLanguage = activeLanguage ? activeLanguage.langCode.toUpperCase() : currentLanguage;
+const displayFlag = activeLanguage ? activeLanguage.flag : currentFlag;
+
 const navInstanceId = crypto.randomUUID();
 const dropdownId = `dropdown-toggle-${crypto.randomUUID()}`;
 const contentId = `dropdown-content-${crypto.randomUUID()}`;
@@ -67,18 +76,18 @@ const groupName = `lang-switcher-${navInstanceId}`;
         tabindex="0"
       >
         <Image
-          source={`/src/assets/images/${currentFlag}.svg`}
+          source={`/src/assets/images/${displayFlag}.svg`}
           alt=""
           aria-hidden="true"
           class="lang-flag"
         />
-        <span>{currentLanguage}</span>
+        <span>{displayLanguage}</span>
       </label>
       <div
         id={contentId}
         class="nav-item-content"
         role="region"
-        aria-label={`${currentLanguage} submenu`}
+        aria-label={`${displayLanguage} submenu`}
         aria-hidden="true"
       >
         <ul class="nav-list">
