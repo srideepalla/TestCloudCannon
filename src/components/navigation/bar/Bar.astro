@@ -394,6 +394,24 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         trigger.addEventListener("keydown", handleKeydown);
       });
 
+      // Hovering one top-level item closes any dropdown pinned open on another
+      // (clicked checkbox or lingering focus), so two menus never show at once
+      barNav.querySelectorAll(":scope > .bar-list > .nav-item").forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          barNav.querySelectorAll(".nav-item-toggle[type='checkbox']").forEach((toggle) => {
+            const checkbox = toggle as HTMLInputElement;
+            if (checkbox.checked && checkbox.closest(".bar-list > .nav-item") !== item) {
+              checkbox.checked = false;
+              updateAriaStates(checkbox, false);
+            }
+          });
+          const active = document.activeElement as HTMLElement | null;
+          if (active && barNav.contains(active) && active.closest(".bar-list > .nav-item") !== item) {
+            active.blur();
+          }
+        });
+      });
+
       // Prevent clicks inside dropdown content from bubbling to document handler
       barNav.querySelectorAll(".nav-item-content, .nav-item-nested").forEach((content) => {
         content.addEventListener("click", (e) => {
@@ -564,37 +582,48 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         display: none;
       }
 
-      /* Closing waits 250ms before a quick fade-out, fully gone at 400ms,
+      /* Closing waits 250ms before a quick fade-out, fully gone at 330ms,
          so brief cursor slips off the menu don't snap it shut */
       .nav-item-toggle ~ .nav-item-content {
         display: none;
         opacity: 0;
         transition:
-          display 0s allow-discrete 0.4s,
-          visibility 0s 0.4s,
-          opacity 0.15s ease 0.25s;
+          display 0s allow-discrete 0.33s,
+          visibility 0s 0.33s,
+          opacity 0.08s ease 0.25s;
         visibility: hidden;
       }
 
-      /* Nested fly-outs get a longer 450ms grace (gone at 600ms) since the
+      /* No grace when the cursor is already on a different top-level item:
+         close the old dropdown right away so two menus never overlap */
+      .bar-list:has(> .nav-item:hover) > .nav-item:not(:hover) > .nav-item-content {
+        transition:
+          display 0s allow-discrete 0.08s,
+          visibility 0s 0.08s,
+          opacity 0.08s ease;
+      }
+
+      /* Nested fly-outs get a longer 450ms grace (gone at 530ms) since the
          diagonal path from trigger to fly-out crosses neighboring items */
       .nav-item-toggle ~ .nav-item-nested {
         display: none;
         opacity: 0;
         transition:
-          display 0s allow-discrete 0.6s,
-          visibility 0s 0.6s,
-          opacity 0.15s ease 0.45s;
+          display 0s allow-discrete 0.53s,
+          visibility 0s 0.53s,
+          opacity 0.08s ease 0.45s;
         visibility: hidden;
       }
 
-      /* Opening waits 80ms so sweeping the cursor across the bar doesn't flash menus */
+      /* Opening waits 80ms so sweeping the cursor across the bar doesn't flash menus.
+         :has(:focus-visible) instead of :focus-within so keyboard focus holds a menu
+         open but the lingering focus from a mouse click doesn't pin it */
       .nav-item-toggle:checked ~ .nav-item-content,
       .nav-item.has-children:hover > .nav-item-content,
-      .nav-item.has-children:focus-within > .nav-item-content,
+      .nav-item.has-children:has(:focus-visible) > .nav-item-content,
       .nav-item-toggle:checked ~ .nav-item-nested,
       .nav-item.has-children:hover > .nav-item-nested,
-      .nav-item.has-children:focus-within > .nav-item-nested {
+      .nav-item.has-children:has(:focus-visible) > .nav-item-nested {
         display: block;
         opacity: 1;
         transition:
@@ -607,10 +636,10 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
       @starting-style {
         .nav-item-toggle:checked ~ .nav-item-content,
         .nav-item.has-children:hover > .nav-item-content,
-        .nav-item.has-children:focus-within > .nav-item-content,
+        .nav-item.has-children:has(:focus-visible) > .nav-item-content,
         .nav-item-toggle:checked ~ .nav-item-nested,
         .nav-item.has-children:hover > .nav-item-nested,
-        .nav-item.has-children:focus-within > .nav-item-nested {
+        .nav-item.has-children:has(:focus-visible) > .nav-item-nested {
           opacity: 0;
         }
       }
