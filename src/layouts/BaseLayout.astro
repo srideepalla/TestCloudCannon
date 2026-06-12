@@ -83,16 +83,61 @@ const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 
 const siteOrigin = "https://women.stevieawards.com";
+
+// Supported locales. Keys are the URL prefix / content directory under
+// src/content/pages/ (must match LANGUAGE_MAP keys in the translation scripts).
+// htmlLang = BCP-47 value for <html lang>, dir = text direction, ogLocale = Open Graph locale.
+const LOCALES = {
+  ar: { htmlLang: "ar", dir: "rtl", ogLocale: "ar_AR" },
+  bg: { htmlLang: "bg", dir: "ltr", ogLocale: "bg_BG" },
+  "zh-hans": { htmlLang: "zh-Hans", dir: "ltr", ogLocale: "zh_CN" },
+  "zh-hant": { htmlLang: "zh-Hant", dir: "ltr", ogLocale: "zh_TW" },
+  fr: { htmlLang: "fr", dir: "ltr", ogLocale: "fr_FR" },
+  de: { htmlLang: "de", dir: "ltr", ogLocale: "de_DE" },
+  el: { htmlLang: "el", dir: "ltr", ogLocale: "el_GR" },
+  hu: { htmlLang: "hu", dir: "ltr", ogLocale: "hu_HU" },
+  id: { htmlLang: "id", dir: "ltr", ogLocale: "id_ID" },
+  it: { htmlLang: "it", dir: "ltr", ogLocale: "it_IT" },
+  ja: { htmlLang: "ja", dir: "ltr", ogLocale: "ja_JP" },
+  ko: { htmlLang: "ko", dir: "ltr", ogLocale: "ko_KR" },
+  ms: { htmlLang: "ms", dir: "ltr", ogLocale: "ms_MY" },
+  fa: { htmlLang: "fa", dir: "rtl", ogLocale: "fa_IR" },
+  pl: { htmlLang: "pl", dir: "ltr", ogLocale: "pl_PL" },
+  "pt-br": { htmlLang: "pt-BR", dir: "ltr", ogLocale: "pt_BR" },
+  "pt-pt": { htmlLang: "pt-PT", dir: "ltr", ogLocale: "pt_PT" },
+  es: { htmlLang: "es", dir: "ltr", ogLocale: "es_ES" },
+  "es-419": { htmlLang: "es-419", dir: "ltr", ogLocale: "es_419" },
+  th: { htmlLang: "th", dir: "ltr", ogLocale: "th_TH" },
+  tr: { htmlLang: "tr", dir: "ltr", ogLocale: "tr_TR" },
+  vi: { htmlLang: "vi", dir: "ltr", ogLocale: "vi_VN" },
+};
+const DEFAULT_LOCALE = { htmlLang: "en", dir: "ltr", ogLocale: "en_US" };
+
 const rawPath = Astro.url.pathname;
-const enPath = rawPath.startsWith("/es/") ? rawPath.slice(3) : rawPath === "/es" ? "/" : rawPath;
-const esPath = "/es" + enPath;
-const isSpanish = rawPath === "/es" || rawPath.startsWith("/es/");
-const htmlLang = isSpanish ? "es" : "en";
+const segments = rawPath.split("/").filter(Boolean);
+// The current locale is the first path segment if it matches a known locale.
+const currentLocale = segments.length && LOCALES[segments[0]] ? segments[0] : null;
+
+// The path with the locale prefix stripped (i.e. the English/base path).
+let enPath = rawPath;
+if (currentLocale) {
+  enPath = rawPath.slice(currentLocale.length + 1) || "/";
+}
+
+const localeMeta = currentLocale ? LOCALES[currentLocale] : DEFAULT_LOCALE;
+const htmlLang = localeMeta.htmlLang;
+const htmlDir = localeMeta.dir;
+
+const ogLocale = localeMeta.ogLocale;
+const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).map((l) => l.ogLocale)].filter(
+  (l) => l !== ogLocale
+);
 ---
 
 <!doctype html>
 <html
   lang={htmlLang}
+  dir={htmlDir}
   data-theme="dark"
 >
   <head>
@@ -307,8 +352,8 @@ const htmlLang = isSpanish ? "es" : "en";
         optional: {
           description: pageDescription,
           siteName: seoData.name,
-          locale: isSpanish ? "es_ES" : "en_US",
-          localeAlternate: isSpanish ? ["en_US"] : ["es_ES"],
+          locale: ogLocale,
+          localeAlternate: ogLocaleAlternate,
         },
         image: {
           alt: formattedTitle,
@@ -336,7 +381,11 @@ const htmlLang = isSpanish ? "es" : "en";
     />
 
     <link rel="alternate" hreflang="en" href={`${siteOrigin}${enPath}`} />
-    <link rel="alternate" hreflang="es" href={`${siteOrigin}${esPath}`} />
+    {
+      Object.entries(LOCALES).map(([code, meta]) => (
+        <link rel="alternate" hreflang={meta.htmlLang} href={`${siteOrigin}/${code}${enPath}`} />
+      ))
+    }
     <link rel="alternate" hreflang="x-default" href={`${siteOrigin}${enPath}`} />
 
     <StructuredData site={seoData} />

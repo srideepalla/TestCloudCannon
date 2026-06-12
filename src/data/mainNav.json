@@ -305,6 +305,116 @@
           "name": "English",
           "langCode": "EN",
           "flag": "us"
+        },
+        {
+          "name": "العربية",
+          "langCode": "ar",
+          "flag": "sa"
+        },
+        {
+          "name": "Български",
+          "langCode": "bg",
+          "flag": "bg"
+        },
+        {
+          "name": "简体中文",
+          "langCode": "zh-hans",
+          "flag": "cn"
+        },
+        {
+          "name": "繁體中文",
+          "langCode": "zh-hant",
+          "flag": "tw"
+        },
+        {
+          "name": "Français",
+          "langCode": "fr",
+          "flag": "fr"
+        },
+        {
+          "name": "Deutsch",
+          "langCode": "de",
+          "flag": "de"
+        },
+        {
+          "name": "Ελληνικά",
+          "langCode": "el",
+          "flag": "gr"
+        },
+        {
+          "name": "Magyar",
+          "langCode": "hu",
+          "flag": "hu"
+        },
+        {
+          "name": "Bahasa Indonesia",
+          "langCode": "id",
+          "flag": "id"
+        },
+        {
+          "name": "Italiano",
+          "langCode": "it",
+          "flag": "it"
+        },
+        {
+          "name": "日本語",
+          "langCode": "ja",
+          "flag": "jp"
+        },
+        {
+          "name": "한국어",
+          "langCode": "ko",
+          "flag": "kr"
+        },
+        {
+          "name": "Bahasa Melayu",
+          "langCode": "ms",
+          "flag": "my"
+        },
+        {
+          "name": "فارسی",
+          "langCode": "fa",
+          "flag": "ir"
+        },
+        {
+          "name": "Polski",
+          "langCode": "pl",
+          "flag": "pl"
+        },
+        {
+          "name": "Português (Brasil)",
+          "langCode": "pt-br",
+          "flag": "br"
+        },
+        {
+          "name": "Português (Portugal)",
+          "langCode": "pt-pt",
+          "flag": "pt"
+        },
+        {
+          "name": "Español",
+          "langCode": "es",
+          "flag": "es"
+        },
+        {
+          "name": "Español (Latinoamérica)",
+          "langCode": "es-419",
+          "flag": "mx"
+        },
+        {
+          "name": "ไทย",
+          "langCode": "th",
+          "flag": "th"
+        },
+        {
+          "name": "Türkçe",
+          "langCode": "tr",
+          "flag": "tr"
+        },
+        {
+          "name": "Tiếng Việt",
+          "langCode": "vi",
+          "flag": "vi"
         }
       ]
     },
