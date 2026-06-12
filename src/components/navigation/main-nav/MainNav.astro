@@ -4,6 +4,7 @@ import Bar from "@components/navigation/bar/Bar.astro";
 import Mobile from "@components/navigation/mobile/Mobile.astro";
 import Image from "@core-elements/image/Image.astro";
 import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
+import { localizePath } from "@utils/i18n";
 
 type NavButton = {
   text?: string;
@@ -44,7 +45,7 @@ const mobileNavData = [
   {...htmlAttributes}
   useDefaultEditableBinding={false}
 >
-  <a href="/">
+  <a href={localizePath("/", Astro.url.pathname)}>
     <Image
       source={logoSource}
       class="main-nav-logo"

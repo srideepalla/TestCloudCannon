@@ -1,5 +1,6 @@
 ---
 import Icon from "@core-elements/icon/Icon.astro";
+import { localizePath } from "@utils/i18n";
 
 const {
   navData = [],
@@ -11,10 +12,11 @@ const {
 
 // Generate a unique ID for this navigation instance to scope radio buttons
 const navInstanceId = crypto.randomUUID();
+const pathname = Astro.url.pathname;
 
 // Helper function to check if item is current page
 function isCurrentPage(item) {
-  return item.path && Astro.url.pathname === item.path;
+  return item.path && pathname === localizePath(item.path, pathname);
 }
 
 // Helper function to check if any child is current page (recursive)
@@ -131,7 +133,7 @@ function hasCurrentChild(item) {
                                 ? child.children.map((grandChild) => (
                                     <li class="nav-item">
                                       <a
-                                        href={grandChild.path}
+                                        href={localizePath(grandChild.path, pathname)}
                                         target={grandChild.openInNewTab ? "_blank" : undefined}
                                         rel={grandChild.openInNewTab ? "noopener" : undefined}
                                         aria-current={
@@ -151,7 +153,7 @@ function hasCurrentChild(item) {
                       return (
                         <li class="nav-item">
                           <a
-                            href={child.path || "#"}
+                            href={localizePath(child.path, pathname) || "#"}
                             target={child.openInNewTab ? "_blank" : undefined}
                             rel={child.openInNewTab ? "noopener" : undefined}
                             aria-current={childIsCurrent ? "page" : undefined}
@@ -170,7 +172,7 @@ function hasCurrentChild(item) {
           return (
             <li class="nav-item">
               <a
-                href={item.path || "#"}
+                href={localizePath(item.path, pathname) || "#"}
                 target={item.openInNewTab ? "_blank" : undefined}
                 rel={item.openInNewTab ? "noopener" : undefined}
                 aria-current={isCurrent ? "page" : undefined}

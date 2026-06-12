@@ -2,6 +2,7 @@
 import Button from "@core-elements/button/Button.astro";
 import Icon from "@core-elements/icon/Icon.astro";
 import Image from "@core-elements/image/Image.astro";
+import { localizePath } from "@utils/i18n";
 
 const {
   logoSource,
@@ -18,7 +19,7 @@ const navInstanceId = crypto.randomUUID();
 
 // Check if item is current page
 function isCurrentPage(item) {
-  return Boolean(item.path && Astro.url.pathname === item.path);
+  return Boolean(item.path && Astro.url.pathname === localizePath(item.path, Astro.url.pathname));
 }
 
 // Check if any child is current page (recursive)
@@ -141,7 +142,7 @@ function activeLocaleDisplay(children) {
             return (
               <li class="nav-item">
                 <a
-                  href={itemData.path}
+                  href={localizePath(itemData.path, currentPath)}
                   target={itemData.openInNewTab ? "_blank" : undefined}
                   rel={itemData.openInNewTab ? "noopener" : undefined}
                   aria-current={itemData.isCurrent ? "page" : undefined}
@@ -233,7 +234,7 @@ function activeLocaleDisplay(children) {
                       return (
                         <li class="nav-item">
                           <a
-                            href={childData.path}
+                            href={localizePath(childData.path, currentPath)}
                             target={childData.openInNewTab ? "_blank" : undefined}
                             rel={childData.openInNewTab ? "noopener" : undefined}
                             aria-current={childData.isCurrent ? "page" : undefined}
@@ -291,7 +292,7 @@ function activeLocaleDisplay(children) {
                               return (
                                 <li class="nav-item">
                                   <a
-                                    href={grandChildData.path}
+                                    href={localizePath(grandChildData.path, currentPath)}
                                     target={grandChildData.openInNewTab ? "_blank" : undefined}
                                     rel={grandChildData.openInNewTab ? "noopener" : undefined}
                                     aria-current={grandChildData.isCurrent ? "page" : undefined}

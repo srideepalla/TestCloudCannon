@@ -1,6 +1,7 @@
 ---
 import Icon from "@core-elements/icon/Icon.astro";
 import { itemHasSplitNavLink } from "@component-utils/navSplitLink";
+import { localizePath } from "@utils/i18n";
 
 const {
   navData = [],
@@ -11,9 +12,10 @@ const {
 } = Astro.props;
 
 const navInstanceId = crypto.randomUUID();
+const pathname = Astro.url.pathname;
 
 function isCurrentPage(item: any) {
-  return Boolean(item.path && Astro.url.pathname === item.path);
+  return Boolean(item.path && pathname === localizePath(item.path, pathname));
 }
 
 function hasCurrentChild(item: any) {
@@ -53,7 +55,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
           return (
             <li class="nav-item">
               <a
-                href={itemData.path}
+                href={localizePath(itemData.path, pathname)}
                 target={itemData.openInNewTab ? "_blank" : undefined}
                 rel={itemData.openInNewTab ? "noopener" : undefined}
                 aria-current={itemData.isCurrent ? "page" : undefined}
@@ -78,7 +80,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
             {itemData.hasSplitLink ? (
               <div class="nav-item-split">
                 <a
-                  href={itemData.path}
+                  href={localizePath(itemData.path, pathname)}
                   class="nav-item-link"
                   target={itemData.openInNewTab ? "_blank" : undefined}
                   rel={itemData.openInNewTab ? "noopener" : undefined}
@@ -135,7 +137,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                     return (
                       <li class="nav-item">
                         <a
-                          href={childData.path}
+                          href={localizePath(childData.path, pathname)}
                           target={childData.openInNewTab ? "_blank" : undefined}
                           rel={childData.openInNewTab ? "noopener" : undefined}
                           aria-current={childData.isCurrent ? "page" : undefined}
@@ -160,7 +162,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                       {childData.hasSplitLink ? (
                         <div class="nav-item-split">
                           <a
-                            href={childData.path}
+                            href={localizePath(childData.path, pathname)}
                             class="nav-item-link"
                             target={childData.openInNewTab ? "_blank" : undefined}
                             rel={childData.openInNewTab ? "noopener" : undefined}
@@ -220,7 +222,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                             return (
                               <li class="nav-item">
                                 <a
-                                  href={grandChildData.path}
+                                  href={localizePath(grandChildData.path, pathname)}
                                   target={grandChildData.openInNewTab ? "_blank" : undefined}
                                   rel={grandChildData.openInNewTab ? "noopener" : undefined}
                                   aria-current={grandChildData.isCurrent ? "page" : undefined}

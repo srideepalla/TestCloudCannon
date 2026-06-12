@@ -46,6 +46,7 @@ const TRANSLATABLE_FIELDS = [
   'page_description',
   'text',
   'heading',
+  'pageHeading',
   'subhead',
   'kicker',
   'description',

@@ -7,6 +7,7 @@ import Image from "@core-elements/image/Image.astro";
 import Text from "@core-elements/text/Text.astro";
 import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
 import Split from "@wrappers/split/Split.astro";
+import { localizePath } from "@utils/i18n";
 import type { SocialLink } from "../../../../types";
 
 const {
@@ -22,6 +23,8 @@ const {
   _component,
   ...htmlAttributes
 } = Astro.props;
+
+const pathname = Astro.url.pathname;
 ---
 
 <footer
@@ -72,7 +75,7 @@ const {
                 quickLinks.map(
                   (link: { name: string; path: string; openInNewTab?: boolean }) => (
                     <Button
-                      link={link.path}
+                      link={localizePath(link.path, pathname)}
                       text={link.name}
                       openInNewTab={link.openInNewTab}
                       uppercase={false}
@@ -92,7 +95,7 @@ const {
               class="footer-col-heading"
             >
               <Button
-                href={newsletterLink}
+                href={localizePath(newsletterLink, pathname)}
                 text={newsletterHeading}
                 iconName="arrow-right"
                 iconPosition="after"

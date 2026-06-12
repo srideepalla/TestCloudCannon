@@ -46,6 +46,7 @@ const TRANSLATABLE_FIELDS = [
   'page_description',
   'text',
   'heading',
+  'pageHeading',
   'subhead',
   'kicker',
   'description',
@@ -368,11 +369,14 @@ async function translateMarkdownBody(body, targetLang) {
   }
 }
 
-async function translateMarkdownFile(filePath, targetLang, contentHashes) {
+async function translateMarkdownFile(filePath, targetLang, contentHashes, sourceRoot = 'src/content/pages', targetPrefix = '') {
   try {
-    // Create target directory structure first to validate path
-    const relativePath = path.relative('src/content/pages', filePath);
-    const targetDir = path.join('src/content/pages', targetLang);
+    // Create target directory structure first to validate path.
+    // sourceRoot = where the English file lives; targetPrefix = subfolder under
+    // pages/<lang>/ (used to route section collections like about/, awards/ into
+    // pages/<lang>/about/... served by the catch-all route).
+    const relativePath = path.relative(sourceRoot, filePath);
+    const targetDir = path.join('src/content/pages', targetLang, targetPrefix);
     const targetFile = path.join(targetDir, relativePath);
     
     // Ensure we're not creating nested language folders
@@ -517,23 +521,41 @@ async function translateAllContent() {
     return files;
   }
   
-  const markdownFiles = getMarkdownFiles(contentDir);
-  console.log(`Found ${markdownFiles.length} markdown files to translate`);
-  console.log('Files to translate:', markdownFiles.map(f => path.basename(f)));
-  
+  // Build the full set of English source files to translate:
+  //  - the pages collection (top-level pages), written to pages/<lang>/...
+  //  - the section collections, written to pages/<lang>/<section>/... so the
+  //    catch-all route serves them with the sidebar layout (matching the es/ setup).
+  const SECTION_COLLECTIONS = ['about', 'awards', 'enter', 'judges', 'press', 'sponsors', 'tickets'];
+
+  const entries = getMarkdownFiles(contentDir).map((file) => ({
+    file,
+    sourceRoot: contentDir,
+    targetPrefix: '',
+  }));
+
+  for (const section of SECTION_COLLECTIONS) {
+    const sectionDir = path.join('src/content', section);
+    if (!fs.existsSync(sectionDir)) continue;
+    for (const file of getMarkdownFiles(sectionDir)) {
+      entries.push({ file, sourceRoot: sectionDir, targetPrefix: section });
+    }
+  }
+
+  console.log(`Found ${entries.length} source files to translate (pages + sections)`);
+
   let totalTranslated = 0;
   let totalSkipped = 0;
-  
+
   // Translate for each language
   for (const lang of languages) {
     console.log(`\n📝 Translating content to ${lang.toUpperCase()}...`);
-    
-    for (let i = 0; i < markdownFiles.length; i++) {
-      const file = markdownFiles[i];
-      const progress = `(${i + 1}/${markdownFiles.length})`;
-      console.log(`${progress} Processing ${path.basename(file)}...`);
-      
-      const wasTranslated = await translateMarkdownFile(file, lang, contentHashes);
+
+    for (let i = 0; i < entries.length; i++) {
+      const { file, sourceRoot, targetPrefix } = entries[i];
+      const progress = `(${i + 1}/${entries.length})`;
+      console.log(`${progress} Processing ${targetPrefix ? targetPrefix + '/' : ''}${path.basename(file)}...`);
+
+      const wasTranslated = await translateMarkdownFile(file, lang, contentHashes, sourceRoot, targetPrefix);
       if (wasTranslated) {
         totalTranslated++;
       } else {
