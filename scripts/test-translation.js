@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+// fetch is a built-in global in Node 18+
 
 const DEEPL_API_KEY = '23b4b747-bac9-43f3-b559-4534a1e4d857';
 const DEEPL_API_URL = 'https://api.deepl.com/v2/translate';

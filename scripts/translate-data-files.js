@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import fetch from 'node-fetch';
+// fetch is a built-in global in Node 18+
 import crypto from 'crypto';
 
 const DEEPL_API_KEY = '23b4b747-bac9-43f3-b559-4534a1e4d857';

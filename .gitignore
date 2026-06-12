@@ -33,3 +33,7 @@ yarn-error.log*
 *.temp
 
 .migration/
+
+# translation incremental-build cache
+.translation-cache/
+.last-build-timestamp
