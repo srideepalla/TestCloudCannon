@@ -45,6 +45,20 @@ function createNavItemData(item, level, parentGroupId) {
 }
 
 const currentPath = Astro.url.pathname;
+
+// Build a language-switch href that replaces the current locale prefix instead
+// of stacking it (e.g. from /pt-br/about/, Polish -> /pl/about/, not /pt-br/pl/...).
+// English (or an empty code) links to the unprefixed base path.
+function localeHref(langCode: string, allCodes: string[]) {
+  const localeCodes = allCodes.filter((c) => c && c.toLowerCase() !== "en");
+  const firstSegment = currentPath.split("/").filter(Boolean)[0];
+  const basePath =
+    firstSegment && localeCodes.includes(firstSegment)
+      ? currentPath.slice(firstSegment.length + 1) || "/"
+      : currentPath;
+  if (!langCode || langCode.toLowerCase() === "en") return basePath || "/";
+  return `/${langCode}${basePath}`;
+}
 ---
 
 <input
@@ -176,10 +190,13 @@ const currentPath = Astro.url.pathname;
                     const childData = createNavItemData(child, "child", itemData.parentGroupId);
 
                     if (itemData._component == "navigation/language-switcher") {
+                      const localeCodes = itemData.children!.map(
+                        (c) => createNavItemData(c, "child", itemData.parentGroupId).langCode
+                      );
                       return (
                         <li class="nav-item">
                           <a
-                            href={`/${childData.langCode}${currentPath}`}
+                            href={localeHref(childData.langCode, localeCodes)}
                             aria-current={childData.isCurrent ? "page" : undefined}
                           >
                             <Image

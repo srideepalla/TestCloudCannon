@@ -17,6 +17,27 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+
+// Known locale URL prefixes (lowercase content-dir codes), excluding English/base.
+const localeCodes = languages
+  .map((l) => l.langCode)
+  .filter((c) => c && c.toLowerCase() !== "en");
+
+// Strip a leading locale segment so switching from one language to another
+// replaces the prefix instead of stacking it (e.g. /pt-br/about/ -> /about/).
+const firstSegment = currentPath.split("/").filter(Boolean)[0];
+const basePath =
+  firstSegment && localeCodes.includes(firstSegment)
+    ? currentPath.slice(firstSegment.length + 1) || "/"
+    : currentPath;
+
+// Build the href for a target language: English (or empty code) links to the
+// unprefixed base path; every other locale prefixes the base path.
+const localeHref = (langCode: string) => {
+  if (!langCode || langCode.toLowerCase() === "en") return basePath || "/";
+  return `/${langCode}${basePath}`;
+};
+
 const navInstanceId = crypto.randomUUID();
 const dropdownId = `dropdown-toggle-${crypto.randomUUID()}`;
 const contentId = `dropdown-content-${crypto.randomUUID()}`;
@@ -64,7 +85,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
           {
             languages.map((lang: Language) => (
               <li class="nav-item">
-                <a href={`/${lang.langCode}${currentPath}`}>
+                <a href={localeHref(lang.langCode)}>
                   <Image
                     source={`/src/assets/images/${lang.flag}.svg`}
                     alt=""

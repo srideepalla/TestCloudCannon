@@ -319,6 +319,9 @@ async function translateMarkdownBody(body, targetLang) {
     params.append('target_lang', LANGUAGE_MAP[targetLang]);
     params.append('source_lang', 'EN');
     params.append('preserve_formatting', '1');
+    // html handling keeps inline HTML/JSX tags (<a>, <strong>, <Anchor/>) balanced
+    // and repositions them grammatically (important for RTL languages).
+    params.append('tag_handling', 'html');
 
     const response = await fetch(`${DEEPL_API_URL}/v2/translate`, {
       method: 'POST',
@@ -336,7 +339,13 @@ async function translateMarkdownBody(body, targetLang) {
     }
 
     const data = await response.json();
-    const translated = data.translations[0].text;
+    // Decode the HTML entities DeepL emits in html mode (apostrophes, ampersands, etc.)
+    const translated = data.translations[0].text
+      .replace(/&#x27;/g, "'")
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&');
 
     // Restore protected chunks
     return translated.replace(/@@PB(\d+)@@/g, (_, i) => protectedChunks[Number(i)]);
