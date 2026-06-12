@@ -28,7 +28,7 @@ class TranslationWatcher {
     console.log('📝 Only English content files (not in language subdirectories) will trigger translations\n');
 
     // Watch for changes in the content directory
-    this.watcher = chokidar.watch(`${CONTENT_DIR}/**/*.md`, {
+    this.watcher = chokidar.watch(`${CONTENT_DIR}/**/*.{md,mdx}`, {
       ignored: [
         // Ignore language subdirectories
         ...SUPPORTED_LANGUAGES.map(lang => `${CONTENT_DIR}/${lang}/**`),

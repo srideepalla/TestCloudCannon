@@ -282,13 +282,63 @@ async function translateObject(obj, targetLang) {
   return applyTranslations(obj, translationsWithPaths);
 }
 
+// Translate a markdown/MDX body as plain text. DeepL (without tag_handling)
+// preserves markdown syntax, inline HTML, and self-closing JSX such as <Anchor/>.
+// Fenced code blocks and MDX import/export lines are protected from translation.
+async function translateMarkdownBody(body, targetLang) {
+  if (!body || body.trim() === '') return body;
+
+  const protectedChunks = [];
+  const protect = (match) => {
+    protectedChunks.push(match);
+    return `@@PB${protectedChunks.length - 1}@@`;
+  };
+  const working = body
+    .replace(/```[\s\S]*?```/g, protect)                 // fenced code blocks
+    .replace(/^[ \t]*(?:import|export)\s.*$/gm, protect); // MDX import/export statements
+
+  if (working.trim() === '') return body;
+
+  try {
+    const params = new URLSearchParams();
+    params.append('text', working);
+    params.append('target_lang', LANGUAGE_MAP[targetLang]);
+    params.append('source_lang', 'EN');
+    params.append('preserve_formatting', '1');
+
+    const response = await fetch(`${DEEPL_API_URL}/v2/translate`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `DeepL-Auth-Key ${DEEPL_API_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: params
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error(`❌ DeepL API Error ${response.status} (body): ${errorText}`);
+      return body; // keep the original body on failure
+    }
+
+    const data = await response.json();
+    const translated = data.translations[0].text;
+
+    // Restore protected chunks
+    return translated.replace(/@@PB(\d+)@@/g, (_, i) => protectedChunks[Number(i)]);
+  } catch (error) {
+    console.error('Body translation error:', error.message);
+    return body; // keep the original body on failure
+  }
+}
+
 async function translateMarkdownFile(filePath, targetLang, contentHashes) {
   try {
     // Create target directory structure first to validate path
     const relativePath = path.relative('src/content/pages', filePath);
     const targetDir = path.join('src/content/pages', targetLang);
     const targetFile = path.join(targetDir, relativePath);
-    
+
     // Ensure we're not creating nested language folders - only check for actual nesting issues
     const normalizedPath = targetFile.replace(/\\/g, '/'); // Normalize path separators
     if (SUPPORTED_LANGUAGES.some(l => normalizedPath.includes(`/${targetLang}/${l}/`))) {
@@ -307,9 +357,10 @@ async function translateMarkdownFile(filePath, targetLang, contentHashes) {
 
     // Parse YAML frontmatter from English source
     const frontmatter = yaml.load(parts[1]);
+    const markdownContent = parts.slice(2).join('---');
 
-    // Generate content hash for the English source frontmatter
-    const currentHash = getContentHash(frontmatter);
+    // Generate content hash for the English source (frontmatter + body)
+    const currentHash = getContentHash({ frontmatter, body: markdownContent });
     const fileKey = getFileKey(filePath, targetLang);
     const previousHash = contentHashes[fileKey];
 
@@ -320,20 +371,21 @@ async function translateMarkdownFile(filePath, targetLang, contentHashes) {
       return false; // No translation needed
     }
 
-    const markdownContent = parts.slice(2).join('---');
-
     console.log(`\n🔄 Translating ${path.basename(filePath)} to ${targetLang}...`);
-    
+
     // Translate the frontmatter
     const translatedFrontmatter = await translateObject(frontmatter, targetLang);
-    
+
+    // Translate the markdown/MDX body prose (frontmatter-only pages have an empty body)
+    const translatedBody = await translateMarkdownBody(markdownContent, targetLang);
+
     // Create translated content
     const translatedYaml = yaml.dump(translatedFrontmatter, {
       lineWidth: -1,
       noRefs: true
     });
-    
-    const translatedContent = `---\n${translatedYaml}---${markdownContent}`;
+
+    const translatedContent = `---\n${translatedYaml}---${translatedBody}`;
     
     fs.mkdirSync(path.dirname(targetFile), { recursive: true });
     fs.writeFileSync(targetFile, translatedContent, 'utf8');
@@ -401,7 +453,7 @@ async function translateSingleFile(filePath) {
   }
   
   // Check if it's a markdown file
-  if (!filePath.endsWith('.md')) {
+  if (!filePath.endsWith('.md') && !filePath.endsWith('.mdx')) {
     console.error(`❌ File is not a markdown file: ${filePath}`);
     process.exit(1);
   }

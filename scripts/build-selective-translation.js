@@ -54,7 +54,7 @@ function getChangedFiles(since) {
             continue;
           }
           checkContentDirectory(fullPath);
-        } else if (item.endsWith('.md')) {
+        } else if (item.endsWith('.md') || item.endsWith('.mdx')) {
           // Check if file was modified since last build
           if (stat.mtime > since) {
             changedFiles.push(fullPath);
