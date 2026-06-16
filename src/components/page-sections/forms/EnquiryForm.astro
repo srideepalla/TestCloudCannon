@@ -1,0 +1,709 @@
+---
+/**
+ * EnquiryForm — enquiry/support form for the static site.
+ *
+ * Submits client-side (browser) straight to the Zendesk Requests API
+ * (POST /api/v2/requests.json) as an anonymous request. Attachments are uploaded
+ * first to the Zendesk Uploads API and attached via comment.uploads. Override the
+ * endpoints with PUBLIC_ZENDESK_REQUEST_ENDPOINT / PUBLIC_ZENDESK_UPLOADS_ENDPOINT.
+ *
+ * NO API token is sent: the Requests + Uploads APIs accept anonymous end-user calls,
+ * so no credentials are exposed in the browser. (We deliberately do NOT use the
+ * Tickets API, which would require a token.)
+ *
+ * Routing: the query type is encoded as an uppercase subject prefix —
+ *   "[<QUERY_TYPE>] Stevie enquiry: <program> - <company/name>"
+ * Groups are NOT assigned from the frontend (anonymous request).
+ *
+ * TODO: Final assignment should be handled in Zendesk triggers matching the subject
+ * prefix to a team/email:
+ *   [NOMINATIONS] -> nominations team/email
+ *   [JUDGING]     -> judging team/email
+ *   [CEREMONIES]  -> ceremonies team/email
+ *   [PAYMENTS]    -> payments team/email
+ *
+ * Zendesk has "Verify anonymous requests" enabled, so a new submission may land in
+ * Suspended tickets until the requester verifies their email.
+ */
+import {
+  PROGRAMS,
+  QUERY_TYPES,
+  COUNTRIES,
+  ZENDESK_REQUEST_ENDPOINT,
+  ZENDESK_UPLOADS_ENDPOINT,
+} from "@utils/enquiry-routing";
+
+// colorScheme drives the section's theme tokens. The site root defaults to "dark",
+// so default this section to "light" for a readable form; pass "dark"/"inherit" to override.
+const { class: className, colorScheme = "light" } = Astro.props;
+const themeAttr = colorScheme && colorScheme !== "inherit" ? colorScheme : undefined;
+
+// Zendesk endpoints — hardcoded defaults, overridable via env.
+const endpoint = import.meta.env.PUBLIC_ZENDESK_REQUEST_ENDPOINT || ZENDESK_REQUEST_ENDPOINT;
+const uploadsEndpoint = import.meta.env.PUBLIC_ZENDESK_UPLOADS_ENDPOINT || ZENDESK_UPLOADS_ENDPOINT;
+
+// value -> uppercase subject prefix, e.g. "nominations" -> "NOMINATIONS".
+const queryPrefixMap = Object.fromEntries(QUERY_TYPES.map((q) => [q.value, q.label.toUpperCase()]));
+// value -> { label, short } for the subject + body.
+const queryLabelMap = Object.fromEntries(QUERY_TYPES.map((q) => [q.value, q.label]));
+const programMap = Object.fromEntries(
+  PROGRAMS.map((p) => [p.value, { label: p.label, short: p.short }])
+);
+---
+
+<section
+  class:list={["enquiry", className]}
+  data-theme={themeAttr}
+>
+  <div class="enquiry-shell">
+    <header class="enquiry-intro">
+      <h1>Contact &amp; Enquiries</h1>
+      <p>
+        Tell us a little about yourself and what your enquiry relates to, and we&rsquo;ll route it
+        to the right team. We&rsquo;ll reply to the email address you provide.
+      </p>
+      <p class="enquiry-chat-line">
+        Prefer to chat?
+        <button
+          type="button"
+          id="enquiry-chat-open"
+          class="enquiry-chat-open"
+        >
+          Chat with us
+        </button>
+      </p>
+    </header>
+
+    <form
+      id="enquiry-form"
+      class="form"
+      novalidate
+    >
+      <!-- Honeypot: real users never fill this; bots often do. -->
+      <input
+        type="checkbox"
+        name="botcheck"
+        class="enquiry-honeypot"
+        tabindex="-1"
+        autocomplete="off"
+        aria-hidden="true"
+      />
+
+      <div class="field-row">
+        <label for="enquiry-name">
+          Full name <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <input
+          id="enquiry-name"
+          type="text"
+          name="name"
+          autocomplete="name"
+          placeholder="Jane Doe"
+          required
+          aria-required="true"
+        />
+        <p
+          class="field-error"
+          data-error-for="name"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-email">
+          Email <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <input
+          id="enquiry-email"
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder="you@example.com"
+          required
+          aria-required="true"
+        />
+        <p
+          class="field-error"
+          data-error-for="email"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-company">
+          Company / organization <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <input
+          id="enquiry-company"
+          type="text"
+          name="company"
+          autocomplete="organization"
+          placeholder="Acme Inc."
+          required
+          aria-required="true"
+        />
+        <p
+          class="field-error"
+          data-error-for="company"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-job-title">Job title / occupation</label>
+        <input
+          id="enquiry-job-title"
+          type="text"
+          name="jobTitle"
+          autocomplete="organization-title"
+          placeholder="Marketing Director"
+        />
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-country">Country / region</label>
+        <select
+          id="enquiry-country"
+          name="country"
+        >
+          <option
+            value=""
+            selected
+            >Select your country / region…</option
+          >
+          {COUNTRIES.map((c) => <option value={c}>{c}</option>)}
+        </select>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-program">
+          Select your program <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <select
+          id="enquiry-program"
+          name="program"
+          required
+          aria-required="true"
+        >
+          <option
+            value=""
+            disabled
+            selected
+            >Select your program…</option
+          >
+          {PROGRAMS.map((p) => <option value={p.value}>{p.label}</option>)}
+        </select>
+        <p
+          class="field-error"
+          data-error-for="program"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-query-type">
+          Select your query type <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <select
+          id="enquiry-query-type"
+          name="queryType"
+          required
+          aria-required="true"
+        >
+          <option
+            value=""
+            disabled
+            selected
+            >Select your query type…</option
+          >
+          {QUERY_TYPES.map((q) => <option value={q.value}>{q.label}</option>)}
+        </select>
+        <p
+          class="field-error"
+          data-error-for="queryType"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-message">
+          Message <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <textarea
+          id="enquiry-message"
+          name="message"
+          rows="6"
+          placeholder="Describe your enquiry in as much detail as you can."
+          required
+          aria-required="true"
+        ></textarea>
+        <p
+          class="field-error"
+          data-error-for="message"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-phone">Phone number</label>
+        <input
+          id="enquiry-phone"
+          type="tel"
+          name="phone"
+          autocomplete="tel"
+          inputmode="tel"
+          maxlength="18"
+          placeholder="Include your country code"
+        />
+        <p class="field-hint">Country code + 10-digit number.</p>
+        <p
+          class="field-error"
+          data-error-for="phone"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-entry-id">Entry / nomination ID</label>
+        <input
+          id="enquiry-entry-id"
+          type="text"
+          name="entryId"
+          placeholder="If you have one"
+        />
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-files">Attach screenshots or videos</label>
+        <input
+          id="enquiry-files"
+          type="file"
+          name="attachments"
+          multiple
+          accept="image/*,video/*,.pdf"
+        />
+        <p class="field-hint">Optional. You can attach multiple files.</p>
+        <p
+          class="field-error"
+          data-error-for="attachments"
+          hidden
+        >
+        </p>
+      </div>
+
+      <button
+        type="submit"
+        class="enquiry-submit"
+        >Send enquiry</button
+      >
+
+      <!-- Status region: polite so screen readers announce success/error. -->
+      <p
+        id="enquiry-status"
+        class="enquiry-status"
+        role="status"
+        aria-live="polite"
+        hidden
+      >
+      </p>
+    </form>
+  </div>
+</section>
+
+<script define:vars={{ endpoint, uploadsEndpoint, queryPrefixMap, queryLabelMap, programMap }}>
+  const form = document.getElementById("enquiry-form");
+  if (form) {
+    const statusEl = document.getElementById("enquiry-status");
+    const submitBtn = form.querySelector(".enquiry-submit");
+    const fileInput = document.getElementById("enquiry-files");
+
+    // Gatekeep the phone field as the user types: only "+", digits and separators,
+    // and never more than 14 digits (country code + 10).
+    const phoneInput = document.getElementById("enquiry-phone");
+    if (phoneInput) {
+      phoneInput.addEventListener("input", () => {
+        let cleaned = phoneInput.value.replace(/[^\d+\s\-()]/g, "");
+        const hasPlus = cleaned.trimStart().startsWith("+");
+        let digits = cleaned.replace(/\D/g, "").slice(0, 14);
+        phoneInput.value = (hasPlus ? "+" : "") + digits;
+      });
+    }
+
+    const setError = (field, message) => {
+      const el = form.querySelector(`[data-error-for="${field}"]`);
+      if (!el) return;
+      el.textContent = message;
+      el.hidden = !message;
+    };
+
+    const clearErrors = () => {
+      form.querySelectorAll(".field-error").forEach((el) => {
+        el.textContent = "";
+        el.hidden = true;
+      });
+    };
+
+    const setStatus = (message, kind) => {
+      if (!statusEl) return;
+      statusEl.textContent = message;
+      statusEl.hidden = !message;
+      statusEl.dataset.kind = kind || "";
+    };
+
+    // Basic, fail-safe client validation. Returns the first invalid field name.
+    const validate = (data) => {
+      clearErrors();
+      let firstInvalid = null;
+      const fail = (field, msg) => {
+        setError(field, msg);
+        if (!firstInvalid) firstInvalid = field;
+      };
+      const requireText = (field, msg) => {
+        if (!String(data.get(field) || "").trim()) fail(field, msg);
+      };
+      requireText("name", "Please enter your full name.");
+      const email = String(data.get("email") || "").trim();
+      if (!email) fail("email", "Please enter your email so we can reply.");
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        fail("email", "Please enter a valid email address.");
+      requireText("company", "Please enter your company or organization.");
+      if (!data.get("program")) fail("program", "Please select your program.");
+      if (!data.get("queryType")) fail("queryType", "Please select your query type.");
+      requireText("message", "Please describe your enquiry.");
+      // Phone is optional, but if provided it must be a country code + 10 digits.
+      const phone = String(data.get("phone") || "").trim();
+      if (phone && !isValidPhone(phone)) {
+        fail("phone", "Enter a country code followed by a 10-digit number.");
+      }
+      return firstInvalid;
+    };
+
+    // Must be a country code + a 10-digit number. Allow an optional leading "+" and
+    // common separators (spaces / hyphens / parens), which are ignored. Country code
+    // is 1–4 digits, so total digit count must be 11–14 (anything < 11 means no
+    // country code; the 25-digit paste from before is > 14 and is rejected).
+    const isValidPhone = (value) => {
+      const compact = value.replace(/[\s\-().]/g, "");
+      if (!/^\+?\d+$/.test(compact)) return false;
+      const digits = compact.replace(/\D/g, "");
+      return digits.length >= 11 && digits.length <= 14;
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      // Honeypot tripped → silently pretend success, send nothing.
+      if (form.elements.botcheck && form.elements.botcheck.checked) {
+        setStatus("Thanks — your enquiry has been sent.", "success");
+        form.reset();
+        return;
+      }
+
+      const data = new FormData(form);
+      const invalid = validate(data);
+      if (invalid) {
+        const el = form.querySelector(`[name="${invalid}"]`);
+        if (el) el.focus();
+        setStatus("Please fix the highlighted fields and try again.", "error");
+        return;
+      }
+
+      const get = (field) => String(data.get(field) || "").trim();
+      const fullName = get("name");
+      const email = get("email");
+      const company = get("company");
+      const timestamp = new Date().toISOString();
+      const pageUrl = window.location.href;
+
+      // Routing "switch": query type drives the uppercase subject prefix; program is
+      // shown in compact form in the subject. Zendesk triggers route on the prefix.
+      const queryTypeValue = get("queryType");
+      const queryPrefix = queryPrefixMap[queryTypeValue] || queryTypeValue.toUpperCase();
+      const queryLabel = queryLabelMap[queryTypeValue] || queryTypeValue;
+      const programValue = get("program");
+      const program = programMap[programValue] || { label: programValue, short: programValue };
+
+      // Subject: "[<QUERY_TYPE>] Stevie enquiry: <program> - <company/name>"
+      const subject = `[${queryPrefix}] Stevie enquiry: ${program.short} - ${company || fullName}`;
+
+      // Human-readable comment body with every field, for the Zendesk agent.
+      const line = (k, v) => `${k}: ${v || "—"}`;
+      const body = [
+        line("Full name", fullName),
+        line("Email", email),
+        line("Company / organization", company),
+        line("Job title / occupation", get("jobTitle")),
+        line("Country / region", get("country")),
+        line("Program", program.label),
+        line("Query type", queryLabel),
+        "",
+        "Message:",
+        get("message"),
+        "",
+        line("Phone", get("phone")),
+        line("Entry / nomination ID", get("entryId")),
+        "",
+        "—",
+        line("Submitted from", pageUrl),
+        line("Timestamp", timestamp),
+      ].join("\n");
+
+      console.info("[enquiry] submitting to Zendesk", {
+        queryPrefix,
+        program: program.short,
+        endpoint,
+      });
+
+      const ERROR_MSG = "Could not submit your enquiry. Please try again or contact support.";
+
+      if (!endpoint) {
+        console.error("[enquiry] Zendesk endpoint is not set — cannot submit.");
+        setStatus(ERROR_MSG, "error");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+      submitBtn.textContent = "Sending…";
+      setStatus("", "");
+
+      // Restore the button before bailing out on an error.
+      const stopSending = () => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      };
+
+      try {
+        // 1) Upload any attachments to the Zendesk Uploads API and collect tokens.
+        //    Each file is POSTed as raw binary to uploads.json?filename=<name>.
+        //    If ANY upload fails we abort — never submit silently without attachments.
+        let uploadTokens = [];
+        const files = fileInput && fileInput.files ? Array.from(fileInput.files) : [];
+        if (files.length) {
+          setStatus("Uploading attachments…", "");
+          try {
+            uploadTokens = await Promise.all(files.map(uploadFile));
+          } catch (uploadErr) {
+            console.error("[enquiry] attachment upload failed", uploadErr);
+            setStatus(
+              "We couldn't upload your attachment(s). Please remove them or try again.",
+              "error"
+            );
+            setError("attachments", "Attachment upload failed — please try again.");
+            stopSending();
+            return;
+          }
+        }
+
+        // 2) Create the Zendesk request (anonymous — no token, no Tickets API),
+        //    attaching the upload tokens via comment.uploads.
+        const comment = { body };
+        if (uploadTokens.length) comment.uploads = uploadTokens;
+        const payload = { request: { requester: { name: fullName, email }, subject, comment } };
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        });
+        console.info("[enquiry] Zendesk result", { ok: response.ok, status: response.status });
+        if (response.ok) {
+          // "Verify anonymous requests" is on, so the requester may get a verification
+          // email and the ticket may sit in Suspended until they confirm.
+          setStatus(
+            "Thanks — your enquiry has been submitted. Please verify your email so our team can respond.",
+            "success"
+          );
+          form.reset();
+        } else {
+          setStatus(ERROR_MSG, "error");
+        }
+      } catch (err) {
+        console.error("[enquiry] submit failed", err);
+        setStatus(ERROR_MSG, "error");
+      } finally {
+        stopSending();
+      }
+    });
+
+    // Upload one file to the Zendesk Uploads API and return its upload token.
+    // Raw-binary POST to uploads.json?filename=<name>; response: { upload: { token } }.
+    async function uploadFile(file) {
+      const url = `${uploadsEndpoint}?filename=${encodeURIComponent(file.name)}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": file.type || "application/binary" },
+        body: file,
+      });
+      if (!res.ok) throw new Error(`upload failed (${res.status}) for ${file.name}`);
+      const json = await res.json();
+      const token = json && json.upload && json.upload.token;
+      if (!token) throw new Error(`no upload token returned for ${file.name}`);
+      return token;
+    }
+  }
+
+  // "Chat with us" button on this page opens the Zendesk Messaging Web Widget.
+  // The widget snippet is loaded globally in BaseLayout; zE loads async, so poll.
+  const chatOpen = document.getElementById("enquiry-chat-open");
+  if (chatOpen) {
+    const openZendesk = (tries = 50) => {
+      const zE = window.zE;
+      if (typeof zE === "function") {
+        zE("messenger", "open");
+        return;
+      }
+      if (tries <= 0) return;
+      window.setTimeout(() => openZendesk(tries - 1), 200);
+    };
+    chatOpen.addEventListener("click", () => openZendesk());
+  }
+</script>
+
+<style>
+  @layer components {
+    .enquiry {
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      padding-block: var(--spacing-2xl, 3rem);
+      width: 100%;
+    }
+
+    .enquiry-shell {
+      margin-inline: auto;
+      max-width: 40rem;
+      padding-inline: var(--spacing-md);
+      width: 100%;
+    }
+
+    .enquiry-intro {
+      margin-bottom: var(--spacing-lg);
+
+      p {
+        color: var(--color-text-muted);
+        margin-top: var(--spacing-xs);
+      }
+    }
+
+    .enquiry-chat-open {
+      background: transparent;
+      border: 0;
+      color: var(--color-link, var(--color-brand));
+      cursor: pointer;
+      font: inherit;
+      font-weight: var(--font-weight-semibold);
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .enquiry-chat-open:hover {
+      color: var(--color-link-hover, var(--color-brand-muted));
+    }
+
+    .field-row {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      margin-bottom: var(--spacing-md);
+
+      select,
+      input,
+      textarea {
+        width: 100%;
+      }
+    }
+
+    .req {
+      color: var(--color-error);
+      margin-inline-start: var(--spacing-em-xs);
+    }
+
+    .field-hint {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .field-error {
+      color: var(--color-error);
+      font-size: var(--font-size-sm);
+    }
+
+    /* Visually hide the honeypot without using display:none (bots skip those). */
+    .enquiry-honeypot {
+      height: 0;
+      left: -9999px;
+      opacity: 0;
+      position: absolute;
+      width: 0;
+    }
+
+    .enquiry-submit {
+      background-color: var(--color-bg-brand, var(--color-brand));
+      border: 0;
+      border-radius: var(--radius-xs);
+      color: var(--color-text-on-brand, #fff);
+      cursor: pointer;
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      padding: var(--spacing-em-sm) var(--spacing-lg);
+      transition: opacity var(--animation-normal) ease-in-out;
+
+      &:hover {
+        opacity: 0.9;
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+    }
+
+    .enquiry-status {
+      border-radius: var(--radius-xs);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-em-sm) var(--spacing-em-md, 1rem);
+
+      &[data-kind="success"] {
+        background-color: var(--color-bg-success, #e6f4ea);
+        color: var(--color-success, #1e7e34);
+      }
+
+      &[data-kind="error"] {
+        background-color: var(--color-bg-error, #fdecea);
+        color: var(--color-error, #c0392b);
+      }
+    }
+  }
+</style>
