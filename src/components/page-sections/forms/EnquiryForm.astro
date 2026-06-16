@@ -62,16 +62,6 @@ const programMap = Object.fromEntries(
         Tell us a little about yourself and what your enquiry relates to, and we&rsquo;ll route it
         to the right team. We&rsquo;ll reply to the email address you provide.
       </p>
-      <p class="enquiry-chat-line">
-        Prefer to chat?
-        <button
-          type="button"
-          id="enquiry-chat-open"
-          class="enquiry-chat-open"
-        >
-          Chat with us
-        </button>
-      </p>
     </header>
 
     <form
@@ -573,22 +563,6 @@ const programMap = Object.fromEntries(
       return token;
     }
   }
-
-  // "Chat with us" button on this page opens the Zendesk Messaging Web Widget.
-  // The widget snippet is loaded globally in BaseLayout; zE loads async, so poll.
-  const chatOpen = document.getElementById("enquiry-chat-open");
-  if (chatOpen) {
-    const openZendesk = (tries = 50) => {
-      const zE = window.zE;
-      if (typeof zE === "function") {
-        zE("messenger", "open");
-        return;
-      }
-      if (tries <= 0) return;
-      window.setTimeout(() => openZendesk(tries - 1), 200);
-    };
-    chatOpen.addEventListener("click", () => openZendesk());
-  }
 </script>
 
 <style>
@@ -614,22 +588,6 @@ const programMap = Object.fromEntries(
         color: var(--color-text-muted);
         margin-top: var(--spacing-xs);
       }
-    }
-
-    .enquiry-chat-open {
-      background: transparent;
-      border: 0;
-      color: var(--color-link, var(--color-brand));
-      cursor: pointer;
-      font: inherit;
-      font-weight: var(--font-weight-semibold);
-      padding: 0;
-      text-decoration: underline;
-      text-underline-offset: 2px;
-    }
-
-    .enquiry-chat-open:hover {
-      color: var(--color-link-hover, var(--color-brand-muted));
     }
 
     .field-row {
