@@ -316,7 +316,7 @@ pageSections:
                 alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
-                text: Register Now
+                text: Watch On-Demand
                 hideText: false
                 link: >-
                   https://events.zoom.us/ev/AuSxzi6nqFgSEZXBNUkw8L2cNy4XVQPXnkzeO9AcsDS59H6UK-L8~AowS32Z5dh1Xage1lqj0tRv_FcgRHtIDtVlb1peL9vqEtx-1coG3oHjjhA
