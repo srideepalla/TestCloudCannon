@@ -8,22 +8,21 @@ pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: 2026 Stevie® Awards for Women in Business Program Webinar
     text: >-
-      Join our free, live webinar about the 2026 Stevie® Awards for Women in
-      Business to learn more about the nomination and judging processes, what’s
-      new this year, and tips on how to craft a success story that presents your
+      Watch our webinar about the 2026 Stevie® Awards for Women in Business to
+      learn more about the nomination and judging processes, what’s new this
+      year, and tips on how to craft a success story that presents your
       achievements to the judges in the strongest possible light. You’ll also
-      get guidance on selecting the right categories for your achievements and
-      have the opportunity to ask questions directly to Stevie Awards Founder,
-      Michael Gallagher, during a live Q&A.
+      get guidance on selecting the right categories for your achievements
+      directly from Stevie Awards Founder, Michael Gallagher,.
 
 
-      ###### **Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br />Winning
-      Strategies for the 2026 Stevie® Awards for Women in Business**
+      ###### **Presented Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br
+      />Winning Strategies for the 2026 Stevie® Awards for Women in Business**
 
 
       <a
       href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA"
-      target="_blank" rel="noopener" title="Register Now"><strong>Register
+      target="_blank" rel="noopener" title="Watch On-Demand"><strong>Register
       Now</strong></a>
     colorScheme: light
     backgroundColor: base
@@ -31,7 +30,7 @@ pageSections:
     label: Top Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
-        source: /src/assets/images/sate26-webinar-email-1.png
+        source: /src/assets/images/sawib26-webinar-email-1.png
         alt: Stevie Awards for Women in Business Webinar
         sizes: '(max-width: 1280px) 100vw, 1280px'
         widths:
