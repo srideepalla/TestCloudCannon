@@ -9,11 +9,10 @@ pageSections:
     heading: 2026 Stevie® Awards for Women in Business Program Webinar
     text: >-
       Watch our webinar about the 2026 Stevie® Awards for Women in Business to
-      learn more about the nomination and judging processes, what’s new this
-      year, and tips on how to craft a success story that presents your
-      achievements to the judges in the strongest possible light. You’ll also
-      get guidance on selecting the right categories for your achievements
-      directly from Stevie Awards Founder, Michael Gallagher,.
+      learn more about the nomination and judging processes, how to choose the
+      right categories for your achievements, explore what’s new this year, and
+      get advice on how to craft nominations that showcase your achievements to
+      the judges in the strongest possible light.
 
 
       ###### **Presented Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br
@@ -22,8 +21,8 @@ pageSections:
 
       <a
       href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA"
-      target="_blank" rel="noopener" title="Watch On-Demand"><strong>Register
-      Now</strong></a>
+      target="_blank" rel="noopener" title="Watch On-Demand"><strong>Watch
+      On-Demand</strong></a>
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/builders/custom-section
