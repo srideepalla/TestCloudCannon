@@ -31,7 +31,7 @@ const Tag = element as any;
 
 const tagProps: Record<string, any> =
   Tag === "a" && link
-    ? { href: localizePath(link, Astro.url.pathname) }
+    ? { href: localizePath(link, Astro.url?.pathname ?? "/") }
     : Tag === "button"
       ? { type: "button" }
       : {};
