@@ -141,7 +141,11 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
   data-theme="dark"
 >
   <head>
-        <!-- Google Tag Manager -->
+    <meta charset="UTF-8" />
+    <!-- Charset MUST stay the first element in <head>: it has to fall within the first
+         1024 bytes, or the browser picks a default encoding before it and mojibake
+         results (e.g. the ellipsis and apostrophe rendered as a-circumflex sequences). -->
+    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -167,8 +171,7 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
     <noscript><img height=""1"" width=""1"" style=""display:none""
     src=""https://www.facebook.com/tr?id=316192473477446&ev=PageView&noscript=1""
     /></noscript>
-    <!-- End Meta Pixel Code --> 
-    <meta charset="UTF-8" />
+    <!-- End Meta Pixel Code -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
