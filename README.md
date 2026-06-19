@@ -102,6 +102,54 @@ Site-wide configuration is managed through JSON files in `src/data/`:
 
 During development, visit [localhost:4321/component-docs/](http://localhost:4321/component-docs/) to explore the component library with examples, documentation, and a visual component builder.
 
+## Real Zendesk assignee cutover
+
+The `/enquiry` form routes each submission to Zendesk by embedding a per-subcategory
+routing code (`SAE01`–`SAE43`) in the ticket subject. Live Zendesk triggers match that
+code and **tag** the ticket (`stevie_enquiry`, category, subcategory, and an
+`assignee_<owner>` tag such as `assignee_roman`). Today routing is **tag-only** — no real
+assignee — because the named owners do not yet exist as Zendesk agents.
+
+When those owners are onboarded as Zendesk agents, flip the triggers from tag-only to
+"group Support + real assignee" with a single controlled script run — no manual trigger
+editing:
+
+1. **Fill in emails.** Edit `scripts/zendesk-owners.js` and set each owner's real Zendesk
+   agent email. Do not invent emails — only add an owner's email once they actually exist
+   as an agent/admin.
+2. **Set credentials** (the API token's owning agent/admin email + token):
+
+   ```bash
+   export ZENDESK_EMAIL="you@example.com"
+   export ZENDESK_API_TOKEN="…"
+   # optional: export ZENDESK_SUBDOMAIN="thestevieawardshelp"
+   ```
+
+3. **Dry-run** (default — reads Zendesk, prints a plan, changes nothing):
+
+   ```bash
+   node scripts/zendesk-assignee-cutover.js
+   ```
+
+4. **Apply** once the dry-run looks right:
+
+   ```bash
+   node scripts/zendesk-assignee-cutover.js --apply
+   ```
+
+Safety guarantees:
+
+- **Dry-run by default**; writes happen only with `--apply`.
+- **All-or-nothing validation** — every owner must resolve to a Zendesk agent/admin before
+  any trigger is touched. One missing/invalid owner aborts the whole run with no changes.
+- **Tags are preserved** — the script keeps the existing tag writes (so
+  `assignee_roman`/category/subcategory tags keep flowing for reporting) and simply *adds*
+  a real `assignee_id`.
+- **Future tickets only** — updating triggers affects new submissions only. There is no
+  historical bulk-assignment of existing tickets (intentionally out of scope).
+- `SAE41` (Women / Speaker Application → `AUTOMATION`) is **skipped** — that owner is not a
+  real person and its wiring is deferred.
+
 ## License
 
 MIT
