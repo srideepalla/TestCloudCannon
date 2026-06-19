@@ -5,17 +5,16 @@
  * straight to the Zendesk Requests API (anonymous request creation, no API token).
  * See ZENDESK_REQUEST_ENDPOINT below and EnquiryForm.astro for the submit logic.
  *
- * Routing is driven by the QUERY TYPE, which is encoded as an uppercase prefix in the
- * ticket subject: "[<QUERY_TYPE>] Stevie enquiry: <program> - <company/name>".
- * Since we create requests anonymously from the browser, we do NOT assign groups from
- * the frontend — Zendesk triggers route on the subject prefix instead.
+ * Routing is driven by the CATEGORY / SUBCATEGORY the requester picks. Each subcategory
+ * carries a unique routing CODE (SAE01, SAE02, …) that is embedded in the ticket subject:
+ *   "[<Category> / <Subcategory>] Stevie enquiry: <program> - <company/name> [<CODE>]"
+ * Since we create requests anonymously from the browser, end users cannot set tags or
+ * assignees — so a Zendesk trigger keyed on each unique code does the routing instead.
  *
- * TODO: Final assignment should be handled in Zendesk triggers, matching the subject
- * prefix to a team / email:
- *     [NOMINATIONS] -> nominations team/email
- *     [JUDGING]     -> judging team/email
- *     [CEREMONIES]  -> ceremonies team/email
- *     [PAYMENTS]    -> payments team/email
+ * The named assignee on each subcategory is the intended owner. Those agents do not all
+ * exist in Zendesk yet, so the triggers currently route to the Support group and add an
+ * `assignee_<name>` tag ("tag now, assign later"); set the real assignee_id on each
+ * trigger once the agents are created.
  */
 
 /**
@@ -28,10 +27,24 @@ export interface ProgramOption {
   short: string;
 }
 
-/** A query type — the routing "switch" encoded as the subject prefix. */
-export interface QueryType {
+/**
+ * A subcategory — the routing leaf. `code` is the unique token embedded in the subject
+ * that a Zendesk trigger matches on; `assignee` is the intended owner (routed via an
+ * `assignee_<name>` tag until that agent exists in Zendesk).
+ */
+export interface Subcategory {
   value: string;
   label: string;
+  code: string;
+  assignee: string;
+}
+
+/** A top-level category grouping subcategories. `tag` is added to routed tickets. */
+export interface Category {
+  value: string;
+  label: string;
+  tag: string;
+  subcategories: Subcategory[];
 }
 
 /**
@@ -82,14 +95,153 @@ export const PROGRAMS: ProgramOption[] = [
 ];
 
 /**
- * Query types — the routing "switch". The label, uppercased, becomes the subject
- * prefix (e.g. "Nominations" -> "[NOMINATIONS]") that Zendesk triggers route on.
+ * Categories + subcategories — the routing tree. The requester picks a category, then a
+ * subcategory; the subcategory's `code` is embedded in the subject and a Zendesk trigger
+ * routes on it. Codes are stable identifiers — do NOT renumber existing ones (the triggers
+ * match them); only append new codes when adding subcategories.
  */
-export const QUERY_TYPES: QueryType[] = [
-  { value: "nominations", label: "Nominations" },
-  { value: "judging", label: "Judging" },
-  { value: "ceremonies", label: "Ceremonies" },
-  { value: "payments", label: "Payments" },
+export const CATEGORIES: Category[] = [
+  {
+    value: "account-issues",
+    label: "Account Issues",
+    tag: "account_issues",
+    subcategories: [
+      { value: "account-access-issue", label: "Account Access Issue", code: "SAE01", assignee: "Roman" },
+      { value: "account-deletion", label: "Account Deletion", code: "SAE02", assignee: "Roman" },
+      { value: "account-updates", label: "Account Updates", code: "SAE03", assignee: "Roman" },
+      { value: "account-other", label: "Other", code: "SAE04", assignee: "Roman" },
+    ],
+  },
+  {
+    value: "award-ceremonies",
+    label: "Award Ceremonies",
+    tag: "award_ceremonies",
+    subcategories: [
+      { value: "ceremony-sponsorship", label: "Ceremony Sponsorship", code: "SAE05", assignee: "Lindsey" },
+      { value: "ticket-purchase-question", label: "Ticket Purchase Question", code: "SAE06", assignee: "Lindsey" },
+      { value: "ticket-purchase-technical-issue", label: "Ticket Purchase Technical Issue", code: "SAE07", assignee: "Roman" },
+      { value: "ceremonies-other", label: "Other", code: "SAE08", assignee: "Lindsey" },
+    ],
+  },
+  {
+    value: "award-shipments",
+    label: "Award Shipments",
+    tag: "award_shipments",
+    subcategories: [
+      { value: "shipping-fees-payment", label: "Question About Payment of Shipping Fees", code: "SAE09", assignee: "Hal" },
+      { value: "shipment-status", label: "Status of My Award(s) Shipment", code: "SAE10", assignee: "Katina" },
+      { value: "shipments-other", label: "Other", code: "SAE11", assignee: "Katina" },
+    ],
+  },
+  {
+    value: "international",
+    label: "International",
+    tag: "international",
+    subcategories: [
+      { value: "americas", label: "Americas", code: "SAE12", assignee: "Michael" },
+      { value: "asia-oceania", label: "Asia and Oceania", code: "SAE13", assignee: "Michael" },
+      { value: "europe-africa", label: "Europe and Africa", code: "SAE14", assignee: "Marc" },
+      { value: "mena", label: "Middle East & North Africa", code: "SAE15", assignee: "May" },
+    ],
+  },
+  {
+    value: "judging",
+    label: "Judging",
+    tag: "judging",
+    subcategories: [
+      { value: "judging-application", label: "Judging Application", code: "SAE16", assignee: "Elizabeth" },
+      { value: "judging-technical-issue", label: "Judging Technical Issue", code: "SAE17", assignee: "Elizabeth" },
+      { value: "judging-other", label: "Other", code: "SAE18", assignee: "Elizabeth" },
+    ],
+  },
+  {
+    value: "marketing",
+    label: "Marketing",
+    tag: "marketing",
+    subcategories: [
+      { value: "media", label: "Media", code: "SAE19", assignee: "Nina" },
+      { value: "press-inquiries", label: "Press Inquiries", code: "SAE20", assignee: "Nina" },
+      { value: "vendor-inquiry", label: "Vendor Inquiry", code: "SAE21", assignee: "Nina" },
+      { value: "marketing-other", label: "Other", code: "SAE22", assignee: "Nina" },
+    ],
+  },
+  {
+    value: "nomination-process",
+    label: "Nomination Process",
+    tag: "nomination_process",
+    subcategories: [
+      { value: "category-selection", label: "Category Selection", code: "SAE23", assignee: "Michael" },
+      { value: "entry-deadline-question", label: "Entry Deadline Question", code: "SAE24", assignee: "Hal" },
+      { value: "entry-fee-waiver-request", label: "Entry Fee Waiver Request", code: "SAE25", assignee: "Hal" },
+      { value: "submission-technical-issue", label: "Submission Technical Issue", code: "SAE26", assignee: "Roman" },
+      { value: "nomination-other", label: "Other", code: "SAE27", assignee: "Hal" },
+    ],
+  },
+  {
+    value: "payments",
+    label: "Payments",
+    tag: "payments",
+    subcategories: [
+      { value: "invoice-question", label: "Question About/Issue With My Invoice", code: "SAE28", assignee: "Esther" },
+      { value: "payments-other", label: "Other", code: "SAE29", assignee: "Esther" },
+    ],
+  },
+  {
+    value: "peoples-choice",
+    label: "People’s Choice / Public Voting",
+    tag: "peoples_choice",
+    subcategories: [
+      { value: "activate-voters", label: "How to Activate Voters", code: "SAE30", assignee: "Michael" },
+      { value: "peoples-choice-technical-issue", label: "Technical Issue", code: "SAE31", assignee: "Roman" },
+      { value: "peoples-choice-other", label: "Other", code: "SAE32", assignee: "Michael" },
+    ],
+  },
+  {
+    value: "sponsorship-partnership",
+    label: "Sponsorship and Partnership",
+    tag: "sponsorship_partnership",
+    subcategories: [
+      { value: "award-ceremony-sponsorship", label: "Award Ceremony Sponsorship", code: "SAE33", assignee: "Lindsey" },
+      { value: "program-sponsorship", label: "Program Sponsorship", code: "SAE34", assignee: "Michael" },
+      { value: "sponsorship-other", label: "Other", code: "SAE35", assignee: "Michael" },
+    ],
+  },
+  {
+    value: "store",
+    label: "Stevie Awards Store",
+    tag: "store",
+    subcategories: [
+      { value: "order-question", label: "Question About My Order", code: "SAE36", assignee: "Katina" },
+      { value: "store-other", label: "Other", code: "SAE37", assignee: "Katina" },
+    ],
+  },
+  {
+    value: "website",
+    label: "Website",
+    tag: "website",
+    subcategories: [
+      { value: "erroneous-missing-content", label: "Erroneous or Missing Content", code: "SAE38", assignee: "Maggie" },
+      { value: "website-technical-issue", label: "Technical Issue", code: "SAE39", assignee: "Roman" },
+      { value: "website-other", label: "Other", code: "SAE40", assignee: "Roman" },
+    ],
+  },
+  {
+    value: "women-future-webinars",
+    label: "Women / Future Webinars",
+    tag: "women_future_webinars",
+    subcategories: [
+      { value: "speaker-application", label: "Speaker Application", code: "SAE41", assignee: "AUTOMATION" },
+      { value: "women-future-other", label: "Other", code: "SAE42", assignee: "Lindsey" },
+    ],
+  },
+  {
+    value: "other",
+    label: "Other",
+    tag: "other",
+    subcategories: [
+      { value: "general-other", label: "Other", code: "SAE43", assignee: "Roman" },
+    ],
+  },
 ];
 
 /** Country / region options for the requester's location (drives the dropdown). */

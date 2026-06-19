@@ -11,23 +11,19 @@
  * so no credentials are exposed in the browser. (We deliberately do NOT use the
  * Tickets API, which would require a token.)
  *
- * Routing: the query type is encoded as an uppercase subject prefix —
- *   "[<QUERY_TYPE>] Stevie enquiry: <program> - <company/name>"
- * Groups are NOT assigned from the frontend (anonymous request).
- *
- * TODO: Final assignment should be handled in Zendesk triggers matching the subject
- * prefix to a team/email:
- *   [NOMINATIONS] -> nominations team/email
- *   [JUDGING]     -> judging team/email
- *   [CEREMONIES]  -> ceremonies team/email
- *   [PAYMENTS]    -> payments team/email
+ * Routing: the requester picks a category then a subcategory; the subcategory's unique
+ * routing code is embedded in the subject —
+ *   "[<Category> / <Subcategory>] Stevie enquiry: <program> - <company/name> [<CODE>]"
+ * Groups/assignees are NOT set from the frontend (anonymous request). A Zendesk trigger
+ * keyed on each <CODE> routes the ticket (group + assignee_<name> tag). See
+ * enquiry-routing.ts (CATEGORIES) for the code → category/subcategory/assignee mapping.
  *
  * Zendesk has "Verify anonymous requests" enabled, so a new submission may land in
  * Suspended tickets until the requester verifies their email.
  */
 import {
   PROGRAMS,
-  QUERY_TYPES,
+  CATEGORIES,
   COUNTRIES,
   ZENDESK_REQUEST_ENDPOINT,
   ZENDESK_UPLOADS_ENDPOINT,
@@ -42,12 +38,21 @@ const themeAttr = colorScheme && colorScheme !== "inherit" ? colorScheme : undef
 const endpoint = import.meta.env.PUBLIC_ZENDESK_REQUEST_ENDPOINT || ZENDESK_REQUEST_ENDPOINT;
 const uploadsEndpoint = import.meta.env.PUBLIC_ZENDESK_UPLOADS_ENDPOINT || ZENDESK_UPLOADS_ENDPOINT;
 
-// value -> uppercase subject prefix, e.g. "nominations" -> "NOMINATIONS".
-const queryPrefixMap = Object.fromEntries(QUERY_TYPES.map((q) => [q.value, q.label.toUpperCase()]));
-// value -> { label, short } for the subject + body.
-const queryLabelMap = Object.fromEntries(QUERY_TYPES.map((q) => [q.value, q.label]));
 const programMap = Object.fromEntries(
   PROGRAMS.map((p) => [p.value, { label: p.label, short: p.short }])
+);
+// Category data for the dependent dropdowns (passed to the client script).
+// Each category lists its subcategories; the subcategory's `code` is the option value.
+const categoryData = CATEGORIES.map((c) => ({
+  value: c.value,
+  label: c.label,
+  subs: c.subcategories.map((s) => ({ code: s.code, label: s.label })),
+}));
+// code -> { categoryLabel, subLabel } for building the subject + body on submit.
+const codeMeta = Object.fromEntries(
+  CATEGORIES.flatMap((c) =>
+    c.subcategories.map((s) => [s.code, { category: c.label, subcategory: s.label }])
+  )
 );
 ---
 
@@ -211,16 +216,16 @@ const programMap = Object.fromEntries(
       </div>
 
       <div class="field-row">
-        <label for="enquiry-query-type">
-          Select your query type <span
+        <label for="enquiry-category">
+          Select a category <span
             class="req"
             aria-label="required"
             >*</span
           >
         </label>
         <select
-          id="enquiry-query-type"
-          name="queryType"
+          id="enquiry-category"
+          name="category"
           required
           aria-required="true"
         >
@@ -228,13 +233,43 @@ const programMap = Object.fromEntries(
             value=""
             disabled
             selected
-            >Select your query type…</option
+            >Select a category…</option
           >
-          {QUERY_TYPES.map((q) => <option value={q.value}>{q.label}</option>)}
+          {CATEGORIES.map((c) => <option value={c.value}>{c.label}</option>)}
         </select>
         <p
           class="field-error"
-          data-error-for="queryType"
+          data-error-for="category"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-subcategory">
+          Select a subcategory <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <select
+          id="enquiry-subcategory"
+          name="subcategory"
+          required
+          aria-required="true"
+          disabled
+        >
+          <option
+            value=""
+            disabled
+            selected
+            >Select a category first…</option
+          >
+        </select>
+        <p
+          class="field-error"
+          data-error-for="subcategory"
           hidden
         >
         </p>
@@ -331,12 +366,50 @@ const programMap = Object.fromEntries(
   </div>
 </section>
 
-<script define:vars={{ endpoint, uploadsEndpoint, queryPrefixMap, queryLabelMap, programMap }}>
+<script define:vars={{ endpoint, uploadsEndpoint, programMap, categoryData, codeMeta }}>
   const form = document.getElementById("enquiry-form");
   if (form) {
     const statusEl = document.getElementById("enquiry-status");
     const submitBtn = form.querySelector(".enquiry-submit");
     const fileInput = document.getElementById("enquiry-files");
+
+    // Dependent dropdowns: picking a category repopulates the subcategory <select>.
+    // Rebuilds the subcategory options from the current category selection. With no
+    // category (e.g. after form.reset()), it clears to the disabled placeholder state.
+    const categoryMap = Object.fromEntries(categoryData.map((c) => [c.value, c]));
+    const categorySelect = document.getElementById("enquiry-category");
+    const subcategorySelect = document.getElementById("enquiry-subcategory");
+    const syncSubcategories = () => {
+      if (!categorySelect || !subcategorySelect) return;
+      const cat = categoryMap[categorySelect.value];
+      subcategorySelect.innerHTML = "";
+      const placeholder = document.createElement("option");
+      placeholder.value = "";
+      placeholder.disabled = true;
+      placeholder.selected = true;
+      placeholder.textContent = cat ? "Select a subcategory…" : "Select a category first…";
+      subcategorySelect.appendChild(placeholder);
+      if (cat) {
+        for (const sub of cat.subs) {
+          const opt = document.createElement("option");
+          opt.value = sub.code; // routing code — embedded in the subject
+          opt.textContent = sub.label;
+          subcategorySelect.appendChild(opt);
+        }
+        subcategorySelect.disabled = false;
+      } else {
+        subcategorySelect.disabled = true;
+      }
+    };
+    if (categorySelect) categorySelect.addEventListener("change", syncSubcategories);
+
+    // form.reset() reverts the category to its placeholder but does NOT clear the
+    // JS-built subcategory options or re-disable it, and fires no "change" — so resync
+    // the subcategory explicitly after any reset.
+    const resetForm = () => {
+      form.reset();
+      syncSubcategories();
+    };
 
     // Gatekeep the phone field as the user types: only "+", digits and separators,
     // and never more than 14 digits (country code + 10).
@@ -389,7 +462,8 @@ const programMap = Object.fromEntries(
         fail("email", "Please enter a valid email address.");
       requireText("company", "Please enter your company or organization.");
       if (!data.get("program")) fail("program", "Please select your program.");
-      if (!data.get("queryType")) fail("queryType", "Please select your query type.");
+      if (!data.get("category")) fail("category", "Please select a category.");
+      if (!data.get("subcategory")) fail("subcategory", "Please select a subcategory.");
       requireText("message", "Please describe your enquiry.");
       // Phone is optional, but if provided it must be a country code + 10 digits.
       const phone = String(data.get("phone") || "").trim();
@@ -416,7 +490,7 @@ const programMap = Object.fromEntries(
       // Honeypot tripped → silently pretend success, send nothing.
       if (form.elements.botcheck && form.elements.botcheck.checked) {
         setStatus("Thanks — your enquiry has been sent.", "success");
-        form.reset();
+        resetForm();
         return;
       }
 
@@ -436,16 +510,16 @@ const programMap = Object.fromEntries(
       const timestamp = new Date().toISOString();
       const pageUrl = window.location.href;
 
-      // Routing "switch": query type drives the uppercase subject prefix; program is
-      // shown in compact form in the subject. Zendesk triggers route on the prefix.
-      const queryTypeValue = get("queryType");
-      const queryPrefix = queryPrefixMap[queryTypeValue] || queryTypeValue.toUpperCase();
-      const queryLabel = queryLabelMap[queryTypeValue] || queryTypeValue;
+      // Routing: the chosen subcategory's CODE is embedded in the subject; a Zendesk
+      // trigger keyed on that unique code assigns/tags the ticket. Program is shown in
+      // compact form in the subject.
+      const code = get("subcategory");
+      const meta = codeMeta[code] || { category: get("category"), subcategory: code };
       const programValue = get("program");
       const program = programMap[programValue] || { label: programValue, short: programValue };
 
-      // Subject: "[<QUERY_TYPE>] Stevie enquiry: <program> - <company/name>"
-      const subject = `[${queryPrefix}] Stevie enquiry: ${program.short} - ${company || fullName}`;
+      // Subject: "[<Category> / <Subcategory>] Stevie enquiry: <program> - <company/name> [<CODE>]"
+      const subject = `[${meta.category} / ${meta.subcategory}] Stevie enquiry: ${program.short} - ${company || fullName} [${code}]`;
 
       // Human-readable comment body with every field, for the Zendesk agent.
       const line = (k, v) => `${k}: ${v || "—"}`;
@@ -456,7 +530,8 @@ const programMap = Object.fromEntries(
         line("Job title / occupation", get("jobTitle")),
         line("Country / region", get("country")),
         line("Program", program.label),
-        line("Query type", queryLabel),
+        line("Category", meta.category),
+        line("Subcategory", meta.subcategory),
         "",
         "Message:",
         get("message"),
@@ -470,7 +545,8 @@ const programMap = Object.fromEntries(
       ].join("\n");
 
       console.info("[enquiry] submitting to Zendesk", {
-        queryPrefix,
+        code,
+        category: meta.category,
         program: program.short,
         endpoint,
       });
@@ -535,7 +611,7 @@ const programMap = Object.fromEntries(
             "Thanks — your enquiry has been submitted. Please verify your email so our team can respond.",
             "success"
           );
-          form.reset();
+          resetForm();
         } else {
           setStatus(ERROR_MSG, "error");
         }
