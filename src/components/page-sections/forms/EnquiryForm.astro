@@ -220,7 +220,11 @@ const codeMeta = Object.fromEntries(
         </p>
       </div>
 
-      <div class="field-row">
+      <div
+        class="field-row"
+        id="enquiry-subcategory-row"
+        hidden
+      >
         <label for="enquiry-subcategory">
           Select a subcategory <span
             class="req"
@@ -274,7 +278,11 @@ const codeMeta = Object.fromEntries(
         </p>
       </div>
 
-      <div class="field-row">
+      <div
+        class="field-row"
+        id="enquiry-entry-id-row"
+        hidden
+      >
         <label for="enquiry-entry-id">Entry / nomination ID</label>
         <input
           id="enquiry-entry-id"
@@ -334,9 +342,18 @@ const codeMeta = Object.fromEntries(
     const categoryMap = Object.fromEntries(categoryData.map((c) => [c.value, c]));
     const categorySelect = document.getElementById("enquiry-category");
     const subcategorySelect = document.getElementById("enquiry-subcategory");
+    const subcategoryRow = document.getElementById("enquiry-subcategory-row");
+    const entryIdRow = document.getElementById("enquiry-entry-id-row");
+    const entryIdInput = document.getElementById("enquiry-entry-id");
     const syncSubcategories = () => {
       if (!categorySelect || !subcategorySelect) return;
       const cat = categoryMap[categorySelect.value];
+      // The whole subcategory field stays hidden until a category is chosen.
+      if (subcategoryRow) subcategoryRow.hidden = !cat;
+      // Entry / nomination ID only applies to the Nomination Process category.
+      const showEntryId = categorySelect.value === "nomination-process";
+      if (entryIdRow) entryIdRow.hidden = !showEntryId;
+      if (entryIdInput && !showEntryId) entryIdInput.value = ""; // don't submit a stale id
       subcategorySelect.innerHTML = "";
       const placeholder = document.createElement("option");
       placeholder.value = "";
@@ -585,6 +602,12 @@ const codeMeta = Object.fromEntries(
         color: var(--color-text-muted);
         margin-top: var(--spacing-xs);
       }
+    }
+
+    /* `display: flex` below overrides the HTML `hidden` attribute, so restore it
+       explicitly — used to keep the subcategory field hidden until a category is chosen. */
+    .field-row[hidden] {
+      display: none;
     }
 
     .field-row {
