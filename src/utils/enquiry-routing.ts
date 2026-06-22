@@ -95,6 +95,17 @@ export const PROGRAMS: ProgramOption[] = [
 ];
 
 /**
+ * The program THIS site is for. Each deployed site/branch is a single program (e.g. this is
+ * the Women site → "women"). The enquiry form pre-selects this program and locks the field so
+ * visitors don't have to (and can't) pick it again.
+ *
+ * Must match a PROGRAMS `value`. Override per-site without a code change via the
+ * PUBLIC_SITE_PROGRAM env var. Set to "" (empty) on a multi-program site to show the full
+ * program dropdown instead.
+ */
+export const SITE_PROGRAM = "women";
+
+/**
  * Categories + subcategories — the routing tree. The requester picks a category, then a
  * subcategory; the subcategory's `code` is embedded in the subject and a Zendesk trigger
  * routes on it. Codes are stable identifiers — do NOT renumber existing ones (the triggers

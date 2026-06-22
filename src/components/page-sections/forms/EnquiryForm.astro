@@ -24,7 +24,7 @@
 import {
   PROGRAMS,
   CATEGORIES,
-  COUNTRIES,
+  SITE_PROGRAM,
   ZENDESK_REQUEST_ENDPOINT,
   ZENDESK_UPLOADS_ENDPOINT,
 } from "@utils/enquiry-routing";
@@ -41,6 +41,11 @@ const uploadsEndpoint = import.meta.env.PUBLIC_ZENDESK_UPLOADS_ENDPOINT || ZENDE
 const programMap = Object.fromEntries(
   PROGRAMS.map((p) => [p.value, { label: p.label, short: p.short }])
 );
+// This site's program (env override → SITE_PROGRAM default). If it matches a known program,
+// the form pre-selects + locks it so visitors don't choose a program; otherwise the full
+// program dropdown is shown (multi-program / unconfigured site).
+const siteProgramValue = import.meta.env.PUBLIC_SITE_PROGRAM || SITE_PROGRAM;
+const lockedProgram = PROGRAMS.find((p) => p.value === siteProgramValue) || null;
 // Category data for the dependent dropdowns (passed to the client script).
 // Each category lists its subcategories; the subcategory's `code` is the option value.
 const categoryData = CATEGORIES.map((c) => ({
@@ -135,57 +140,6 @@ const codeMeta = Object.fromEntries(
       </div>
 
       <div class="field-row">
-        <label for="enquiry-company">
-          Company / organization <span
-            class="req"
-            aria-label="required"
-            >*</span
-          >
-        </label>
-        <input
-          id="enquiry-company"
-          type="text"
-          name="company"
-          autocomplete="organization"
-          placeholder="Acme Inc."
-          required
-          aria-required="true"
-        />
-        <p
-          class="field-error"
-          data-error-for="company"
-          hidden
-        >
-        </p>
-      </div>
-
-      <div class="field-row">
-        <label for="enquiry-job-title">Job title / occupation</label>
-        <input
-          id="enquiry-job-title"
-          type="text"
-          name="jobTitle"
-          autocomplete="organization-title"
-          placeholder="Marketing Director"
-        />
-      </div>
-
-      <div class="field-row">
-        <label for="enquiry-country">Country / region</label>
-        <select
-          id="enquiry-country"
-          name="country"
-        >
-          <option
-            value=""
-            selected
-            >Select your country / region…</option
-          >
-          {COUNTRIES.map((c) => <option value={c}>{c}</option>)}
-        </select>
-      </div>
-
-      <div class="field-row">
         <label for="enquiry-program">
           Select your program <span
             class="req"
@@ -193,20 +147,41 @@ const codeMeta = Object.fromEntries(
             >*</span
           >
         </label>
-        <select
-          id="enquiry-program"
-          name="program"
-          required
-          aria-required="true"
-        >
-          <option
-            value=""
-            disabled
-            selected
-            >Select your program…</option
-          >
-          {PROGRAMS.map((p) => <option value={p.value}>{p.label}</option>)}
-        </select>
+        {
+          lockedProgram ? (
+            <>
+              <select
+                id="enquiry-program"
+                disabled
+                aria-disabled="true"
+              >
+                <option selected>{lockedProgram.label}</option>
+              </select>
+              {/* Disabled selects don't submit — carry the value in a hidden input. */}
+              <input
+                type="hidden"
+                name="program"
+                value={lockedProgram.value}
+              />
+              <p class="field-hint">Selected automatically for this site.</p>
+            </>
+          ) : (
+            <select
+              id="enquiry-program"
+              name="program"
+              required
+              aria-required="true"
+            >
+              <option
+                value=""
+                disabled
+                selected
+                >Select your program…</option
+              >
+              {PROGRAMS.map((p) => <option value={p.value}>{p.label}</option>)}
+            </select>
+          )
+        }
         <p
           class="field-error"
           data-error-for="program"
@@ -294,26 +269,6 @@ const codeMeta = Object.fromEntries(
         <p
           class="field-error"
           data-error-for="message"
-          hidden
-        >
-        </p>
-      </div>
-
-      <div class="field-row">
-        <label for="enquiry-phone">Phone number</label>
-        <input
-          id="enquiry-phone"
-          type="tel"
-          name="phone"
-          autocomplete="tel"
-          inputmode="tel"
-          maxlength="18"
-          placeholder="Include your country code"
-        />
-        <p class="field-hint">Country code + 10-digit number.</p>
-        <p
-          class="field-error"
-          data-error-for="phone"
           hidden
         >
         </p>
@@ -411,18 +366,6 @@ const codeMeta = Object.fromEntries(
       syncSubcategories();
     };
 
-    // Gatekeep the phone field as the user types: only "+", digits and separators,
-    // and never more than 14 digits (country code + 10).
-    const phoneInput = document.getElementById("enquiry-phone");
-    if (phoneInput) {
-      phoneInput.addEventListener("input", () => {
-        let cleaned = phoneInput.value.replace(/[^\d+\s\-()]/g, "");
-        const hasPlus = cleaned.trimStart().startsWith("+");
-        let digits = cleaned.replace(/\D/g, "").slice(0, 14);
-        phoneInput.value = (hasPlus ? "+" : "") + digits;
-      });
-    }
-
     const setError = (field, message) => {
       const el = form.querySelector(`[data-error-for="${field}"]`);
       if (!el) return;
@@ -460,28 +403,11 @@ const codeMeta = Object.fromEntries(
       if (!email) fail("email", "Please enter your email so we can reply.");
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
         fail("email", "Please enter a valid email address.");
-      requireText("company", "Please enter your company or organization.");
       if (!data.get("program")) fail("program", "Please select your program.");
       if (!data.get("category")) fail("category", "Please select a category.");
       if (!data.get("subcategory")) fail("subcategory", "Please select a subcategory.");
       requireText("message", "Please describe your enquiry.");
-      // Phone is optional, but if provided it must be a country code + 10 digits.
-      const phone = String(data.get("phone") || "").trim();
-      if (phone && !isValidPhone(phone)) {
-        fail("phone", "Enter a country code followed by a 10-digit number.");
-      }
       return firstInvalid;
-    };
-
-    // Must be a country code + a 10-digit number. Allow an optional leading "+" and
-    // common separators (spaces / hyphens / parens), which are ignored. Country code
-    // is 1–4 digits, so total digit count must be 11–14 (anything < 11 means no
-    // country code; the 25-digit paste from before is > 14 and is rejected).
-    const isValidPhone = (value) => {
-      const compact = value.replace(/[\s\-().]/g, "");
-      if (!/^\+?\d+$/.test(compact)) return false;
-      const digits = compact.replace(/\D/g, "");
-      return digits.length >= 11 && digits.length <= 14;
     };
 
     form.addEventListener("submit", async (event) => {
@@ -506,7 +432,6 @@ const codeMeta = Object.fromEntries(
       const get = (field) => String(data.get(field) || "").trim();
       const fullName = get("name");
       const email = get("email");
-      const company = get("company");
       const timestamp = new Date().toISOString();
       const pageUrl = window.location.href;
 
@@ -518,17 +443,14 @@ const codeMeta = Object.fromEntries(
       const programValue = get("program");
       const program = programMap[programValue] || { label: programValue, short: programValue };
 
-      // Subject: "[<Category> / <Subcategory>] Stevie enquiry: <program> - <company/name> [<CODE>]"
-      const subject = `[${meta.category} / ${meta.subcategory}] Stevie enquiry: ${program.short} - ${company || fullName} [${code}]`;
+      // Subject: "[<Category> / <Subcategory>] Stevie enquiry: <program> - <name> [<CODE>]"
+      const subject = `[${meta.category} / ${meta.subcategory}] Stevie enquiry: ${program.short} - ${fullName} [${code}]`;
 
       // Human-readable comment body with every field, for the Zendesk agent.
       const line = (k, v) => `${k}: ${v || "—"}`;
       const body = [
         line("Full name", fullName),
         line("Email", email),
-        line("Company / organization", company),
-        line("Job title / occupation", get("jobTitle")),
-        line("Country / region", get("country")),
         line("Program", program.label),
         line("Category", meta.category),
         line("Subcategory", meta.subcategory),
@@ -536,7 +458,6 @@ const codeMeta = Object.fromEntries(
         "Message:",
         get("message"),
         "",
-        line("Phone", get("phone")),
         line("Entry / nomination ID", get("entryId")),
         "",
         "—",
