@@ -67,10 +67,11 @@ const codeMeta = Object.fromEntries(
 >
   <div class="enquiry-shell">
     <header class="enquiry-intro">
-      <h1>Contact &amp; Enquiries</h1>
+      <h1>Contact the Stevie Awards</h1>
       <p>
-        Tell us a little about yourself and what your enquiry relates to, and we&rsquo;ll route it
-        to the right team. We&rsquo;ll reply to the email address you provide.
+        Share a few details about your question or request, and we&rsquo;ll connect you with a
+        Stevie Awards team member for a prompt response. We&rsquo;ll respond to the email address
+        you provide.
       </p>
     </header>
 
@@ -90,25 +91,50 @@ const codeMeta = Object.fromEntries(
       />
 
       <div class="field-row">
-        <label for="enquiry-name">
-          Full name <span
+        <label for="enquiry-first-name">
+          First name <span
             class="req"
             aria-label="required"
             >*</span
           >
         </label>
         <input
-          id="enquiry-name"
+          id="enquiry-first-name"
           type="text"
-          name="name"
-          autocomplete="name"
-          placeholder="Jane Doe"
+          name="firstName"
+          autocomplete="given-name"
+          placeholder="Jane"
           required
           aria-required="true"
         />
         <p
           class="field-error"
-          data-error-for="name"
+          data-error-for="firstName"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="field-row">
+        <label for="enquiry-last-name">
+          Last name <span
+            class="req"
+            aria-label="required"
+            >*</span
+          >
+        </label>
+        <input
+          id="enquiry-last-name"
+          type="text"
+          name="lastName"
+          autocomplete="family-name"
+          placeholder="Doe"
+          required
+          aria-required="true"
+        />
+        <p
+          class="field-error"
+          data-error-for="lastName"
           hidden
         >
         </p>
@@ -116,7 +142,7 @@ const codeMeta = Object.fromEntries(
 
       <div class="field-row">
         <label for="enquiry-email">
-          Email <span
+          Work Email Preferred <span
             class="req"
             aria-label="required"
             >*</span
@@ -141,7 +167,7 @@ const codeMeta = Object.fromEntries(
 
       <div class="field-row">
         <label for="enquiry-program">
-          Select your program <span
+          Stevie Awards Program <span
             class="req"
             aria-label="required"
             >*</span
@@ -192,7 +218,7 @@ const codeMeta = Object.fromEntries(
 
       <div class="field-row">
         <label for="enquiry-category">
-          Select a category <span
+          What can we help you with? <span
             class="req"
             aria-label="required"
             >*</span
@@ -208,7 +234,7 @@ const codeMeta = Object.fromEntries(
             value=""
             disabled
             selected
-            >Select a category…</option
+            >Select an option…</option
           >
           {CATEGORIES.map((c) => <option value={c.value}>{c.label}</option>)}
         </select>
@@ -226,7 +252,7 @@ const codeMeta = Object.fromEntries(
         hidden
       >
         <label for="enquiry-subcategory">
-          Select a subcategory <span
+          Select a Support Category <span
             class="req"
             aria-label="required"
             >*</span
@@ -243,7 +269,7 @@ const codeMeta = Object.fromEntries(
             value=""
             disabled
             selected
-            >Select a category first…</option
+            >Select an option above first…</option
           >
         </select>
         <p
@@ -255,20 +281,12 @@ const codeMeta = Object.fromEntries(
       </div>
 
       <div class="field-row">
-        <label for="enquiry-message">
-          Message <span
-            class="req"
-            aria-label="required"
-            >*</span
-          >
-        </label>
+        <label for="enquiry-message">Additional Details</label>
         <textarea
           id="enquiry-message"
           name="message"
           rows="6"
-          placeholder="Describe your enquiry in as much detail as you can."
-          required
-          aria-required="true"
+          placeholder="Is there anything else you’d like to share?"
         ></textarea>
         <p
           class="field-error"
@@ -359,7 +377,7 @@ const codeMeta = Object.fromEntries(
       placeholder.value = "";
       placeholder.disabled = true;
       placeholder.selected = true;
-      placeholder.textContent = cat ? "Select a subcategory…" : "Select a category first…";
+      placeholder.textContent = cat ? "Select a support category…" : "Select an option above first…";
       subcategorySelect.appendChild(placeholder);
       if (cat) {
         for (const sub of cat.subs) {
@@ -415,15 +433,15 @@ const codeMeta = Object.fromEntries(
       const requireText = (field, msg) => {
         if (!String(data.get(field) || "").trim()) fail(field, msg);
       };
-      requireText("name", "Please enter your full name.");
+      requireText("firstName", "Please enter your first name.");
+      requireText("lastName", "Please enter your last name.");
       const email = String(data.get("email") || "").trim();
       if (!email) fail("email", "Please enter your email so we can reply.");
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
         fail("email", "Please enter a valid email address.");
       if (!data.get("program")) fail("program", "Please select your program.");
-      if (!data.get("category")) fail("category", "Please select a category.");
-      if (!data.get("subcategory")) fail("subcategory", "Please select a subcategory.");
-      requireText("message", "Please describe your enquiry.");
+      if (!data.get("category")) fail("category", "Please tell us what we can help you with.");
+      if (!data.get("subcategory")) fail("subcategory", "Please select a support category.");
       return firstInvalid;
     };
 
@@ -447,7 +465,7 @@ const codeMeta = Object.fromEntries(
       }
 
       const get = (field) => String(data.get(field) || "").trim();
-      const fullName = get("name");
+      const fullName = `${get("firstName")} ${get("lastName")}`.trim();
       const email = get("email");
       const timestamp = new Date().toISOString();
       const pageUrl = window.location.href;
@@ -472,8 +490,8 @@ const codeMeta = Object.fromEntries(
         line("Category", meta.category),
         line("Subcategory", meta.subcategory),
         "",
-        "Message:",
-        get("message"),
+        "Additional details:",
+        get("message") || "—",
         "",
         line("Entry / nomination ID", get("entryId")),
         "",

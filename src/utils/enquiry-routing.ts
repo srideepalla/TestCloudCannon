@@ -82,15 +82,15 @@ export const ZENDESK_UPLOADS_ENDPOINT =
  * ticket subject (ABA, IBA, …); `label` is shown in the dropdown. Edit freely.
  */
 export const PROGRAMS: ProgramOption[] = [
-  { value: "aba", short: "ABA", label: "The American Business Awards (ABA)" },
-  { value: "iba", short: "IBA", label: "The International Business Awards (IBA)" },
-  { value: "women", short: "Women", label: "Stevie Awards for Women in Business" },
-  { value: "sales", short: "Sales & CS", label: "Stevie Awards for Sales & Customer Service" },
-  { value: "employers", short: "Great Employers", label: "Stevie Awards for Great Employers" },
-  { value: "apsa", short: "APSA", label: "Asia-Pacific Stevie Awards" },
-  { value: "german", short: "German", label: "German Stevie Awards" },
-  { value: "mena", short: "MENA", label: "Middle East & North Africa Stevie Awards" },
-  { value: "technology", short: "Tech", label: "Stevie Awards for Technology Excellence" },
+  { value: "aba", short: "ABA", label: "The American Business Awards®" },
+  { value: "iba", short: "IBA", label: "The International Business Awards®" },
+  { value: "women", short: "Women", label: "Stevie® Awards for Women in Business" },
+  { value: "sales", short: "Sales & CS", label: "Stevie® Awards for Sales & Customer Service" },
+  { value: "employers", short: "Great Employers", label: "Stevie® Awards for Great Employers" },
+  { value: "apsa", short: "APSA", label: "Asia-Pacific Stevie® Awards" },
+  { value: "german", short: "German", label: "German Stevie® Awards" },
+  { value: "mena", short: "MENA", label: "Middle East & North Africa Stevie® Awards" },
+  { value: "technology", short: "Tech", label: "Stevie® Awards for Technology Excellence" },
   { value: "other", short: "Other", label: "Other / not sure" },
 ];
 
@@ -238,7 +238,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     value: "women-future-webinars",
-    label: "Women / Future Webinars",
+    label: "Women|Future Webinars",
     tag: "women_future_webinars",
     subcategories: [
       { value: "speaker-application", label: "Speaker Application", code: "SAE41", assignee: "AUTOMATION" },
