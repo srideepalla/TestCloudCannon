@@ -304,6 +304,13 @@ const resolvedDeadlines = getUpcomingDeadlines();
       color: var(--color-text-strong);
       text-transform: uppercase;
       letter-spacing: 0.03em;
+      /* Cards have a fixed slot width; clamp so a long title fallback
+         degrades to an ellipsis instead of inflating every card's height. */
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      overflow: hidden;
     }
 
     .hero-calendar__socials {
