@@ -596,11 +596,11 @@ collections_config:
       events:
         type: array
         comment: >-
-          Calendar events. Each event has TWO separate text fields: "label"
-          appears on the HOMEPAGE deadline cards, and "title" appears on the
-          CALENDAR page (/About/Calendar). They are NOT linked — when you change
-          a deadline, edit BOTH so the homepage and calendar page stay in sync.
-          Past events are hidden automatically the next time the site builds.
+          Calendar events. "Event Title" is the main text and shows on the calendar
+          page (/About/Calendar). The homepage deadline cards reuse the Event Title
+          automatically — so updating a deadline usually means editing ONE field.
+          Only fill in "Homepage Short Label" when the full title is too long for a
+          card. Past events drop off both pages the next time the site builds.
         options:
           structures:
             values:
@@ -608,8 +608,8 @@ collections_config:
                 icon: event
                 value:
                   date: ""
-                  label: ""
                   title: ""
+                  label: ""
                   description: ""
                 _inputs:
                   date:
@@ -617,20 +617,24 @@ collections_config:
                     comment: >-
                       Event date in ISO format (e.g. 2026-06-28T00:00:00.000Z). Past events
                       drop off both pages the next time the site rebuilds — not at midnight on the date.
-                  label:
-                    type: text
-                    comment: >-
-                      Short text shown on the HOMEPAGE deadline cards (e.g.
-                      "Extended Early-bird Entry deadline"). Separate from "title"
-                      below — update both to keep the homepage and calendar page in sync.
                   title:
                     type: text
+                    label: Event Title (required)
                     comment: >-
-                      Full text shown on the CALENDAR page (/About/Calendar). Separate
-                      from "label" above — update both to keep the homepage and calendar page in sync.
+                      Main event text. Shown on the calendar page (/About/Calendar), and
+                      also used on the homepage deadline cards unless "Homepage Short Label"
+                      below is filled in.
+                  label:
+                    type: text
+                    label: Homepage Short Label (optional)
+                    comment: >-
+                      Optional shorter wording for the small homepage deadline cards. If
+                      left blank, the homepage automatically uses the Event Title. Only fill
+                      this in when the full title is too long for a card.
                   description:
                     type: text
-                    comment: Supporting line shown under the title on the CALENDAR page only.
+                    label: Description (optional)
+                    comment: Supporting line shown under the title on the calendar page only.
       footerText:
         type: markdown
       href:

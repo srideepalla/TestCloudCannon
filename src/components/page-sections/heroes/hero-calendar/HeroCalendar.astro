@@ -23,7 +23,9 @@ function getUpcomingDeadlines() {
 
       return {
         date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
-        label: e.label,
+        // Homepage cards use the optional short label, falling back to the full
+        // calendar title so a single edit keeps both pages in sync.
+        label: e.label || e.title,
       };
     });
 }
