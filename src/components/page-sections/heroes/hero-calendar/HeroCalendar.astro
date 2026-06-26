@@ -12,22 +12,21 @@ import Split from "@wrappers/split/Split.astro";
 
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
-function getUpcomingDeadlines() {
-  const now = new Date();
-  const todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+// Render every event at build time; the inline script below removes past ones
+// in the browser. Filtering client-side keeps the homepage list correct each
+// day without waiting for a redeploy.
+function getDeadlines() {
+  return calendarData.events.map((e) => {
+    const d = new Date(e.date);
 
-  return calendarData.events
-    .filter((e) => new Date(e.date).getTime() >= todayUTC)
-    .map((e) => {
-      const d = new Date(e.date);
-
-      return {
-        date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
-        // Homepage cards use the optional short label, falling back to the full
-        // calendar title so a single edit keeps both pages in sync.
-        label: e.label || e.title,
-      };
-    });
+    return {
+      iso: e.date,
+      date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
+      // Homepage cards use the optional short label, falling back to the full
+      // calendar title so a single edit keeps both pages in sync.
+      label: e.label || e.title,
+    };
+  });
 }
 
 const {
@@ -47,7 +46,7 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-const resolvedDeadlines = getUpcomingDeadlines();
+const resolvedDeadlines = getDeadlines();
 ---
 
 <CustomSection
@@ -143,7 +142,7 @@ const resolvedDeadlines = getUpcomingDeadlines();
       >
         {
           resolvedDeadlines.map((deadline) => (
-            <CarouselSlide>
+            <CarouselSlide data-event-date={deadline.iso}>
               <Card
                 border={true}
                 rounded={false}
@@ -195,6 +194,24 @@ const resolvedDeadlines = getUpcomingDeadlines();
     </div>
   </Split>
 </CustomSection>
+
+<script is:inline>
+  // Remove past deadline cards in the browser so the homepage stays accurate
+  // each day without a rebuild. This runs at parse time — before the carousel
+  // (Embla) initializes on DOMContentLoaded — so dropped slides never reach it.
+  (function () {
+    var now = new Date();
+    var todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+
+    document.querySelectorAll(".hero-calendar .slide[data-event-date]").forEach(function (slide) {
+      var iso = slide.getAttribute("data-event-date");
+
+      if (iso && new Date(iso).getTime() < todayUTC) {
+        slide.remove();
+      }
+    });
+  })();
+</script>
 
 <style is:global>
   @layer page-sections {

@@ -600,7 +600,8 @@ collections_config:
           page (/About/Calendar). The homepage deadline cards reuse the Event Title
           automatically — so updating a deadline usually means editing ONE field.
           Only fill in "Homepage Short Label" when the full title is too long for a
-          card. Past events drop off both pages the next time the site builds.
+          card. The homepage hides past events automatically each day; the calendar
+          page always lists every event, past and upcoming.
         options:
           structures:
             values:
@@ -615,8 +616,8 @@ collections_config:
                   date:
                     type: text
                     comment: >-
-                      Event date in ISO format (e.g. 2026-06-28T00:00:00.000Z). Past events
-                      drop off both pages the next time the site rebuilds — not at midnight on the date.
+                      Event date in ISO format (e.g. 2026-06-28T00:00:00.000Z). Once this date
+                      passes, the event drops off the homepage automatically (it stays listed on the calendar page).
                   title:
                     type: text
                     label: Event Title (required)
