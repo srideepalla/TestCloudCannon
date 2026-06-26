@@ -594,7 +594,43 @@ collections_config:
         comment: "Open this link in a new browser tab."
         cascade: true
       events:
-        comment: Events to populate Hero Calendar and Grid Calendar. Both will automatically filter to show only upcoming events.
+        type: array
+        comment: >-
+          Calendar events. Each event has TWO separate text fields: "label"
+          appears on the HOMEPAGE deadline cards, and "title" appears on the
+          CALENDAR page (/About/Calendar). They are NOT linked — when you change
+          a deadline, edit BOTH so the homepage and calendar page stay in sync.
+          Past events are hidden automatically the next time the site builds.
+        options:
+          structures:
+            values:
+              - label: Calendar Event
+                icon: event
+                value:
+                  date: ""
+                  label: ""
+                  title: ""
+                  description: ""
+                _inputs:
+                  date:
+                    type: text
+                    comment: >-
+                      Event date in ISO format (e.g. 2026-06-28T00:00:00.000Z). Past events
+                      drop off both pages the next time the site rebuilds — not at midnight on the date.
+                  label:
+                    type: text
+                    comment: >-
+                      Short text shown on the HOMEPAGE deadline cards (e.g.
+                      "Extended Early-bird Entry deadline"). Separate from "title"
+                      below — update both to keep the homepage and calendar page in sync.
+                  title:
+                    type: text
+                    comment: >-
+                      Full text shown on the CALENDAR page (/About/Calendar). Separate
+                      from "label" above — update both to keep the homepage and calendar page in sync.
+                  description:
+                    type: text
+                    comment: Supporting line shown under the title on the CALENDAR page only.
       footerText:
         type: markdown
       href:
