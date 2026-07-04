@@ -1,58 +1,70 @@
 {
   "events": [
     {
-      "date": "2026-05-12T00:00:00.000Z",
+      "date": "2026-07-15T00:00:00:000Z",
+      "title": "21st Annual Stevie® Awards for Sales & Customer Service Opens",
       "label": "Entries open",
-      "title": "Entries open for the 23rd Stevie® Awards for Women in Business",
-      "description": "The entry kit will be distributed this week."
+      "description": "21st Annual Stevie® Awards for Sales & Customer Service Opens"
     },
     {
-      "date": "2026-06-28T00:00:00.000Z",
-      "label": "Extended Early-bird Entry deadline",
-      "title": "Extended early-bird entry deadline for the 23rd Stevie® Awards for Women in Business",
-      "description": "Entry fees are discounted for nominations submitted through this date."
+      "date": "2026-11-12T00:00:00.000Z",
+      "title": "Early-bird Entry deadline",
+      "label": "Early-bird Entry deadline",
+      "description": "Early-bird Entry deadline."
     },
     {
-      "date": "2026-07-22T00:00:00.000Z",
-      "label": "Primary Entry deadline",
-      "title": "Primary entry deadline for the 23rd Stevie® Awards for Women in Business ",
-      "description": "Late fees will apply for nominations submitted after this date."
-    },
-    {
-      "date": "2026-07-30T00:00:00.000Z",
+      "date": "2026-11-17T00:00:00.000Z",
+      "title": "Judging begins ",
       "label": "Judging begins",
-      "title": "Judging of the 23rd Stevie® Awards for Women in Business begins",
+      "description": "Judging begins"
+    },
+    {
+      "date": "2027-01-13T00:00:00.000Z",
+      "title": "Primary Entry deadline",
+      "label": "Primary Entry deadline",
       "description": ""
     },
     {
-      "date": "2026-08-19T00:00:00.000Z",
+      "date": "2027-02-03T00:00:00.000Z",
+      "title": "Final Entry deadline ",
       "label": "Final Entry deadline",
-      "title": "Final entry deadline for the 23rd Stevie® Awards for Women in Business ",
       "description": ""
     },
     {
-      "date": "2026-09-10T00:00:00.000Z",
+      "date": "2027-03-10T00:00:00.000Z",
+      "title": "Judging ends",
       "label": "Judging ends",
-      "title": "Judging of the 23rd Stevie® Awards for Women in Business ends",
       "description": ""
     },
     {
-      "date": "2026-09-16T00:00:00.000Z",
-      "label": "Finalists notified",
-      "title": "Stevie® finalists notified in the 23rd Stevie® Awards for Women in Business ",
-      "description": "Tickets for the awards banquet go on sale today."
+      "date": "2027-03-17T00:00:00.000Z",
+      "title": "Winners notified ",
+      "label": "Winners notified",
+      "description": "Winners notified"
     },
     {
-      "date": "2026-09-17T00:00:00.000Z",
-      "label": "Finalists announced",
+      "date": "2027-03-18T00:00:00.000Z",
       "title": "Stevie® finalists publicly announced in the 23rd Stevie® Awards for Women in Business ",
+      "label": "Finalists announced",
       "description": ""
     },
     {
-      "date": "2026-11-16T00:00:00.000Z",
-      "label": "Awards Banquet",
+      "date": "2027-03-19T00:00:00.000Z",
       "title": "Awards banquet of the 23rd Stevie® Awards for Women in Business ",
+      "label": "Awards Banquet",
       "description": "Marriott Marquis Hotel, New York City"
-    }
+    },
+    {
+       "date": "2027-04-16T00:00:00.000Z",
+      "title": "Awards banquet of the 23rd Stevie® Awards for Women in Business ",
+      "label": "Awards Banquet",
+      "description": "Marriott Marquis Hotel, New York City"
+    },
+    {
+     "date": "2027-04-29T00:00:00.000Z",
+      "title": "Awards banquet of the 23rd Stevie® Awards for Women in Business ",
+      "label": "Awards Banquet",
+      "description": "Marriott Marquis Hotel, New York City"
+    },
   ]
 }
