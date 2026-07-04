@@ -2,8 +2,8 @@
 _schema: default
 title: 'The Stevie® Awards for Sales & Customer Service '
 description: >-
-  The Stevie Awards for Sales & Customer Service recognize the achievements of
-  contact center, customer service, business development, and sales
+  The Stevie Awards for Sales &amp; Customer Service recognize the achievements
+  of contact center, customer service, business development, and sales
   professionals worldwide.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
@@ -75,9 +75,6 @@ pageSections:
         - text: Sales Executive of the Year
           iconName: four-pointed-star
           iconColor: brand
-        - text:
-          iconName: ''
-          iconColor: default
         - text: Award for Innovation in Sales
           iconName: four-pointed-star
           iconColor: brand
@@ -199,7 +196,7 @@ pageSections:
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: The Stevie® Awards for Women in Business
+    subheading: Stevie® Awards for Sales &amp; Customer Service
     heading: FEATURE STORIES
     description: ''
     list:
@@ -209,24 +206,26 @@ pageSections:
             source: /src/assets/images/wib-winners.webp
             alt: SAWIB25 Winner Announcement
           title: >-
-            Winners in the 22nd Annual Stevie® Awards for Women in Business
-            Announced
+            Winners Announced in 2026 People's Choice Stevie® Awards for
+            Favorite Customer Service
           link: >-
-            https://blog.stevieawards.com/blog/winners-in-the-22nd-annual-stevie-awards-for-women-in-business-announced
+            https://blog.stevieawards.com/blog/winners-announced-in-2026-peoples-choice-stevie-awards-for-favorite-customer-service?_gl=1*14xz74z*_gcl_au*NjM4ODkwMjM4LjE3ODEyNDg4MzA.*_ga*MTQxNTczMjA3OC4xNzc5NzkzOTc4*_ga_75EDJ0F52B*czE3ODMxNjMzODIkbzI2JGcxJHQxNzgzMTY3NDE3JGo2MCRsMCRoMA..
         - image:
             source: /src/assets/images/persistent-sheshapesai-logo.webp
             alt: Persistent and Stevie Awards Honor Female Leaders
           title: >-
-            Finalists Announced in Persistent’s SheShapesAI Awards at the 22nd
-            Annual Stevie® Awards for Women in Business
+            Grand Stevie® Award Winners Announced in 20th Annual Stevie Awards
+            for Sales &amp; Customer Service
           link: >-
-            https://blog.stevieawards.com/blog/finalists-announced-in-persistents-sheshapesai-awards-at-the-22nd-annual-stevie-awards-for-women-in-business
+            https://blog.stevieawards.com/blog/grand-stevie-award-winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*ggoxuq*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcwOTg3JGo0NiRsMCRoMA..
         - image:
             source: /src/assets/images/54918164611-3912a076b1-c.jpg
             alt: Women Future Webinars
-          title: Register for the 2026 Women|Future Webinars
+          title: >-
+            Winners Announced in 20th Annual Stevie® Awards for Sales &amp;
+            Customer Service
           link: >-
-            https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
+            https://blog.stevieawards.com/blog/winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*18kpxu7*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcxMDQ3JGo2MCRsMCRoMA..
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
     formEmbed: >-
