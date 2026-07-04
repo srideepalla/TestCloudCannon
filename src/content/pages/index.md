@@ -1,24 +1,23 @@
 ---
 _schema: default
-title: The Stevie® Awards for Women in Business
-description: ''
+title: 'The Stevie® Awards for Sales & Customer Service '
+description: >-
+  The Stevie Awards for Sales & Customer Service recognize the achievements of
+  contact center, customer service, business development, and sales
+  professionals worldwide.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source: /src/assets/images/54917709518-2ffd87eb40-o.jpg
+      source: /assets/images/hero/sales.jpg
       alt: Stevie® Awards for Women in Business  ceremony
-    subheading: Entries Now Open
-    heading: The 23rd Annual Stevie® Awards for Women in Business
+    subheading: Winners Announced
+    heading: The 20th Annual Stevie® Awards for Sales &amp; Customer Service
     description: >-
-      Recognizing excellence in women-led achievement across every industry. The
-      Stevie® Awards for Women in Business are the world’s premier business
-      awards honoring female entrepreneurs, executives, employees, and the
-      organizations they run.
-
-
-      Request your entry kit today to learn how to submit nominations. Join the
-      pantheon of distinguished Stevie® Award winners such as AT&T Business,
-      Salesforce, It's a 10, and Watsons.
+      The Stevie Awards for Sales & Customer Service recognize the achievements
+      of contact center, customer service, business development and sales
+      professionals worldwide. The 2027 edition will begin accepting nominations
+      this summer. Get the entry kit to learn how to prepare and submit
+      nominations.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -31,66 +30,76 @@ pageSections:
         uppercase: true
         size: md
       - _component: building-blocks/core-elements/button
-        text: Ready? Enter Now
+        text: see the winners
         hideText: false
-        link: https://the-stevie-awards.com/
+        link: /Awards/stevie-award-winners/
         openInNewTab: false
         iconName: ''
         iconPosition: before
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines & Events
+    deadlinesHeading: Upcoming Deadlines &amp; Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: Nominate Women-Owned Businesses, Entrepreneurs & More
+    subheading: Ready to Be Recognized as the Best in Sales &amp; Customer Service?
     heading: Award Categories
     description: >-
-      For more than 20 years, the Stevie® Awards for Women in Business have
-      shined a spotlight on women and women-owned and led organizations of every
-      type and size worldwide: large and small, public and private, for-profit
-      and non-profit. The 2025 competition attracted more than 1,500 nominations
-      from 48 nations.
+      The 2026 (20th annual) Stevie Awards for Sales & Customer Service are the
+      world’s top honors for contact center, customer service, business
+      development, and sales professionals. All individuals and organizations -
+      public and private, for-profit and non-profit, large and small - are
+      eligible to submit nominations.
 
 
-      Female entrepreneurs, executives, employees, and the organizations they
-      run, worldwide, are eligible to be nominated. With more than 200
-      categories spanning a wide range of workplace achievements, you can submit
-      nominations that showcase your unique impact and values. The 2026 program
-      introduces new categories recognizing achievements in artificial
-      intelligence and technology.
+      Choose from 150+ Award Categories that Spotlight the Achievements of Sales
+      and Customer Service Executives, Organizations, Contact Centers, and New
+      Products & Services, including:
     list:
       _component: building-blocks/core-elements/list
       items:
-        - text: Achievement Categories
+        - text: Customer Service Department of the Year
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in Communications, Marketing or PR Categories
+        - text: Employer of the Year
           iconName: four-pointed-star
           iconColor: brand
-        - text: >-
-            Artificial Intelligence (AI) and Technology Categories (New for
-            2026)
+        - text: AI & Digital Transformation Categories (New for 2026)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Company/Organization (Women-Owned or -Led) Awards Categories
+        - text: Team & Department Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Individual Women Awards Categories
+        - text: Sales Executive of the Year
           iconName: four-pointed-star
           iconColor: brand
-        - text: Media (Developed for/by Women) Awards Categories
+        - text:
+          iconName: ''
+          iconColor: default
+        - text: Award for Innovation in Sales
           iconName: four-pointed-star
           iconColor: brand
-        - text: New Product & Service (Developed for/by Women) Awards Categories
+        - text: Solution Providers
           iconName: four-pointed-star
           iconColor: brand
-        - text: Social Media Categories
+        - text: Solutions & Implementations
           iconName: four-pointed-star
           iconColor: brand
-        - text: Sustainability Categories
+        - text: Achievement in Global Customer Service Excellence
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Achievement in the Use of Data & Analytics in Sales
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Best Use of Technology in Sales
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Best Use of Technology in Customer Services
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Sales Training or Coaching Program of the Year
           iconName: four-pointed-star
           iconColor: brand
         - text: Thought Leadership Categories
@@ -125,11 +134,13 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Past Winners in the Stevie® Awards for Women in Business
+    heading: Recognizing Industry Leaders Worldwide
     description: >-
-      Each year, female small business owners and entrepreneurs are recognized
-      along with women executives from global corporations such as IBM,
-      Mastercard, and Microsoft. Past winners include:
+      Past winners in the Stevie® Awards for Sales & Customer Service leverage
+      their wins to enhance their reputations, secure media coverage, and
+      differentiate themselves in competitive markets. Each year, small and
+      mid-sized organizations are honored as winners alongside Fortune 500
+      giants like Amazon Web Services, Delta Air Lines, and Dell Technologies.
     logos:
       - source: /src/assets/images/estelauder.png
         alt: estee
@@ -238,20 +249,20 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/grid-videos
-    heading: What Winning a Stevie Award Means to Our 2025 Winners
+    heading: What Winning a Stevie® Award Means to Our 2026 Winners
     videos:
-      - youtubeId: UqX5Q9pE6io
+      - youtubeId: CynQFx5BwZQ
         title: >-
-          Distruptor Brand wins in the 2025 Stevie® Awards for Women in
-          Business 
-      - youtubeId: wvSEt0yvIqs
+          Voya Financial wins in the 2026 Stevie® Awards for Sales &amp;
+          Customer Service
+      - youtubeId: aze-RmLQ3lA
         title: >-
-          Green Panther Skincare wins in the 2025 Stevie® Awards for Women in
-          Business
-      - youtubeId: fS5Q7wiWcJs
+          WP Engine wins in the 2026 Stevie® Awards for Sales &amp; Customer
+          Service
+      - youtubeId: T-5kYxALZfo
         title: >-
-          Clearpath Learning Group wins in the 2025 Stevie® Awards for Women in
-          Business
+          American Airlines wins in the 2026 Stevie® Awards for Sales &amp;
+          Customer Service
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
@@ -279,7 +290,7 @@ pageSections:
           feedback from the judges; there aren't many awards that give you
           feedback and it is so valuable.
         authorName: Annette Densham
-        authorTitle: Founder & CEO, Award Writing Services, Indonesia
+        authorTitle: Founder &amp; CEO, Award Writing Services, Indonesia
         companyLogo:
           source: /src/assets/images/new-website-testimonial-logos-8.png
           alt: awardwriting
@@ -337,27 +348,23 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
-    heading: 2025 Event Gallery
+    heading: Event Gallery
     description: >-
-      Stevie Award Winners are celebrated around the world at our red-carpet
-      awards galas, where they present an acceptance speech on stage before an
-      audience of hundreds of entrepreneurs and executives. Gold, Silver, and
-      Bronze Stevie Award placements among the 2025 Finalists were announced at
-      a gala awards banquet attended by nearly 600 nominees, judges, and guests
-      from around the world on November 10 in New York City.
+      Winning a Stevie Award gives you and your team the chance to showcase your
+      achievements on a global stage. Winners in this year's 20th annual Stevie
+      Awards for Sales & Customer Service were recognized during a gala awards
+      banquet at New York's Marriott Marquis Hotel on March 5, 2026. More than
+      300 representatives of Stevie-winning organizations, jury members, and
+      sponsors attended the ceremony. While attendance was not required to win,
+      all winners had the opportunity to deliver an acceptance speech on stage
+      and get professionally photographed and interviewed on our red carpet.
 
 
-      Winners in the 2026 competition will be revealed and celebrated on
-      November 16 during the awards banquet of the 23rd Stevie Awards for Women
-      in Business at the Marriott Marquis Hotel in New York City. Finalists will
-      be pre-announced in September, and the Gold, Silver, and Bronze Stevie
-      Award placements among those Finalists will be revealed live during the
-      awards ceremony. Attendance is optional and not required to win, but all
-      Finalists are invited to join the ceremony, network with hundreds of women
-      business leaders and entrepreneurs worldwide, and enjoy professional
-      photography and red carpet interviews. Gold Stevie Award winners will be
-      invited to deliver an acceptance speech on stage.Visit our [FAQ
-      page](/about/faq) for more details about the ceremony.
+      Visit the <a
+      href="https://sales.stevieawards.com/Awards/stevie-award-winners/"
+      class="text-yellow-500 hover:underline">2026 Stevie Awards Winners
+      Page</a> to browse photos of the awards event and watch individual awards
+      presentations and red carpet interviews with winners.
     images:
       - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
         alt: ''
@@ -419,7 +426,7 @@ pageSections:
           source: /src/assets/images/iba.jpg
           alt: 'The International Business Awards® '
         dateLabel: NOW
-        name: 'The International Business Awards® '
+        name: The International Business Awards®
         description: >-
           The International Business Awards are open to all organizations
           worldwide, and include categories to honor accomplishments in all
@@ -479,7 +486,7 @@ pageSections:
           source: /src/assets/images/54444944057-6a339b8488-o.jpg
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
-        name: The Stevie® Awards for Sales & Customer Service
+        name: The Stevie® Awards for Sales &amp; Customer Service
         description: >-
           The Stevie Awards for Sales & Customer Service are open to all
           organizations worldwide, and recognize the achievements of sales,
@@ -534,7 +541,7 @@ pageSections:
           source: /src/assets/images/53565954489-6d7913fedb-o.jpg
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
-        name: The Middle East & North Africa Stevie® Awards
+        name: The Middle East &amp; North Africa Stevie® Awards
         description: >-
           The Middle East & North Africa Stevie Awards recognize innovation in
           the workplace at organizations of all types in 18 nations in the MENA
