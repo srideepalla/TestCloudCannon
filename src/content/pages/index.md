@@ -402,47 +402,47 @@ pageSections:
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
     images:
-      - source: /src/assets/images/54917172401-aef1fc812c-c.jpg
-        alt: ''
+      - source: /public/images/54446061265-49f3defd2d-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54916595357-599f7d59f1-o.jpg
-        alt: ''
+      - source: /public/images/54445880874-205af66733-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54917823675-a9d1ed6fb2-o.jpg
-        alt: ''
+      - source: /public/images/54445953939-ef541f8371-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54918360318-b10dcd9644-c.jpg
-        alt: ''
+      - source: /public/images/54445704336-2235346cfe-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54917393358-366f6fa088-c.jpg
-        alt: ''
+      - source: /public/images/53651686926-9cb9f30b05-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54916338927-00570f987a-c.jpg
-        alt: ''
+      - source: /public/images/54445691401-72dc3e4ca9-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54916648132-f200ae58b9-c.jpg
-        alt: ''
+      - source: /public/images/54445771491-cc267bdd83-o.jpg
+        alt: Sales Speech Woman
         thumbnail: ''
-      - source: /src/assets/images/54917504235-794764395d-c.jpg
-        alt: ''
+      - source: /public/images/54445725286-3903182155-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54918161986-de7349a180-c.jpg
-        alt: ''
+      - source: /public/images/54445993150-e426bb742f-o.jpg
+        alt: 'SASCS25 banquet '
         thumbnail: ''
-      - source: /src/assets/images/54917476150-6663f49413-c.jpg
-        alt: ''
+      - source: /public/images/54444829137-9f50586960-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54918360373-824165dbfc-c.jpg
-        alt: ''
+      - source: /public/images/54445964738-4976847e14-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54916228917-5dda7cc82f-o.jpg
-        alt: ''
+      - source: /public/images/54446024988-dc8dcdf881-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54918136961-54ce8a17c7-c.jpg
-        alt: ''
+      - source: /public/images/54446007368-7ec6977d72-o.jpg
+        alt: SASCS25
         thumbnail: ''
-      - source: /src/assets/images/54916338022-9ec3f5d130-c.jpg
-        alt: ''
+      - source: /public/images/54445938368-5126c8df28-o.jpg
+        alt: SASCS25 red carpet man
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
