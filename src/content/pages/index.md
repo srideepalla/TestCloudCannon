@@ -139,60 +139,97 @@ pageSections:
       mid-sized organizations are honored as winners alongside Fortune 500
       giants like Amazon Web Services, Delta Air Lines, and Dell Technologies.
     logos:
-      - source: /src/assets/images/estelauder.png
-        alt: estee
-      - source: /src/assets/images/tripadvisor.webp
-        alt: tripadvisor
-      - source: /src/assets/images/ltk.png
-        alt: ltk
-      - source: /src/assets/images/IBA-Winner-Verizon.png
-        alt: Verizon
-      - source: /src/assets/images/2mamabees-logo.webp
-        alt: mamabees
-      - source: /src/assets/images/itsa10.svg
-        alt: itsa10
-      - source: /src/assets/images/bugbite.png
-        alt: bugbite
-      - source: /src/assets/images/babylist.jpg
-        alt: babylist
-      - source: /src/assets/images/hiltonsupply.webp
-        alt: hilton
+      - source: /public/images/adobe-corporate-logo-svg.png
+        alt: Adobe
+      - source: /public/images/az-logo-twitter-438x220px.png
+        alt: Allianz
+      - source: /public/images/allstate-logo.png
+        alt: Allstate
+      - source: /public/images/fb-image.jpg
+        alt: GoHealth
+      - source: /public/images/dun-bradstreet-logo-500x225-1-1.png
+        alt: Dun and bradstreet
+      - source: /public/images/intuit-logo.png
+        alt: intuit
+      - source: /public/images/capital-rx-logo.jpg
+        alt: Capital Rx
+      - source: /public/images/alight-solutions-logo.png
+        alt: Alight Solutions
+      - source: /public/images/logos/cognizant-new-logo-400px.jpg
+        alt: Cognizant
       - source: /src/assets/images/playwise.png
         alt: Playwise
       - source: /src/assets/images/IBA-Winner-Salesforce.png
         alt: Salesforce
       - source: /src/assets/images/cognizant-logo.jpg
         alt: Cognizant
-      - source: /src/assets/images/nextivia.png
-        alt: Nextivia
-      - source: /src/assets/images/susan-g-komen-logo-svg.png
-        alt: susankomen
-      - source: /src/assets/images/mastercard-logo.svg
-        alt: mastercard
-      - source: /src/assets/images/att.jpg
-        alt: att
-      - source: /src/assets/images/brandless.png
-        alt: brandless
-      - source: /src/assets/images/usercentrics.png
-        alt: Usercentrics
-      - source: /src/assets/images/IBA-Winner-Telus.jpg
-        alt: Telus
-      - source: /src/assets/images/images-1.png
-        alt: microsoft
-      - source: /src/assets/images/megaworld-logo-and-wordmark-svg-1.png
-        alt: Megaworld
-      - source: /src/assets/images/images.png
-        alt: purpol
-      - source: /src/assets/images/vanguard-logo.png
-        alt: vanguard
-      - source: /src/assets/images/sap-2011-logo-svg.png
-        alt: sap
-      - source: /src/assets/images/sunhope.webp
-        alt: sun hope
-      - source: /src/assets/images/buyfromablackwoman.png
-        alt: buyfromblackwoman
+      - source: /public/images/polyai-logo-slate-rgb.jpg
+        alt: PolyAI
+      - source: /public/images/xxl-qualitest-fullcolor.jpg
+        alt: Qualitest
+      - source: /src/assets/images/images.webp
+        alt: Softpro
+      - source: /public/images/logos/halkbank-logo-svg.png
+        alt: Halkbank
+      - source: /public/images/nationwide-insurance-logo.png
+        alt: Nationwide
+      - source: >-
+          /public/images/654bfda47b47713a8d9acecd-vsa-logo-portrait-white-background.png
+        alt: ValueSelling Associates
+      - source: /public/images/ajmi-general.jpeg
+        alt: Al Jazeera Media Institute
+      - source: /public/images/cisco-logo-blue-2016-svg.png
+        alt: Cisco
+      - source: /public/images/voya-financial-logo.png
+        alt: Voya Financial
+      - source: /public/images/ford-logo-flat-svg.png
+        alt: Ford
+      - source: /public/images/adp-logo.jpg
+        alt: ADP
+      - source: /public/images/qnb-finansbank-logo.png
+        alt: QNB Finansbank
+      - source: /public/images/dell-technologies-vertical-logo.png
+        alt: Dell
+      - source: /public/images/logos/sales-partnerships-inc-1.png
+        alt: Sales Partnerships
+      - source: /public/images/delta-air-lines-logo.jpg
+        alt: Delta
+      - source: /public/images/samsung-symbol.png
+        alt: Samsung
+      - source: /public/images/dhl-logo-svg.png
+        alt: DHL
+      - source: /public/images/brooks-group-logo-125x.jpg
+        alt: Brooks Group
+      - source: /public/images/toyota-logo-red-svg.png
+        alt: Toyota
+      - source: /public/images/transperfect-logo.png
+        alt: Transperfect logo
+      - source: /public/images/verizon.png
+        alt: Verizon
+      - source: /public/images/sap-2011-logo-svg.png
+        alt: SAP
       - source: /src/assets/images/IBA/es/IBA-Winner-IBM.png
         alt: ibm
+      - source: /public/images/amazon-web-services-logo-svg.png
+        alt: AWS
+      - source: /public/images/vizio-logo.png
+        alt: Vizio
+      - source: /src/assets/images/images-1-1.png
+        alt: Viettel
+      - source: /public/images/ceo-wolter-kluwer.png
+        alt: Wolters Kluwer
+      - source: /public/images/logo-att-business.webp
+        alt: ATT
+      - source: /public/images/veeam-logo.png
+        alt: 'Veeam '
+      - source: /public/images/vanguard-logo-1.jpg
+        alt: Vanguard
+      - source: /public/images/salesforce-com-logo-svg.png
+        alt: Salesforce
+      - source: /public/images/sap-2011-logo-svg.png
+        alt: SAP logo
+      - source: /public/images/logos/paypal-svg.png
+        alt: Paypal
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
