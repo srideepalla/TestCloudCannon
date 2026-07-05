@@ -60,13 +60,13 @@ pageSections:
     list:
       _component: building-blocks/core-elements/list
       items:
-        - text: Customer Service Department of the Year
+        - text: Customer Service Department of the          Year
           iconName: four-pointed-star
           iconColor: brand
         - text: Employer of the Year
           iconName: four-pointed-star
           iconColor: brand
-        - text: AI & Digital Transformation Categories (New for 2026)
+        - text: AI & Digital Transformation Categories      (New for 2026)
           iconName: four-pointed-star
           iconColor: brand
         - text: Team & Department Categories
@@ -84,19 +84,19 @@ pageSections:
         - text: Solutions & Implementations
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in Global Customer Service Excellence
+        - text: Achievement in Global Customer                Service Excellence
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in the Use of Data & Analytics in Sales
+        - text: Achievement in the Use of Data &               Analytics in Sales
           iconName: four-pointed-star
           iconColor: brand
         - text: Best Use of Technology in Sales
           iconName: four-pointed-star
           iconColor: brand
-        - text: Best Use of Technology in Customer Services
+        - text: Best Use of Technology in Customer          Services
           iconName: four-pointed-star
           iconColor: brand
-        - text: Sales Training or Coaching Program of the Year
+        - text: Sales Training or Coaching Program of      the Year
           iconName: four-pointed-star
           iconColor: brand
         - text: Thought Leadership Categories
@@ -240,7 +240,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /src/assets/images/wib-winners.webp
+            source: /public/images/sascs26-peoples-choice-winners.webp
             alt: SAWIB25 Winner Announcement
           title: >-
             Winners Announced in 2026 People's Choice Stevie® Awards for
@@ -248,7 +248,7 @@ pageSections:
           link: >-
             https://blog.stevieawards.com/blog/winners-announced-in-2026-peoples-choice-stevie-awards-for-favorite-customer-service?_gl=1*14xz74z*_gcl_au*NjM4ODkwMjM4LjE3ODEyNDg4MzA.*_ga*MTQxNTczMjA3OC4xNzc5NzkzOTc4*_ga_75EDJ0F52B*czE3ODMxNjMzODIkbzI2JGcxJHQxNzgzMTY3NDE3JGo2MCRsMCRoMA..
         - image:
-            source: /src/assets/images/persistent-sheshapesai-logo.webp
+            source: /public/images/sascs26-grand-winners.png
             alt: Persistent and Stevie Awards Honor Female Leaders
           title: >-
             Grand Stevie® Award Winners Announced in 20th Annual Stevie Awards
@@ -256,7 +256,7 @@ pageSections:
           link: >-
             https://blog.stevieawards.com/blog/grand-stevie-award-winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*ggoxuq*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcwOTg3JGo0NiRsMCRoMA..
         - image:
-            source: /src/assets/images/54918164611-3912a076b1-c.jpg
+            source: /public/images/sascs26-winners-1.png
             alt: Women Future Webinars
           title: >-
             Winners Announced in 20th Annual Stevie® Awards for Sales &amp;
