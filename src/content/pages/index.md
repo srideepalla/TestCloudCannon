@@ -241,7 +241,9 @@ pageSections:
       stories:
         - image:
             source: /public/images/sascs26-peoples-choice-winners.webp
-            alt: SAWIB25 Winner Announcement
+            alt: >-
+              Winners Announced in 2026 People's Choice Stevie® Awards for
+              Favorite Customer Service
           title: >-
             Winners Announced in 2026 People's Choice Stevie® Awards for
             Favorite Customer Service
@@ -249,7 +251,7 @@ pageSections:
             https://blog.stevieawards.com/blog/winners-announced-in-2026-peoples-choice-stevie-awards-for-favorite-customer-service?_gl=1*14xz74z*_gcl_au*NjM4ODkwMjM4LjE3ODEyNDg4MzA.*_ga*MTQxNTczMjA3OC4xNzc5NzkzOTc4*_ga_75EDJ0F52B*czE3ODMxNjMzODIkbzI2JGcxJHQxNzgzMTY3NDE3JGo2MCRsMCRoMA..
         - image:
             source: /public/images/sascs26-grand-winners.png
-            alt: Persistent and Stevie Awards Honor Female Leaders
+            alt: SASCS26 Grand Winners
           title: >-
             Grand Stevie® Award Winners Announced in 20th Annual Stevie Awards
             for Sales &amp; Customer Service
@@ -257,7 +259,9 @@ pageSections:
             https://blog.stevieawards.com/blog/grand-stevie-award-winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*ggoxuq*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcwOTg3JGo0NiRsMCRoMA..
         - image:
             source: /public/images/sascs26-winners-1.png
-            alt: Women Future Webinars
+            alt: >-
+              Winners Announced in 20th Annual Stevie® Awards for Sales &
+              Customer Service
           title: >-
             Winners Announced in 20th Annual Stevie® Awards for Sales &amp;
             Customer Service
