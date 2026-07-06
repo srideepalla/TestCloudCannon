@@ -78,6 +78,9 @@ const thumbnails = typedImages.map((img) => ({
           <Image
             source={image.source}
             alt={image.alt}
+            aspectRatio="widescreen"
+            positionVertical="center"
+            positionHorizontal="center"
             rounded={true}
             loading="lazy"
             decoding="async"
@@ -98,6 +101,34 @@ const thumbnails = typedImages.map((img) => ({
     .gallery-carousel .text {
       max-width: 672px;
       margin-inline: auto;
+    }
+
+    /* Fit the whole photo inside the fixed 16:9 frame (no cropping) and fill
+       the letterbox area with the section background colour. */
+    .gallery-carousel .viewport .image-inner.ratio {
+      background-color: var(--color-bg);
+    }
+
+    .gallery-carousel .viewport .image-inner.ratio img {
+      object-fit: contain;
+    }
+
+    /* Thumbnails: show the whole photo inside the fixed 3:2 frame and fill the
+       letterbox with the section background colour (mirrors the main image). */
+    .gallery-carousel .indicator--thumb {
+      background-color: var(--color-bg);
+    }
+
+    .gallery-carousel .indicator--thumb .image,
+    .gallery-carousel .indicator--thumb .image-inner,
+    .gallery-carousel .indicator--thumb picture {
+      height: 100%;
+    }
+
+    .gallery-carousel .indicator--thumb img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
     }
 
     .gallery-carousel .controls-wrapper {
