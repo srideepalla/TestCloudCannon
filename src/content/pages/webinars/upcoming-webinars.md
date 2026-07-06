@@ -5,61 +5,6 @@ description: >-
   Join us for three inspiring webinars taking place across June, July, and
   August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
-  - _component: page-sections/heroes/hero-banner
-    heading: 2026 Stevie® Awards for Women in Business Program Webinar
-    text: >-
-      Watch our webinar about the 2026 Stevie® Awards for Women in Business to
-      learn more about the nomination and judging processes, how to choose the
-      right categories for your achievements, explore what’s new this year, and
-      get advice on how to craft nominations that showcase your achievements to
-      the judges in the strongest possible light.
-
-
-      ###### **Presented Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br
-      />Winning Strategies for the 2026 Stevie® Awards for Women in Business**
-
-
-      <a
-      href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA"
-      target="_blank" rel="noopener" title="Watch On-Demand"><strong>Watch
-      On-Demand</strong></a>
-    colorScheme: light
-    backgroundColor: base
-  - _component: page-sections/builders/custom-section
-    label: Top Banner Image
-    contentSections:
-      - _component: building-blocks/core-elements/image
-        source: /src/assets/images/sawib26-webinar-email-1.png
-        alt: Stevie Awards for Women in Business Webinar
-        sizes: '(max-width: 1280px) 100vw, 1280px'
-        widths:
-          - 640
-          - 1280
-          - 2560
-        width:
-        height:
-        rounded: false
-        alignX: center
-        aspectRatio: none
-        positionVertical: center
-        positionHorizontal: center
-        priority: false
-        link: >-
-          https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA?lmt=1778251334000
-        openInNewTab: true
-    maxContentWidth: xl
-    paddingHorizontal: xl
-    paddingVertical: sm
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Intro
     contentSections:
@@ -292,8 +237,8 @@ pageSections:
         items:
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/june-speakers-5.png
-                alt: Women|Future Webinar — June 17, 2026
+                source: /src/assets/images/june-speakers-replay-1.png
+                alt: Women|Future Webinar APAC June Session Replay
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
@@ -328,8 +273,8 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/july-speakers-2.png
-                alt: Women|Future Webinar — July 15, 2026
+                source: /src/assets/images/july-speakers-2-1.png
+                alt: Women|Future Webinar July APAC Session
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
@@ -364,8 +309,8 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/august-speakers.png
-                alt: Women|Future Webinar — August 12, 2026
+                source: /src/assets/images/august-speakers-2.png
+                alt: Women|Future Webinar August APAC Session
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
                   - 400
@@ -698,6 +643,61 @@ pageSections:
     maxContentWidth: md
     paddingHorizontal: 2xl
     paddingVertical: xl
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    brandColorOverride: ''
+    useDefaultEditableBinding: true
+  - _component: page-sections/heroes/hero-banner
+    heading: 2026 Stevie® Awards for Women in Business Program Webinar
+    text: >-
+      Watch our webinar about the 2026 Stevie® Awards for Women in Business to
+      learn more about the nomination and judging processes, how to choose the
+      right categories for your achievements, explore what’s new this year, and
+      get advice on how to craft nominations that showcase your achievements to
+      the judges in the strongest possible light.
+
+
+      ###### **Presented Live on June 18 2026, 11:00 am - 12:00 PM (ET)<br
+      />Winning Strategies for the 2026 Stevie® Awards for Women in Business**
+
+
+      <a
+      href="https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA"
+      target="_blank" rel="noopener" title="Watch On-Demand"><strong>Watch
+      On-Demand</strong></a>
+    colorScheme: light
+    backgroundColor: base
+  - _component: page-sections/builders/custom-section
+    label: Top Banner Image
+    contentSections:
+      - _component: building-blocks/core-elements/image
+        source: /src/assets/images/sawib26-webinar-email-1.png
+        alt: Stevie Awards for Women in Business Webinar
+        sizes: '(max-width: 1280px) 100vw, 1280px'
+        widths:
+          - 640
+          - 1280
+          - 2560
+        width:
+        height:
+        rounded: false
+        alignX: center
+        aspectRatio: none
+        positionVertical: center
+        positionHorizontal: center
+        priority: false
+        link: >-
+          https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA?lmt=1778251334000
+        openInNewTab: true
+    maxContentWidth: xl
+    paddingHorizontal: xl
+    paddingVertical: sm
     colorScheme: light
     backgroundColor: base
     backgroundImage:
