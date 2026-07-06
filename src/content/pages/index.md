@@ -139,23 +139,23 @@ pageSections:
       mid-sized organizations are honored as winners alongside Fortune 500
       giants like Amazon Web Services, Delta Air Lines, and Dell Technologies.
     logos:
-      - source: /images/adobe-corporate-logo-svg.png
+      - source: /public/images/adobe-corporate-logo-svg.png
         alt: Adobe
-      - source: /images/az-logo-twitter-438x220px.png
+      - source: /public/images/az-logo-twitter-438x220px.png
         alt: Allianz
-      - source: /images/allstate-logo.png
+      - source: /public/images/allstate-logo.png
         alt: Allstate
-      - source: /images/fb-image.jpg
+      - source: /public/images/fb-image.jpg
         alt: GoHealth
-      - source: /images/dun-bradstreet-logo-500x225-1-1.png
+      - source: /public/images/dun-bradstreet-logo-500x225-1-1.png
         alt: Dun and bradstreet
-      - source: /images/intuit-logo.png
+      - source: /public/images/intuit-logo.png
         alt: intuit
-      - source: /images/capital-rx-logo.jpg
+      - source: /public/images/capital-rx-logo.jpg
         alt: Capital Rx
-      - source: /images/alight-solutions-logo.png
+      - source: /public/images/alight-solutions-logo.png
         alt: Alight Solutions
-      - source: /images/logos/cognizant-new-logo-400px.jpg
+      - source: /public/images/logos/cognizant-new-logo-400px.jpg
         alt: Cognizant
       - source: /src/assets/images/playwise.png
         alt: Playwise
@@ -163,72 +163,72 @@ pageSections:
         alt: Salesforce
       - source: /src/assets/images/cognizant-logo.jpg
         alt: Cognizant
-      - source: /images/polyai-logo-slate-rgb.jpg
+      - source: /public/images/polyai-logo-slate-rgb.jpg
         alt: PolyAI
-      - source: /images/xxl-qualitest-fullcolor.jpg
+      - source: /public/images/xxl-qualitest-fullcolor.jpg
         alt: Qualitest
       - source: /src/assets/images/images.webp
         alt: Softpro
-      - source: /images/logos/halkbank-logo-svg.png
+      - source: /public/images/logos/halkbank-logo-svg.png
         alt: Halkbank
-      - source: /images/nationwide-insurance-logo.png
+      - source: /public/images/nationwide-insurance-logo.png
         alt: Nationwide
       - source: >-
-          /images/654bfda47b47713a8d9acecd-vsa-logo-portrait-white-background.png
+          /public/images/654bfda47b47713a8d9acecd-vsa-logo-portrait-white-background.png
         alt: ValueSelling Associates
-      - source: /images/ajmi-general.jpeg
+      - source: /public/images/ajmi-general.jpeg
         alt: Al Jazeera Media Institute
-      - source: /images/cisco-logo-blue-2016-svg.png
+      - source: /public/images/cisco-logo-blue-2016-svg.png
         alt: Cisco
-      - source: /images/voya-financial-logo.png
+      - source: /public/images/voya-financial-logo.png
         alt: Voya Financial
-      - source: /images/ford-logo-flat-svg.png
+      - source: /public/images/ford-logo-flat-svg.png
         alt: Ford
-      - source: /images/adp-logo.jpg
+      - source: /public/images/adp-logo.jpg
         alt: ADP
-      - source: /images/qnb-finansbank-logo.png
+      - source: /public/images/qnb-finansbank-logo.png
         alt: QNB Finansbank
-      - source: /images/dell-technologies-vertical-logo.png
+      - source: /public/images/dell-technologies-vertical-logo.png
         alt: Dell
-      - source: /images/logos/sales-partnerships-inc-1.png
+      - source: /public/images/logos/sales-partnerships-inc-1.png
         alt: Sales Partnerships
-      - source: /images/delta-air-lines-logo.jpg
+      - source: /public/images/delta-air-lines-logo.jpg
         alt: Delta
-      - source: /images/samsung-symbol.png
+      - source: /public/images/samsung-symbol.png
         alt: Samsung
-      - source: /images/dhl-logo-svg.png
+      - source: /public/images/dhl-logo-svg.png
         alt: DHL
-      - source: /images/brooks-group-logo-125x.jpg
+      - source: /public/images/brooks-group-logo-125x.jpg
         alt: Brooks Group
-      - source: /images/toyota-logo-red-svg.png
+      - source: /public/images/toyota-logo-red-svg.png
         alt: Toyota
-      - source: /images/transperfect-logo.png
+      - source: /public/images/transperfect-logo.png
         alt: Transperfect logo
-      - source: /images/verizon.png
+      - source: /public/images/verizon.png
         alt: Verizon
-      - source: /images/sap-2011-logo-svg.png
+      - source: /public/images/sap-2011-logo-svg.png
         alt: SAP
       - source: /src/assets/images/IBA/es/IBA-Winner-IBM.png
         alt: ibm
-      - source: /images/amazon-web-services-logo-svg.png
+      - source: /public/images/amazon-web-services-logo-svg.png
         alt: AWS
-      - source: /images/vizio-logo.png
+      - source: /public/images/vizio-logo.png
         alt: Vizio
       - source: /src/assets/images/images-1-1.png
         alt: Viettel
-      - source: /images/ceo-wolter-kluwer.png
+      - source: /public/images/ceo-wolter-kluwer.png
         alt: Wolters Kluwer
-      - source: /images/logo-att-business.webp
+      - source: /public/images/logo-att-business.webp
         alt: ATT
-      - source: /images/veeam-logo.png
+      - source: /public/images/veeam-logo.png
         alt: 'Veeam '
-      - source: /images/vanguard-logo-1.jpg
+      - source: /public/images/vanguard-logo-1.jpg
         alt: Vanguard
-      - source: /images/salesforce-com-logo-svg.png
+      - source: /public/images/salesforce-com-logo-svg.png
         alt: Salesforce
-      - source: /images/sap-2011-logo-svg.png
+      - source: /public/images/sap-2011-logo-svg.png
         alt: SAP logo
-      - source: /images/logos/paypal-svg.png
+      - source: /public/images/logos/paypal-svg.png
         alt: Paypal
     colorScheme: light
     backgroundColor: base
@@ -240,7 +240,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /images/sascs26-peoples-choice-winners.webp
+            source: /public/images/sascs26-peoples-choice-winners.webp
             alt: SAWIB25 Winner Announcement
           title: >-
             Winners Announced in 2026 People's Choice Stevie® Awards for
@@ -248,7 +248,7 @@ pageSections:
           link: >-
             https://blog.stevieawards.com/blog/winners-announced-in-2026-peoples-choice-stevie-awards-for-favorite-customer-service?_gl=1*14xz74z*_gcl_au*NjM4ODkwMjM4LjE3ODEyNDg4MzA.*_ga*MTQxNTczMjA3OC4xNzc5NzkzOTc4*_ga_75EDJ0F52B*czE3ODMxNjMzODIkbzI2JGcxJHQxNzgzMTY3NDE3JGo2MCRsMCRoMA..
         - image:
-            source: /images/sascs26-grand-winners.png
+            source: /public/images/sascs26-grand-winners.png
             alt: Persistent and Stevie Awards Honor Female Leaders
           title: >-
             Grand Stevie® Award Winners Announced in 20th Annual Stevie Awards
@@ -256,7 +256,7 @@ pageSections:
           link: >-
             https://blog.stevieawards.com/blog/grand-stevie-award-winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*ggoxuq*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcwOTg3JGo0NiRsMCRoMA..
         - image:
-            source: /images/sascs26-winners-1.png
+            source: /public/images/sascs26-winners-1.png
             alt: Women Future Webinars
           title: >-
             Winners Announced in 20th Annual Stevie® Awards for Sales &amp;
@@ -402,46 +402,46 @@ pageSections:
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
     images:
-      - source: /images/54446061265-49f3defd2d-o.jpg
+      - source: /public/images/54446061265-49f3defd2d-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445880874-205af66733-o.jpg
+      - source: /public/images/54445880874-205af66733-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445953939-ef541f8371-o.jpg
+      - source: /public/images/54445953939-ef541f8371-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445704336-2235346cfe-o.jpg
+      - source: /public/images/54445704336-2235346cfe-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/53651686926-9cb9f30b05-o.jpg
+      - source: /public/images/53651686926-9cb9f30b05-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445691401-72dc3e4ca9-o.jpg
+      - source: /public/images/54445691401-72dc3e4ca9-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445771491-cc267bdd83-o.jpg
+      - source: /public/images/54445771491-cc267bdd83-o.jpg
         alt: Sales Speech Woman
         thumbnail: ''
-      - source: /images/54445725286-3903182155-o.jpg
+      - source: /public/images/54445725286-3903182155-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445993150-e426bb742f-o.jpg
+      - source: /public/images/54445993150-e426bb742f-o.jpg
         alt: 'SASCS25 banquet '
         thumbnail: ''
-      - source: /images/54444829137-9f50586960-o.jpg
+      - source: /public/images/54444829137-9f50586960-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445964738-4976847e14-o.jpg
+      - source: /public/images/54445964738-4976847e14-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54446024988-dc8dcdf881-o.jpg
+      - source: /public/images/54446024988-dc8dcdf881-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54446007368-7ec6977d72-o.jpg
+      - source: /public/images/54446007368-7ec6977d72-o.jpg
         alt: SASCS25
         thumbnail: ''
-      - source: /images/54445938368-5126c8df28-o.jpg
+      - source: /public/images/54445938368-5126c8df28-o.jpg
         alt: SASCS25 red carpet man
         thumbnail: ''
     colorScheme: dark
