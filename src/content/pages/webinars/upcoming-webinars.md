@@ -57,7 +57,7 @@ pageSections:
           transformed it into a webinar series.
 
 
-          ###### <a
+          ##### <a
           href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
           target="_blank" rel="noopener" title="Register Now"><strong>Register
           Now</strong></a> **to discover practical strategies to help you grow
@@ -68,38 +68,6 @@ pageSections:
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
     paddingVertical: 2xl
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
-  - _component: page-sections/builders/custom-section
-    label: Bottom Banner Image
-    contentSections:
-      - _component: building-blocks/core-elements/image
-        source: /src/assets/images/wfw26-fc.jpg
-        alt: Women|Future Webinars 2026 banner
-        sizes: '(max-width: 1280px) 100vw, 960px'
-        widths:
-          - 640
-          - 960
-          - 1920
-        rounded: false
-        alignX: center
-        aspectRatio: horizontal-strip
-        positionVertical: center
-        positionHorizontal: center
-        priority: false
-        link: ''
-        openInNewTab: false
-    maxContentWidth: md
-    paddingHorizontal: 2xl
-    paddingVertical: xl
     colorScheme: light
     backgroundColor: base
     backgroundImage:
@@ -234,9 +202,63 @@ pageSections:
               - _component: building-blocks/core-elements/spacer
                 size: md
         gap: lg
+      - _component: building-blocks/core-elements/image
+        source: /src/assets/images/wfw26-offer-1-1.png
+        alt: Women Future Webinar July Session offer
+        sizes: '(max-width: 1280px) 100vw, 1280px'
+        widths:
+          - 640
+          - 1280
+          - 2560
+        width:
+        height:
+        rounded: false
+        alignX: center
+        aspectRatio: none
+        positionVertical: center
+        positionHorizontal: center
+        priority: false
+        link: >-
+          https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+        openInNewTab: true
     maxContentWidth: 2xl
     paddingHorizontal: lg
     paddingVertical: lg
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    brandColorOverride: ''
+    useDefaultEditableBinding: true
+  - _component: page-sections/builders/custom-section
+    label: Intro
+    contentSections:
+      - _component: building-blocks/core-elements/text
+        text: >-
+          # Special Offer for July Webinar Attendees
+
+
+          #### Register for the July 15 webinar and receive an exclusive **50%
+          discount on entry fees** for select categories in the **2026 (23rd
+          Annual) Stevie® Awards for Women in Business**.
+
+
+          [**Register
+          now**](https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
+          "Register for July 15 Webinar") to receive your promo code and
+          complete offer details in your webinar registration confirmation
+          email.
+
+
+          &nbsp;
+        alignX: center
+    maxContentWidth: 2xl
+    paddingHorizontal: 2xl
+    paddingVertical: 2xl
     colorScheme: light
     backgroundColor: base
     backgroundImage:
