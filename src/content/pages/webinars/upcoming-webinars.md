@@ -57,13 +57,13 @@ pageSections:
           transformed it into a webinar series.
 
 
-          ##### <a
+          <a
           href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
-          target="_blank" rel="noopener" title="Register Now"><strong>Register
-          Now</strong></a> **to discover practical strategies to help you grow
-          and future-proof your organization, build credibility through business
-          awards, and get firsthand perspectives from women entrepreneurs who
-          have successfully built and scaled their businesses!**
+          target="_blank" rel="noopener"><strong>Register Now</strong></a> to
+          discover practical strategies to help you grow and future-proof your
+          organization, build credibility through business awards, and get
+          firsthand perspectives from women entrepreneurs who have successfully
+          built and scaled their businesses!
         alignX: center
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -759,7 +759,7 @@ pageSections:
     rounded: false
     brandColorOverride: ''
     useDefaultEditableBinding: true
-pageHeading: Webinars
+pageHeading:
 sidebarCollection: webinars
 sidebarBlocks: []
 draft: false
