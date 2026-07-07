@@ -6,54 +6,11 @@ description: >-
   August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
   - _component: page-sections/builders/custom-section
-    label: Intro
-    contentSections:
-      - _component: building-blocks/core-elements/text
-        text: >-
-          # Invest in Your Growth: Women\|Future Webinars
-
-
-          The Women\|Future Webinars (formerly Women\|Future Conference) are a
-          series of free webinars hosted by the Stevie® Awards designed for
-          women small business owners, executives, entrepreneurs, and anyone
-          interested in starting a business. Launched in 2018 in conjunction
-          with the Stevie® Awards for Women in Business, the Women\|Future
-          Conference was created to give high-achieving women professionals,
-          thought leaders, and entrepreneurs a place to connect, share ideas,
-          and network. After a successful seven-year run as a conference, we
-          transformed it into a webinar series.
-
-
-          **Register now to discover practical strategies to help you grow and
-          future-proof your organization, build credibility through business
-          awards, and get firsthand perspectives from women entrepreneurs who
-          have successfully built and scaled their businesses!**
-
-
-          #### <a
-          href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
-          target="_blank" rel="noopener" title="Register Now"><strong>Register
-          Now</strong></a>
-        alignX: center
-    maxContentWidth: 2xl
-    paddingHorizontal: 2xl
-    paddingVertical: 2xl
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
-  - _component: page-sections/builders/custom-section
     label: Top Banner Image
     contentSections:
       - _component: building-blocks/core-elements/image
         source: /src/assets/images/wfw-2.png
-        alt: Women|Future Webinars 2026 — Join us this summer banner
+        alt: 'Women|Future Webinars 2026 '
         sizes: '(max-width: 1280px) 100vw, 960px'
         widths:
           - 640
@@ -82,10 +39,50 @@ pageSections:
     brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
+    label: Intro
+    contentSections:
+      - _component: building-blocks/core-elements/text
+        text: >-
+          # Invest in Your Growth: Women\|Future Webinars
+
+
+          The Women\|Future Webinars (formerly Women\|Future Conference) are a
+          series of free webinars hosted by the Stevie® Awards designed for
+          women small business owners, executives, entrepreneurs, and anyone
+          interested in starting a business. Launched in 2018 in conjunction
+          with the Stevie® Awards for Women in Business, the Women\|Future
+          Conference was created to give high-achieving women professionals,
+          thought leaders, and entrepreneurs a place to connect, share ideas,
+          and network. After a successful seven-year run as a conference, we
+          transformed it into a webinar series.
+
+
+          ###### <a
+          href="https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg"
+          target="_blank" rel="noopener" title="Register Now"><strong>Register
+          Now</strong></a> **to discover practical strategies to help you grow
+          and future-proof your organization, build credibility through business
+          awards, and get firsthand perspectives from women entrepreneurs who
+          have successfully built and scaled their businesses!**
+        alignX: center
+    maxContentWidth: 2xl
+    paddingHorizontal: 2xl
+    paddingVertical: 2xl
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    brandColorOverride: ''
+    useDefaultEditableBinding: true
+  - _component: page-sections/builders/custom-section
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
-        text: 'Sign up individually for each webinar you wish to attend:'
+        text: 'Register separately for each webinar you wish to attend:'
         level: h1
         size: md
         alignX: center
