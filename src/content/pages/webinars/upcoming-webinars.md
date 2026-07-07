@@ -79,6 +79,38 @@ pageSections:
     brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
+    label: Bottom Banner Image
+    contentSections:
+      - _component: building-blocks/core-elements/image
+        source: /src/assets/images/wfw26-fc.jpg
+        alt: Women|Future Webinars 2026 banner
+        sizes: '(max-width: 1280px) 100vw, 960px'
+        widths:
+          - 640
+          - 960
+          - 1920
+        rounded: false
+        alignX: center
+        aspectRatio: horizontal-strip
+        positionVertical: center
+        positionHorizontal: center
+        priority: false
+        link: ''
+        openInNewTab: false
+    maxContentWidth: md
+    paddingHorizontal: 2xl
+    paddingVertical: xl
+    colorScheme: light
+    backgroundColor: base
+    backgroundImage:
+      source: ''
+      alt: ''
+      positionVertical: top
+      positionHorizontal: center
+    rounded: false
+    brandColorOverride: ''
+    useDefaultEditableBinding: true
+  - _component: page-sections/builders/custom-section
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
