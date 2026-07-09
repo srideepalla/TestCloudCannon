@@ -56,53 +56,8 @@
           "openInNewTab": false,
           "children": [
             {
-              "name": "Achievement Categories",
-              "path": "/Awards/Categories/achievement-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Communications, Marketing or PR",
-              "path": "/awards/categories/achievement-in-communications-marketing-pr-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Artificial Intelligence (AI) and Technology Categories ",
-              "path": "/awards/categories/AI-Technology-Categories",
-              "openInNewTab": false
-            },
-            {
-              "name": "Company/Organization (Women-Owned or -Led) Awards Categories",
-              "path": "/awards/categories/Company-Organization-Awards-Categories",
-              "openInNewTab": false
-            },
-            {
-              "name": "Individual Women Awards Categories",
-              "path": "/awards/categories/Individual-Women-Awards-Categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Media Awards Categories",
-              "path": "/awards/categories/media-awards-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "New Product & Service (Developed for/by Women) Awards Categories ",
-              "path": "/awards/categories/New-Product-Service-Awards-Categories",
-              "openInNewTab": false
-            },
-            {
-              "name": "Social Media Categories ",
-              "path": "/awards/categories/Social-Media-Categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Sustainability Categories",
-              "path": "/awards/categories/Sustainability-Categories",
-              "openInNewTab": false
-            },
-            {
-              "name": "Thought Leadership Categories",
-              "path": "/awards/categories/Thought-Leadership-Categories/",
+              "name": "Sales Individual Categories",
+              "path": "/awards/categories/Sales-Individual-Categories/",
               "openInNewTab": false
             }
           ]
