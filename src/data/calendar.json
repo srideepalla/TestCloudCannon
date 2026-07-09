@@ -26,45 +26,45 @@
     },
     {
       "date": "2027-02-03T00:00:00.000Z",
-      "title": "Final entry deadline for the 2027 Stevie® Awards for Sales & Customer Service ",
-      "label": "Final Entry deadline",
+      "title": "Primary entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Primary Entry deadline",
       "description": ""
     },
     {
-      "date": "2027-03-10T00:00:00.000Z",
-      "title": "Judging of the 2027 Stevie® Awards for Sales & Customer Service",
-      "label": "Judging ends",
-      "description": ""
-    },
-    {
-      "date": "2027-03-17T00:00:00.000Z",
-      "title": "Winners notified in the 2027 Stevie® Awards for Sales & Customer Service",
-      "label": "Winners notified",
-      "description": "Tickets for the awards banquet will be on sale this date."
-    },
-    {
-      "date": "2027-03-18T00:00:00.000Z",
-      "title": "Stevie® winners publicly announced in the 2027 Stevie® Awards for Sales & Customer Service",
-      "label": "Winners announced",
-      "description": ""
-    },
-    {
-      "date": "2027-03-19T00:00:00.000Z",
+      "date": "2027-01-14T00:00:00.000Z",
       "title": "Customer Service Department of the Year Public Voting Opens ",
       "label": "CUSTOMER SERVICE DEPARTMENT OF THE YEAR PUBLIC  VOTING BEGINS ",
       "description": "An annual feature of the Stevie® Awards for Sales & Customer Service."
     },
     {
-      "date": "2027-04-16T00:00:00.000Z",
+      "date": "2027-03-03T00:00:00.000Z",
+      "title": "Judging of the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Judging ends",
+      "description": ""
+    },
+    {
+      "date": "2027-03-05T00:00:00.000Z",
       "title": "Customer Service Department of the Year Public Voting Ends",
       "label": "CUSTOMER SERVICE DEPARTMENT OF THE YEAR PUBLIC  VOTING ENDS ",
       "description": null
     },
     {
-      "date": "2027-04-29T00:00:00.000Z",
+      "date": "2027-03-10T00:00:00.000Z",
+      "title": "Winners notified in the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Winners notified",
+      "description": "Tickets for the awards banquet will be on sale this date."
+    },
+    {
+      "date": "2027-03-11T00:00:00.000Z",
+      "title": "Stevie® winners publicly announced in the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Winners announced",
+      "description": ""
+    },
+    {
+      "date": "2027-04-20T00:00:00.000Z",
       "title": "Awards banquet of the 2027 Stevie® Awards for Sales & Customer Service",
-      "label": "Awards Banquet, Dates & Settings to be Confirmed",
-      "description": "Date and setting to be confirmed"
+      "label": "Awards Banquet, New York City",
+      "description": "Marriott Marquis Hotel, New York City "
     }
   ]
 }
