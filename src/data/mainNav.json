@@ -59,6 +59,11 @@
               "name": "Sales Individual Categories",
               "path": "/awards/categories/Sales-Individual-Categories/",
               "openInNewTab": false
+            },
+            {
+              "name": "Sales Team Categories",
+              "path": "/awards/categories/Sales-Team-Categories/",
+              "openInNewTab": false
             }
           ]
         },
