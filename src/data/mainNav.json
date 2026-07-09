@@ -66,6 +66,11 @@
               "openInNewTab": false
             },
             {
+              "name": "Business Development Categories",
+              "path": "/awards/categories/business-development-categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Customer Service & Contact Center Achievement Categories",
               "path": "/awards/categories/Customer-Service-Contact-Center-Achievement-Categories/",
               "openInNewTab": false
@@ -113,6 +118,21 @@
             {
               "name": "SOCAP Sponsored Categories",
               "path": "/awards/categories/SOCAP-Sponsored-Categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Solution Provider Categories",
+              "path": "/awards/categories/solution-provider-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Solutions & Implementations Categories",
+              "path": "/awards/categories/solutions-implementations-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Thought Leadership Categories",
+              "path": "/awards/categories/thought-leadership-categories/",
               "openInNewTab": false
             }
           ]
