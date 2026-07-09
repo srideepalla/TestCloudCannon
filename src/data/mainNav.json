@@ -71,6 +71,11 @@
               "openInNewTab": false
             },
             {
+              "name": "Customer Service Department Categories",
+              "path": "/awards/categories/Customer-Service-Department-Categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Sales Achievement Categories",
               "path": "/awards/categories/Sales-Achievement-Categories/",
               "openInNewTab": false
