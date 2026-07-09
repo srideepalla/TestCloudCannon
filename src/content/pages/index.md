@@ -2,22 +2,22 @@
 _schema: default
 title: 'The Stevie® Awards for Sales & Customer Service '
 description: >-
-  The Stevie Awards for Sales &amp; Customer Service recognize the achievements
-  of contact center, customer service, business development, and sales
+  The Stevie Awards for Sales & Customer Service recognize the achievements of
+  contact center, customer service, business development, and sales
   professionals worldwide.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
       source: /assets/images/hero/sales.jpg
       alt: Stevie® Awards for Women in Business  ceremony
-    subheading: Winners Announced
-    heading: The 20th Annual Stevie® Awards for Sales &amp; Customer Service
+    subheading: Entries Now Open
+    heading: The 21st Annual Stevie® Awards for Sales &amp; Customer Service
     description: >-
       The Stevie Awards for Sales & Customer Service recognize the achievements
       of contact center, customer service, business development and sales
-      professionals worldwide. The 2027 edition will begin accepting nominations
-      this summer. Get the entry kit to learn how to prepare and submit
-      nominations.
+      professionals worldwide. Request your Entry Kit to learn how to submit
+      nominations to join the ranks of past Stevie® Award winners, including
+      Amazon Web Services, Delta Air Lines, and Dell Technologies.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -30,9 +30,9 @@ pageSections:
         uppercase: true
         size: md
       - _component: building-blocks/core-elements/button
-        text: see the winners
+        text: Ready? Enter Now
         hideText: false
-        link: /Awards/stevie-award-winners/
+        link: https://the-stevie-awards.com/
         openInNewTab: false
         iconName: ''
         iconPosition: before
@@ -47,7 +47,7 @@ pageSections:
     subheading: Ready to Be Recognized as the Best in Sales &amp; Customer Service?
     heading: Award Categories
     description: >-
-      The 2026 (20th annual) Stevie Awards for Sales & Customer Service are the
+      The 2027 (21st annual) Stevie Awards for Sales & Customer Service are the
       world’s top honors for contact center, customer service, business
       development, and sales professionals. All individuals and organizations -
       public and private, for-profit and non-profit, large and small - are
