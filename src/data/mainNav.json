@@ -56,6 +56,16 @@
           "openInNewTab": false,
           "children": [
             {
+              "name": "Sales Achievement Categories",
+              "path": "/awards/categories/Sales-Achievement-Categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Sales Distinction Categories",
+              "path": "/awards/categories/Sales-Distinction-Categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Sales Individual Categories",
               "path": "/awards/categories/Sales-Individual-Categories/",
               "openInNewTab": false
