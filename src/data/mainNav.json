@@ -56,6 +56,11 @@
           "openInNewTab": false,
           "children": [
             {
+              "name": "AI & Digital Transformation Customer Service Categories",
+              "path": "/awards/categories/AI-Digital-Transformation-Customer-Service-Categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Customer Service & Contact Center Achievement Categories",
               "path": "/awards/categories/Customer-Service-Contact-Center-Achievement-Categories/",
               "openInNewTab": false
@@ -128,6 +133,12 @@
         {
           "name": "Winners' Circle",
           "path": "/awards/2026-winnerscircle/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "People's Choice Stevie Awards for Favorite Customer Service",
+          "path": "/awards/peopleschoice/",
           "openInNewTab": false,
           "children": []
         }
