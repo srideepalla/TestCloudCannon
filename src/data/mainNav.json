@@ -76,6 +76,11 @@
               "openInNewTab": false
             },
             {
+              "name": "Customer Service Success Categories",
+              "path": "/awards/categories/Customer-Service-Success-Categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Sales Achievement Categories",
               "path": "/awards/categories/Sales-Achievement-Categories/",
               "openInNewTab": false
@@ -93,6 +98,11 @@
             {
               "name": "Sales Team Categories",
               "path": "/awards/categories/Sales-Team-Categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "SOCAP Sponsored Categories",
+              "path": "/awards/categories/SOCAP-Sponsored-Categories/",
               "openInNewTab": false
             }
           ]
