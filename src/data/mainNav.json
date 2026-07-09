@@ -92,7 +92,7 @@
             },
             {
               "name": "Customer Service Success Categories",
-              "path": "/awards/categories/Customer-Service-Success-Categories/",
+              "path": "/awards/categories/customer-service-sucess-categories/",
               "openInNewTab": false
             },
             {
@@ -145,7 +145,7 @@
         },
         {
           "name": "2026 Stevie Award Winners",
-          "path": "awards/2026-Stevie-Award-Winners",
+          "path": "/awards/2026-Stevie-Award-Winners",
           "openInNewTab": false,
           "children": []
         },

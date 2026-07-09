@@ -396,8 +396,7 @@ pageSections:
       and get professionally photographed and interviewed on our red carpet.
 
 
-      Visit the <a
-      href="https://sales.stevieawards.com/Awards/stevie-award-winners/"
+      Visit the <a href="/awards/2026-Stevie-Award-Winners"
       class="text-yellow-500 hover:underline">2026 Stevie Awards Winners
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
