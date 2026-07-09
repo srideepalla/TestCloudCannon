@@ -24,7 +24,7 @@ const pageImageRaw = props.image || seoData.logoSource;
 // Open Graph requires absolute URLs for images.
 const pageImage = pageImageRaw.startsWith("http")
   ? pageImageRaw
-  : new URL(pageImageRaw, Astro.site ?? "https://women.stevieawards.com").href;
+  : new URL(pageImageRaw, Astro.site ?? "https://sales.stevieawards.com").href;
 const pageKeywords = props.keywords?.join(", ") || seoData.keywords;
 const ogType = props.ogType ?? "website";
  
@@ -82,7 +82,7 @@ const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
 const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 
-const siteOrigin = "https://women.stevieawards.com";
+const siteOrigin = "https://sales.stevieawards.com";
 
 // Supported locales. Keys are the URL prefix / content directory under
 // src/content/pages/ (must match LANGUAGE_MAP keys in the translation scripts).
