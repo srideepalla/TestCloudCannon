@@ -56,6 +56,11 @@
           "openInNewTab": false,
           "children": [
             {
+              "name": "Customer Service & Contact Center Individual Categories",
+              "path": "/awards/categories/Customer-Service-Contact-Center-Individual-Categories/",
+              "openInNewTab": false
+            },
+            {
               "name": "Sales Achievement Categories",
               "path": "/awards/categories/Sales-Achievement-Categories/",
               "openInNewTab": false
