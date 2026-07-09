@@ -114,8 +114,8 @@
           "children": []
         },
         {
-          "name": "2025 Stevie Award Winners",
-          "path": "/awards/2025-sascs-winners/",
+          "name": "2026 Stevie Award Winners",
+          "path": "awards/2026-Stevie-Award-Winners",
           "openInNewTab": false,
           "children": []
         },
@@ -127,7 +127,7 @@
         },
         {
           "name": "Winners' Circle",
-          "path": "/awards/2025-winnerscircle/",
+          "path": "/awards/2026-winnerscircle/",
           "openInNewTab": false,
           "children": []
         }
