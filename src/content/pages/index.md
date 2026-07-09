@@ -235,12 +235,12 @@ pageSections:
   - _component: page-sections/features/split-list-form
     subheading: Stevie® Awards for Sales &amp; Customer Service
     heading: FEATURE STORIES
-    description: ''
+    description:
     list:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /sascs26-peoples-choice-winners.webp
+            source: /images/sascs26-peoples-choice-winners.webp
             alt: SASCS25 Winner Announcement
           title: >-
             Winners Announced in 2026 People's Choice Stevie® Awards for
