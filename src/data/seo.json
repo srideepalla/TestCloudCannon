@@ -1,9 +1,9 @@
 {
-  "name": "The Stevie® Awards for Women in Business",
+  "name": "The Stevie® Awards for Sales & Customer Service ",
   "url": "https://sales.stevieawards.com",
-  "description": "The Stevie® Awards for Women in Business are the world's premier business awards for female entrepreneurs, executives, employees and the organizations they run.",
+  "description": "The Stevie® Awards for Sales & Customer Service recognize the achievements of contact center, customer service, business development and sales professionals worldwide",
   "logoSource": "/images/logo.png",
-  "titleFormat": "{title} | The Stevie® Awards for Women in Business",
+  "titleFormat": "{title} | The Stevie® Awards for Sales & Customer Service",
   "twitterHandle": "@thestevieawards",
-  "keywords": "Stevie Awards, Women in Business, business awards, female entrepreneurs, women executives, business recognition, awards program"
+  "keywords": "Stevie Awards, Customer Service, Sales, business awards, entrepreneurs, sales executives, business recognition, awards programs"
 }
