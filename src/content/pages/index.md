@@ -479,7 +479,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54003668099-b411d8ddc0-o.jpg
           alt: The Stevie Awards for Great Employers
-        dateLabel: NOW
+        dateLabel: February 24, 2027
         name: The Stevie® Awards for Great Employers
         description: >-
           The Stevie Awards for Great Employers are open to all organizations
@@ -499,7 +499,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54003424986-e236287c23-o.jpg
           alt: The Stevie Awards for Technology Excellence
-        dateLabel: NOW
+        dateLabel: March 10, 2027
         name: The Stevie® Awards for Technology Excellence
         description: >-
           The Stevie Awards for Technology Excellence celebrate the remarkable
