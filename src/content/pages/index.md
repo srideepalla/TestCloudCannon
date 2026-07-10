@@ -40,12 +40,12 @@ pageSections:
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines & Events
+    deadlinesHeading: Upcoming Deadlines &amp; Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: Nominate Women-Owned Businesses, Entrepreneurs & More
+    subheading: Nominate Women-Owned Businesses, Entrepreneurs &amp; More
     heading: Award Categories
     description: >-
       For more than 20 years, the Stevie® Awards for Women in Business have
@@ -241,9 +241,7 @@ pageSections:
     heading: What Winning a Stevie Award Means to Our 2025 Winners
     videos:
       - youtubeId: UqX5Q9pE6io
-        title: >-
-          Distruptor Brand wins in the 2025 Stevie® Awards for Women in
-          Business 
+        title: Distruptor Brand wins in the 2025 Stevie® Awards for Women in Business
       - youtubeId: wvSEt0yvIqs
         title: >-
           Green Panther Skincare wins in the 2025 Stevie® Awards for Women in
@@ -279,7 +277,7 @@ pageSections:
           feedback from the judges; there aren't many awards that give you
           feedback and it is so valuable.
         authorName: Annette Densham
-        authorTitle: Founder & CEO, Award Writing Services, Indonesia
+        authorTitle: Founder &amp; CEO, Award Writing Services, Indonesia
         companyLogo:
           source: /src/assets/images/new-website-testimonial-logos-8.png
           alt: awardwriting
@@ -419,7 +417,7 @@ pageSections:
           source: /src/assets/images/iba.jpg
           alt: 'The International Business Awards® '
         dateLabel: NOW
-        name: 'The International Business Awards® '
+        name: The International Business Awards®
         description: >-
           The International Business Awards are open to all organizations
           worldwide, and include categories to honor accomplishments in all
@@ -437,7 +435,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54003668099-b411d8ddc0-o.jpg
           alt: The Stevie Awards for Great Employers
-        dateLabel: NOW
+        dateLabel: February 24, 2027
         name: The Stevie® Awards for Great Employers
         description: >-
           The Stevie Awards for Great Employers are open to all organizations
@@ -457,7 +455,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54003424986-e236287c23-o.jpg
           alt: The Stevie Awards for Technology Excellence
-        dateLabel: NOW
+        dateLabel: March 10, 2027
         name: The Stevie® Awards for Technology Excellence
         description: >-
           The Stevie Awards for Technology Excellence celebrate the remarkable
@@ -479,7 +477,7 @@ pageSections:
           source: /src/assets/images/54444944057-6a339b8488-o.jpg
           alt: The Stevie Awards for Sales & Customer Service
         dateLabel: July 15, 2026
-        name: The Stevie® Awards for Sales & Customer Service
+        name: The Stevie® Awards for Sales &amp; Customer Service
         description: >-
           The Stevie Awards for Sales & Customer Service are open to all
           organizations worldwide, and recognize the achievements of sales,
@@ -534,7 +532,7 @@ pageSections:
           source: /src/assets/images/53565954489-6d7913fedb-o.jpg
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
-        name: The Middle East & North Africa Stevie® Awards
+        name: The Middle East &amp; North Africa Stevie® Awards
         description: >-
           The Middle East & North Africa Stevie Awards recognize innovation in
           the workplace at organizations of all types in 18 nations in the MENA
