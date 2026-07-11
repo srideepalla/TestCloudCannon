@@ -35,6 +35,7 @@ const {
   positionHorizontal = "center",
   background = false,
   displayWidth = "100",
+  maxWidth = null,
   alignX = "center",
   link = "",
   openInNewTab = false,
@@ -56,6 +57,15 @@ const linkProps = hasLink
   : null;
 
 const displayWidthClass = displayWidth === "50" ? "width-50" : "width-100";
+
+const parsedMaxWidth =
+  typeof maxWidth === "number"
+    ? maxWidth
+    : typeof maxWidth === "string" && maxWidth.trim() !== "" && !Number.isNaN(Number(maxWidth))
+      ? Number(maxWidth)
+      : null;
+const containerStyle =
+  parsedMaxWidth && parsedMaxWidth > 0 ? `max-width: ${parsedMaxWidth}px;` : undefined;
 
 const hasValidSrc = source && typeof source === "string" && source.trim() !== "";
 
@@ -160,6 +170,7 @@ if (
 
 <div
   class:list={["image", displayWidthClass, `align-${alignX}`, className]}
+  style={containerStyle}
   {...htmlAttributes}
 >
   <div
