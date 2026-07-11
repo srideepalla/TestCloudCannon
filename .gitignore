@@ -37,3 +37,5 @@ yarn-error.log*
 # translation incremental-build cache
 .translation-cache/
 .last-build-timestamp
+# Claude Code local settings
+.claude/
