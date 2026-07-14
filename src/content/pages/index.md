@@ -515,20 +515,20 @@ pageSections:
         accentColor: ''
         buttonColor: ''
       - logo:
-          source: /src/assets/images/sascs-v2-hc-0220.png
-          alt: Stevie Awards for Sales & Customer Service
+          source: /src/assets/images/sawib-hc-0220-1.png
+          alt: Stevie Awards for Women In Business
         eventPhoto:
-          source: /src/assets/images/54444944057-6a339b8488-o.jpg
-          alt: The Stevie Awards for Sales & Customer Service
-        dateLabel: July 15, 2026
-        name: The Stevie® Awards for Sales &amp; Customer Service
+          source: /src/assets/images/53326016090-b15cd8eda3-o.jpg
+          alt: The Stevie Awards for Women In Business
+        dateLabel: NOW
+        name: The Stevie® Awards for Women In Business
         description: >-
-          The Stevie Awards for Sales & Customer Service are open to all
-          organizations worldwide, and recognize the achievements of sales,
-          customer service, and call center professionals.
-        link: https://sales.stevieawards.comp
+          The Stevie Awards for Women in Business are open to all organizations
+          worldwide, and recognize the achievements of women executives,
+          entrepreneurs, and the organizations they run.
+        link: https://women.stevieawards.com
         colorScheme: inherit
-        brandColor: '#99844b'
+        brandColor: '#2d7272'
         textColor: ''
         subtitleColor: ''
         accentColor: ''
