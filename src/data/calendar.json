@@ -25,16 +25,16 @@
       "description": "Late fees will apply for nominations submitted after this date."
     },
     {
-      "date": "2027-02-03T00:00:00.000Z",
-      "title": "Primary entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
-      "label": "Primary Entry deadline",
-      "description": ""
-    },
-    {
       "date": "2027-01-14T00:00:00.000Z",
       "title": "Customer Service Department of the Year Public Voting Opens ",
       "label": "CUSTOMER SERVICE DEPARTMENT OF THE YEAR PUBLIC  VOTING BEGINS ",
       "description": "An annual feature of the Stevie® Awards for Sales & Customer Service."
+    },
+    {
+      "date": "2027-02-03T00:00:00.000Z",
+      "title": "Final entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Primary Entry deadline",
+      "description": ""
     },
     {
       "date": "2027-03-03T00:00:00.000Z",
