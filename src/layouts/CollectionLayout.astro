@@ -66,10 +66,26 @@ const pageDescription = description || seoData.description;
 
 const siteOrigin = "https://sales.stevieawards.com";
 const sectionPath = `/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`;
+
+// For nested pages (e.g. a committee under the "Judging Committees" listing),
+// derive an intermediate breadcrumb from the entry's parent slug segment and
+// match it to the matching sidebar link so it shows a readable label + link.
+const slugParts = (entry?.id ?? "").split("/").filter(Boolean);
+const parentSegment = slugParts.length > 1 ? slugParts[0] : null;
+const parentLink = parentSegment
+  ? sidebar?.links.find(
+      (l: SidebarLink) =>
+        l.href.split("/").pop()?.toLowerCase() === parentSegment.toLowerCase()
+    )
+  : null;
+
 const breadcrumbItems = [
   { name: "Home", url: `${siteOrigin}/` },
   ...(sidebar?.heading
     ? [{ name: sidebar.heading, url: `${siteOrigin}${sectionPath}` }]
+    : []),
+  ...(parentLink
+    ? [{ name: parentLink.text, url: `${siteOrigin}${parentLink.href}` }]
     : []),
   { name: title, url: Astro.url.href },
 ];
@@ -118,6 +134,14 @@ const articleAuthor = entry?.data?.author ?? null;
     <span class="breadcrumb-sep">&gt;</span>
     <a href={localizePath(`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`, Astro.url.pathname)}>{sidebarHeading}</a>
     <span class="breadcrumb-sep">&gt;</span>
+    {
+      parentLink && (
+        <>
+          <a href={localizePath(parentLink.href, Astro.url.pathname)}>{localizeText(parentLink.text, locale)}</a>
+          <span class="breadcrumb-sep">&gt;</span>
+        </>
+      )
+    }
     <span class="breadcrumb-current">{title}</span>
   </CustomSection>
 
