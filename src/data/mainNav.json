@@ -323,6 +323,12 @@
       "path": "https://stevieawards.myshopify.com/",
       "openInNewTab": true,
       "children": []
+    },
+    {
+      "name": "WEBINARS",
+      "path": "/webinars/upcoming-webinars/",
+      "openInNewTab": false,
+      "children": []
     }
   ],
   "buttonSections": [
