@@ -8,8 +8,8 @@ description: >-
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source: /assets/images/hero/sales.jpg
-      alt: Stevie® Awards for Women in Business  ceremony
+      source: /src/assets/images/stevie-awards-sales-and-customer-service-ceremony.jpg
+      alt: Stevie® Awards for Sales & Customer Service ceremony
     subheading: Entries Now Open
     heading: The 21st Annual Stevie® Awards for Sales &amp; Customer Service
     description: >-
