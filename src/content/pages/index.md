@@ -431,7 +431,7 @@ pageSections:
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-10.jpg
         alt: SASCS26
         thumbnail: ''
-      - source: /src/assets/images/stevie-awards-sales-and-customer-service-11.jpg
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-11.jpg
         alt: SASCS26
         thumbnail: ''
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-12.jpg
@@ -461,7 +461,7 @@ pageSections:
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-20.jpg
         alt: SASCS26
         thumbnail: ''
-      - source: /src/assets/images/stevie-awards-sales-and-customer-service-21.jpg
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-21.jpg
         alt: SASCS26
         thumbnail: ''
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-22.jpg
@@ -482,7 +482,7 @@ pageSections:
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-30.jpg
         alt: SASCS26
         thumbnail: ''
-      - source: /src/assets/images/stevie-awards-sales-and-customer-service-31.jpg
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-31.jpg
         alt: SASCS26
         thumbnail: ''
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-32.jpg
@@ -512,7 +512,7 @@ pageSections:
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-40.jpg
         alt: SASCS26
         thumbnail: ''
-      - source: /src/assets/images/stevie-awards-sales-and-customer-service-41.jpg
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-41.jpg
         alt: SASCS26
         thumbnail: ''
       - source: /src/assets/images/stevie_awards_sales_and_customer_service-42.jpg
