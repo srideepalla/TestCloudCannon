@@ -401,47 +401,143 @@ pageSections:
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
     images:
-      - source: /images/54446061265-49f3defd2d-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie-awards-sales-and-customer-service-1.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445880874-205af66733-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-2.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445953939-ef541f8371-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-3.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445704336-2235346cfe-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-4.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/53651686926-9cb9f30b05-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-5.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445691401-72dc3e4ca9-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-6.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445771491-cc267bdd83-o.jpg
-        alt: Sales Speech Woman
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-7.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445725286-3903182155-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-8.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445993150-e426bb742f-o.jpg
-        alt: 'SASCS25 banquet '
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-9.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54444829137-9f50586960-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-10.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445964738-4976847e14-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie-awards-sales-and-customer-service-11.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54446024988-dc8dcdf881-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-12.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54446007368-7ec6977d72-o.jpg
-        alt: SASCS25
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-13.jpg
+        alt: SASCS26
         thumbnail: ''
-      - source: /images/54445938368-5126c8df28-o.jpg
-        alt: SASCS25 red carpet man
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-14.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-15.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-16.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-17.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-18.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-19.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-20.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie-awards-sales-and-customer-service-21.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-22.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-24.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-26.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-27.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-28.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-30.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie-awards-sales-and-customer-service-31.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-32.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-33.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-34.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-35.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-36.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-37.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-38.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-39.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-40.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie-awards-sales-and-customer-service-41.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-42.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-43.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-44.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-46.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-47.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-48.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-49.jpg
+        alt: SASCS26
+        thumbnail: ''
+      - source: /src/assets/images/stevie_awards_sales_and_customer_service-50.jpg
+        alt: SASCS26
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
