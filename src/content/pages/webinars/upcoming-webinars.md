@@ -1,50 +1,15 @@
 ---
 _schema: default
-title: Women|Future Webinars
+title: ' Webinars'
 description: >-
   Join us for three inspiring webinars taking place across June, July, and
   August 2026 - designed to empower, connect, and elevate women in business.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading:
-    text: coming soon
+    text:
     colorScheme: light
     backgroundColor: base
-  - _component: page-sections/builders/custom-section
-    label: Top Banner Image
-    contentSections:
-      - _component: building-blocks/core-elements/image
-        source:
-        alt:
-        sizes: '(max-width: 1280px) 100vw, 1280px'
-        widths:
-          - 640
-          - 1280
-          - 2560
-        width:
-        height:
-        rounded: false
-        alignX: center
-        aspectRatio: none
-        positionVertical: center
-        positionHorizontal: center
-        priority: false
-        link: >-
-          https://events.zoom.us/ev/AlP-HrRRp0dR0uu05YHymaoLNSYLxlq9ckutuv4PyM2S_LWuS8Ky~Anhwl_XeGoxbqDQLrOMecileFZV6OnX5XNI3cFs6DNLD49fgspD5CbpivA?lmt=1778251334000
-        openInNewTab: true
-    maxContentWidth: xl
-    paddingHorizontal: xl
-    paddingVertical: sm
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Intro
     contentSections:
@@ -54,39 +19,6 @@ pageSections:
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
     paddingVertical: 2xl
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
-  - _component: page-sections/builders/custom-section
-    label: Top Banner Image
-    contentSections:
-      - _component: building-blocks/core-elements/image
-        source:
-        alt:
-        sizes: '(max-width: 1280px) 100vw, 960px'
-        widths:
-          - 640
-          - 960
-          - 1920
-        rounded: false
-        alignX: center
-        aspectRatio: none
-        positionVertical: center
-        positionHorizontal: center
-        priority: false
-        link: >-
-          https://events.zoom.us/eo/Ar4HyDfsTUwExQwZVUZkEKEaQesL1k89yilL_2l6qdF2QITSLcF4~AggLXsr32QYFjq8BlYLZ5I06Dg
-        openInNewTab: true
-    maxContentWidth: xl
-    paddingHorizontal: lg
-    paddingVertical: md
     colorScheme: light
     backgroundColor: base
     backgroundImage:
@@ -111,7 +43,9 @@ pageSections:
         layout: center
         minItemWidth: 100
         maxItemWidth: 281
-        items: []
+        items:
+          - contentSections: []
+          - contentSections: []
         gap: lg
     maxContentWidth: 2xl
     paddingHorizontal: lg
@@ -245,7 +179,22 @@ pageSections:
     description:
     list:
       _component: building-blocks/wrappers/article-link-list
-      stories: []
+      stories:
+        - image:
+            source: ''
+            alt: ''
+          title: ''
+          link: ''
+        - image:
+            source: ''
+            alt: ''
+          title: ''
+          link: ''
+        - image:
+            source: ''
+            alt: ''
+          title: ''
+          link: ''
     buttonSections: []
     formHeading:
     formEmbed: ''
