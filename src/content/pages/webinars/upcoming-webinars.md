@@ -153,7 +153,7 @@ pageSections:
                 alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
-                text: Register Now
+                text: Watch On-Demand
                 hideText: false
                 link: >-
                   https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
@@ -252,9 +252,6 @@ pageSections:
           "Register for July 15 Webinar") to receive your promo code and
           complete offer details in your webinar registration confirmation
           email.
-
-
-          &nbsp;
         alignX: center
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
@@ -346,7 +343,7 @@ pageSections:
                 alignX: start
                 iconPosition: before
               - _component: building-blocks/core-elements/button
-                text: Register Now
+                text: Watch On-Demand
                 hideText: false
                 link: >-
                   https://events.zoom.us/ev/AgMvkxPuVGqaJG8UnMzHrEP2OG_FwK0e-T-WfOjjVqD-vFUTpKjq~AgHoVfkdIAFPIChHE0EubOa2RmUel6Yzsg8jDifVhqrTU5NcTfKrpgWGmw
