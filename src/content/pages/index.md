@@ -2,22 +2,25 @@
 _schema: default
 title: 'The Stevie® Awards for Sales & Customer Service '
 description: >-
-  The Stevie Awards for Sales & Customer Service recognize the achievements of
-  contact center, customer service, business development, and sales
+  The Stevie Awards for Sales &amp; Customer Service recognize the achievements
+  of contact center, customer service, business development, and sales
   professionals worldwide.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
       source: /src/assets/images/stevie-awards-sales-and-customer-service-ceremony.jpg
-      alt: Stevie® Awards for Sales & Customer Service ceremony
+      alt: International Business Awards®
     subheading: Entries Now Open
-    heading: The 21st Annual Stevie® Awards for Sales &amp; Customer Service
+    heading: The 23rd Annual International Business Awards®
     description: >-
-      The Stevie Awards for Sales & Customer Service recognize the achievements
-      of contact center, customer service, business development and sales
-      professionals worldwide. Request your Entry Kit to learn how to submit
-      nominations to join the ranks of past Stevie® Award winners, including
-      Amazon Web Services, Delta Air Lines, and Dell Technologies.
+      Nominate your people, projects, or organization in the 2026 edition of The
+      International Business Awards®, the top honors for achievement in the
+      workplace across the globe.
+
+
+      Request your Entry Kit to learn how to submit nominations to join the list
+      of prestigious Stevie® Award winners including DHL, Cisco, Samsung,
+      Toyota, and many others.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -44,62 +47,76 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: Ready to Be Recognized as the Best in Sales &amp; Customer Service?
+    subheading: The World's Premier Business Awards
     heading: Award Categories
     description: >-
-      The 2027 (21st annual) Stevie Awards for Sales & Customer Service are the
-      world’s top honors for contact center, customer service, business
-      development, and sales professionals. All individuals and organizations -
-      public and private, for-profit and non-profit, large and small - are
-      eligible to submit nominations.
+      For more than 20 years, The International Business Awards®, known as the
+      “International Stevies”, have shone a spotlight on organizations of every
+      type and size worldwide: large and small, public and private, for-profit
+      and non-profit. Open to all organizations and individuals, the 2025
+      competition attracted more than 3,800 nominations from organizations in 78
+      nations and markets.
 
 
-      Choose from 150+ Award Categories that Spotlight the Achievements of Sales
-      and Customer Service Executives, Organizations, Contact Centers, and New
-      Products & Services, including:
+      The IBAs feature a wide range of categories spanning Management,
+      Marketing, Public Relations, Product Development, Technology, and more,
+      with new 2026 category groups highlighting Artificial Intelligence and
+      Public Sector & Government Innovation.
     list:
       _component: building-blocks/core-elements/list
       items:
-        - text: Customer Service Department of the Year
+        - text: AI Categories (New for 2026)
           iconName: four-pointed-star
           iconColor: brand
-        - text: Employer of the Year
+        - text: Achievement Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: AI & Digital Transformation Categories (New for 2026)
+        - text: App Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Team & Department Categories
+        - text: Company/Organization Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Sales Executive of the Year
+        - text: Corporate Communications & Public Relations Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Award for Innovation in Sales
+        - text: Creative Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Solution Providers
+        - text: Customer Service Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Solutions & Implementations
+        - text: Entrepreneur Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in Global Customer Service Excellence
+        - text: Event Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Achievement in the Use of Data & Analytics in Sales
+        - text: Human Resources Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Best Use of Technology in Sales
+        - text: Individual Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Best Use of Technology in Customer Services
+        - text: Management Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Sales Training or Coaching Program of the Year
+        - text: New Product & Product Management Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Thought Leadership Categories
+        - text: Marketing Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Marketing Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Marketing Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Marketing Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Marketing Categories
           iconName: four-pointed-star
           iconColor: brand
       listType: icon
