@@ -45,7 +45,7 @@ pageSections:
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines & Events
+    deadlinesHeading: Upcoming Deadlines &amp; Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
@@ -107,19 +107,28 @@ pageSections:
         - text: New Product & Product Management Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Marketing Categories
+        - text: Podcast Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Marketing Categories
+        - text: Publication Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Marketing Categories
+        - text: Social Media Awards
           iconName: four-pointed-star
           iconColor: brand
-        - text: Marketing Categories
+        - text: Support Categories
           iconName: four-pointed-star
           iconColor: brand
-        - text: Marketing Categories
+        - text: Sustainability Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Technology Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Video Categories
+          iconName: four-pointed-star
+          iconColor: brand
+        - text: Web Achievement Categories
           iconName: four-pointed-star
           iconColor: brand
       listType: icon
