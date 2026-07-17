@@ -162,11 +162,10 @@ pageSections:
   - _component: page-sections/features/feature-logo-scroller
     heading: Recognizing Industry Leaders Worldwide
     description: >-
-      Past winners in the Stevie® Awards for Sales & Customer Service leverage
-      their wins to enhance their reputations, secure media coverage, and
-      differentiate themselves in competitive markets. Each year, small and
-      mid-sized organizations are honored as winners alongside Fortune 500
-      giants like Amazon Web Services, Delta Air Lines, and Dell Technologies.
+      Every organization has an equal chance to win a Stevie Award. Each year,
+      small and mid-sized organizations are honored as winners alongside Fortune
+      500 giants like Delta Airlines, IBM, PayPal and Viettel. Past winners
+      include:
     logos:
       - source: /images/adobe-corporate-logo-svg.png
         alt: Adobe
@@ -315,49 +314,41 @@ pageSections:
   - _component: page-sections/features/grid-videos
     heading: What Winning a Stevie® Award Means to Our 2026 Winners
     videos:
-      - youtubeId: CynQFx5BwZQ
-        title: >-
-          Voya Financial wins in the 2026 Stevie® Awards for Sales &amp;
-          Customer Service
-      - youtubeId: aze-RmLQ3lA
-        title: >-
-          WP Engine wins in the 2026 Stevie® Awards for Sales &amp; Customer
-          Service
-      - youtubeId: T-5kYxALZfo
-        title: >-
-          American Airlines wins in the 2026 Stevie® Awards for Sales &amp;
-          Customer Service
+      - youtubeId: C5LdvqBMA1c
+        title: ' 8x8 wins a Stevie® Award in The 2025 International Business Awards®'
+      - youtubeId: L87uOu3UCNY
+        title: ' Vitamin Marketing Services wins a Stevie® Award in The 2025 International Business Awards®'
+      - youtubeId: a8cAa8Rf5qM
+        title: ' Anytime Counselling wins a Stevie® Award in The 2025 International Business Awards®'
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
     heading: Winner Testimonials
     testimonials:
       - quote: >-
-          Winning the Gold Stevie® Award for Female Executive of the Year is a
-          deeply personal honor, but it also highlights the exceptional work and
-          dedication of the Viderity team. This recognition not only celebrates
-          my leadership, but also elevates Viderity's reputation as a company
-          that values innovation, education, and delivering impactful solutions
-          to our clients.
-        authorName: Rachel Everett
-        authorTitle: CEO, Viderity, USA
+          Winning the Stevie Award has been an affirmation of our good work and
+          the intent that we set out with. It gives us validation of our effort,
+          our plans, and our execution. This award helps bring our initiatives
+          to a larger community. We will be able to build on our purpose to make
+          students industry-ready, and hope this award will encourage others to
+          do more for the larger community.
+        authorName: 'Mona Bharadwaj '
+        authorTitle: Technology Partner ,Specialist, IBM India
         companyLogo:
-          source: /src/assets/images/logo-04.png
-          alt: viderity
+          source: /images/IBA/IBA-Winner-IBM.png
+          alt: IBM India
       - quote: >-
-          The opportunities the Stevies give to share and be involved is heads
-          above many other award programs. I started taking other people in
-          business to New York for the Stevie Awards for Women in Business in
-          2017. I love the event and mixing with other amazing winners. It's
-          always so well done and professional. The Stevie Awards process is one
-          of integrity, easy to follow, and the judging is fair. I love the
-          feedback from the judges; there aren't many awards that give you
-          feedback and it is so valuable.
-        authorName: Annette Densham
-        authorTitle: Founder &amp; CEO, Award Writing Services, Indonesia
+          On behalf of my team at Pepsico, we are very excited and proud to have
+          won the Gold Stevie Award. This award is a confirmation of the efforts
+          that Pepsico as a company has taken to focus on high-tech to bring
+          more innovation, productivity, and tech-based capabilities to the
+          business, our partners, and consumers. Winning the Stevie Award also
+          boosts the morale and ambition of the team.
+        authorName: Ravi Boggaram
+        authorTitle: ' CTO Sr. Director, Global Digital Services, Pepsico'
         companyLogo:
-          source: /src/assets/images/new-website-testimonial-logos-8.png
-          alt: awardwriting
+          source: /images/pepsico-logo-header.webp
+          alt: Pepsico
       - quote: >-
           This is my first Stevie Award, and I’m representing my company as
           Co-founder and CEO. This is an international recognition as well as
@@ -414,14 +405,11 @@ pageSections:
   - _component: page-sections/carousels/gallery-carousel
     heading: Event Gallery
     description: >-
-      Winning a Stevie Award gives you and your team the chance to showcase your
-      achievements on a global stage. Winners in this year's 20th annual Stevie
-      Awards for Sales & Customer Service were recognized during a gala awards
-      banquet at New York's Marriott Marquis Hotel on March 5, 2026. More than
-      300 representatives of Stevie-winning organizations, jury members, and
-      sponsors attended the ceremony. While attendance was not required to win,
-      all winners had the opportunity to deliver an acceptance speech on stage
-      and get professionally photographed and interviewed on our red carpet.
+      Winning a Stevie Award is an opportunity to showcase your achievements on
+      a global stage. On October 10, 2025, more than 300 executives from around
+      the world attended the joint ceremony for The 22nd International Business
+      Awards® and the 11th German Stevie Awards® to witness the acceptance
+      speeches of winners from a variety of industries and nations.
 
 
       Visit the <a href="/awards/2026-Stevie-Award-Winners"
