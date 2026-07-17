@@ -321,7 +321,7 @@ pageSections:
                 size: md
           - contentSections:
               - _component: building-blocks/core-elements/image
-                source: /src/assets/images/july-speakers-2-1.png
+                source: /src/assets/images/apac-wfw-july-replay.png
                 alt: Women|Future Webinar July APAC Session
                 sizes: '(max-width: 1280px) 100vw, 400px'
                 widths:
