@@ -1,14 +1,17 @@
 ---
 _schema: default
-title: 'The Stevie® Awards for Sales & Customer Service '
+title: The International Business Awards®
 description: >-
-  The Stevie Awards for Sales &amp; Customer Service recognize the achievements
-  of contact center, customer service, business development, and sales
-  professionals worldwide.
+  For more than 20 years, The International Business Awards®, known as the
+  “International Stevies”, have shone a spotlight on organizations of every type
+  and size worldwide: large and small, public and private, for-profit and
+  non-profit. Open to all organizations and individuals, the 2025 competition
+  attracted more than 3,800 nominations from organizations in 78 nations and
+  markets. 
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source: /src/assets/images/stevie-awards-sales-and-customer-service-ceremony.jpg
+      source: /images/IBA/IBA-Home-5.jpg
       alt: International Business Awards®
     subheading: Entries Now Open
     heading: The 23rd Annual International Business Awards®
@@ -42,7 +45,7 @@ pageSections:
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines &amp; Events
+    deadlinesHeading: Upcoming Deadlines & Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
