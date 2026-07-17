@@ -7,7 +7,7 @@ description: >-
   and size worldwide: large and small, public and private, for-profit and
   non-profit. Open to all organizations and individuals, the 2025 competition
   attracted more than 3,800 nominations from organizations in 78 nations and
-  markets. 
+  markets.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
@@ -269,29 +269,28 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /images/sascs26-peoples-choice-winners.webp
-            alt: SASCS25 Winner Announcement
-          title: >-
-            Winners Announced in 2026 People's Choice Stevie® Awards for
-            Favorite Customer Service
+            source: /images/iba25-winners-1.webp
+            alt: IBA25 Winner Announcement
+          title: Winners in the 2025 International Business Awards® Announced
           link: >-
-            https://blog.stevieawards.com/blog/winners-announced-in-2026-peoples-choice-stevie-awards-for-favorite-customer-service?_gl=1*14xz74z*_gcl_au*NjM4ODkwMjM4LjE3ODEyNDg4MzA.*_ga*MTQxNTczMjA3OC4xNzc5NzkzOTc4*_ga_75EDJ0F52B*czE3ODMxNjMzODIkbzI2JGcxJHQxNzgzMTY3NDE3JGo2MCRsMCRoMA..
+            https://blog.stevieawards.com/blog/stevie-awards-announce-winners-in-the-22nd-annual-international-business-awards-from-across-the-globe
         - image:
-            source: images/sascs26-grand-winners.png
+            source: /images/iba25-winners-9.webp
             alt: grand stevie awards
           title: >-
-            Grand Stevie® Award Winners Announced in 20th Annual Stevie Awards
-            for Sales &amp; Customer Service
+            Grand Stevie® Winners Announced in 22nd International Business
+            Awards®
           link: >-
-            https://blog.stevieawards.com/blog/grand-stevie-award-winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*ggoxuq*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcwOTg3JGo0NiRsMCRoMA..
+            https://blog.stevieawards.com/blog/grand-stevie-winners-announced-in-22nd-international-business-awards
         - image:
-            source: /images/sascs26-winners-1.png
+            source: /images/ibagsa25-pc-horizontal.webp
             alt: winner announced
           title: >-
-            Winners Announced in 20th Annual Stevie® Awards for Sales &amp;
-            Customer Service
+            Winners of 2025 People's Choice Stevie® Awards for Favorite
+            Companies Announced in The International Business Awards and the
+            German Stevie Awards
           link: >-
-            https://blog.stevieawards.com/blog/winners-announced-in-20th-annual-stevie-awards-for-sales-customer-service?_gl=1*18kpxu7*_gcl_au*MTA5NDQzMTMzLjE3ODI0NTQ2MjQ.*_ga*NDI0MjM0MDYwLjE3Nzk3OTQ4MjU.*_ga_75EDJ0F52B*czE3ODMxNzA5NzMkbzIwJGcxJHQxNzgzMTcxMDQ3JGo2MCRsMCRoMA..
+            https://blog.stevieawards.com/blog/winners-of-2025-peoples-choice-stevie-awards-for-favorite-companies-announced-in-the-international-business-awards-and-the-german-stevie-awards
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
     formEmbed: >-
