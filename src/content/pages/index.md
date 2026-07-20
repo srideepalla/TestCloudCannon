@@ -417,77 +417,83 @@ pageSections:
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
     images:
-      - source: /src/assets/images/stevie-awards-sales-and-customer-service-1.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-1.jpg
+        alt: IBA Winner
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-2.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-2.jpg
+        alt: IBA winner
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-3.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-3.jpg
+        alt: IBA winner
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-4.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-4.jpg
+        alt: IBA Winners
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-6.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-5.jpg
+        alt: IBA Winners
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-8.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-6.jpg
+        alt: IBA WINNER 6
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-14.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-7.jpg
+        alt: IBA Winner7
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-9.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-8.jpg
+        alt: IBA Winner 8
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-10.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-9.jpg
+        alt: IBA 9
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-15.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-10.jpg
+        alt: iba WINNER 10
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-49.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-11.jpg
+        alt: IBA Winner 11
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-17.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-12.jpg
+        alt: IBA Winner12
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-19.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-13.jpg
+        alt: IBA WINNER 13
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-21.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-14.jpg
+        alt: IBA WINNER 14
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-26.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-15.jpg
+        alt: IBA Winner
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-27.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-16.jpg
+        alt: IBA WINNER 16
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-30.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-17.jpg
+        alt: IBA WINNER 17
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-33.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-18.jpg
+        alt: IBA WINNER 18
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-34.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-19.jpg
+        alt: 'IBA '
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-37.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-20.jpg
+        alt: IBA WINNER 20
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-39.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-21.jpg
+        alt: IBA WINNER21
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-42.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-22.jpg
+        alt: IBA WINNER 22
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-44.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-23.jpg
+        alt: IBA WINNER 23
         thumbnail: ''
-      - source: /src/assets/images/stevie_awards_sales_and_customer_service-50.jpg
-        alt: SASCS26
+      - source: /images/IBA/IBA25-Winner-24.jpg
+        alt: IBA WINNER 24
+        thumbnail: ''
+      - source: /images/IBA/IBA25-Winner-24.jpg
+        alt: IBA WINNER 24
+        thumbnail: ''
+      - source: /images/IBA/IBA25-Winner-26.jpg
+        alt: IBA WINNER 26
         thumbnail: ''
     colorScheme: dark
     backgroundColor: base
