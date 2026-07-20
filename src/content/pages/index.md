@@ -512,7 +512,7 @@ pageSections:
           The International Business Awards are open to all organizations
           worldwide, and include categories to honor accomplishments in all
           aspects of work life.
-        link: https://iba.stevieawards.com/
+        link: /
         colorScheme: inherit
         brandColor: '#003366'
         textColor: ''
