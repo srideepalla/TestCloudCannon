@@ -56,83 +56,123 @@
           "openInNewTab": false,
           "children": [
             {
-              "name": "AI & Digital Transformation Customer Service Categories",
-              "path": "/awards/categories/ai-digital-transformation-customer-service-categories/",
+              "name": "Achievement Categories",
+              "path": "/awards/categories/achievement-categories/",
               "openInNewTab": false
             },
             {
-              "name": "AI & Digital Transformation Sales Categories",
-              "path": "/awards/categories/ai-digital-transformation-sales-categories/",
+              "name": "Achievement in Management Categories",
+              "path": "/awards/categories/achievement-in-management-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Business Development Categories",
-              "path": "/awards/categories/business-development-categories/",
+              "name": "Achievement in Marketing Categories",
+              "path": "/awards/categories/achievement-in-marketing-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Customer Service & Contact Center Achievement Categories",
-              "path": "/awards/categories/customer-service-contact-center-achievement-categories/",
+              "name": "Achievement in Public Relations Categories",
+              "path": "/awards/categories/achievement-in-public-relations-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Customer Service & Contact Center Individual Categories",
-              "path": "/awards/categories/customer-service-contact-center-individual-categories/",
+              "name": "AI Innovation & Transformation Categories",
+              "path": "/awards/categories/ai-innovation-transformation-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Customer Service & Contact Center Team Categories",
-              "path": "/awards/categories/customer-service-contact-center-team-categories/",
+              "name": "App Categories",
+              "path": "/awards/categories/app-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Customer Service Department Categories",
-              "path": "/awards/categories/customer-service-department-categories/",
+              "name": "Company/Organization Categories",
+              "path": "/awards/categories/company-organization-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Customer Service Success Categories",
-              "path": "/awards/categories/customer-service-sucess-categories/",
+              "name": "Creative Categories",
+              "path": "/awards/categories/creative-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Sales Achievement Categories",
-              "path": "/awards/categories/sales-achievement-categories/",
+              "name": "Customer Service Categories",
+              "path": "/awards/categories/customer-service-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Sales Distinction Categories",
-              "path": "/awards/categories/sales-distinction-categories/",
+              "name": "Entrepreneur Categories",
+              "path": "/awards/categories/entrepreneur-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Sales Individual Categories",
-              "path": "/awards/categories/sales-individual-categories/",
+              "name": "Event Categories",
+              "path": "/awards/categories/event-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Sales Team Categories",
-              "path": "/awards/categories/sales-team-categories/",
+              "name": "Human Resources Categories",
+              "path": "/awards/categories/human-resources-categories/",
               "openInNewTab": false
             },
             {
-              "name": "SOCAP Sponsored Categories",
-              "path": "/awards/categories/socap-sponsored-categories/",
+              "name": "Individual Categories",
+              "path": "/awards/categories/individual-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Solution Provider Categories",
-              "path": "/awards/categories/solution-provider-categories/",
+              "name": "New Product & Product Management Categories",
+              "path": "/awards/categories/new-product-product-management-categories/",
               "openInNewTab": false
             },
             {
-              "name": "Solutions & Implementations Categories",
-              "path": "/awards/categories/solutions-implementations-categories/",
+              "name": "Podcast Categories",
+              "path": "/awards/categories/podcast-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Public Sector & Government Innovation Categories",
+              "path": "/awards/categories/public-sector-government-innovation-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Publication Categories",
+              "path": "/awards/categories/publication-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Social Media Categories",
+              "path": "/awards/categories/social-media-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Support Categories",
+              "path": "/awards/categories/support-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Sustainability Categories",
+              "path": "/awards/categories/sustainability-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Technology Categories",
+              "path": "/awards/categories/technology-categories/",
               "openInNewTab": false
             },
             {
               "name": "Thought Leadership Categories",
               "path": "/awards/categories/thought-leadership-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Video Categories",
+              "path": "/awards/categories/video-categories/",
+              "openInNewTab": false
+            },
+            {
+              "name": "Web Achievement Categories",
+              "path": "/awards/categories/web-achievement-categories/",
               "openInNewTab": false
             }
           ]
