@@ -1,6 +1,6 @@
 {
   "logoSource": "/src/assets/images/sascs-hc-w.png",
-  "logoAlt": "The Stevie® Awards for Sales & Customer Service",
+  "logoAlt": null,
   "quickLinks": [
     {
       "name": "Blog",
@@ -9,11 +9,13 @@
     },
     {
       "name": "Programs",
-      "path": "/about/about-us"
+      "path": "/about/about-us",
+      "openInNewTab": false
     },
     {
       "name": "Calendar",
-      "path": "/about/calendar"
+      "path": "/about/calendar",
+      "openInNewTab": false
     },
     {
       "name": "Store",
@@ -22,11 +24,13 @@
     },
     {
       "name": "Press",
-      "path": "/press/press-releases/"
+      "path": "/press/press-releases/",
+      "openInNewTab": false
     },
     {
       "name": "Contact Us",
-      "path": "/about/contact"
+      "path": "/about/contact",
+      "openInNewTab": false
     }
   ],
   "newsletterHeading": "Subscribe to our newsletter",
