@@ -1,10 +1,15 @@
 ---
 _schema: default
-title:
+title: International Business Awards®
 description: >-
-  Entries for the 23rd Annual Stevie® Awards for Women in Business open May 12.
-  Stay tuned to recognize the achievements of women entrepreneurs and executives
-  worldwide.
+  Categories
+
+  For more than 20 years, The International Business Awards®, known as the
+  “International Stevies”, have shone a spotlight on organizations of every type
+  and size worldwide: large and small, public and private, for-profit and
+  non-profit. Open to all organizations and individuals, the 2025 competition
+  attracted more than 3,800 nominations from organizations in 78 nations and
+  markets.
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Stay Tuned!
