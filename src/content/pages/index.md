@@ -355,20 +355,6 @@ pageSections:
         companyLogo:
           source: /images/1684529716669.jpg
           alt: Evanesse
-      - quote: >-
-          Winning Female Thought Leader of the Year is an incredible honor that
-          validates the dedication and passion I pour into advancing mental
-          health and wellness in the workplace. For both myself and my
-          organization, this recognition is a testament to our commitment to
-          creating meaningful, human-centered benefits that support the
-          well-being of individuals globally. It inspires us to continue driving
-          impactful change in the way mental health and wellness are understood
-          and prioritized.
-        authorName: Danae Goldsmith
-        authorTitle: Sr. Director of Strategic Partnerships, Workplace Options, USA
-        companyLogo:
-          source: /src/assets/images/images-2.png
-          alt: workplaceoptions
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/gallery-carousel
