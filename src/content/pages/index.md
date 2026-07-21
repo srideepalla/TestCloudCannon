@@ -160,104 +160,75 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Recognizing Industry Leaders Worldwide
+    heading: /images/IBA/IBA-Winner-Carrefoursa.png
     description: >-
       Every organization has an equal chance to win a Stevie Award. Each year,
       small and mid-sized organizations are honored as winners alongside Fortune
       500 giants like Delta Airlines, IBM, PayPal and Viettel. Past winners
       include:
     logos:
-      - source: /images/adobe-corporate-logo-svg.png
-        alt: Adobe
-      - source: /images/az-logo-twitter-438x220px.png
-        alt: Allianz
-      - source: /images/allstate-logo.png
-        alt: Allstate
-      - source: /images/fb-image.jpg
-        alt: GoHealth
-      - source: /images/dun-bradstreet-logo-500x225-1-1.png
-        alt: Dun and bradstreet
-      - source: /images/intuit-logo.png
-        alt: intuit
-      - source: /images/capital-rx-logo.jpg
-        alt: Capital Rx
-      - source: /images/alight-solutions-logo.png
-        alt: Alight Solutions
-      - source: /images/logos/cognizant-new-logo-400px.jpg
-        alt: Cognizant
-      - source: /src/assets/images/playwise.png
-        alt: Playwise
-      - source: /src/assets/images/IBA-Winner-Salesforce.png
-        alt: Salesforce
-      - source: /src/assets/images/cognizant-logo.jpg
-        alt: Cognizant
-      - source: /images/polyai-logo-slate-rgb.jpg
-        alt: PolyAI
-      - source: /images/xxl-qualitest-fullcolor.jpg
-        alt: Qualitest
-      - source: /src/assets/images/images.webp
-        alt: Softpro
-      - source: /images/logos/halkbank-logo-svg.png
-        alt: Halkbank
-      - source: /images/nationwide-insurance-logo.png
-        alt: Nationwide
-      - source: >-
-          /images/654bfda47b47713a8d9acecd-vsa-logo-portrait-white-background.png
-        alt: ValueSelling Associates
-      - source: /images/ajmi-general.jpeg
-        alt: Al Jazeera Media Institute
-      - source: /images/cisco-logo-blue-2016-svg.png
+      - source: /images/IBA/IBA-Winner-Amazon.jpeg
+        alt: Amazon
+      - source: /images/IBA/IBA-Winner-AyalaLand.jpg
+        alt: AyalaLand
+      - source: /images/IBA/IBA-Winner-Carrefoursa.png
+        alt: Carrefoursa
+      - source: /images/IBA/IBA-Winner-CathayUnitedBank.jpg
+        alt: Cathay United Bank
+      - source: /images/IBA/IBA-Winner-Cisco.png
         alt: Cisco
-      - source: /images/voya-financial-logo.png
-        alt: Voya Financial
-      - source: /images/ford-logo-flat-svg.png
-        alt: Ford
-      - source: /images/adp-logo.jpg
-        alt: ADP
-      - source: /images/qnb-finansbank-logo.png
-        alt: QNB Finansbank
-      - source: /images/dell-technologies-vertical-logo.png
+      - source: /images/IBA/IBA-Winner-Dell.png
         alt: Dell
-      - source: /images/logos/sales-partnerships-inc-1.png
-        alt: Sales Partnerships
-      - source: /images/delta-air-lines-logo.jpg
+      - source: /images/IBA/IBA-Winner-DHL.png
+        alt: DHL Express
+      - source: /images/IBA/IBA-Winner-Delta.jpg
         alt: Delta
-      - source: /images/samsung-symbol.png
-        alt: Samsung
-      - source: /images/dhl-logo-svg.png
-        alt: DHL
-      - source: /images/brooks-group-logo-125x.jpg
-        alt: Brooks Group
-      - source: /images/toyota-logo-red-svg.png
+      - source: /images/IBA/IBA-Winner-DrPhoneFix.jpg
+        alt: Dr. Phone Fix
+      - source: /images/IBA/IBA-Winner-ExtendMax.jpg
+        alt: ExtendMax
+      - source: /images/IBA/IBA-Winner-Ford.png
+        alt: Ford
+      - source: /images/IBA/IBA-Winner-Halkbank.png
+        alt: Halkbank
+      - source: /images/IBA/IBA-Winner-Toyota.png
         alt: Toyota
-      - source: /images/transperfect-logo.png
-        alt: Transperfect logo
-      - source: /images/verizon.png
-        alt: Verizon
-      - source: /images/sap-2011-logo-svg.png
-        alt: SAP
-      - source: /src/assets/images/IBA/es/IBA-Winner-IBM.png
-        alt: ibm
-      - source: /images/amazon-web-services-logo-svg.png
-        alt: AWS
-      - source: /images/vizio-logo.png
-        alt: Vizio
-      - source: /src/assets/images/images-1-1.png
-        alt: Viettel
-      - source: /images/ceo-wolter-kluwer.png
-        alt: Wolters Kluwer
-      - source: /images/logo-att-business.webp
-        alt: ATT
-      - source: /images/veeam-logo.png
-        alt: 'Veeam '
-      - source: /images/vanguard-logo-1.jpg
-        alt: Vanguard
-      - source: /images/salesforce-com-logo-svg.png
+      - source: /images/IBA/IBA-Winner-Telus.jpg
+        alt: Telus
+      - source: /images/IBA/IBA-Winner-HaseIgel.jpg
+        alt: Hase & Igel
+      - source: /images/IBA/IBA-Winner-IBM.png
+        alt: IBM
+      - source: /images/IBA/IBA-Winner-LLYC.jpg
+        alt: LLYC
+      - source: /images/IBA/IBA-Winner-LoungeGroup.png
+        alt: Lounge Group
+      - source: /images/IBA/IBA-Winner-OctopusEnergy.jpg
+        alt: Octopus Energy
+      - source: /images/IBA/IBA-Winner-OPET.png
+        alt: OPET
+      - source: /images/IBA/IBA-Winner-PayPal.jpg
+        alt: PayPal
+      - source: /images/IBA/IBA-Winner-PWC.png
+        alt: PWC
+      - source: /images/IBA/IBA-Winner-QNET.jpg
+        alt: QNET
+      - source: /images/IBA/IBA-Winner-Salesforce.png
         alt: Salesforce
-      - source: /images/sap-2011-logo-svg.png
-        alt: SAP logo
-      - source: /images/logos/paypal-svg.png
-        alt: Paypal
+      - source: /images/IBA/IBA-Winner-Samsung.png
+        alt: Samsung
+      - source: /images/IBA/IBA-Winner-SaudiAramco.png
+        alt: SaudiAramco
+      - source: /images/IBA/IBA-Winner-Sony.jpg
+        alt: Sony
+      - source: /images/IBA/IBA-Winner-TelkomIndonesia.png
+        alt: Telkom Indonesia
+      - source: /images/IBA/IBA-Winner-Unicef.png
+        alt: Unicef
+      - source: /images/IBA/IBA-Winner-Visatec.png
+        alt: Viettel
+      - source: /images/IBA/IBA-Winner-Visatec.png
+        alt: Visatec
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
@@ -315,11 +286,15 @@ pageSections:
     heading: What Winning a Stevie® Award Means to Our 2026 Winners
     videos:
       - youtubeId: C5LdvqBMA1c
-        title: ' 8x8 wins a Stevie® Award in The 2025 International Business Awards®'
+        title: 8x8 wins a Stevie® Award in The 2025 International Business Awards®
       - youtubeId: L87uOu3UCNY
-        title: ' Vitamin Marketing Services wins a Stevie® Award in The 2025 International Business Awards®'
+        title: >-
+          Vitamin Marketing Services wins a Stevie® Award in The 2025
+          International Business Awards®
       - youtubeId: a8cAa8Rf5qM
-        title: ' Anytime Counselling wins a Stevie® Award in The 2025 International Business Awards®'
+        title: >-
+          Anytime Counselling wins a Stevie® Award in The 2025 International
+          Business Awards®
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
@@ -332,7 +307,7 @@ pageSections:
           to a larger community. We will be able to build on our purpose to make
           students industry-ready, and hope this award will encourage others to
           do more for the larger community.
-        authorName: 'Mona Bharadwaj '
+        authorName: Mona Bharadwaj
         authorTitle: Technology Partner ,Specialist, IBM India
         companyLogo:
           source: /images/IBA/IBA-Winner-IBM.png
@@ -345,7 +320,7 @@ pageSections:
           business, our partners, and consumers. Winning the Stevie Award also
           boosts the morale and ambition of the team.
         authorName: Ravi Boggaram
-        authorTitle: ' CTO Sr. Director, Global Digital Services, Pepsico'
+        authorTitle: CTO Sr. Director, Global Digital Services, Pepsico
         companyLogo:
           source: /images/pepsico-logo-header.webp
           alt: Pepsico
