@@ -1,7 +1,7 @@
 {
   "navbarBgColor": "#003366",
   "light": {
-    "colorBrand": "#003366",
+    "colorBrand": "#dfba19ff",
     "colorBrandMuted": "#9c7727ff",
     "colorBrandSubtle": "#4b5563",
     "colorBrandOn": "#fff",
@@ -32,7 +32,7 @@
     "colorError": "#f00"
   },
   "dark": {
-    "colorBrand": "#003366",
+    "colorBrand": "#dfba19ff",
     "colorBrandMuted": "#9c7727ff",
     "colorBrandSubtle": "#6b7280ff",
     "colorBrandOn": "#000",
