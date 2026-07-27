@@ -217,23 +217,7 @@ pageSections:
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
     label: Intro
-    contentSections:
-      - _component: building-blocks/core-elements/text
-        text: >-
-          # Special Offer for July Webinar Attendees
-
-
-          #### Register for the July 15 webinar and receive an exclusive **50%
-          discount on entry fees** for select categories in the **2026 (23rd
-          Annual) Stevie® Awards for Women in Business**.
-
-
-          [**Register
-          now**](https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
-          "Register for July 15 Webinar") to receive your promo code and
-          complete offer details in your webinar registration confirmation
-          email.
-        alignX: center
+    contentSections: []
     maxContentWidth: 2xl
     paddingHorizontal: 2xl
     paddingVertical: 2xl
