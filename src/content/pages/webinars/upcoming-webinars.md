@@ -202,25 +202,6 @@ pageSections:
               - _component: building-blocks/core-elements/spacer
                 size: md
         gap: lg
-      - _component: building-blocks/core-elements/image
-        source: /src/assets/images/wfw26-offer-1-1.png
-        alt: Women Future Webinar July Session offer
-        sizes: '(max-width: 1280px) 100vw, 1280px'
-        widths:
-          - 640
-          - 1280
-          - 2560
-        width:
-        height:
-        rounded: false
-        alignX: center
-        aspectRatio: none
-        positionVertical: center
-        positionHorizontal: center
-        priority: false
-        link: >-
-          https://events.zoom.us/ev/AlnrBpKTJ1nimeu7yPjuI5pZuNCQD3VINNL7DLE_mNjTh0vksLnU~AqpZoW3i5_dahKDhPP7ZcwffNy7wzdXZBTf2mle4KTUbjj0Oj2XYhZNfAQ
-        openInNewTab: true
     maxContentWidth: 2xl
     paddingHorizontal: lg
     paddingVertical: lg
