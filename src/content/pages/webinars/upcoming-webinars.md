@@ -216,22 +216,6 @@ pageSections:
     brandColorOverride: ''
     useDefaultEditableBinding: true
   - _component: page-sections/builders/custom-section
-    label: Intro
-    contentSections: []
-    maxContentWidth: 2xl
-    paddingHorizontal: 2xl
-    paddingVertical: 2xl
-    colorScheme: light
-    backgroundColor: base
-    backgroundImage:
-      source: ''
-      alt: ''
-      positionVertical: top
-      positionHorizontal: center
-    rounded: false
-    brandColorOverride: ''
-    useDefaultEditableBinding: true
-  - _component: page-sections/builders/custom-section
     label: Webinar Sessions
     contentSections:
       - _component: building-blocks/core-elements/heading
