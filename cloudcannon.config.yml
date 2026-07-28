@@ -644,6 +644,31 @@ collections_config:
     disable_add_folder: false
     disable_file_actions: false
 file_config:
+  - glob: /src/data/sidebarAd.json
+    _inputs:
+      enabled:
+        type: switch
+        comment: >-
+          Show the ad below the sidebar navigation. Turn this off to hide the ad on
+          every page that has a sidebar, without deleting the tag below.
+      html:
+        type: textarea
+        label: Ad Tag
+        comment: >-
+          The full ad tag markup (including its <script> tags), pasted exactly as
+          supplied by the ad provider. To swap in a different ad, replace this whole
+          value — most often only the aj_adspot and aj_dim IDs change.
+      aspectRatio:
+        type: select
+        comment: >-
+          Shape of the box the ad is placed in. "square" matches the current
+          125x125 sidebar banner.
+        options:
+          values:
+            - square
+            - landscape
+            - portrait
+            - widescreen
   - glob: /src/data/quickActions.json
     _inputs:
       heading:

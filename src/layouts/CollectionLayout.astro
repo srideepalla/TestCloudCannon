@@ -7,11 +7,13 @@ import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
 import Side from "@components/navigation/side/Side.astro";
 import MainComponent from "@components/utils/MainComponent.astro";
 import LocalizedLink from "@components/utils/LocalizedLink.astro";
+import Embed from "@core-elements/embed/Embed.astro";
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
 import footerData from "@data/footer.json";
 import mainNavData from "@data/mainNav.json";
 import seoData from "@data/seo.json";
+import sidebarAdData from "@data/sidebarAd.json";
 import sidebarNavData from "@data/sidebarNav.json";
 import Layout from "@layouts/BaseLayout.astro";
 import Split from "@wrappers/split/Split.astro";
@@ -62,6 +64,9 @@ const homeLabel = localizeText("Home", locale);
 const Content = entry ? (await render(entry)).Content : null;
 const pageSections = entry?.data?.pageSections ?? [];
 const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];
+// Sidebar ad tag, shared across every page with a sidebar. Edit or disable it in
+// src/data/sidebarAd.json rather than per page.
+const sidebarAd = sidebarAdData?.enabled && sidebarAdData?.html ? sidebarAdData : null;
 const pageDescription = description || seoData.description;
 
 const siteOrigin = "https://women.stevieawards.com";
@@ -161,6 +166,15 @@ const articleAuthor = entry?.data?.author ?? null;
               >
                 <MainComponent sections={sidebarBlocks} />
               </div>
+              {sidebarAd && (
+                <div class="sidebar-ad">
+                  <Embed
+                    html={sidebarAd.html}
+                    aspectRatio={sidebarAd.aspectRatio || "square"}
+                    placeholderText="Sidebar ad - visible on the live site"
+                  />
+                </div>
+              )}
             </aside>
           )
         }
@@ -292,7 +306,17 @@ const articleAuthor = entry?.data?.author ?? null;
     align-items: center;
   }
 
-  .sidebar-blocks .embed-wrapper {
+  /* Unlike .sidebar-blocks, the ad sits detached from the nav box. */
+  .sidebar-ad {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+
+  .sidebar-blocks .embed-wrapper,
+  .sidebar-ad .embed-wrapper {
     width: 100%;
     max-width: 280px;
   }
