@@ -416,7 +416,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/iba.jpg
           alt: 'The International Business Awards® '
-        dateLabel: NOW
+        dateLabel: February 9, 2027
         name: The International Business Awards®
         description: >-
           The International Business Awards are open to all organizations
@@ -476,7 +476,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54444944057-6a339b8488-o.jpg
           alt: The Stevie Awards for Sales & Customer Service
-        dateLabel: July 15, 2026
+        dateLabel: NOW
         name: The Stevie® Awards for Sales &amp; Customer Service
         description: >-
           The Stevie Awards for Sales & Customer Service are open to all
@@ -550,7 +550,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54062370686-038444a2c2-o.jpg
           alt: The German Stevie Awards
-        dateLabel: NOW
+        dateLabel:
         name: The German Stevie® Awards
         description: >-
           The German Stevie Awards are open to all organizations in the European
