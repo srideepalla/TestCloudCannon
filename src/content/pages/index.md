@@ -28,7 +28,7 @@ pageSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
         hideText: false
-        link: /enter/request-the-entry-kit/
+        link: /enter/request-the-iba-entry-kit/
         openInNewTab: false
         iconName: ''
         iconPosition: before
@@ -367,7 +367,7 @@ pageSections:
       speeches of winners from a variety of industries and nations.
 
 
-      Visit the <a href="/awards/2026-Stevie-Award-Winners"
+      Visit the <a href="/awards/2026-stevie-award-winners"
       class="text-yellow-500 hover:underline">2026 Stevie Awards Winners
       Page</a> to browse photos of the awards event and watch individual awards
       presentations and red carpet interviews with winners.
