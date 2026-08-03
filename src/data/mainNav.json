@@ -264,14 +264,14 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Apply to Be a Judge",
-          "path": "/judges/you-be-the-judge",
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
+          "name": "Apply to Be a Judge",
+          "path": "/judges/you-be-the-judge",
           "openInNewTab": false,
           "children": []
         },
@@ -279,7 +279,63 @@
           "name": "Judging Committees",
           "path": "/judges/judging-committees",
           "openInNewTab": false,
-          "children": []
+          "children": [
+            {
+              "name": "Achievement & Thought Leadership Awards Judging Committee",
+              "path": "/judges/judging-committees/achievement-thought-leadership-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "AI, Technology, & Sustainability Awards Judging Committee",
+              "path": "/judges/judging-committees/ai-technology-sustainability-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Company/Organization Awards Judging Committee",
+              "path": "/judges/judging-committees/company-organization-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Corporate Communications, Investor Relations & Public Relations Awards Judging Committee",
+              "path": "/judges/judging-committees/corporate-communications-investor-relations-public-relations-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Customer Service Awards Judging Committee",
+              "path": "/judges/judging-committees/customer-service-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Entrepreneur Awards Judging Committee",
+              "path": "/judges/judging-committees/entrepreneur-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Management, Human Resources, Individual, & Support Awards Judging Committee",
+              "path": "/judges/judging-committees/management-human-resources-individual-support-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Marketing & Event Awards Judging Committee",
+              "path": "/judges/judging-committees/marketing-event-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Media (Website, Apps, Creative, Video, Publications, Social Media & Podcast) Awards Judging Committee",
+              "path": "/judges/judging-committees/media-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "New Product & Product Management Awards Judging Committee",
+              "path": "/judges/judging-committees/new-product-product-management-awards-judging-committee",
+              "openInNewTab": false
+            },
+            {
+              "name": "Public Sector & Government Innovation Awards Judging Committee",
+              "path": "/judges/judging-committees/public-sector-government-innovation-awards-judging-committee",
+              "openInNewTab": false
+            }
+          ]
         }
       ]
     },
