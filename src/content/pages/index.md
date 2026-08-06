@@ -13,17 +13,15 @@ pageSections:
     backgroundImage:
       source: /images/IBA/IBA-Home-5.jpg
       alt: International Business Awards®
-    subheading: Entries Now Open
+    subheading:
     heading: The 23rd Annual International Business Awards®
     description: >-
-      Nominate your people, projects, or organization in the 2026 edition of The
-      International Business Awards®, the top honors for achievement in the
-      workplace across the globe.
-
-
-      Request your Entry Kit to learn how to submit nominations to join the list
-      of prestigious Stevie® Award winners including DHL, Cisco, Samsung,
-      Toyota, and many others.
+      The International Business Awards® are the top honors for achievement in
+      the workplace around the world. Each year our judges review thousands of
+      nominations from organizations and individuals in more than 60 nations.
+      The 2026 competition is no longer accepting nominations. The 2027 edition
+      will begin accepting nominations in February. Get the entry kit to learn
+      how to prepare and submit nominations.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -36,9 +34,9 @@ pageSections:
         uppercase: true
         size: md
       - _component: building-blocks/core-elements/button
-        text: Ready? Enter Now
+        text: How To Enter
         hideText: false
-        link: https://the-stevie-awards.com/
+        link: /enter/how-to-enter
         openInNewTab: false
         iconName: ''
         iconPosition: before
@@ -160,7 +158,7 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: /images/IBA/IBA-Winner-Carrefoursa.png
+    heading: Recognizing Industry Leaders Worldwide
     description: >-
       Every organization has an equal chance to win a Stevie Award. Each year,
       small and mid-sized organizations are honored as winners alongside Fortune
@@ -276,14 +274,14 @@ pageSections:
       src="https://js.hsforms.net/ui-forms-embed-components-app/frame.html?_hsPortalId=35655&amp;_hsFormId=4efdd4d5-a101-48a9-a83a-de234d43d7e9&amp;_hsIsQa=false&amp;_hsHublet=na1&amp;_hsDisableScriptloader=true&amp;_hsDisableRedirect=true&amp;_hsInstanceId=dfc8f47a-13ed-47e9-b2db-db65c06feffa&amp;_hsUtk=c9d14285c0c99ecef07fc6ffb25c22fa" 
       loading="lazy"
       data-test-id="embedded-form-4efdd4d5-a101-48a9-a83a-de234d43d7e9"
-      title="Stevie Awards newsletter signup form" scrolling="no" style="border: none; height: 100%; width:
-      100%;"></iframe></div></div> </div>
+      title="Stevie Awards newsletter signup form" scrolling="no" style="border:
+      none; height: 100%; width: 100%;"></iframe></div></div> </div>
     formCardColorScheme: light
     formCardBackgroundColor: base
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/grid-videos
-    heading: What Winning a Stevie® Award Means to Our 2026 Winners
+    heading: What Winning a Stevie® Award Means to Our 2025 Winners
     videos:
       - youtubeId: C5LdvqBMA1c
         title: 8x8 wins a Stevie® Award in The 2025 International Business Awards®
@@ -367,9 +365,10 @@ pageSections:
       speeches of winners from a variety of industries and nations.
 
 
-      Visit the <a href="/awards/2026-stevie-award-winners">2026 Stevie Awards
-      Winners Page</a> to browse photos of the awards event and watch individual
-      awards presentations and red carpet interviews with winners.
+      Visit the [2026 Stevie Awards Winners
+      Page](/awards/2026-stevie-award-winners) to browse photos of the awards
+      event and watch individual awards presentations and red carpet interviews
+      with winners.
     images:
       - source: /images/IBA/IBA25-Winner-1.jpg
         alt: IBA Winner
@@ -461,21 +460,95 @@ pageSections:
       across every facet of work life.
     cards:
       - logo:
-          source: /src/assets/images/iba-hc-w.png
-          alt: 'The International Business Awards® '
+          source: /src/assets/images/sascs-v2-hc-0220.png
+          alt: The Stevie Awards for Sales & Customer Service
         eventPhoto:
-          source: /src/assets/images/iba.jpg
-          alt: 'The International Business Awards® '
+          source: /src/assets/images/54444944057-6a339b8488-o.jpg
+          alt: The Stevie® Awards for Sales & Customer Service
         dateLabel: NOW
-        name: The International Business Awards®
+        name: The Stevie® Awards for Sales & Customer Service
         description: >-
-          The International Business Awards are open to all organizations
-          worldwide, and include categories to honor accomplishments in all
-          aspects of work life.
+          The Stevie Awards for Sales & Customer Service are open to all
+          organizations worldwide, and recognize the achievements of sales,
+          customer service, and call center professionals.
         link: /
         colorScheme: inherit
-        brandColor: '#003366'
-        textColor: ''
+        brandColor: '#99844b'
+        textColor: '#ffffff'
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
+      - logo:
+          source: /src/assets/images/sawib-hc-0220-1.png
+          alt: Stevie Awards for Women In Business
+        eventPhoto:
+          source: /src/assets/images/53326016090-b15cd8eda3-o.jpg
+          alt: The Stevie Awards for Women In Business
+        dateLabel: NOW
+        name: The Stevie® Awards for Women In Business
+        description: >-
+          The Stevie Awards for Women in Business are open to all organizations
+          worldwide, and recognize the achievements of women executives,
+          entrepreneurs, and the organizations they run.
+        link: https://women.stevieawards.com
+        colorScheme: inherit
+        brandColor: '#2d7272'
+        textColor: '#ffffff'
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
+      - logo:
+          source: /src/assets/images/menasa-h-0420.png
+          alt: Middle East & North Africa Stevie Awards
+        eventPhoto:
+          source: /src/assets/images/53565954489-6d7913fedb-o.jpg
+          alt: The Middle East & North Africa Stevie Awards
+        dateLabel: September 23, 2026
+        name: The Middle East & North Africa Stevie® Awards
+        description: >-
+          The Middle East & North Africa Stevie Awards recognize innovation in
+          the workplace at organizations of all types in 18 nations in the MENA
+          region.
+        link: https://mena.stevieawards.com/
+        colorScheme: inherit
+        brandColor: '#009848'
+        textColor: '#ffffff'
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
+      - logo:
+          source: /src/assets/images/aba-hc-0220.png
+          alt: The American Business Awards
+        eventPhoto:
+          source: /src/assets/images/54584034224-4f05dacbf1-o.jpg
+          alt: The American Business Awards
+        dateLabel: October, 7 2026
+        name: The American Business Awards®
+        description: >-
+          All U.S.-based organizations are eligible to participate in the top
+          business awards program in the U.S.A.
+        link: https://aba.stevieawards.com/
+        colorScheme: inherit
+        brandColor: '#660000'
+        textColor: '#ffffff'
+        subtitleColor: ''
+        accentColor: ''
+        buttonColor: ''
+      - logo:
+          source: /src/assets/images/apsa-hc-0220.png
+          alt: Asia-Pacific Stevie Awards
+        eventPhoto:
+          source: /src/assets/images/54518906548-26884cbae4-o.jpg
+          alt: Asia-Pacific Stevie Awards
+        dateLabel: October 14, 2026
+        name: Asia-Pacific Stevie® Awards
+        description: >-
+          The Asia-Pacific Stevie Awards are open to all organizations in the 29
+          markets of the Asia-Pacific region.
+        link: https://asia.stevieawards.com
+        colorScheme: inherit
+        brandColor: '#a01310'
+        textColor: '#ffffff'
         subtitleColor: ''
         accentColor: ''
         buttonColor: ''
@@ -495,7 +568,7 @@ pageSections:
         link: https://hr.stevieawards.com
         colorScheme: inherit
         brandColor: '#e67b2c'
-        textColor: ''
+        textColor: '#ffffff'
         subtitleColor: ''
         accentColor: ''
         buttonColor: ''
@@ -516,81 +589,7 @@ pageSections:
         link: https://tech.stevieawards.com/
         colorScheme: inherit
         brandColor: '#295070'
-        textColor: ''
-        subtitleColor: ''
-        accentColor: ''
-        buttonColor: ''
-      - logo:
-          source: /src/assets/images/sawib-hc-0220-1.png
-          alt: Stevie Awards for Women In Business
-        eventPhoto:
-          source: /src/assets/images/53326016090-b15cd8eda3-o.jpg
-          alt: The Stevie Awards for Women In Business
-        dateLabel: NOW
-        name: The Stevie® Awards for Women In Business
-        description: >-
-          The Stevie Awards for Women in Business are open to all organizations
-          worldwide, and recognize the achievements of women executives,
-          entrepreneurs, and the organizations they run.
-        link: https://women.stevieawards.com
-        colorScheme: inherit
-        brandColor: '#2d7272'
-        textColor: ''
-        subtitleColor: ''
-        accentColor: ''
-        buttonColor: ''
-      - logo:
-          source: /src/assets/images/aba-hc-0220.png
-          alt: The American Business Awards
-        eventPhoto:
-          source: /src/assets/images/54584034224-4f05dacbf1-o.jpg
-          alt: The American Business Awards
-        dateLabel: October, 7 2026
-        name: The American Business Awards®
-        description: >-
-          All U.S.-based organizations are eligible to participate in the top
-          business awards program in the U.S.A.
-        link: https://aba.stevieawards.com/
-        colorScheme: inherit
-        brandColor: '#660000'
-        textColor: ''
-        subtitleColor: ''
-        accentColor: ''
-        buttonColor: ''
-      - logo:
-          source: /src/assets/images/apsa-hc-0220.png
-          alt: Asia-Pacific Stevie Awards
-        eventPhoto:
-          source: /src/assets/images/54518906548-26884cbae4-o.jpg
-          alt: Asia-Pacific Stevie Awards
-        dateLabel: October 14, 2026
-        name: Asia-Pacific Stevie® Awards
-        description: >-
-          The Asia-Pacific Stevie Awards are open to all organizations in the 29
-          markets of the Asia-Pacific region.
-        link: https://asia.stevieawards.com
-        colorScheme: inherit
-        brandColor: '#a01310'
-        textColor: ''
-        subtitleColor: ''
-        accentColor: ''
-        buttonColor: ''
-      - logo:
-          source: /src/assets/images/menasa-h-0420.png
-          alt: Middle East & North Africa Stevie Awards
-        eventPhoto:
-          source: /src/assets/images/53565954489-6d7913fedb-o.jpg
-          alt: The Middle East & North Africa Stevie Awards
-        dateLabel: September 23, 2026
-        name: The Middle East &amp; North Africa Stevie® Awards
-        description: >-
-          The Middle East & North Africa Stevie Awards recognize innovation in
-          the workplace at organizations of all types in 18 nations in the MENA
-          region.
-        link: https://mena.stevieawards.com/
-        colorScheme: inherit
-        brandColor: '#009848'
-        textColor: ''
+        textColor: '#ffffff'
         subtitleColor: ''
         accentColor: ''
         buttonColor: ''
@@ -600,7 +599,7 @@ pageSections:
         eventPhoto:
           source: /src/assets/images/54062370686-038444a2c2-o.jpg
           alt: The German Stevie Awards
-        dateLabel: NOW
+        dateLabel:
         name: The German Stevie® Awards
         description: >-
           The German Stevie Awards are open to all organizations in the European
@@ -609,7 +608,7 @@ pageSections:
         link: https://gsa.stevieawards.com/
         colorScheme: inherit
         brandColor: '#00209f'
-        textColor: ''
+        textColor: '#ffffff'
         subtitleColor: ''
         accentColor: ''
         buttonColor: ''
