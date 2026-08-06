@@ -14,14 +14,14 @@
           "children": []
         },
         {
-          "name": "FAQ",
-          "path": "/about/faq",
+          "name": "Calendar",
+          "path": "/about/calendar",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Calendar",
-          "path": "/about/calendar",
+          "name": "FAQ",
+          "path": "/about/faq",
           "openInNewTab": false,
           "children": []
         },
