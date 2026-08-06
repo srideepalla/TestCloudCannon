@@ -28,6 +28,7 @@ function getFileHash(filePath) {
   
   try {
     const content = fs.readFileSync(filePath, 'utf8');
+
     return generateContentHash(content);
   } catch (error) {
     console.warn(`Could not read ${filePath}:`, error.message);
@@ -37,6 +38,7 @@ function getFileHash(filePath) {
 
 // Load cache
 let cache = {};
+
 if (fs.existsSync(CACHE_FILE)) {
   try {
     cache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'));
@@ -81,6 +83,7 @@ for (const filePath of keyFiles) {
 console.log('\n🔍 Checking for orphaned cache entries:\n');
 
 let orphanedEntries = 0;
+
 for (const [filePath, hash] of Object.entries(cache)) {
   if (filePath.startsWith('src/content/pages/') && filePath.endsWith('.md')) {
     if (!fs.existsSync(filePath)) {

@@ -32,10 +32,12 @@ async function testSingleTranslation() {
       'ar', 'bg', 'zh-hans', 'zh-hant', 'fr', 'de', 'el', 'hu', 'id', 'it', 'ja',
       'ko', 'ms', 'fa', 'pl', 'pt-br', 'pt-pt', 'es', 'es-419', 'th', 'tr', 'vi'
     ];
+
     console.log('\n🔍 Verifying translated files...');
     
     for (const lang of languages) {
       const translatedFile = path.join('src/content/pages', lang, 'index.md');
+
       if (fs.existsSync(translatedFile)) {
         console.log(`✅ ${lang}/index.md exists`);
       } else {

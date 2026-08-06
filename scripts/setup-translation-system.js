@@ -11,6 +11,7 @@ async function setupTranslationSystem() {
       name: 'Check Node.js version',
       action: () => {
         const nodeVersion = process.version;
+
         console.log(`Node.js version: ${nodeVersion}`);
         if (parseInt(nodeVersion.slice(1)) < 16) {
           throw new Error('Node.js 16 or higher is required');
@@ -70,6 +71,7 @@ async function setupTranslationSystem() {
       name: 'Create cache directory',
       action: () => {
         const cacheDir = '.translation-cache';
+
         if (!fs.existsSync(cacheDir)) {
           fs.mkdirSync(cacheDir, { recursive: true });
           console.log('✅ Translation cache directory created');
@@ -93,6 +95,7 @@ async function setupTranslationSystem() {
           
           if (response.ok) {
             const usage = await response.json();
+
             console.log(`✅ DeepL API access verified (${usage.character_count}/${usage.character_limit} characters used)`);
           } else {
             throw new Error(`API responded with status ${response.status}`);
@@ -109,6 +112,7 @@ async function setupTranslationSystem() {
         console.log('🧪 Testing translation system...');
         try {
           const testFile = 'src/content/pages/index.md';
+
           if (fs.existsSync(testFile)) {
             // Import the translation function
             const { translateSingleFile } = await import('./translate-single-file.js');

@@ -18,11 +18,13 @@ async function testTranslation() {
     if (!usageResponse.ok) {
       console.error(`❌ Usage check failed: ${usageResponse.status}`);
       const errorText = await usageResponse.text();
+
       console.error(`Error: ${errorText}`);
       return;
     }
 
     const usage = await usageResponse.json();
+
     console.log(`✅ API Key Valid`);
     console.log(`📊 Usage: ${usage.character_count}/${usage.character_limit} characters`);
     console.log(`📈 Remaining: ${usage.character_limit - usage.character_count} characters\n`);
@@ -53,11 +55,13 @@ async function testTranslation() {
     if (!response.ok) {
       console.error(`❌ Translation failed: ${response.status}`);
       const errorText = await response.text();
+
       console.error(`Error: ${errorText}`);
       return;
     }
 
     const data = await response.json();
+
     console.log(`✅ Translation successful:`);
     console.log(`   Original: "${testText}"`);
     console.log(`   Spanish: "${data.translations[0].text}"\n`);

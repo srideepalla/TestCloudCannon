@@ -101,6 +101,7 @@ async function translateTexts(texts, targetLang) {
   try {
     // DeepL supports multiple texts in one API call
     const params = new URLSearchParams();
+
     validTexts.forEach(text => {
       params.append('text', text);
     });
@@ -118,6 +119,7 @@ async function translateTexts(texts, targetLang) {
 
     if (!response.ok) {
       const errorText = await response.text();
+
       console.error(`❌ DeepL API Error ${response.status}: ${errorText}`);
       
       if (response.status === 456) {
@@ -175,6 +177,7 @@ function getContentHash(content) {
   const normalized = typeof content === 'string' 
     ? content.replace(/\r\n/g, '\n') 
     : content;
+
   return crypto.createHash('md5').update(JSON.stringify(normalized)).digest('hex');
 }
 
@@ -202,6 +205,7 @@ function getFileKey(filePath, targetLang) {
   const relativePath = path.relative(process.cwd(), filePath);
   // Normalize to forward slashes for cross-platform compatibility
   const normalizedPath = relativePath.replace(/\\/g, '/');
+
   return `${normalizedPath}:${targetLang}`;
 }
 
@@ -240,6 +244,7 @@ function applyTranslations(obj, translations) {
     // Navigate to the parent object
     for (let i = 0; i < pathParts.length - 1; i++) {
       const part = pathParts[i];
+
       if (!isNaN(part)) {
         current = current[parseInt(part)];
       } else {
@@ -249,6 +254,7 @@ function applyTranslations(obj, translations) {
     
     // Set the translated value
     const lastPart = pathParts[pathParts.length - 1];
+
     if (!isNaN(lastPart)) {
       current[parseInt(lastPart)] = translatedText;
     } else {
@@ -326,10 +332,12 @@ async function translateMarkdownBody(body, targetLang) {
   const cleanTags = (a, b) => {
     const na = normEnt(a);
     const nb = normEnt(b);
+
     if ((na.match(/</g) || []).length !== (nb.match(/</g) || []).length) return false;
     if ((na.match(/>/g) || []).length !== (nb.match(/>/g) || []).length) return false;
     const x = tagsOf(a);
     const y = tagsOf(b);
+
     return x.length === y.length && x.every((t, i) => t === y[i]);
   };
 
@@ -337,6 +345,7 @@ async function translateMarkdownBody(body, targetLang) {
   const deeplChunk = async (texts, useHtml) => {
     try {
       const params = new URLSearchParams();
+
       texts.forEach((t) => params.append('text', t));
       params.append('target_lang', LANGUAGE_MAP[targetLang]);
       params.append('source_lang', 'EN');
@@ -357,6 +366,7 @@ async function translateMarkdownBody(body, targetLang) {
         return null;
       }
       const data = await response.json();
+
       // Return raw text: keep &amp; in hrefs and entities intact so elements match
       // their originals; entities in visible text render fine in MDX.
       return data.translations.map((t) => t.text);
@@ -370,8 +380,10 @@ async function translateMarkdownBody(body, targetLang) {
   const deepl = async (texts, useHtml) => {
     if (texts.length === 0) return [];
     const out = [];
+
     for (let i = 0; i < texts.length; i += 45) {
       const part = await deeplChunk(texts.slice(i, i + 45), useHtml);
+
       if (part == null) return null;
       out.push(...part);
     }
@@ -406,6 +418,7 @@ async function translateMarkdownBody(body, targetLang) {
         raws.push(m);
         return `@@R${raws.length - 1}@@`;
       });
+
     return { sep: false, original: part, prose, els, raws };
   });
 
@@ -414,6 +427,7 @@ async function translateMarkdownBody(body, targetLang) {
   const elementInputs = blocks.filter((b) => !b.sep).flatMap((b) => b.els);
   const proseOut = await deepl(proseInputs, false);
   const elemOut = elementInputs.length ? await deepl(elementInputs, true) : [];
+
   if (proseOut == null || elemOut == null) return body; // hard failure -> keep English body
 
   let pi = 0;
@@ -424,10 +438,12 @@ async function translateMarkdownBody(body, targetLang) {
       const tProse = proseOut[pi++];
       const myElems = b.els.map((el) => {
         const t = elemOut[ei++];
+
         return cleanTags(t, el) ? t : el; // keep English element if html mode mangled it
       });
       // All placeholders must survive, else restoration leaves a stray token.
       let ok = tProse != null;
+
       for (let k = 0; k < b.els.length && ok; k++) {
         if (!tProse.includes(`@@E${k}@@`)) ok = false;
       }
@@ -438,6 +454,7 @@ async function translateMarkdownBody(body, targetLang) {
       const reconstructed = tProse
         .replace(/@@E(\d+)@@/g, (_, i) => myElems[Number(i)])
         .replace(/@@R(\d+)@@/g, (_, i) => b.raws[Number(i)]);
+
       // Per-block safety: the reconstructed block must have the same tags as the
       // original; otherwise keep the English block.
       return cleanTags(reconstructed, b.original) ? reconstructed : b.original;
@@ -457,6 +474,7 @@ async function translateMarkdownFile(filePath, targetLang, contentHashes) {
 
     // Ensure we're not creating nested language folders - only check for actual nesting issues
     const normalizedPath = targetFile.replace(/\\/g, '/'); // Normalize path separators
+
     if (SUPPORTED_LANGUAGES.some(l => normalizedPath.includes(`/${targetLang}/${l}/`))) {
       console.error(`❌ Invalid target path detected: ${targetFile}`);
       return false;
@@ -590,11 +608,13 @@ async function validateDeepLAPI() {
       console.error('❌ DeepL API key validation failed');
       console.error(`Status: ${response.status}`);
       const errorText = await response.text();
+
       console.error(`Error: ${errorText}`);
       process.exit(1);
     }
 
     const usage = await response.json();
+
     console.log('✅ DeepL API key is valid');
     console.log(`📊 Usage: ${usage.character_count}/${usage.character_limit} characters`);
     
@@ -706,6 +726,7 @@ async function translateAllContent() {
   // Get all JSON files from data directory (only English source files)
   function getJsonFiles(dir) {
     const files = [];
+
     if (!fs.existsSync(dir)) return files;
     
     const items = fs.readdirSync(dir);
@@ -738,6 +759,7 @@ async function translateAllContent() {
   function isTranslatedFile(filename) {
     // Check if filename contains language suffixes
     const languageSuffixes = ['-es.', '-de.', '-ar.'];
+
     return languageSuffixes.some(suffix => filename.includes(suffix));
   }
   
@@ -758,6 +780,7 @@ async function translateAllContent() {
     for (let i = 0; i < allFiles.length; i++) {
       const file = allFiles[i];
       const progress = `(${i + 1}/${allFiles.length})`;
+
       console.log(`${progress} Processing ${path.basename(file)}...`);
       
       let wasTranslated = false;

@@ -64,6 +64,7 @@ function generateContentHash(content) {
   const normalized = typeof content === 'string' 
     ? content.replace(/\r\n/g, '\n') 
     : content;
+
   return crypto.createHash('md5').update(JSON.stringify(normalized)).digest('hex');
 }
 
@@ -75,6 +76,7 @@ async function translateText(text, targetLang) {
 
   try {
     const params = new URLSearchParams();
+
     params.append('text', text);
     params.append('target_lang', LANGUAGE_MAP[targetLang]);
     params.append('source_lang', 'EN');
@@ -93,6 +95,7 @@ async function translateText(text, targetLang) {
     }
 
     const data = await response.json();
+
     return data.translations[0].text;
 
   } catch (error) {
@@ -108,6 +111,7 @@ async function translateObject(obj, targetLang) {
 
   if (Array.isArray(obj)) {
     const translatedArray = [];
+
     for (let i = 0; i < obj.length; i++) {
       translatedArray[i] = await translateObject(obj[i], targetLang);
     }
@@ -215,6 +219,7 @@ async function translateAllDataFiles() {
     if (fs.existsSync(file)) {
       for (const lang of languages) {
         const success = await translateDataFile(file, lang, dataHashes);
+
         if (success) {
           processedCount++;
           // Check if it was skipped (cached)
@@ -224,6 +229,7 @@ async function translateAllDataFiles() {
           // Normalize to forward slashes for cross-platform compatibility
           const normalizedPath = file.replace(/\\/g, '/');
           const cacheKey = `${normalizedPath}_${lang}`;
+
           if (dataHashes[cacheKey] === currentHash) {
             skippedCount++;
           }

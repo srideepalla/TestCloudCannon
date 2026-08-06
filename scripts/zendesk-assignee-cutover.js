@@ -46,7 +46,7 @@ if (!EMAIL || !TOKEN) {
   die("Set ZENDESK_EMAIL and ZENDESK_API_TOKEN in the environment.");
 }
 
-const AUTH = "Basic " + Buffer.from(`${EMAIL}/token:${TOKEN}`).toString("base64");
+const AUTH = `Basic ${Buffer.from(`${EMAIL}/token:${TOKEN}`).toString("base64")}`;
 
 async function api(method, path, body) {
   const res = await fetch(BASE + path, {
@@ -56,6 +56,7 @@ async function api(method, path, body) {
   });
   const text = await res.text();
   const json = text ? JSON.parse(text) : {};
+
   if (!res.ok) {
     throw new Error(`${method} ${path} → ${res.status}: ${text.slice(0, 300)}`);
   }
@@ -66,6 +67,7 @@ async function api(method, path, body) {
 async function findUserByEmail(email) {
   const q = encodeURIComponent(`type:user email:${email}`);
   const { users = [] } = await api("GET", `/users/search.json?query=${q}`);
+
   return users.find((u) => (u.email || "").toLowerCase() === email.toLowerCase()) || null;
 }
 
@@ -75,12 +77,14 @@ async function isInSupportGroup(userId) {
     "GET",
     `/users/${userId}/group_memberships.json`
   );
+
   return group_memberships.some((m) => String(m.group_id) === String(SUPPORT_GROUP_ID));
 }
 
 /** Fetch the SAE enquiry-routing triggers (active + inactive). */
 async function fetchRoutingTriggers() {
   const { triggers = [] } = await api("GET", "/triggers.json?per_page=100");
+
   return triggers.filter(
     (t) => t.title.startsWith("Route enquiry:") && /\[SAE\d+\]/.test(t.title)
   );
@@ -89,16 +93,19 @@ async function fetchRoutingTriggers() {
 /** Pull the `assignee_<slug>` owner slug out of a trigger's current_tags action. */
 function ownerSlugFromTrigger(trigger) {
   const tagsAction = (trigger.actions || []).find((a) => a.field === "current_tags");
+
   if (!tagsAction) return null;
   const tag = String(tagsAction.value || "")
     .split(/\s+/)
     .find((t) => t.startsWith("assignee_"));
+
   return tag ? tag.slice("assignee_".length) : null;
 }
 
 /** Build the trigger's new actions: keep everything, ensure one assignee_id action. */
 function withAssignee(actions, userId) {
   const kept = (actions || []).filter((a) => a.field !== "assignee_id");
+
   // Guarantee the Support group action is present (it already is on every SAE trigger).
   if (!kept.some((a) => a.field === "group_id")) {
     kept.push({ field: "group_id", value: SUPPORT_GROUP_ID });
@@ -121,6 +128,7 @@ async function main() {
       continue;
     }
     let user;
+
     try {
       user = await findUserByEmail(owner.email.trim());
     } catch (e) {
@@ -138,6 +146,7 @@ async function main() {
       continue;
     }
     const inGroup = await isInSupportGroup(user.id);
+
     resolved[slug] = { ...owner, userId: user.id, role: user.role, inGroup };
   }
 
@@ -145,9 +154,11 @@ async function main() {
   const triggers = await fetchRoutingTriggers();
   const plan = []; // { trigger, slug, status }
   const skipped = [];
+
   for (const t of triggers) {
     const slug = ownerSlugFromTrigger(t);
     const code = (t.title.match(/\[SAE\d+\]/) || ["?"])[0];
+
     if (!slug) {
       skipped.push({ code, title: t.title, reason: "no assignee_ tag found" });
       continue;
@@ -158,6 +169,7 @@ async function main() {
       continue;
     }
     const alreadySet = (t.actions || []).some((a) => a.field === "assignee_id");
+
     plan.push({ trigger: t, slug, code, alreadySet });
   }
 
@@ -175,16 +187,17 @@ async function main() {
   console.log("Resolved owners:");
   for (const [slug, r] of Object.entries(resolved)) {
     console.log(
-      `   ✓ ${slug.padEnd(10)} ${r.email.padEnd(34)} id=${r.userId} role=${r.role}` +
-        (r.inGroup ? "  [in Support]" : "  [will add to Support]")
+      `   ✓ ${slug.padEnd(10)} ${r.email.padEnd(34)} id=${r.userId} role=${r.role}${ 
+        r.inGroup ? "  [in Support]" : "  [will add to Support]"}`
     );
   }
   console.log(`\nTriggers to update (${plan.length}):`);
   for (const p of plan) {
     const r = resolved[p.slug];
+
     console.log(
-      `   ${p.code.padEnd(8)} → ${p.slug.padEnd(10)} (id=${r.userId})` +
-        (p.alreadySet ? "  [assignee already set — will refresh]" : "")
+      `   ${p.code.padEnd(8)} → ${p.slug.padEnd(10)} (id=${r.userId})${ 
+        p.alreadySet ? "  [assignee already set — will refresh]" : ""}`
     );
   }
   if (skipped.length) {
@@ -216,6 +229,7 @@ async function main() {
   for (const p of plan) {
     const r = resolved[p.slug];
     const actions = withAssignee(p.trigger.actions, r.userId);
+
     await api("PUT", `/triggers/${p.trigger.id}.json`, { trigger: { actions } });
     console.log(`   ✓ ${p.code} now assigns → ${p.slug} (id=${r.userId})`);
   }

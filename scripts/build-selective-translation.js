@@ -19,6 +19,7 @@ function getLastBuildTime() {
   try {
     if (fs.existsSync(LAST_BUILD_FILE)) {
       const timestamp = fs.readFileSync(LAST_BUILD_FILE, 'utf8').trim();
+
       return new Date(timestamp);
     }
   } catch (error) {
@@ -114,6 +115,7 @@ async function runBuildTranslation() {
   );
   
   const lastBuildTime = getLastBuildTime();
+
   console.log(`📅 Last build: ${lastBuildTime.toISOString()}`);
   console.log(`🌐 Environment: ${isCloudCannon ? 'CloudCannon' : 'Local'}`);
   
@@ -139,7 +141,7 @@ async function runBuildTranslation() {
   
   let totalTranslated = 0;
   let totalSkipped = 0;
-  let errors = [];
+  const errors = [];
   
   // Process each changed file using the selective translation system
   for (const filePath of changedFiles) {

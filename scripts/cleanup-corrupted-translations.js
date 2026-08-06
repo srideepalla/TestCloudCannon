@@ -24,6 +24,7 @@ function hasNestedLanguageCodes(filename) {
 
   let langCount = 0;
   let stripped = true;
+
   while (stripped) {
     stripped = false;
     for (const lang of SUPPORTED_LANGUAGES) {
@@ -78,17 +79,19 @@ const dataResults = cleanupDirectory(dataDir, 'data files');
 
 // Clean up content directories
 const contentDir = path.resolve(__dirname, '../src/content/pages');
-let contentResults = { deleted: 0, errors: 0 };
+const contentResults = { deleted: 0, errors: 0 };
 
 // Check for corrupted content files in language directories
 const languageDirs = SUPPORTED_LANGUAGES;
+
 for (const lang of languageDirs) {
   const langDir = path.join(contentDir, lang);
+
   if (fs.existsSync(langDir)) {
     // Look for files with nested language codes in subdirectories
     function cleanupContentRecursively(dir) {
       const items = fs.readdirSync(dir);
-      let results = { deleted: 0, errors: 0 };
+      const results = { deleted: 0, errors: 0 };
       
       for (const item of items) {
         const itemPath = path.join(dir, item);
@@ -108,6 +111,7 @@ for (const lang of languageDirs) {
           } else {
             // Recursively clean subdirectories
             const subResults = cleanupContentRecursively(itemPath);
+
             results.deleted += subResults.deleted;
             results.errors += subResults.errors;
           }
@@ -128,6 +132,7 @@ for (const lang of languageDirs) {
     
     console.log(`📁 Cleaning content files in: ${lang}/`);
     const langResults = cleanupContentRecursively(langDir);
+
     contentResults.deleted += langResults.deleted;
     contentResults.errors += langResults.errors;
   }
