@@ -36,10 +36,15 @@ if (!_component && !hasItems && !hasSlotContent) return;
   class:list={["content-selector", className]}
   {...htmlAttributes}
 >
+  {
+    /* No role="tablist". The panels render inside this container and .content-selector-item
+      is display:contents, so they became direct children of the tablist — which only
+      permits tabs. The radio inputs group themselves natively via their shared name
+      attribute, so no container role is needed to make the relationship correct. */
+  }
   <div
     class:list={["content-selector-items", `nav-${navigationPosition}`]}
     data-uid={uniqueId}
-    role="tablist"
     {...arrayDataAttributes}
   >
     <slot>
@@ -66,83 +71,26 @@ if (!_component && !hasItems && !hasSlotContent) return;
 <script>
   import { onPageLoad } from "@components/utils/onPageLoad";
 
-  function updatePanelAriaState(input: HTMLInputElement, isSelected: boolean) {
-    const tab = input.nextElementSibling;
-    const panel = tab?.nextElementSibling;
-
-    if (!(tab instanceof HTMLElement) || !(panel instanceof HTMLElement)) return;
-
-    tab.setAttribute("aria-selected", isSelected.toString());
-    panel.setAttribute("aria-hidden", (!isSelected).toString());
-  }
-
-  function syncContentSelectorAriaState(contentSelector: HTMLElement) {
-    const inputs = Array.from(
-      contentSelector.querySelectorAll<HTMLInputElement>(".content-selector-input")
-    );
-
-    if (!inputs.length) return;
-
-    let selectedInput = inputs.find((input) => input.checked);
-
-    if (!selectedInput) {
-      [selectedInput] = inputs;
-      selectedInput.checked = true;
-    }
-
-    inputs.forEach((input) => {
-      updatePanelAriaState(input, input === selectedInput);
-    });
-  }
-
-  function handleInputChange(event: Event) {
-    const input = event.currentTarget;
-
-    if (!(input instanceof HTMLInputElement)) return;
-
-    const contentSelector = input.closest(".content-selector-items");
-
-    if (!(contentSelector instanceof HTMLElement)) return;
-
-    syncContentSelectorAriaState(contentSelector);
-  }
-
-  function handleTabKeydown(event: Event) {
-    if (!(event instanceof KeyboardEvent)) return;
-    if (event.key !== "Enter" && event.key !== " ") return;
-
-    event.preventDefault();
-
-    const tab = event.currentTarget;
-
-    if (!(tab instanceof HTMLLabelElement)) return;
-
-    const inputId = tab.getAttribute("for");
-    const input = inputId ? document.getElementById(inputId) : null;
-
-    if (!(input instanceof HTMLInputElement)) return;
-
-    input.checked = true;
-    input.dispatchEvent(new Event("change", { bubbles: true }));
-  }
-
+  /**
+   * Only one job left: make sure something is selected.
+   *
+   * The aria-selected / aria-hidden juggling this file used to do is gone with
+   * the tabs roles — selection state is now carried by the radio's checked
+   * property, which is what assistive tech reads, and CSS shows the matching
+   * panel via `:checked + .content-selector-tab + .content-selector-panel`.
+   * Keyboard support (arrow keys, roving tab stop) is native to radio groups.
+   */
   function initContentSelectors() {
     document.querySelectorAll(".content-selector-items").forEach((contentSelector) => {
       if (!(contentSelector instanceof HTMLElement)) return;
 
-      syncContentSelectorAriaState(contentSelector);
+      const inputs = Array.from(
+        contentSelector.querySelectorAll<HTMLInputElement>(".content-selector-input")
+      );
 
-      if (contentSelector.dataset.contentSelectorInitialized === "true") return;
-
-      contentSelector.querySelectorAll(".content-selector-input").forEach((input) => {
-        input.addEventListener("change", handleInputChange);
-      });
-
-      contentSelector.querySelectorAll(".content-selector-tab").forEach((tab) => {
-        tab.addEventListener("keydown", handleTabKeydown);
-      });
-
-      contentSelector.dataset.contentSelectorInitialized = "true";
+      if (inputs.length && !inputs.some((input) => input.checked)) {
+        inputs[0].checked = true;
+      }
     });
   }
 

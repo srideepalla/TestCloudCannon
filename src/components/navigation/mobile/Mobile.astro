@@ -348,6 +348,18 @@ function activeLocaleDisplay(children) {
       // Move entire nav to overlays container for proper z-index stacking
       overlaysContainer.appendChild(nav);
 
+      // A closed drawer is hidden only by transform: translateX(-100%), which
+      // removes nothing from the tab order. At phone widths that made the drawer's
+      // close button the FIRST tab stop on every page, ahead of the skip link, with
+      // ~88 invisible stops behind it. inert fixes both halves at once: not
+      // focusable, and out of the accessibility tree.
+      //
+      // Set here rather than in the markup on purpose. Without JS the drawer is
+      // never relocated and the CSS-only `.nav-toggle:checked ~ .mobile` path still
+      // opens it — a template-level inert would make that path permanently dead.
+      // Only JS relocates, so only JS should inert.
+      if (!nav.hasAttribute("data-mobile-open")) nav.setAttribute("inert", "");
+
       // Find the toggle for this specific nav instance
       const toggleId = nav.getAttribute("data-toggle-id");
       const toggle = document.getElementById(toggleId);
@@ -356,15 +368,21 @@ function activeLocaleDisplay(children) {
       // Handle navigation toggle state and accessibility
       function handleNavToggle(isOpen) {
         if (isOpen) {
-          nav.setAttribute("aria-hidden", "false");
+          // inert must come off BEFORE focusing, or the focus call is a no-op and
+          // the drawer opens with focus left behind on the hamburger.
+          nav.removeAttribute("inert");
+          nav.setAttribute("data-mobile-open", "");
           nav.style.transform = "translateX(0)";
           document.body.style.overflow = "hidden";
           nav.querySelector(".mobile-close")?.focus();
         } else {
-          nav.setAttribute("aria-hidden", "true");
+          nav.removeAttribute("data-mobile-open");
           nav.style.transform = "translateX(-100%)";
           document.body.style.overflow = "";
+          // Move focus out before inerting: inerting the element that currently
+          // holds focus would strand the user with no focused element at all.
           hamburger?.focus();
+          nav.setAttribute("inert", "");
         }
       }
 

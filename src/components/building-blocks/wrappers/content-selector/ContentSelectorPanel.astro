@@ -40,14 +40,23 @@ const arrayDataAttributes = effectiveChildrenProp
     checked={checked}
     autocomplete="off"
   />
+  {
+    /*
+    No role="tab"/tabindex here, and no role="tabpanel" below. This control is a
+    native radio group, and the ARIA tabs overlay on top of it was invalid three
+    ways: the tabpanel sat inside the tablist (.content-selector-item is
+    display:contents, so it vanishes from the a11y tree and the panel became a
+    direct child of role="tablist", which only permits tabs); every label was in
+    the tab sequence rather than just the active one; and arrow keys did nothing.
+
+    Exposing the radio group instead fixes all three at once, natively — arrow
+    keys move between options, and only the checked radio is in the tab sequence.
+  */
+  }
   <label
     class="content-selector-tab"
     id={tabLabelId}
     for={tabId}
-    role="tab"
-    aria-controls={panelId}
-    aria-selected={checked ? "true" : "false"}
-    tabindex="0"
   >
     <Heading
       text={title}
@@ -70,12 +79,13 @@ const arrayDataAttributes = effectiveChildrenProp
       )
     }
   </label>
+  {
+    /* No aria-hidden: an unchecked panel is display:none, which already removes it
+      from the accessibility tree, and the old JS-managed value went stale. */
+  }
   <div
     class="content-selector-panel"
     id={panelId}
-    role="tabpanel"
-    aria-labelledby={tabLabelId}
-    aria-hidden={checked ? "false" : "true"}
   >
     <div
       class="content-selector-panel-content"
@@ -101,8 +111,21 @@ const arrayDataAttributes = effectiveChildrenProp
       display: contents;
     }
 
+    /* Visually hidden but still focusable. display:none removed the radio from
+       the tab sequence entirely, which left the whole control unreachable by
+       keyboard except through the label's tabindex hack. position:absolute keeps
+       a zero-size radio from taking a grid/flex slot in .content-selector-items. */
     .content-selector-input {
-      display: none;
+      height: 0;
+      opacity: 0;
+      position: absolute;
+      width: 0;
+    }
+
+    /* The radio is invisible, so its focus ring has to show on the label. */
+    .content-selector-input:focus-visible + .content-selector-tab {
+      outline: 2px solid var(--color-brand);
+      outline-offset: -2px;
     }
 
     .content-selector-tab {

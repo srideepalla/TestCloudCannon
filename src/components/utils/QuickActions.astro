@@ -83,6 +83,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
 
 <script>
   import { onPageLoad } from "@component-utils/onPageLoad";
+  import { trapFocus } from "@component-utils/focusTrap";
 
   function setupQuickActions() {
     const modal = document.querySelector<HTMLElement>(".quick-actions-wrapper");
@@ -93,6 +94,8 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
     const trigger = modal.querySelector<HTMLButtonElement>(".modal-trigger");
     const popover = modal.querySelector<HTMLElement>(".modal-popover");
     if (!trigger || !popover) return;
+
+    trapFocus(popover);
 
     popover.addEventListener("toggle", (e) => {
       const { newState } = e as ToggleEvent;

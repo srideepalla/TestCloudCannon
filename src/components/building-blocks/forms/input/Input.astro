@@ -99,7 +99,9 @@ const hasIcon = iconName?.trim().length > 0;
       .field-shell {
         align-items: center;
         background-color: var(--color-bg);
-        border: 1px solid var(--color-border-inputs);
+        /* Fallback required: colorBorderInputs is undefined in the dark theme,
+           which drops the whole border shorthand. See _forms.css. */
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         border-radius: var(--radius-xs);
         display: flex;
         gap: var(--spacing-em-sm);
@@ -108,9 +110,19 @@ const hasIcon = iconName?.trim().length > 0;
           border-color var(--animation-normal) ease-in-out,
           box-shadow var(--animation-normal) ease-in-out;
 
-        &:focus-within {
+        /* :has(:focus-visible) rather than :focus-within, to match the
+           :focus-visible indicator on the bare fields in _forms.css. The shell is
+           what's visible, so the ring has to be drawn here; the inner input's own
+           outline is suppressed to avoid two rings stacked on one field. */
+        &:has(:focus-visible) {
           border-color: var(--color-brand);
           box-shadow: 0 0 0 3px var(--color-focus-ring);
+          outline: 2px solid var(--color-brand);
+          outline-offset: 1px;
+        }
+
+        > input:focus-visible {
+          outline: none;
         }
 
         &.icon-after {

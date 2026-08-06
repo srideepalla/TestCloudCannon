@@ -1,3 +1,23 @@
+/* Every --color-border-inputs use below carries a fallback on purpose.
+   theme.json defines colorBorderInputs for the light theme only; it is absent
+   from dark, and the site renders with data-theme="dark" hardcoded. An empty
+   custom property makes `border: 1px solid var(--color-border-inputs)` invalid
+   at computed-value time, so the WHOLE shorthand is dropped — measured result
+   was border-style: none, border-width: 0px, i.e. no visible edge on any input,
+   textarea or select site-wide.
+
+   The fallback restores a border without inventing a brand colour. It does not
+   settle what the value should be: --color-border is #374151 in dark, which is
+   still under the 3:1 non-text contrast minimum. That number is Design's call.
+
+   Each :focus block below also sets a real outline rather than `outline: none`.
+   Previously the 3px box-shadow was the SOLE focus indicator on every form
+   field, which fails in two ways: a box-shadow is clipped by any ancestor with
+   overflow hidden/auto (html and body both set overflow-x: hidden, and
+   .modal-popover sets overflow-y: auto), and --color-focus-ring is a 40%-alpha
+   amber that composites to roughly 2.4:1 — under the 3:1 minimum for a focus
+   indicator. The outline uses solid --color-brand, the colour already chosen for
+   focus, so nothing new is invented and there are now two independent cues. */
 @layer base {
   :where(:root) {
     fieldset {
@@ -17,17 +37,22 @@
 
     input {
       background-color: var(--color-bg);
-      border: 1px solid var(--color-border-inputs);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
       border-radius: var(--radius-xs);
       color: var(--color-text-strong);
       font-size: var(--font-size-md);
       padding: var(--spacing-em-sm);
       transition: border-color var(--animation-normal) ease-in-out;
 
-      &:focus {
+      /* :focus-visible, not :focus — the indicator is for people who need to know
+         where the keyboard is. Browsers still match it on click for text fields,
+         which do accept typed input, so this only drops the ring from a
+         mouse-clicked <select>. */
+      &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: none;
+        outline: 2px solid var(--color-brand);
+        outline-offset: 1px;
       }
 
       &::placeholder {
@@ -42,7 +67,7 @@
 
       &::file-selector-button {
         background-color: var(--color-bg-surface);
-        border: 1px solid var(--color-border-inputs);
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         border-radius: var(--radius-xs);
         color: var(--color-text-strong);
         cursor: pointer;
@@ -59,7 +84,7 @@
 
     textarea {
       background-color: var(--color-bg);
-      border: 1px solid var(--color-border-inputs);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
       border-radius: var(--radius-xs);
       color: var(--color-text-strong);
       font-size: var(--font-size-md);
@@ -68,10 +93,15 @@
       resize: vertical;
       transition: border-color var(--animation-normal) ease-in-out;
 
-      &:focus {
+      /* :focus-visible, not :focus — the indicator is for people who need to know
+         where the keyboard is. Browsers still match it on click for text fields,
+         which do accept typed input, so this only drops the ring from a
+         mouse-clicked <select>. */
+      &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: none;
+        outline: 2px solid var(--color-brand);
+        outline-offset: 1px;
       }
 
       &::placeholder {
@@ -87,17 +117,22 @@
 
     select {
       background-color: var(--color-bg);
-      border: 1px solid var(--color-border-inputs);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
       border-radius: var(--radius-xs);
       color: var(--color-text-strong);
       cursor: pointer;
       padding: var(--spacing-em-sm);
       transition: border-color var(--animation-normal) ease-in-out;
 
-      &:focus {
+      /* :focus-visible, not :focus — the indicator is for people who need to know
+         where the keyboard is. Browsers still match it on click for text fields,
+         which do accept typed input, so this only drops the ring from a
+         mouse-clicked <select>. */
+      &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: none;
+        outline: 2px solid var(--color-brand);
+        outline-offset: 1px;
       }
 
       &:disabled {

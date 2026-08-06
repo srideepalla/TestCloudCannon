@@ -122,12 +122,6 @@ const mobileNavData = [
         color: var(--color-brand) !important;
       }
 
-      @media (min-width: 1025px) {
-        .mobile {
-          display: none;
-        }
-      }
-
       .nav-hamburger.mobile-button {
         @media (min-width: 1025px) {
           display: none;
@@ -170,6 +164,23 @@ const mobileNavData = [
           grid-column: 3;
           justify-self: end;
         }
+      }
+    }
+
+    /* Deliberately NOT nested inside .main-nav. Mobile.astro's script relocates
+       the drawer to #overlays-container at the top of <body>, so nesting compiled
+       this to `.main-nav .mobile`, which stops matching the moment the element
+       moves. The drawer therefore stayed display:flex at desktop widths, hidden
+       only by a transform — which does not remove it from the tab order, so its
+       links became the first tab stops on the page, ahead of the skip link.
+
+       Safe as a bare class selector: class="mobile" is used by exactly one
+       element in the codebase. Layer order (reset, base, components,
+       page-sections, ...) puts this after Mobile.astro's `display: flex` in
+       @layer components, so it wins without needing !important. */
+    @media (min-width: 1025px) {
+      .mobile {
+        display: none;
       }
     }
   }

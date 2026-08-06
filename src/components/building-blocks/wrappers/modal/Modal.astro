@@ -92,15 +92,22 @@ if (!_component && !hasContentSections && !hasSlotContent) return;
 
 <script>
   import { onPageLoad } from "@component-utils/onPageLoad";
+  import { trapFocus } from "@component-utils/focusTrap";
 
   function setupModals() {
     document.querySelectorAll<HTMLElement>(".modal").forEach((modal) => {
+      const trigger = modal.querySelector<HTMLButtonElement>(".modal-trigger .button-inner");
+      const popover = modal.querySelector<HTMLElement>(".modal-popover");
+
+      // Checked before claiming the element: QuickActions also carries class
+      // "modal" but has no .button-inner trigger, so marking it initialized here
+      // and then bailing would leave its own setup script permanently skipped.
+      if (!trigger || !popover) return;
+
       if (modal.hasAttribute("data-modal-initialized")) return;
       modal.setAttribute("data-modal-initialized", "");
 
-      const trigger = modal.querySelector<HTMLButtonElement>(".modal-trigger .button-inner");
-      const popover = modal.querySelector<HTMLElement>(".modal-popover");
-      if (!trigger || !popover) return;
+      trapFocus(popover);
 
       popover.addEventListener("toggle", (e) => {
         const { newState } = e as ToggleEvent;

@@ -53,6 +53,7 @@
     "colorBgHighlight": "rgba(223, 186, 25, 0.12)",
     "colorBgInverse": "#fff",
     "colorBorder": "#374151",
+    "colorBorderInputs": "#6b7280",
     "colorBorderStrong": "#fff",
     "colorBorderSubtle": "#1f2937",
     "colorStateHover": "rgba(255, 255, 255, 0.04)",
