@@ -196,7 +196,7 @@
           "children": []
         },
         {
-          "name": "People's Choice Stevie Awards for Favorite Customer Service",
+          "name": "People's Choice Stevie Awards for Favorite Companies",
           "path": "/awards/peopleschoice/",
           "openInNewTab": false,
           "children": []
@@ -245,7 +245,7 @@
           "children": []
         },
         {
-          "name": "What's New & Different for 2027",
+          "name": "What's New & Different for 2026",
           "path": "/enter/whats-new-different",
           "openInNewTab": false,
           "children": []
@@ -258,14 +258,14 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
+          "name": "Apply to Be a Judge",
+          "path": "/judges/you-be-the-judge",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Apply to Be a Judge",
-          "path": "/judges/you-be-the-judge",
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
           "openInNewTab": false,
           "children": []
         },
