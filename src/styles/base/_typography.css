@@ -80,6 +80,18 @@
       }
     }
 
+    /* A link inside running text needs a cue that is not colour (WCAG 1.4.1).
+       Collection pages already underline via `.prose a`, but pages rendered
+       through Page.astro had no equivalent, so their body links were
+       distinguished by colour alone — axe flagged it as link-in-text-block.
+
+       Scoped to `p > a` deliberately: navigation and button links are not inside
+       paragraphs, so they keep their own styling and do not pick up an underline
+       they were never meant to have. */
+    p > a {
+      text-decoration: underline;
+    }
+
     h1,
     h2,
     h3,
