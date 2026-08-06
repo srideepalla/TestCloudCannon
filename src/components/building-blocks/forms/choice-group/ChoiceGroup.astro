@@ -19,6 +19,7 @@ const inputName = multiple ? `${name}[]` : name;
 <fieldset
   class:list={["choice-group", className]}
   role={multiple ? "group" : "radiogroup"}
+  aria-label={!title && name ? name : undefined}
   {...htmlAttributes}
 >
   {

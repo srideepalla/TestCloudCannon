@@ -276,7 +276,7 @@ pageSections:
       src="https://js.hsforms.net/ui-forms-embed-components-app/frame.html?_hsPortalId=35655&amp;_hsFormId=4efdd4d5-a101-48a9-a83a-de234d43d7e9&amp;_hsIsQa=false&amp;_hsHublet=na1&amp;_hsDisableScriptloader=true&amp;_hsDisableRedirect=true&amp;_hsInstanceId=dfc8f47a-13ed-47e9-b2db-db65c06feffa&amp;_hsUtk=c9d14285c0c99ecef07fc6ffb25c22fa" 
       loading="lazy"
       data-test-id="embedded-form-4efdd4d5-a101-48a9-a83a-de234d43d7e9"
-      title="Form" scrolling="no" style="border: none; height: 100%; width:
+      title="Stevie Awards newsletter signup form" scrolling="no" style="border: none; height: 100%; width:
       100%;"></iframe></div></div> </div>
     formCardColorScheme: light
     formCardBackgroundColor: base

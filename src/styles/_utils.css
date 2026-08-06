@@ -10,4 +10,24 @@
     white-space: nowrap;
     width: 1px;
   }
+
+  /* Off-screen until focused, so keyboard users can bypass the header and nav
+     (WCAG 2.4.1). Must stay the first focusable element in the document. */
+  .skip-link {
+    background-color: var(--navy);
+    border-bottom-right-radius: var(--radius-sm);
+    color: var(--gray-0);
+    font-weight: 600;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    padding: var(--spacing-sm) var(--spacing-md);
+    position: fixed;
+    text-decoration: none;
+    transform: translateY(-101%);
+    z-index: var(--layer-8);
+  }
+
+  .skip-link:focus {
+    transform: translateY(0);
+  }
 }

@@ -57,7 +57,7 @@ if (!_component && !hasContentSections && !hasSlotContent) return;
     popover="auto"
     class:list={["modal-popover", `size-${size}`]}
     role="dialog"
-    aria-label={label}
+    aria-label={label?.trim() || "Dialog"}
   >
     <div class="modal-header">
       <Button

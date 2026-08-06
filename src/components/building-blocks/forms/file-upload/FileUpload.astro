@@ -39,6 +39,7 @@ const fieldId = htmlAttributes.id || `file-upload-${crypto.randomUUID()}`;
     id={fieldId}
     required={required}
     aria-required={required}
+    aria-label={!label && name ? name : undefined}
     accept={accept}
     multiple={multiple}
     class="field"

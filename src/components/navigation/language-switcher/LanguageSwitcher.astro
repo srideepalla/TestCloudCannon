@@ -64,7 +64,6 @@ const groupName = `lang-switcher-${navInstanceId}`;
         name={groupName}
         id={dropdownId}
         class="nav-item-toggle"
-        aria-expanded="false"
         aria-controls={contentId}
         autocomplete="off"
       />
@@ -73,6 +72,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
         class="nav-item-trigger"
         role="button"
         aria-controls={contentId}
+        aria-expanded="false"
         tabindex="0"
       >
         <Image
@@ -86,9 +86,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
       <div
         id={contentId}
         class="nav-item-content"
-        role="region"
-        aria-label={`${displayLanguage} submenu`}
-        aria-hidden="true"
+        {/* No aria-hidden — display:none handles the closed state. See Bar.astro. */}
       >
         <ul class="nav-list">
           {
@@ -101,7 +99,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
                     aria-hidden="true"
                     class="lang-flag"
                   />
-                  <span>{lang.name}</span>
+                  <span lang={lang.langCode}>{lang.name}</span>
                 </a>
               </li>
             ))
@@ -117,20 +115,11 @@ const groupName = `lang-switcher-${navInstanceId}`;
 
   let langGlobalHandlersBound = false;
 
+  // No aria-hidden on the panel: display:none already removes it from the
+  // accessibility tree, and the attribute went stale when CSS opened the menu.
   function updateAriaStates(toggle, isExpanded) {
-    const contentId = toggle.getAttribute("aria-controls");
-    const content = document.getElementById(contentId || "");
     const triggerId = toggle.getAttribute("id");
     const trigger = document.querySelector(`label[for="${triggerId}"]`);
-
-    toggle.setAttribute("aria-expanded", isExpanded.toString());
-
-    if (content) {
-      content.setAttribute("aria-hidden", (!isExpanded).toString());
-      content.querySelectorAll(".nav-item-nested").forEach((nested) => {
-        nested.setAttribute("aria-hidden", (!isExpanded).toString());
-      });
-    }
 
     if (trigger) {
       trigger.setAttribute("aria-expanded", isExpanded.toString());

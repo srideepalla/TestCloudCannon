@@ -60,6 +60,7 @@ const hasIcon = iconName?.trim().length > 0;
           placeholder={placeholder}
           required={required}
           aria-required={required}
+          aria-label={!label && name ? name : undefined}
           value={value}
           class="field"
         />
@@ -72,6 +73,7 @@ const hasIcon = iconName?.trim().length > 0;
         placeholder={placeholder}
         required={required}
         aria-required={required}
+        aria-label={!label && name ? name : undefined}
         value={value}
         class="field"
       />

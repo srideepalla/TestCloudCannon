@@ -28,6 +28,7 @@ export const LOCALE_CODES = [
 /** The locale prefix of the current path, or null when on the default (English) site. */
 export function getCurrentLocale(pathname: string): string | null {
   const first = pathname.split("/").filter(Boolean)[0];
+
   return first && LOCALE_CODES.includes(first) ? first : null;
 }
 
@@ -39,6 +40,7 @@ import uiStrings from "@data/i18n/ui.json";
 export function localizeText(text: unknown, locale: string | null): unknown {
   if (!locale || typeof text !== "string") return text;
   const entry = (uiStrings as Record<string, Record<string, string>>)[text];
+
   return (entry && entry[locale]) || text;
 }
 
@@ -53,6 +55,7 @@ export function localizeData<T>(data: T, locale: string | null): T {
   if (Array.isArray(data)) return data.map((d) => localizeData(d, locale)) as unknown as T;
   if (data && typeof data === "object") {
     const out: Record<string, unknown> = {};
+
     for (const [k, v] of Object.entries(data)) out[k] = localizeData(v, locale);
     return out as T;
   }
@@ -69,9 +72,11 @@ export function localizePath(
   pathname: string
 ): string | undefined | null {
   const locale = getCurrentLocale(pathname);
+
   if (!locale || typeof href !== "string") return href;
   if (!href.startsWith("/") || href.startsWith("//")) return href; // external / protocol-relative
   const first = href.split("/").filter(Boolean)[0];
+
   if (first && LOCALE_CODES.includes(first)) return href; // already localized
   return `/${locale}${href}`;
 }

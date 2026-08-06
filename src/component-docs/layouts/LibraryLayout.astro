@@ -104,6 +104,16 @@ const globalThemeCSS = generateGlobalThemeCSS();
     <slot name="head" />
   </head>
   <body class="component-docs">
+    <!-- First focusable element, so keyboard users can bypass the sidebar/mobile
+         nav rendered below (WCAG 2.4.1). This layout does not extend BaseLayout,
+         so it needs its own copy rather than inheriting one. -->
+    <a
+      class="skip-link"
+      href="#main"
+    >
+      Skip to main content
+    </a>
+
     <MobileNavLayout />
     <CustomSection
       maxContentWidth="2xl"
@@ -112,7 +122,10 @@ const globalThemeCSS = generateGlobalThemeCSS();
       class="library-container"
     >
       <SidebarNavLayout />
-      <main class="main">
+      <main
+        id="main"
+        class="main"
+      >
         <div
           data-editable="array"
           data-children-prop="contentSections"

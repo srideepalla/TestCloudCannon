@@ -13,7 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://sales.stevieawards.com",
+  site: "https://iba.stevieawards.com",
   fonts: siteFonts,
   build: {
     inlineStylesheets: "always",

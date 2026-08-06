@@ -1,6 +1,7 @@
 ---
 import Button from "@core-elements/button/Button.astro";
 import CarouselSlide from "./CarouselSlide.astro";
+import Icon from "@core-elements/icon/Icon.astro";
 import Image from "@core-elements/image/Image.astro";
 import { slugifyLabel } from "@components/utils/slugify";
 
@@ -84,8 +85,9 @@ if (!_component && !hasSlides && !hasSlotContent) return;
 
 <section
   class:list={[carouselClasses, className]}
-  role="region"
-  aria-label="Carousel"
+  role="group"
+  aria-roledescription="carousel"
+  aria-label={label || "Image carousel"}
   {...htmlAttributes}
 >
   <div
@@ -115,6 +117,31 @@ if (!_component && !hasSlides && !hasSlotContent) return;
     </div>
 
     <div class="controls-wrapper">
+      {/* Moving content that starts on its own needs a way to stop it (WCAG 2.2.2). */}
+      {
+        (autoPlay || autoScroll) && (
+          <button
+            type="button"
+            class="carousel-toggle"
+            data-playing="true"
+            aria-label="Pause carousel"
+          >
+            <Icon
+              name="pause"
+              size="none"
+              class="carousel-toggle-icon is-pause"
+              aria-hidden="true"
+            />
+            <Icon
+              name="play"
+              size="none"
+              class="carousel-toggle-icon is-play"
+              aria-hidden="true"
+            />
+          </button>
+        )
+      }
+
       <Button
         iconName="arrow-left"
         size="md"
@@ -233,6 +260,33 @@ if (!_component && !hasSlides && !hasSlotContent) return;
           }
         }
 
+        > .controls-wrapper > .carousel-toggle {
+          align-items: center;
+          background-color: var(--color-bg);
+          border: 0;
+          cursor: pointer;
+          display: flex;
+          flex-shrink: 0;
+          justify-content: center;
+          padding: var(--spacing-sm);
+          pointer-events: auto;
+
+          &:hover {
+            background-color: var(--color-bg-surface);
+          }
+
+          > .carousel-toggle-icon {
+            block-size: 1rem;
+            inline-size: 1rem;
+          }
+
+          /* One control, two states: show the action the button performs. */
+          &[data-playing="true"] > .is-play,
+          &[data-playing="false"] > .is-pause {
+            display: none;
+          }
+        }
+
         > .controls-wrapper > .indicators {
           display: flex;
           gap: var(--spacing-sm);
@@ -247,10 +301,20 @@ if (!_component && !hasSlides && !hasSlotContent) return;
           min-height: 0;
           min-width: 0;
           padding: 0;
+          position: relative;
           transition:
             transform var(--animation-normal) ease,
             background-color var(--animation-normal) ease;
           width: 8px;
+
+          /* The visual dot stays 8px by design; the actual pointer/touch target
+             is expanded to the 24x24px CSS-px minimum via an invisible hit area
+             (WCAG 2.5.8), rather than inflating the dot itself. */
+          &::before {
+            content: "";
+            inset: -8px;
+            position: absolute;
+          }
 
           &[data-selected="true"] {
             background-color: var(--color-brand-muted);

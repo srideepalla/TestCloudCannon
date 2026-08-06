@@ -24,7 +24,7 @@ const pageImageRaw = props.image || seoData.logoSource;
 // Open Graph requires absolute URLs for images.
 const pageImage = pageImageRaw.startsWith("http")
   ? pageImageRaw
-  : new URL(pageImageRaw, Astro.site ?? "https://sales.stevieawards.com").href;
+  : new URL(pageImageRaw, Astro.site ?? "https://iba.stevieawards.com").href;
 const pageKeywords = props.keywords?.join(", ") || seoData.keywords;
 const ogType = props.ogType ?? "website";
  
@@ -82,7 +82,7 @@ const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
 const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 
-const siteOrigin = "https://sales.stevieawards.com";
+const siteOrigin = "https://iba.stevieawards.com";
 
 // Supported locales. Keys are the URL prefix / content directory under
 // src/content/pages/ (must match LANGUAGE_MAP keys in the translation scripts).
@@ -120,6 +120,7 @@ const currentLocale = segments.length && LOCALES[segments[0]] ? segments[0] : nu
 
 // The path with the locale prefix stripped (i.e. the English/base path).
 let enPath = rawPath;
+
 if (currentLocale) {
   enPath = rawPath.slice(currentLocale.length + 1) || "/";
 }
@@ -168,9 +169,15 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
     fbq('init', '316192473477446');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height=""1"" width=""1"" style=""display:none""
-    src=""https://www.facebook.com/tr?id=316192473477446&ev=PageView&noscript=1""
-    /></noscript>
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style="display:none"
+        src="https://www.facebook.com/tr?id=316192473477446&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
     <!-- End Meta Pixel Code -->
     <meta
       name="viewport"
@@ -278,6 +285,7 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
         width="1"
         style="display:none"
         src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1"
+        alt=""
       />
     </noscript>
     <!-- End Facebook Pixel -->
@@ -341,6 +349,10 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
       title={formattedTitle}
       description={pageDescription}
       noindex={props.noindex ?? false}
+      {/* astro-seo always emits <link rel="canonical">, so the page-level override
+          must go through this prop. Passing it via extend.link produced a second,
+          duplicate canonical tag on every page. */}
+      canonical={props.canonical || undefined}
       openGraph={{
         basic: {
           title: formattedTitle,
@@ -364,12 +376,6 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
         creator: seoData.twitterHandle,
       }}
       extend={{
-        link: [
-          {
-            rel: "canonical",
-            href: props.canonical || Astro.url.href,
-          },
-        ],
         meta: [
           {
             name: "keywords",
@@ -403,12 +409,22 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
     <noscript>
       <iframe
         src="https://www.googletagmanager.com/ns.html?id=GTM-PDZX3FH"
+        title="Google Tag Manager"
         height="0"
         width="0"
         style="display:none;visibility:hidden"
       ></iframe>
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
+
+    <!-- First focusable element in the document, so keyboard and screen-reader
+         users can bypass the header, nav and language switcher (WCAG 2.4.1). -->
+    <a
+      class="skip-link"
+      href="#main"
+    >
+      Skip to main content
+    </a>
 
     <div>
       <slot />

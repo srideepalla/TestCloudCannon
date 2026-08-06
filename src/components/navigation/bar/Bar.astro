@@ -73,7 +73,6 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
               name={itemData.groupName}
               id={itemData.dropdownId}
               class="nav-item-toggle"
-              aria-expanded="false"
               aria-controls={itemData.contentId}
               autocomplete="off"
             />
@@ -91,7 +90,9 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                 <label
                   for={itemData.dropdownId}
                   class="nav-item-trigger nav-item-toggle-btn"
+                  role="button"
                   aria-controls={itemData.contentId}
+                  aria-expanded="false"
                   tabindex="0"
                   aria-label={`Toggle ${itemData.name} submenu`}
                 >
@@ -108,7 +109,9 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
               <label
                 for={itemData.dropdownId}
                 class="nav-item-trigger"
+                role="button"
                 aria-controls={itemData.contentId}
+                aria-expanded="false"
                 tabindex="0"
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
@@ -125,9 +128,10 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
             <div
               id={itemData.contentId}
               class="nav-item-content"
-              role="region"
-              aria-label={`${itemData.name} submenu`}
-              aria-hidden="true"
+              {/* No aria-hidden: the closed state is display:none, which already
+                  removes this from the accessibility tree. A static aria-hidden
+                  would persist when CSS opens the menu on hover or focus, hiding
+                  the links from assistive tech while they remain tabbable. */}
             >
               <ul class="nav-list">
                 {itemData.children!.map((child: any) => {
@@ -155,7 +159,6 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                         name={childData.groupName}
                         id={childData.dropdownId}
                         class="nav-item-toggle"
-                        aria-expanded="false"
                         aria-controls={childData.contentId}
                         autocomplete="off"
                       />
@@ -173,7 +176,9 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                           <label
                             for={childData.dropdownId}
                             class="nav-item-trigger nav-item-toggle-btn"
+                            role="button"
                             aria-controls={childData.contentId}
+                            aria-expanded="false"
                             tabindex="0"
                             aria-label={`Toggle ${childData.name} submenu`}
                           >
@@ -190,7 +195,9 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                         <label
                           for={childData.dropdownId}
                           class="nav-item-trigger"
+                          role="button"
                           aria-controls={childData.contentId}
+                          aria-expanded="false"
                           tabindex="0"
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
@@ -207,9 +214,6 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                       <div
                         id={childData.contentId}
                         class="nav-item-nested"
-                        role="region"
-                        aria-label={`${childData.name} submenu`}
-                        aria-hidden="true"
                       >
                         <ul class="nav-list">
                           {childData.children!.map((grandChild: any) => {
@@ -251,9 +255,11 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
   let barGlobalHandlersBound = false;
 
+  // The dropdown panels carry no aria-hidden: display:none already removes them
+  // from the accessibility tree, and a JS-managed attribute went stale whenever
+  // CSS opened a menu on hover or :focus-visible without firing a change event.
+  // State belongs on the trigger, which is what screen readers announce.
   function updateAriaStates(toggle: any, isExpanded: any) {
-    const contentId = toggle.getAttribute("aria-controls");
-    const content = document.getElementById(contentId || "");
     const triggerId = toggle.getAttribute("id");
     const barRoot = toggle.closest(".bar");
     const toggleBtn = barRoot?.querySelector(`label.nav-item-toggle-btn[for="${triggerId}"]`);
@@ -261,15 +267,6 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
       barRoot?.querySelector(
         `label.nav-item-trigger:not(.nav-item-toggle-btn)[for="${triggerId}"]`
       ) ?? null;
-
-    toggle.setAttribute("aria-expanded", isExpanded.toString());
-
-    if (content) {
-      content.setAttribute("aria-hidden", (!isExpanded).toString());
-      content.querySelectorAll(".nav-item-nested").forEach((nested) => {
-        nested.setAttribute("aria-hidden", (!isExpanded).toString());
-      });
-    }
 
     if (toggleBtn) {
       toggleBtn.setAttribute("aria-expanded", isExpanded.toString());
@@ -395,7 +392,13 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
       });
 
       // Hovering one top-level item closes any dropdown pinned open on another
-      // (clicked checkbox or lingering focus), so two menus never show at once
+      // via a clicked checkbox, so two click-opened menus never show at once.
+      //
+      // Deliberately does NOT blur() a lingering keyboard focus in another item
+      // (removed — see WCAG 2.4.3): that silently destroyed keyboard focus with
+      // nothing re-focused, disorienting keyboard/AT users. The rare cosmetic
+      // cost — a keyboard-opened menu staying visible a moment while a hovered
+      // menu also opens — is preferable to losing focus entirely.
       barNav.querySelectorAll(":scope > .bar-list > .nav-item").forEach((item) => {
         item.addEventListener("mouseenter", () => {
           barNav.querySelectorAll(".nav-item-toggle[type='checkbox']").forEach((toggle) => {
@@ -405,10 +408,6 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
               updateAriaStates(checkbox, false);
             }
           });
-          const active = document.activeElement as HTMLElement | null;
-          if (active && barNav.contains(active) && active.closest(".bar-list > .nav-item") !== item) {
-            active.blur();
-          }
         });
       });
 
@@ -512,11 +511,13 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
           cursor: pointer;
           display: flex;
           flex: 0 0 auto;
-          height: 1.75em;
+          /* 2em = 24px at this element's 12px font-size — the WCAG 2.5.8 minimum.
+             Was 1.75em (21px). */
+          height: 2em;
           justify-content: center;
           margin-inline-end: 4px;
           padding: 0;
-          width: 1.75em;
+          width: 2em;
           transition:
             background var(--animation-normal) ease-in-out,
             border-color var(--animation-normal) ease-in-out;

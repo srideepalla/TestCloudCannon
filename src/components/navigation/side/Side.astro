@@ -51,7 +51,6 @@ function hasCurrentChild(item) {
                 name={`side-nav-top-${navInstanceId}`}
                 id={dropdownId}
                 class="nav-item-toggle"
-                aria-expanded={hasCurrent.toString()}
                 aria-controls={contentId}
                 autocomplete="off"
                 checked={hasCurrent}
@@ -61,6 +60,7 @@ function hasCurrentChild(item) {
                 class="nav-item-trigger"
                 role="button"
                 aria-controls={contentId}
+                aria-expanded={hasCurrent.toString()}
                 tabindex="0"
                 aria-current={isCurrent ? "page" : undefined}
               >
@@ -76,9 +76,7 @@ function hasCurrentChild(item) {
               <div
                 id={contentId}
                 class:list={["nav-item-content", hasCurrent && "nav-item-content-initial"]}
-                role="region"
-                aria-label={`${item.name} submenu`}
-                aria-hidden={(!hasCurrent).toString()}
+                {/* No aria-hidden — display:none handles the closed state. See Bar.astro. */}
               >
                 <ul class="nav-list">
                   {item.children.map((child) => {
@@ -96,7 +94,6 @@ function hasCurrentChild(item) {
                             name={`side-nav-${parentGroupId}`}
                             id={childDropdownId}
                             class="nav-item-toggle"
-                            aria-expanded={childHasCurrent.toString()}
                             aria-controls={childContentId}
                             autocomplete="off"
                             checked={childHasCurrent}
@@ -106,6 +103,7 @@ function hasCurrentChild(item) {
                             class="nav-item-trigger"
                             role="button"
                             aria-controls={childContentId}
+                            aria-expanded={childHasCurrent.toString()}
                             tabindex="0"
                             aria-current={childIsCurrent ? "page" : undefined}
                           >
@@ -124,9 +122,6 @@ function hasCurrentChild(item) {
                               "nav-item-content",
                               childHasCurrent && "nav-item-content-initial",
                             ]}
-                            role="region"
-                            aria-label={`${child.name} submenu`}
-                            aria-hidden={(!childHasCurrent).toString()}
                           >
                             <ul class="nav-list">
                               {child.children && child.children.length > 0
@@ -203,18 +198,12 @@ function hasCurrentChild(item) {
       sideNav.querySelectorAll(".nav-item-toggle").forEach((toggle) => {
         toggle.addEventListener("change", (e) => {
           const target = e.target;
-          const content = document.getElementById(target.getAttribute("aria-controls") || "");
           const trigger = sideNav.querySelector(`label[for="${target.id}"]`);
 
-          if (content && trigger) {
-            const isOpen = target.checked;
-
-            // Update ARIA attributes
-            target.setAttribute("aria-expanded", isOpen.toString());
-            content.setAttribute("aria-hidden", (!isOpen).toString());
-
-            // Update trigger ARIA attributes
-            trigger.setAttribute("aria-expanded", isOpen.toString());
+          if (trigger) {
+            // State goes on the trigger, which is what screen readers announce.
+            // The panel needs no aria-hidden — display:none already removes it.
+            trigger.setAttribute("aria-expanded", target.checked.toString());
           }
         });
       });

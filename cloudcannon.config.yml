@@ -309,9 +309,6 @@ collections_config:
                   url:
                     type: url
                     comment: "URL to the social media profile."
-      footerText:
-        type: text
-        comment: "Legal / copyright text shown at the bottom of the footer."
       links:
         type: array
         comment: "Sidebar navigation links shown beneath the section heading."

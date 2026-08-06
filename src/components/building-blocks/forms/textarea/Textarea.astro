@@ -39,6 +39,7 @@ const fieldId = htmlAttributes.id || `textarea-${crypto.randomUUID()}`;
     placeholder={placeholder}
     required={required}
     aria-required={required}
+    aria-label={!label && name ? name : undefined}
     class="field"
     {...htmlAttributes}
     >{value}</textarea

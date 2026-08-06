@@ -57,6 +57,7 @@ function localeHref(langCode: string, allCodes: string[]) {
     firstSegment && localeCodes.includes(firstSegment)
       ? currentPath.slice(firstSegment.length + 1) || "/"
       : currentPath;
+
   if (!langCode || langCode.toLowerCase() === "en") return basePath || "/";
   return `/${langCode}${basePath}`;
 }
@@ -67,10 +68,12 @@ function activeLocaleDisplay(children) {
   const langs = (children ?? []).map((c) => createNavItemData(c, "child", ""));
   const codes = langs.map((l) => l.langCode).filter((c) => c && c.toLowerCase() !== "en");
   const firstSegment = currentPath.split("/").filter(Boolean)[0];
+
   if (!firstSegment || !codes.includes(firstSegment)) return null;
   const match = langs.find(
     (l) => l.langCode && l.langCode.toLowerCase() === firstSegment.toLowerCase()
   );
+
   return match ? { label: match.langCode.toUpperCase(), flag: match.flag } : null;
 }
 ---
@@ -160,7 +163,6 @@ function activeLocaleDisplay(children) {
                 name={itemData.groupName}
                 id={itemData.dropdownId}
                 class="nav-item-toggle"
-                aria-expanded={itemData.hasCurrent}
                 aria-controls={itemData.contentId}
                 autocomplete="off"
                 checked={itemData.hasCurrent}
@@ -170,6 +172,7 @@ function activeLocaleDisplay(children) {
                 class="nav-item-trigger"
                 role="button"
                 aria-controls={itemData.contentId}
+                aria-expanded={itemData.hasCurrent}
                 tabindex="0"
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
@@ -201,9 +204,8 @@ function activeLocaleDisplay(children) {
               <div
                 id={itemData.contentId}
                 class="nav-item-content"
-                role="region"
-                aria-label={`${itemData.name} submenu`}
-                aria-hidden={!itemData.hasCurrent}
+                {/* No aria-hidden — display:none handles the closed state, and nothing
+                    updated this after the initial render. See Bar.astro. */}
               >
                 <ul class="nav-list">
                   {itemData.children!.map((child) => {
@@ -213,6 +215,7 @@ function activeLocaleDisplay(children) {
                       const localeCodes = itemData.children!.map(
                         (c) => createNavItemData(c, "child", itemData.parentGroupId).langCode
                       );
+
                       return (
                         <li class="nav-item">
                           <a
@@ -225,7 +228,7 @@ function activeLocaleDisplay(children) {
                               aria-hidden="true"
                               class="lang-flag"
                             />
-                            {childData.name}
+                            <span lang={childData.langCode}>{childData.name}</span>
                           </a>
                         </li>
                       );
@@ -252,7 +255,6 @@ function activeLocaleDisplay(children) {
                           name={childData.groupName}
                           id={childData.dropdownId}
                           class="nav-item-toggle"
-                          aria-expanded={childData.hasCurrent}
                           aria-controls={childData.contentId}
                           autocomplete="off"
                           checked={childData.hasCurrent}
@@ -262,6 +264,7 @@ function activeLocaleDisplay(children) {
                           class="nav-item-trigger"
                           role="button"
                           aria-controls={childData.contentId}
+                          aria-expanded={childData.hasCurrent}
                           tabindex="0"
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
@@ -277,9 +280,6 @@ function activeLocaleDisplay(children) {
                         <div
                           id={childData.contentId}
                           class="nav-item-content"
-                          role="region"
-                          aria-label={`${childData.name} submenu`}
-                          aria-hidden={!childData.hasCurrent}
                         >
                           <ul class="nav-list">
                             {childData.children!.map((grandChild) => {

@@ -1,6 +1,12 @@
 @layer reset {
   html {
     scroll-behavior: smooth;
+
+    /* The main nav is position:sticky, so without this, scrolling a focused
+       element into view (keyboard Tab, or an in-page #hash link) can land it
+       directly under the nav, obscuring it (WCAG 2.4.11). Same fallback value
+       already used for anchor scroll-margin in Anchor.astro. */
+    scroll-padding-top: var(--nav-height, 100px);
   }
 
   :where(:root) {

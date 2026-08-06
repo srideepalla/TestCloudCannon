@@ -27,6 +27,7 @@ const fieldId = htmlAttributes.id || `slider-${crypto.randomUUID()}`;
         checked={checked}
         required={required}
         aria-required={required}
+        aria-label={!label && name ? name : undefined}
         value={value}
         class="slider-input"
         {...htmlAttributes}

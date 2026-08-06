@@ -24,6 +24,7 @@ const inputType = multiple ? "checkbox" : "radio";
   class:list={["segments", className]}
   role={multiple ? "group" : "radiogroup"}
   aria-labelledby={title ? `${groupId}-legend` : undefined}
+  aria-label={!title && name ? name : undefined}
   {...htmlAttributes}
 >
   {
@@ -60,12 +61,11 @@ const inputType = multiple ? "checkbox" : "radio";
             required={required && index === 0}
             aria-required={required && index === 0}
             autocomplete={keepStateOnRefresh ? "on" : "off"}
+            aria-label={iconOnly ? option.label : undefined}
             class="segments-field"
           />
           <span
             class="segment"
-            role="button"
-            tabindex="-1"
             title={iconOnly && option.label ? option.label : undefined}
           >
             {option.icon && (
@@ -114,7 +114,12 @@ const inputType = multiple ? "checkbox" : "radio";
         position: relative;
 
         .segments-field {
-          display: none;
+          /* Visually hidden but NOT display:none — that would remove it from the
+             tab order entirely, making the whole control unreachable by keyboard.
+             Same technique as Slider.astro's .slider-input. */
+          height: 0;
+          opacity: 0;
+          width: 0;
         }
 
         .segment {

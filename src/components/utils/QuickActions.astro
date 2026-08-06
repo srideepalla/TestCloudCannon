@@ -36,11 +36,12 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
     popover="auto"
     class="modal-popover quick-actions-modal"
     role="dialog"
-    aria-label={heading}
+    aria-labelledby={`${popoverId}-title`}
   >
     <div class="modal-body quick-actions-body">
       <div class="quick-actions-header-row">
         <Heading
+          id={`${popoverId}-title`}
           text={heading}
           level="h2"
           size="xs"
