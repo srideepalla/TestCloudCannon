@@ -8,6 +8,7 @@ import { fileURLToPath } from "node:url";
 import mdx from "@astrojs/mdx";
 
 import { siteFonts } from "./site-fonts.mjs";
+import { rehypeNewTabCue } from "./src/utils/rehypeNewTabCue.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -15,6 +16,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default defineConfig({
   site: "https://iba.stevieawards.com",
   fonts: siteFonts,
+  markdown: {
+    // The MDX integration inherits this config (extendMarkdownConfig defaults to
+    // true), so the cue is applied to .md and .mdx alike.
+    rehypePlugins: [rehypeNewTabCue],
+  },
   build: {
     inlineStylesheets: "always",
   },

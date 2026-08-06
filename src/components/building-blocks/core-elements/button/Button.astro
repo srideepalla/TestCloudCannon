@@ -36,7 +36,14 @@ const tagProps: Record<string, any> =
       ? { type: "button" }
       : {};
 
-if (openInNewTab && Tag === "a") {
+// Links that open a new tab must say so, or a screen-reader or magnifier user
+// gets no signal that their context changed (WCAG 3.2.5). The MDX rehype plugin
+// covers content links; this covers every link rendered through a component —
+// footer, nav and anything else using Button.
+const NEW_TAB_CUE = " (opens in new tab)";
+const opensInNewTab = openInNewTab && Tag === "a";
+
+if (opensInNewTab) {
   tagProps.target = "_blank";
   tagProps.rel = "noopener noreferrer";
 }
@@ -47,9 +54,18 @@ if (popovertarget) {
 }
 
 if (hideText) {
-  tagProps["aria-label"] = htmlAttributes["aria-label"] || text;
+  // An aria-label replaces the accessible name outright, so for icon-only links
+  // the cue has to go into the label itself — a hidden span inside the anchor
+  // would never be announced.
+  const baseLabel = htmlAttributes["aria-label"] || text;
+
+  tagProps["aria-label"] = opensInNewTab ? `${baseLabel}${NEW_TAB_CUE}` : baseLabel;
   delete htmlAttributes["aria-label"];
 }
+
+// Text links keep their visible label and get the cue as hidden text, so nothing
+// changes visually.
+const needsInlineNewTabCue = opensInNewTab && !hideText;
 
 const hasText = text?.trim().length > 0;
 const hasSlotContent = Astro.slots.has("default");
@@ -87,6 +103,7 @@ if (!_component && !hasText && !hasSlotContent && !hasIcon) return;
         </span>
       )
     }
+    {needsInlineNewTabCue && <span class="visually-hidden">{NEW_TAB_CUE}</span>}
   </Tag>
 </span>
 

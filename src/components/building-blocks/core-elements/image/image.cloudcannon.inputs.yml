@@ -10,7 +10,15 @@ source:
     height: 1280
 alt:
   type: textarea
-  comment: Alternative text for accessibility.
+  comment: >-
+    Required. Describe what the image shows and why it matters here, as a
+    sentence — someone using a screen reader, or anyone whose image fails to
+    load, gets this instead of the picture. Name the award, programme, people or
+    place where relevant rather than writing "image" or "logo". The build also
+    checks this, so a missing description fails the build rather than shipping
+    silently.
+  options:
+    required: true
 link:
   type: url
   comment: >-
