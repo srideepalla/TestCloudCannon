@@ -152,13 +152,8 @@
     "heading": "Tickets",
     "links": [
       {
-        "text": "Awards Banquet",
+        "text": "Awards Event",
         "href": "/tickets/awards-banquet",
-        "openInNewTab": false
-      },
-      {
-        "text": "2026 Event Gallery",
-        "href": "/tickets/event-gallery",
         "openInNewTab": false
       },
       {

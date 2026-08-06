@@ -389,14 +389,8 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Awards Banquet",
+          "name": "Awards Event",
           "path": "/tickets/awards-banquet/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "2026 Event Gallery",
-          "path": "/tickets/event-gallery/",
           "openInNewTab": false,
           "children": []
         },
