@@ -365,10 +365,9 @@ pageSections:
       speeches of winners from a variety of industries and nations.
 
 
-      Visit the [2026 Stevie Awards Winners
-      Page](/awards/2026-stevie-award-winners) to browse photos of the awards
-      event and watch individual awards presentations and red carpet interviews
-      with winners.
+      Visit the [2025 Stevie Awards Winners Page]() to browse photos of the
+      awards event and watch individual awards presentations and red carpet
+      interviews with winners.
     images:
       - source: /images/IBA/IBA25-Winner-1.jpg
         alt: IBA Winner
@@ -466,12 +465,12 @@ pageSections:
           source: /src/assets/images/54444944057-6a339b8488-o.jpg
           alt: The Stevie® Awards for Sales & Customer Service
         dateLabel: NOW
-        name: The Stevie® Awards for Sales & Customer Service
+        name: The Stevie® Awards for Sales &amp; Customer Service
         description: >-
           The Stevie Awards for Sales & Customer Service are open to all
           organizations worldwide, and recognize the achievements of sales,
           customer service, and call center professionals.
-        link: /
+        link: https://sales.stevieawards.com/
         colorScheme: inherit
         brandColor: '#99844b'
         textColor: '#ffffff'
@@ -504,7 +503,7 @@ pageSections:
           source: /src/assets/images/53565954489-6d7913fedb-o.jpg
           alt: The Middle East & North Africa Stevie Awards
         dateLabel: September 23, 2026
-        name: The Middle East & North Africa Stevie® Awards
+        name: The Middle East &amp; North Africa Stevie® Awards
         description: >-
           The Middle East & North Africa Stevie Awards recognize innovation in
           the workplace at organizations of all types in 18 nations in the MENA
