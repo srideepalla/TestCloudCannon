@@ -23,7 +23,7 @@
         "openInNewTab": false
       },
       {
-        "text": "Newsletter",
+        "text": "Stevie Awards Update Newsletter",
         "href": "/about/newsletter",
         "openInNewTab": false
       },
@@ -49,7 +49,7 @@
       },
       {
         "text": "Winners",
-        "href": "/awards/2026-stevie-award-winners/",
+        "href": "/awards/IBA-Winners/2025/Stevie-Award-Winners",
         "openInNewTab": false
       },
       {
@@ -67,13 +67,13 @@
     "heading": "Enter",
     "links": [
       {
-        "text": "10 Reasons to Enter",
-        "href": "/enter/10-reasons-enter",
+        "text": "How To Enter",
+        "href": "/enter/how-to-enter",
         "openInNewTab": false
       },
       {
-        "text": "Entry Fees",
-        "href": "/enter/entry-fees",
+        "text": "Regulations, Terms & Conditions",
+        "href": "/enter/regulations-terms-conditions",
         "openInNewTab": false
       },
       {
@@ -82,18 +82,18 @@
         "openInNewTab": false
       },
       {
+        "text": "Entry Fees",
+        "href": "/enter/entry-fees",
+        "openInNewTab": false
+      },
+      {
+        "text": "10 Reasons to Enter",
+        "href": "/enter/10-reasons-enter",
+        "openInNewTab": false
+      },
+      {
         "text": "How to Submit Winning Entries",
         "href": "/enter/how-to-submit-winning-entries",
-        "openInNewTab": false
-      },
-      {
-        "text": "How To Enter",
-        "href": "/enter/how-to-enter",
-        "openInNewTab": false
-      },
-      {
-        "text": "Regulations, Terms & Conditions",
-        "href": "/enter/regulations-terms-conditions",
         "openInNewTab": false
       },
       {
@@ -152,13 +152,8 @@
     "heading": "Tickets",
     "links": [
       {
-        "text": "Awards Banquet",
+        "text": "Awards Event",
         "href": "/tickets/awards-banquet",
-        "openInNewTab": false
-      },
-      {
-        "text": "2026 Event Gallery",
-        "href": "/tickets/event-gallery",
         "openInNewTab": false
       },
       {

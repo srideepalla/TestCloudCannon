@@ -14,14 +14,14 @@
           "children": []
         },
         {
-          "name": "FAQ",
-          "path": "/about/faq",
+          "name": "Calendar",
+          "path": "/about/calendar",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Calendar",
-          "path": "/about/calendar",
+          "name": "FAQ",
+          "path": "/about/faq",
           "openInNewTab": false,
           "children": []
         },
@@ -184,8 +184,8 @@
           "children": []
         },
         {
-          "name": "2026 Stevie Award Winners",
-          "path": "/awards/2026-stevie-award-winners",
+          "name": "2025 Stevie Award Winners",
+          "path": "/awards/IBA-Winners/2025/stevie-award-winners",
           "openInNewTab": false,
           "children": []
         },
@@ -196,7 +196,7 @@
           "children": []
         },
         {
-          "name": "People's Choice Stevie Awards for Favorite Customer Service",
+          "name": "People's Choice Stevie Awards for Favorite Companies",
           "path": "/awards/peopleschoice/",
           "openInNewTab": false,
           "children": []
@@ -245,7 +245,7 @@
           "children": []
         },
         {
-          "name": "What's New & Different for 2027",
+          "name": "What's New & Different for 2026",
           "path": "/enter/whats-new-different",
           "openInNewTab": false,
           "children": []
@@ -258,14 +258,14 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
+          "name": "Apply to Be a Judge",
+          "path": "/judges/you-be-the-judge",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Apply to Be a Judge",
-          "path": "/judges/you-be-the-judge",
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
           "openInNewTab": false,
           "children": []
         },
@@ -389,14 +389,8 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Awards Banquet",
+          "name": "Awards Event",
           "path": "/tickets/awards-banquet/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "2026 Event Gallery",
-          "path": "/tickets/event-gallery/",
           "openInNewTab": false,
           "children": []
         },
