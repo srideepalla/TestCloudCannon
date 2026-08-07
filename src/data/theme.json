@@ -29,8 +29,8 @@
     "colorStateHover": "rgba(0, 0, 0, 0.04)",
     "colorStateActive": "rgba(0, 0, 0, 0.08)",
     "colorOverlay": "rgba(0, 0, 0, 0.5)",
-    "colorFocusRing": "rgba(223, 186, 25, 0.4)",
-    "colorError": "#f00"
+    "colorFocusRing": "#005fcc",
+    "colorError": "#933"
   },
   "dark": {
     "colorBrand": "#dfba19ff",
@@ -61,7 +61,7 @@
     "colorStateHover": "rgba(255, 255, 255, 0.04)",
     "colorStateActive": "rgba(255, 255, 255, 0.08)",
     "colorOverlay": "rgba(0, 0, 0, 0.7)",
-    "colorFocusRing": "rgba(223, 186, 25, 0.4)",
-    "colorError": "#f00"
+    "colorFocusRing": "#66b3ff",
+    "colorError": "#ff6b6b"
   }
 }

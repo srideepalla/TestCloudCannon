@@ -51,12 +51,13 @@ if (!_component && !hasStaff) return;
     data-children-prop={effectiveChildrenProp || undefined}
   >
     {
-      staff.map((member: StaffMember) => (
+      staff.map((member: StaffMember, index: number) => (
         <GridItem
           data-editable="array-item"
           data-id="building-blocks/wrappers/staff-card"
         >
           <StaffCard
+            index={index}
             photo={member.photo}
             heading={member.heading}
             jobTitle={member.jobTitle}

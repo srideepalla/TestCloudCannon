@@ -365,7 +365,7 @@ pageSections:
       speeches of winners from a variety of industries and nations.
 
 
-      Visit the [2025 Stevie Awards Winners Page]() to browse photos of the
+      Visit the [2025 Stevie Awards Winners Page](/awards/iba-winners/2025/winners-circle) to browse photos of the
       awards event and watch individual awards presentations and red carpet
       interviews with winners.
     images:

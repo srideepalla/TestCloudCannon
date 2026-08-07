@@ -117,7 +117,14 @@ if (!_component && !hasText && !hasSlotContent && !hasIcon) return;
       > .button-inner {
         align-items: center;
         background-color: var(--color-bg-surface);
-        border: 1px solid var(--color-border);
+
+        /* border-inputs, not border: the surface fill is nearly invisible against
+           the page (1.05:1 in light), so this border is the only thing marking the
+           control's boundary and needs 3:1 (WCAG 1.4.11). --color-border is
+           1.47:1 on white; --color-border-inputs is 4.90:1 light / 4.29:1 dark and
+           is already the token used for exactly this job on form fields.
+           Decorative borders — cards, blockquotes, dividers — keep --color-border. */
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         border-radius: var(--radius-none);
         color: var(--color-text-strong);
         display: inline-flex;
@@ -146,9 +153,10 @@ if (!_component && !hasText && !hasSlotContent && !hasIcon) return;
           cursor: pointer;
         }
 
-        &:focus {
-          box-shadow: 0 0 2px 2px var(--color-focus-ring) inset;
-          outline: none;
+        &:focus-visible {
+          box-shadow: none;
+          outline: 3px solid var(--color-focus-ring);
+          outline-offset: 3px;
         }
 
         &.icon-only {

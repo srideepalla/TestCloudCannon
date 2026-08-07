@@ -1,23 +1,23 @@
 /* Every --color-border-inputs use below carries a fallback on purpose.
-   theme.json defines colorBorderInputs for the light theme only; it is absent
-   from dark, and the site renders with data-theme="dark" hardcoded. An empty
-   custom property makes `border: 1px solid var(--color-border-inputs)` invalid
-   at computed-value time, so the WHOLE shorthand is dropped — measured result
-   was border-style: none, border-width: 0px, i.e. no visible edge on any input,
-   textarea or select site-wide.
-
-   The fallback restores a border without inventing a brand colour. It does not
-   settle what the value should be: --color-border is #374151 in dark, which is
-   still under the 3:1 non-text contrast minimum. That number is Design's call.
+   colorBorderInputs was originally defined for the light theme only. With the
+   site rendering data-theme="dark", the empty custom property made
+   `border: 1px solid var(--color-border-inputs)` invalid at computed-value time,
+   so the WHOLE shorthand was dropped — measured border-style: none,
+   border-width: 0px, i.e. no visible edge on any input, textarea or select
+   site-wide. It is now defined in both themes (#6b7280, 4.83:1 light / 4.34:1
+   dark); the fallback stays as defence for any future theme that omits it.
 
    Each :focus block below also sets a real outline rather than `outline: none`.
    Previously the 3px box-shadow was the SOLE focus indicator on every form
    field, which fails in two ways: a box-shadow is clipped by any ancestor with
    overflow hidden/auto (html and body both set overflow-x: hidden, and
-   .modal-popover sets overflow-y: auto), and --color-focus-ring is a 40%-alpha
-   amber that composites to roughly 2.4:1 — under the 3:1 minimum for a focus
-   indicator. The outline uses solid --color-brand, the colour already chosen for
-   focus, so nothing new is invented and there are now two independent cues. */
+   .modal-popover sets overflow-y: auto), and the old focus-ring token was a
+   40%-alpha amber compositing to roughly 2.4:1 — under the 3:1 minimum.
+
+   The outline now uses --color-focus-ring, a dedicated solid indicator colour
+   (5.98:1 light / 9.46:1 dark). It is deliberately NOT --color-brand: the brand
+   gold measures 1.88:1 against a light section's white background, which fails
+   the same 3:1 rule this outline exists to satisfy. */
 @layer base {
   :where(:root) {
     fieldset {
@@ -51,7 +51,12 @@
       &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: 2px solid var(--color-brand);
+
+        /* focus-ring, not brand: the brand gold is 1.88:1 on a light section's
+           white background, under the 3:1 a focus indicator needs (WCAG 1.4.11).
+           --color-focus-ring is a dedicated indicator colour that clears it in
+           both themes, and it is what Button.astro already uses. */
+        outline: 2px solid var(--color-focus-ring);
         outline-offset: 1px;
       }
 
@@ -100,7 +105,12 @@
       &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: 2px solid var(--color-brand);
+
+        /* focus-ring, not brand: the brand gold is 1.88:1 on a light section's
+           white background, under the 3:1 a focus indicator needs (WCAG 1.4.11).
+           --color-focus-ring is a dedicated indicator colour that clears it in
+           both themes, and it is what Button.astro already uses. */
+        outline: 2px solid var(--color-focus-ring);
         outline-offset: 1px;
       }
 
@@ -131,7 +141,12 @@
       &:focus-visible {
         border-color: var(--color-brand);
         box-shadow: 0 0 0 3px var(--color-focus-ring);
-        outline: 2px solid var(--color-brand);
+
+        /* focus-ring, not brand: the brand gold is 1.88:1 on a light section's
+           white background, under the 3:1 a focus indicator needs (WCAG 1.4.11).
+           --color-focus-ring is a dedicated indicator colour that clears it in
+           both themes, and it is what Button.astro already uses. */
+        outline: 2px solid var(--color-focus-ring);
         outline-offset: 1px;
       }
 

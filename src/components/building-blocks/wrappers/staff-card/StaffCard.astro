@@ -1,5 +1,4 @@
 ---
-import Button from "@core-elements/button/Button.astro";
 import Heading from "@core-elements/heading/Heading.astro";
 import Image from "@core-elements/image/Image.astro";
 import Text from "@core-elements/text/Text.astro";
@@ -7,6 +6,7 @@ import Card from "@wrappers/card/Card.astro";
 import Split from "@wrappers/split/Split.astro";
 
 const {
+  index,
   photo = { source: "", alt: "" },
   heading = "",
   jobTitle = "",
@@ -18,12 +18,18 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-// Derived from the name, this collapsed to a run of hyphens for any name written
-// in a non-Latin script — every character failed [a-z0-9] — so two names of equal
-// length produced the same id. That is a duplicate-id-aria failure, and worse, it
-// broke the control: <label for> binds to the first match, so "Read More" on one
+// Position in the grid, not the name. Deriving it from the name collapsed to a run
+// of hyphens for any non-Latin script — every character failed [a-z0-9] — so two
+// names of equal length collided. That was a duplicate-id-aria failure, and worse,
+// it broke the control: <label for> binds to the first match, so "Read More" on one
 // card expanded a different person's biography on every non-Latin locale.
-const uid = `staff-bio-${crypto.randomUUID()}`;
+//
+// An index rather than a random id because these values land in the DOM: a random
+// one changes on every build, which churns the output and breaks any deep link to
+// a card. StaffGrid is the only caller and a page carries at most one grid, so the
+// index is unique per page and stable across builds. The random fallback only
+// applies if the component is ever used standalone.
+const uid = `staff-bio-${index ?? crypto.randomUUID()}`;
 ---
 
 <Card
@@ -66,42 +72,44 @@ const uid = `staff-bio-${crypto.randomUUID()}`;
           {jobTitle}
         </Text>
         <div class="staff-card-bio-wrapper">
-          <input
-            type="checkbox"
-            id={uid}
-            class="staff-card-toggle"
-          />
           <Text
+            id={uid}
             text={description}
             data-prop="description"
             class="staff-card-description"
           />
-          <label
-            for={uid}
+          <button
+            type="button"
             class="staff-card-read-more"
+            aria-controls={uid}
+            aria-expanded="false"
+            aria-label={`Read more about ${heading}`}
           >
-            <Button
-              class="read-more-label"
-              variant="text-brand-muted"
-              size="sm"
-              uppercase={false}
-              useDefaultEditableBinding={false}
-              >Read More</Button
-            >
-            <Button
-              class="read-less-label"
-              variant="text-brand-muted"
-              size="sm"
-              uppercase={false}
-              useDefaultEditableBinding={false}
-              >Read Less</Button
-            >
-          </label>
+            <span class="read-more-label">Read More</span>
+            <span class="read-less-label">Read Less</span>
+          </button>
         </div>
       </div>
     </Fragment>
   </Split>
 </Card>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  onPageLoad(() => {
+    document.querySelectorAll<HTMLButtonElement>(".staff-card-read-more").forEach((button) => {
+      if (button.dataset.initialized) return;
+      button.dataset.initialized = "true";
+      button.addEventListener("click", () => {
+        const expanded = button.getAttribute("aria-expanded") !== "true";
+        const name = button.closest(".staff-card")?.querySelector("h2")?.textContent?.trim() || "this person";
+        button.setAttribute("aria-expanded", String(expanded));
+        button.setAttribute("aria-label", `${expanded ? "Read less" : "Read more"} about ${name}`);
+      });
+    });
+  });
+</script>
 
 <style is:global>
   @layer building-blocks {
@@ -147,16 +155,6 @@ const uid = `staff-bio-${crypto.randomUUID()}`;
       position: relative;
     }
 
-    .staff-card-toggle {
-      clip: rect(0 0 0 0);
-      clip-path: inset(50%);
-      height: 1px;
-      overflow: hidden;
-      position: absolute;
-      white-space: nowrap;
-      width: 1px;
-    }
-
     .staff-card-description .text-inner {
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -168,24 +166,40 @@ const uid = `staff-bio-${crypto.randomUUID()}`;
       margin: 0;
     }
 
-    .staff-card-toggle:checked ~ .staff-card-description .text-inner {
+    .staff-card-bio-wrapper:has(.staff-card-read-more[aria-expanded="true"])
+      .staff-card-description
+      .text-inner {
       display: block;
       overflow: visible;
     }
 
     .staff-card-read-more {
+      appearance: none;
+      background: none;
+      border: 0;
+      color: var(--color-link-strong);
+      cursor: pointer;
       display: inline-block;
+      font: inherit;
+      font-size: var(--font-size-sm);
+      padding: var(--spacing-xs) 0;
+      text-decoration: underline;
+
+      &:focus-visible {
+        outline: 3px solid var(--color-focus-ring);
+        outline-offset: 3px;
+      }
     }
 
     .staff-card-read-more .read-less-label {
       display: none;
     }
 
-    .staff-card-toggle:checked ~ .staff-card-read-more .read-more-label {
+    .staff-card-read-more[aria-expanded="true"] .read-more-label {
       display: none;
     }
 
-    .staff-card-toggle:checked ~ .staff-card-read-more .read-less-label {
+    .staff-card-read-more[aria-expanded="true"] .read-less-label {
       display: inline;
     }
   }

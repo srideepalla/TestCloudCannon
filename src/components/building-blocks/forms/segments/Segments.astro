@@ -125,7 +125,9 @@ const inputType = multiple ? "checkbox" : "radio";
         .segment {
           align-items: center;
           background-color: var(--color-bg-surface);
-          border: 1px solid var(--color-border);
+
+          /* Sole boundary of an interactive control — see the note in Button.astro. */
+          border: 1px solid var(--color-border-inputs, var(--color-border));
           color: var(--color-text-muted);
           cursor: pointer;
           display: inline-flex;

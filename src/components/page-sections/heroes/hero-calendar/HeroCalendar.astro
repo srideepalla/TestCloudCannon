@@ -70,13 +70,10 @@ const resolvedDeadlines = getDeadlines();
       slot="first"
       class="hero-calendar__content"
     >
-      <Heading
-        level="h3"
-        size="xs"
-        text={subheading}
+      <p
         class="hero-calendar__subheading"
         data-prop="subheading"
-      />
+      >{subheading}</p>
       <!-- h1: this hero is used only on the homepage, which otherwise ships no h1
            at all (Page.astro declares pageHeading but never renders it). No risk of
            a second h1 — the collection pages use CollectionLayout, not this hero. -->
