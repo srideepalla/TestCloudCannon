@@ -59,7 +59,21 @@ const localizedFooter = localizeData(footer, locale);
   image={image}
   canonical={canonical}
 >
-  <MainNavigation {...localizedNav} />
+  <!-- banner landmark: the logo link, hamburger and button group sit outside the
+       <nav> elements, so without this they are page content in no landmark.
+       It has to be here rather than inside MainNav, because a <header> nested in
+       the <section> MainNav renders would lose the banner role. -->
+  <header>
+    <!-- First focusable element in the document, so keyboard and screen-reader
+         users can bypass the nav and language switcher (WCAG 2.4.1). -->
+    <a
+      class="skip-link"
+      href="#main"
+    >
+      Skip to main content
+    </a>
+    <MainNavigation {...localizedNav} />
+  </header>
 
   <main id="main">
     {

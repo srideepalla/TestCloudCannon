@@ -120,7 +120,17 @@ const articleAuthor = entry?.data?.author ?? null;
     )
   }
 
-  <MainNavigation {...localizeData(mainNavData, locale)} />
+  <!-- banner landmark — see the note in Page.astro. -->
+  <header>
+    <!-- First focusable element in the document (WCAG 2.4.1). -->
+    <a
+      class="skip-link"
+      href="#main"
+    >
+      Skip to main content
+    </a>
+    <MainNavigation {...localizeData(mainNavData, locale)} />
+  </header>
 
   <CustomSection
     colorScheme="dark"
@@ -130,25 +140,29 @@ const articleAuthor = entry?.data?.author ?? null;
     paddingVertical="sm"
     class="breadcrumb-bar"
   >
-    <a href={localizePath("/", Astro.url.pathname)}>{homeLabel}</a>
-    <span class="breadcrumb-sep">&gt;</span>
-    <a href={localizePath(`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`, Astro.url.pathname)}>{sidebarHeading}</a>
-    <span class="breadcrumb-sep">&gt;</span>
-    {
-      parentLink && (
-        <>
-          <a href={localizePath(parentLink.href, Astro.url.pathname)}>{localizeText(parentLink.text, locale)}</a>
-          <span class="breadcrumb-sep">&gt;</span>
-        </>
-      )
-    }
-    <span class="breadcrumb-current">{title}</span>
+    <nav aria-label="Breadcrumb">
+      <a href={localizePath("/", Astro.url.pathname)}>{homeLabel}</a>
+      <span class="breadcrumb-sep">&gt;</span>
+      <a href={localizePath(`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`, Astro.url.pathname)}>{sidebarHeading}</a>
+      <span class="breadcrumb-sep">&gt;</span>
+      {
+        parentLink && (
+          <>
+            <a href={localizePath(parentLink.href, Astro.url.pathname)}>{localizeText(parentLink.text, locale)}</a>
+            <span class="breadcrumb-sep">&gt;</span>
+          </>
+        )
+      }
+      <span
+        class="breadcrumb-current"
+        aria-current="page">{title}</span>
+    </nav>
   </CustomSection>
 
-  <main
-    id="main"
-    class="collection-layout"
-  >
+  <!-- The sidebar is a complementary landmark, which must not sit inside <main>.
+       <main> therefore wraps the content column only, and the two are siblings
+       inside the split. This also makes the skip link bypass the sidebar nav. -->
+  <div class="collection-layout">
     <CustomSection
       colorScheme="light"
       backgroundColor="base"
@@ -164,11 +178,16 @@ const articleAuthor = entry?.data?.author ?? null;
         gap="6xl"
         class="collection-split"
       >
+        {/* An <aside> scoped to sectioning content (this sits inside the section
+            CustomSection renders) maps to `generic` unless it has an accessible
+            name. Without the label it is not a landmark at all, and its contents
+            count as page content outside any landmark. */}
         {
           sidebar && (
             <aside
               slot="first"
               class="collection-sidebar"
+              aria-label={sidebar.heading}
             >
               <div
                 class="sidebar-heading"
@@ -191,7 +210,8 @@ const articleAuthor = entry?.data?.author ?? null;
             </aside>
           )
         }
-        <div
+        <main
+          id="main"
           slot="second"
           class="collection-content"
         >
@@ -233,10 +253,10 @@ const articleAuthor = entry?.data?.author ?? null;
               </Text>
             )
           }
-        </div>
+        </main>
       </Split>
     </CustomSection>
-  </main>
+  </div>
 
   <Footer {...localizeData(footerData, locale)} />
 </Layout>

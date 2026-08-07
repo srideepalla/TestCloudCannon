@@ -44,6 +44,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
 <nav
   class:list={["bar", className]}
+  aria-label="Main"
   {...htmlAttributes}
 >
   <ul class="bar-list">
@@ -87,13 +88,12 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                 >
                   {itemData.name}
                 </a>
-                <label
-                  for={itemData.dropdownId}
+                <button
+                  type="button"
+                  data-toggle-for={itemData.dropdownId}
                   class="nav-item-trigger nav-item-toggle-btn"
-                  role="button"
                   aria-controls={itemData.contentId}
                   aria-expanded="false"
-                  tabindex="0"
                   aria-label={`Toggle ${itemData.name} submenu`}
                 >
                   <span class="nav-item-icon">
@@ -103,16 +103,15 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                       aria-hidden="true"
                     />
                   </span>
-                </label>
+                </button>
               </div>
             ) : (
-              <label
-                for={itemData.dropdownId}
+              <button
+                type="button"
+                data-toggle-for={itemData.dropdownId}
                 class="nav-item-trigger"
-                role="button"
                 aria-controls={itemData.contentId}
                 aria-expanded="false"
-                tabindex="0"
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
                 {itemData.name}
@@ -123,7 +122,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                     aria-hidden="true"
                   />
                 </span>
-              </label>
+              </button>
             )}
             <div
               id={itemData.contentId}
@@ -173,13 +172,12 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                           >
                             {childData.name}
                           </a>
-                          <label
-                            for={childData.dropdownId}
+                          <button
+                            type="button"
+                            data-toggle-for={childData.dropdownId}
                             class="nav-item-trigger nav-item-toggle-btn"
-                            role="button"
                             aria-controls={childData.contentId}
                             aria-expanded="false"
-                            tabindex="0"
                             aria-label={`Toggle ${childData.name} submenu`}
                           >
                             <span class="nav-item-icon">
@@ -189,16 +187,15 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                                 aria-hidden="true"
                               />
                             </span>
-                          </label>
+                          </button>
                         </div>
                       ) : (
-                        <label
-                          for={childData.dropdownId}
+                        <button
+                          type="button"
+                          data-toggle-for={childData.dropdownId}
                           class="nav-item-trigger"
-                          role="button"
                           aria-controls={childData.contentId}
                           aria-expanded="false"
-                          tabindex="0"
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
@@ -209,7 +206,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                               aria-hidden="true"
                             />
                           </span>
-                        </label>
+                        </button>
                       )}
                       <div
                         id={childData.contentId}
@@ -262,10 +259,12 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
   function updateAriaStates(toggle: any, isExpanded: any) {
     const triggerId = toggle.getAttribute("id");
     const barRoot = toggle.closest(".bar");
-    const toggleBtn = barRoot?.querySelector(`label.nav-item-toggle-btn[for="${triggerId}"]`);
+    const toggleBtn = barRoot?.querySelector(
+      `button.nav-item-toggle-btn[data-toggle-for="${triggerId}"]`
+    );
     const fullTrigger =
       barRoot?.querySelector(
-        `label.nav-item-trigger:not(.nav-item-toggle-btn)[for="${triggerId}"]`
+        `button.nav-item-trigger:not(.nav-item-toggle-btn)[data-toggle-for="${triggerId}"]`
       ) ?? null;
 
     if (toggleBtn) {
@@ -303,30 +302,49 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
     }
   }
 
-  // Handle trigger click events
+  // The trigger is a real <button>, so it no longer toggles the checkbox natively
+  // the way a <label for> did — this handler owns both opening and closing.
+  // No keydown handler: a button already fires click on Enter and Space, and
+  // handling keydown as well would toggle twice and cancel itself out.
   function handleTriggerClick(e: any) {
-    const label = e.currentTarget as HTMLElement;
-    const toggle = document.getElementById(label.getAttribute("for") || "") as HTMLInputElement;
+    const trigger = e.currentTarget as HTMLElement;
+    const toggle = document.getElementById(
+      trigger.getAttribute("data-toggle-for") || ""
+    ) as HTMLInputElement;
+    if (!toggle) return;
 
-    if (toggle?.checked) {
-      e.preventDefault();
-      toggle.checked = false;
-      toggle.dispatchEvent(new Event("change"));
-    }
+    toggle.checked = !toggle.checked;
+    toggle.dispatchEvent(new Event("change"));
   }
 
-  // Handle keyboard events
-  function handleKeydown(e: any) {
-    if (e.key !== "Enter" && e.key !== " ") return;
+  // CSS also opens a menu on :hover and :has(:focus-visible), neither of which
+  // fires a change event. Without this the trigger keeps reporting
+  // aria-expanded="false" while the panel is open and its links are focusable
+  // (WCAG 4.1.2). Mirror whatever the CSS is actually showing.
+  function syncOpenState(item: Element) {
+    const toggle = item.querySelector(":scope > .nav-item-toggle") as HTMLInputElement | null;
+    if (!toggle) return;
 
-    e.preventDefault();
-    const label = e.currentTarget;
-    const toggle = document.getElementById(label.getAttribute("for") || "") as HTMLInputElement;
+    // Mirror the conditions the CSS actually opens on, rather than reading the
+    // panel's computed display. The panel closes via `transition: display 0s
+    // allow-discrete`, so a display read taken mid-close still says "block" and
+    // would re-assert aria-expanded="true" right after Escape set it to false.
+    //
+    // matches() throws SyntaxError on a selector the engine cannot parse, and
+    // :has() is unsupported on Firefox ESR 115, so it is guarded. Where :has()
+    // does not parse, the CSS rule that opens the menu on focus does not apply
+    // either, so treating it as "not open" is the correct fallback.
+    const safeMatches = (el: Element, selector: string) => {
+      try {
+        return el.matches(selector);
+      } catch {
+        return false;
+      }
+    };
 
-    if (toggle) {
-      toggle.checked = !toggle.checked;
-      toggle.dispatchEvent(new Event("change"));
-    }
+    const open =
+      toggle.checked || safeMatches(item, ":hover") || safeMatches(item, ":has(:focus-visible)");
+    updateAriaStates(toggle, open);
   }
 
   // Initialize bar navigation
@@ -383,12 +401,20 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
       barNav.querySelectorAll(".nav-item-toggle-btn").forEach((trigger) => {
         trigger.addEventListener("click", handleTriggerClick);
-        trigger.addEventListener("keydown", handleKeydown);
       });
 
       barNav.querySelectorAll(".nav-item.has-children > .nav-item-trigger").forEach((trigger) => {
         trigger.addEventListener("click", handleTriggerClick);
-        trigger.addEventListener("keydown", handleKeydown);
+      });
+
+      // Keep aria-expanded honest for the hover- and focus-opened paths.
+      barNav.querySelectorAll(".nav-item.has-children").forEach((item) => {
+        ["mouseenter", "mouseleave", "focusin", "focusout"].forEach((evt) => {
+          item.addEventListener(evt, () => {
+            // Let the CSS transition settle before reading computed display.
+            requestAnimationFrame(() => syncOpenState(item));
+          });
+        });
       });
 
       // Hovering one top-level item closes any dropdown pinned open on another
@@ -548,6 +574,24 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         align-items: center;
         display: flex;
         gap: var(--spacing-xs);
+
+        /* These triggers are real <button>s now (they used to be <label>s, which
+           carry no UA chrome). Strip the button styling so the rendered result is
+           unchanged. .nav-item-split .nav-item-toggle-btn is more specific, so its
+           own border and sizing still win over the border:0 here.
+
+           The explicit background/border/color/font/padding below are what actually
+           neutralise the UA button styling, on every engine. `appearance: none` is
+           belt-and-braces only: lightningcss runs with no browser targets set, so
+           it emits this unprefixed and strips any -webkit- prefix added by hand. */
+        appearance: none;
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: 0;
+        text-align: inherit;
       }
 
       .nav-item-icon {

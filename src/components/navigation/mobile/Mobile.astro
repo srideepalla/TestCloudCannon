@@ -84,11 +84,12 @@ function activeLocaleDisplay(children) {
   class="nav-toggle"
   autocomplete="off"
 />
-<label
-  for={toggleId}
+<button
+  type="button"
+  data-toggle-for={toggleId}
   class="nav-hamburger mobile-button"
   aria-label="Toggle navigation menu"
-  tabindex="0"
+  aria-expanded="false"
 >
   <Button
     variant="tertiary"
@@ -98,11 +99,12 @@ function activeLocaleDisplay(children) {
     hideText="true"
     class="mobile-nav-button"
   />
-</label>
+</button>
 
 <nav
   class:list={["mobile", className]}
   data-toggle-id={toggleId}
+  aria-label="Mobile"
   {...htmlAttributes}
 >
   <div class="mobile-header">
@@ -118,11 +120,11 @@ function activeLocaleDisplay(children) {
         />
       </slot>
     </div>
-    <label
-      for={toggleId}
+    <button
+      type="button"
+      data-toggle-for={toggleId}
       class="mobile-close mobile-button"
       aria-label="Close navigation menu"
-      tabindex="0"
     >
       <Button
         variant="tertiary"
@@ -132,7 +134,7 @@ function activeLocaleDisplay(children) {
         hideText="true"
         class="mobile-nav-close mobile-nav-button"
       />
-    </label>
+    </button>
   </div>
 
   <div class="mobile-content">
@@ -167,13 +169,12 @@ function activeLocaleDisplay(children) {
                 autocomplete="off"
                 checked={itemData.hasCurrent}
               />
-              <label
-                for={itemData.dropdownId}
+              <button
+                type="button"
+                data-toggle-for={itemData.dropdownId}
                 class="nav-item-trigger"
-                role="button"
                 aria-controls={itemData.contentId}
                 aria-expanded={itemData.hasCurrent}
-                tabindex="0"
                 aria-current={itemData.isCurrent ? "page" : undefined}
               >
                 <div class="nav-item-trigger-content">
@@ -200,7 +201,7 @@ function activeLocaleDisplay(children) {
                     aria-hidden="true"
                   />
                 </span>
-              </label>
+              </button>
               <div
                 id={itemData.contentId}
                 class="nav-item-content"
@@ -259,13 +260,12 @@ function activeLocaleDisplay(children) {
                           autocomplete="off"
                           checked={childData.hasCurrent}
                         />
-                        <label
-                          for={childData.dropdownId}
+                        <button
+                          type="button"
+                          data-toggle-for={childData.dropdownId}
                           class="nav-item-trigger"
-                          role="button"
                           aria-controls={childData.contentId}
                           aria-expanded={childData.hasCurrent}
-                          tabindex="0"
                           aria-current={childData.isCurrent ? "page" : undefined}
                         >
                           {childData.name}
@@ -276,7 +276,7 @@ function activeLocaleDisplay(children) {
                               aria-hidden="true"
                             />
                           </span>
-                        </label>
+                        </button>
                         <div
                           id={childData.contentId}
                           class="nav-item-content"
@@ -363,10 +363,16 @@ function activeLocaleDisplay(children) {
       // Find the toggle for this specific nav instance
       const toggleId = nav.getAttribute("data-toggle-id");
       const toggle = document.getElementById(toggleId);
-      const hamburger = document.querySelector(`label[for="${toggleId}"].nav-hamburger`);
+      const hamburger = document.querySelector(
+        `button.nav-hamburger[data-toggle-for="${toggleId}"]`
+      );
 
       // Handle navigation toggle state and accessibility
       function handleNavToggle(isOpen) {
+        // The hamburger is a real button now, so its expanded state has to follow
+        // the drawer rather than staying at the server-rendered "false".
+        hamburger?.setAttribute("aria-expanded", String(isOpen));
+
         if (isOpen) {
           // inert must come off BEFORE focusing, or the focus call is a no-op and
           // the drawer opens with focus left behind on the hamburger.
@@ -395,12 +401,9 @@ function activeLocaleDisplay(children) {
           handleNavToggle(toggle.checked);
         };
 
+        // Click only — a <button> fires click on Enter and Space already, so a
+        // keydown handler as well would toggle twice and cancel itself out.
         hamburger.addEventListener("click", toggleHandler);
-        hamburger.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            toggleHandler(e);
-          }
-        });
       }
 
       // Handle close button interactions
@@ -414,11 +417,6 @@ function activeLocaleDisplay(children) {
         };
 
         closeButton.addEventListener("click", closeHandler);
-        closeButton.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            closeHandler(e);
-          }
-        });
       }
 
       // Handle toggle state changes
@@ -433,7 +431,7 @@ function activeLocaleDisplay(children) {
         const trigger = e.target?.closest(".nav-item-trigger");
         if (!trigger) return;
 
-        const radioName = trigger.getAttribute("for");
+        const radioName = trigger.getAttribute("data-toggle-for");
         let dropdownToggle = null;
 
         if (radioName) {
@@ -447,15 +445,31 @@ function activeLocaleDisplay(children) {
           e.preventDefault();
           dropdownToggle.checked = !dropdownToggle.checked;
           dropdownToggle.dispatchEvent(new Event("change"));
+
+          // Nothing used to update this after the server render, so an opened
+          // submenu kept announcing "collapsed" while its links were focusable
+          // (WCAG 4.1.2).
+          trigger.setAttribute("aria-expanded", String(dropdownToggle.checked));
+
+          // These are radios: opening one closes its siblings, whose triggers
+          // must stop announcing "expanded" too.
+          if (dropdownToggle.checked && dropdownToggle.name) {
+            nav
+              .querySelectorAll(`.nav-item-toggle[name="${dropdownToggle.name}"]`)
+              .forEach((sibling) => {
+                if (sibling === dropdownToggle) return;
+                const siblingTrigger = nav.querySelector(
+                  `.nav-item-trigger[data-toggle-for="${sibling.id}"]`
+                );
+                siblingTrigger?.setAttribute("aria-expanded", "false");
+              });
+          }
         }
       };
 
+      // Click only — a <button> already fires click on Enter and Space, so also
+      // handling keydown would toggle twice and cancel itself out.
       nav.addEventListener("click", handleDropdownToggle);
-      nav.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          handleDropdownToggle(e);
-        }
-      });
 
       // Handle escape key to close navigation
       document.addEventListener("keydown", (e) => {
@@ -484,6 +498,16 @@ function activeLocaleDisplay(children) {
       border-radius: var(--radius-xs);
       display: inline-block;
       outline-offset: -2px;
+
+      /* Real <button>s now (previously <label>s), so strip the UA button chrome —
+         the visual is supplied by the <Button> element nested inside. */
+      appearance: none;
+      background: none;
+      border: 0;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      padding: 0;
     }
 
     .mobile {
@@ -575,6 +599,19 @@ function activeLocaleDisplay(children) {
           user-select: none;
           white-space: nowrap;
           width: 100%;
+
+          /* The triggers are real <button>s now (previously <label>s). Strip the UA
+             button chrome; font-weight, colour and padding above still apply. Not
+             the `font` shorthand — it would wipe the font-weight set here.
+             The background/border resets are what neutralise UA button styling on
+             every engine; `appearance` is belt-and-braces (lightningcss runs with
+             no targets, so it emits this unprefixed). */
+          appearance: none;
+          background: none;
+          border: 0;
+          font-family: inherit;
+          font-size: inherit;
+          text-align: inherit;
 
           &[aria-current="page"] {
             text-decoration: underline dotted;

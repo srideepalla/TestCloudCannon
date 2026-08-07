@@ -18,7 +18,12 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-const uid = `staff-bio-${heading.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
+// Derived from the name, this collapsed to a run of hyphens for any name written
+// in a non-Latin script — every character failed [a-z0-9] — so two names of equal
+// length produced the same id. That is a duplicate-id-aria failure, and worse, it
+// broke the control: <label for> binds to the first match, so "Read More" on one
+// card expanded a different person's biography on every non-Latin locale.
+const uid = `staff-bio-${crypto.randomUUID()}`;
 ---
 
 <Card

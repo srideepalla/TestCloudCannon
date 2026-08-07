@@ -137,11 +137,16 @@ export default [
       "astro/jsx-a11y/scope": "error",
       "astro/jsx-a11y/tabindex-no-positive": "error",
 
-      // Warn, not error: the nav dropdowns use <label role="button"> as a
-      // deliberate interim step (see A1). The correct fix is a real <button>,
-      // which means reworking the CSS-only disclosure — tracked separately.
-      "astro/jsx-a11y/no-noninteractive-element-to-interactive-role": "warn",
-      "astro/jsx-a11y/no-noninteractive-tabindex": "warn",
+      // Promoted to error now that the nav triggers are real <button> elements
+      // rather than <label role="button" tabindex="0">. These two are what would
+      // catch that pattern coming back, so they are the whole point of the rework.
+      "astro/jsx-a11y/no-noninteractive-element-to-interactive-role": "error",
+      "astro/jsx-a11y/no-noninteractive-tabindex": "error",
+
+      // Still warn. control-has-associated-label fires on the visually hidden
+      // checkbox/radio inputs that hold disclosure state — they are an
+      // implementation detail, not controls a user reaches. media-has-caption
+      // needs caption files for the video component, which is content, not code.
       "astro/jsx-a11y/control-has-associated-label": "warn",
       "astro/jsx-a11y/media-has-caption": "warn",
 

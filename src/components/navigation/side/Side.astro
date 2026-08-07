@@ -31,6 +31,7 @@ function hasCurrentChild(item) {
 
 <nav
   class:list={["side", className]}
+  aria-label="Section"
   {...htmlAttributes}
 >
   <ul class="side-list">
@@ -55,13 +56,12 @@ function hasCurrentChild(item) {
                 autocomplete="off"
                 checked={hasCurrent}
               />
-              <label
-                for={dropdownId}
+              <button
+                type="button"
+                data-toggle-for={dropdownId}
                 class="nav-item-trigger"
-                role="button"
                 aria-controls={contentId}
                 aria-expanded={hasCurrent.toString()}
-                tabindex="0"
                 aria-current={isCurrent ? "page" : undefined}
               >
                 <span class="nav-item-label">{item.name}</span>
@@ -72,7 +72,7 @@ function hasCurrentChild(item) {
                     aria-hidden="true"
                   />
                 </span>
-              </label>
+              </button>
               <div
                 id={contentId}
                 class:list={["nav-item-content", hasCurrent && "nav-item-content-initial"]}
@@ -98,13 +98,12 @@ function hasCurrentChild(item) {
                             autocomplete="off"
                             checked={childHasCurrent}
                           />
-                          <label
-                            for={childDropdownId}
+                          <button
+                            type="button"
+                            data-toggle-for={childDropdownId}
                             class="nav-item-trigger"
-                            role="button"
                             aria-controls={childContentId}
                             aria-expanded={childHasCurrent.toString()}
-                            tabindex="0"
                             aria-current={childIsCurrent ? "page" : undefined}
                           >
                             <span class="nav-item-label">{child.name}</span>
@@ -115,7 +114,7 @@ function hasCurrentChild(item) {
                                 aria-hidden="true"
                               />
                             </span>
-                          </label>
+                          </button>
                           <div
                             id={childContentId}
                             class:list={[
@@ -198,7 +197,7 @@ function hasCurrentChild(item) {
       sideNav.querySelectorAll(".nav-item-toggle").forEach((toggle) => {
         toggle.addEventListener("change", (e) => {
           const target = e.target;
-          const trigger = sideNav.querySelector(`label[for="${target.id}"]`);
+          const trigger = sideNav.querySelector(`button[data-toggle-for="${target.id}"]`);
 
           if (trigger) {
             // State goes on the trigger, which is what screen readers announce.
@@ -208,40 +207,20 @@ function hasCurrentChild(item) {
         });
       });
 
-      // Handle label interactions for toggling dropdowns
+      // The triggers are real <button>s now, so this handler owns opening as well
+      // as closing — a <label for> used to do the opening natively. There is no
+      // keydown handler on purpose: a button already fires click on Enter and
+      // Space, so handling keydown too would toggle twice and cancel itself out.
       sideNav.querySelectorAll(".nav-item-trigger").forEach((trigger) => {
-        // Click handler
         trigger.addEventListener("click", (e) => {
-          const label = e.currentTarget;
-          const toggleId = label.getAttribute("for");
-          const toggle = document.getElementById(toggleId || "");
+          const btn = e.currentTarget as HTMLElement;
+          const toggle = document.getElementById(
+            btn.getAttribute("data-toggle-for") || ""
+          ) as HTMLInputElement | null;
+          if (!toggle) return;
 
-          if (toggle && toggle.checked) {
-            // If the item is already open, close it
-            e.preventDefault();
-            toggle.checked = false;
-            toggle.dispatchEvent(new Event("change"));
-          }
-        });
-
-        // Keyboard handler
-        trigger.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            e.stopPropagation();
-            const label = e.currentTarget;
-            const toggleId = label.getAttribute("for");
-            const toggle = document.getElementById(toggleId || "");
-
-            if (toggle) {
-              if (toggle.checked) {
-                toggle.checked = false;
-              } else {
-                toggle.checked = true;
-              }
-              toggle.dispatchEvent(new Event("change"));
-            }
-          }
+          toggle.checked = !toggle.checked;
+          toggle.dispatchEvent(new Event("change"));
         });
       });
     });
@@ -329,6 +308,17 @@ function hasCurrentChild(item) {
         justify-content: space-between;
         user-select: none;
         width: 100%;
+
+        /* Real <button>s now (previously <label>s). Strip the UA button chrome so
+           the rendered result is unchanged; font-family/weight, colour and padding
+           are set by the rules above and below this one. The background/border/
+           font-size resets do the real work — `appearance` is belt-and-braces, and
+           lightningcss (no targets configured) emits it unprefixed. */
+        appearance: none;
+        background: none;
+        border: 0;
+        font-size: inherit;
+        text-align: inherit;
       }
 
       .nav-item-icon {

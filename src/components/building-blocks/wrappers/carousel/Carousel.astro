@@ -83,7 +83,11 @@ const hasSlotContent = Astro.slots.has("default");
 if (!_component && !hasSlides && !hasSlotContent) return;
 ---
 
-<section
+<!-- div, not section: a <section> with an accessible name is a region landmark, so
+     five carousels on one page produced five landmarks sharing the name "Image
+     carousel". A carousel is a group, not a landmark — role="group" carries the
+     semantics and the duplicate-landmark problem disappears. -->
+<div
   class:list={[carouselClasses, className]}
   role="group"
   aria-roledescription="carousel"
@@ -191,7 +195,7 @@ if (!_component && !hasSlides && !hasSlotContent) return;
       />
     </div>
   </div>
-</section>
+</div>
 
 <script>
   import { onPageLoad } from "@component-utils/onPageLoad";

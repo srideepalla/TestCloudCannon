@@ -61,7 +61,7 @@ const quickLinksHeading = localizeText("Quick Links", getCurrentLocale(pathname)
         >
           <Fragment slot="first">
             <Heading
-              level="h3"
+              level="h2"
               size="xs"
               text={quickLinksHeading}
               class="footer-col-heading footer-col-heading-quick-links"
@@ -91,12 +91,12 @@ const quickLinksHeading = localizeText("Quick Links", getCurrentLocale(pathname)
           </Fragment>
           <Fragment slot="second">
             <Heading
-              level="h3"
+              level="h2"
               size="xs"
               class="footer-col-heading"
             >
               <Button
-                href={localizePath(newsletterLink, pathname)}
+                link={localizePath(newsletterLink, pathname)}
                 text={newsletterHeading}
                 iconName="arrow-right"
                 iconPosition="after"

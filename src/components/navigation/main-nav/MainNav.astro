@@ -8,6 +8,9 @@ import { localizePath } from "@utils/i18n";
 
 type NavButton = {
   text?: string;
+  /** Canonical destination key used by Button.astro and the nav JSON. */
+  link?: string;
+  /** Legacy alias, still accepted so older data keeps working. */
   href?: string;
   [key: string]: unknown;
 };
@@ -28,7 +31,9 @@ const mobileNavData = [
   ...buttonSections.map((button: NavButton) => ({
     _component: button._component || "building-blocks/core-elements/button",
     name: button.text || button.currentLanguage || "Button",
-    path: button.href || "#",
+    // Button data uses `link`; `href` is only a legacy fallback. Reading href
+    // first left every entry undefined, so the mobile drawer rendered "#".
+    path: button.link || button.href || "#",
     currentFlag: button.currentFlag || "",
     children: button.languages || [],
   })),

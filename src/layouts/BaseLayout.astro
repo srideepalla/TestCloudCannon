@@ -397,15 +397,10 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
     </noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- First focusable element in the document, so keyboard and screen-reader
-         users can bypass the header, nav and language switcher (WCAG 2.4.1). -->
-    <a
-      class="skip-link"
-      href="#main"
-    >
-      Skip to main content
-    </a>
-
+    <!-- The skip link now lives inside the <header> banner rendered by Page.astro
+         and CollectionLayout.astro (the only two layouts built on this one). It is
+         still the first focusable element in the document, but it is no longer page
+         content sitting outside every landmark, which axe reports under `region`. -->
     <div>
       <slot />
     </div>

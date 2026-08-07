@@ -67,13 +67,12 @@ const groupName = `lang-switcher-${navInstanceId}`;
         aria-controls={contentId}
         autocomplete="off"
       />
-      <label
-        for={dropdownId}
+      <button
+        type="button"
+        data-toggle-for={dropdownId}
         class="nav-item-trigger"
-        role="button"
         aria-controls={contentId}
         aria-expanded="false"
-        tabindex="0"
       >
         <Image
           source={`/src/assets/images/${displayFlag}.svg`}
@@ -82,7 +81,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
           class="lang-flag"
         />
         <span>{displayLanguage}</span>
-      </label>
+      </button>
       <div
         id={contentId}
         class="nav-item-content"
@@ -119,7 +118,7 @@ const groupName = `lang-switcher-${navInstanceId}`;
   // accessibility tree, and the attribute went stale when CSS opened the menu.
   function updateAriaStates(toggle, isExpanded) {
     const triggerId = toggle.getAttribute("id");
-    const trigger = document.querySelector(`label[for="${triggerId}"]`);
+    const trigger = document.querySelector(`button[data-toggle-for="${triggerId}"]`);
 
     if (trigger) {
       trigger.setAttribute("aria-expanded", isExpanded.toString());
@@ -152,30 +151,18 @@ const groupName = `lang-switcher-${navInstanceId}`;
     }
   }
 
-  // Handle trigger click events
+  // The trigger is a real <button> now, so this owns opening as well as closing —
+  // a <label for> used to open it natively. No keydown handler: a button already
+  // fires click on Enter and Space, and handling keydown too would toggle twice.
   function handleTriggerClick(e) {
-    const label = e.currentTarget as HTMLElement;
-    const toggle = document.getElementById(label.getAttribute("for") || "") as HTMLInputElement;
+    const trigger = e.currentTarget as HTMLElement;
+    const toggle = document.getElementById(
+      trigger.getAttribute("data-toggle-for") || ""
+    ) as HTMLInputElement;
+    if (!toggle) return;
 
-    if (toggle?.checked) {
-      e.preventDefault();
-      toggle.checked = false;
-      toggle.dispatchEvent(new Event("change"));
-    }
-  }
-
-  // Handle keyboard events
-  function handleKeydown(e) {
-    if (e.key !== "Enter" && e.key !== " ") return;
-
-    e.preventDefault();
-    const label = e.currentTarget;
-    const toggle = document.getElementById(label.getAttribute("for") || "");
-
-    if (toggle) {
-      toggle.checked = !toggle.checked;
-      toggle.dispatchEvent(new Event("change"));
-    }
+    toggle.checked = !toggle.checked;
+    toggle.dispatchEvent(new Event("change"));
   }
 
   // Initialize language switcher
@@ -229,7 +216,6 @@ const groupName = `lang-switcher-${navInstanceId}`;
 
       langSwitcher.querySelectorAll(".nav-item-trigger").forEach((trigger) => {
         trigger.addEventListener("click", handleTriggerClick);
-        trigger.addEventListener("keydown", handleKeydown);
       });
 
       // Prevent clicks inside dropdown content from bubbling to document handler
