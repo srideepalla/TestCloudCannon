@@ -43,7 +43,7 @@ pageSections:
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines &amp; Events
+    deadlinesHeading: Upcoming Deadlines & Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
