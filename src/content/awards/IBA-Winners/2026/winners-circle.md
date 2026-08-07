@@ -10,7 +10,7 @@ image:
 draft: false
 pageSections: []
 ---
-Congratulations on winning one or more awards in the 2026 Stevie® Awards for Great Employers. This page features resources to help you and your organization promote your win(s). They include
+Congratulations on winning one or more awards in the 2026 International Business Awards®. This page features resources to help you and your organization promote your win(s). They include
 
 **♦** [**A Press Release Template**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q1)**<br />♦** [**Multipurpose Winner Logos**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q2)**<br />♦** [**Resources for Promoting Your Win(s) on Social Media**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q3)**<br />♦** [**How to customize the header image on your LinkedIn Profile with a 2026 Stevie Winner banner**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q4)**<br />♦** [**How to join the Stevie Awards Winners group on LinkedIn**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q5)**<br />♦** [**How to be profiled on the Stevie Awards blog, newsletter, and/or social media**](https://hr.stevieawards.com/awards/2026-winners-circle/#Q6)
 
@@ -60,9 +60,9 @@ We've created several predesigned images you may post on social media. Please no
 
 **2026 Stevie Winner Background Image for Your LinkedIn Profile**
 
-<a href="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" target="_blank" rel="noopener" title="2026 Winner LinkedIn Profile Header Image"><strong><img alt="SAGE26 winner LinkedIn profile header image" src="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" /></strong></a>
+<a href="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" target="_blank" rel="noopener" title="2026 Winner LinkedIn Profile Header Image"><strong><img alt="IBA26 winner LinkedIn profile header image" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" /></strong></a>
 
-<a href="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" target="_blank" rel="noopener"><strong>Add this image</strong></a> to the header background on your LinkedIn profile to show the world that you and your organization are 2026 Stevie winners.
+<a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" target="_blank" rel="noopener"><strong>Add this image</strong></a> to the header background on your LinkedIn profile to show the world that you and your organization are 2026 Stevie winners.
 
 ---
 
