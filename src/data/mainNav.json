@@ -417,18 +417,6 @@
   ],
   "buttonSections": [
     {
-      "_component": "navigation/language-switcher",
-      "currentLanguage": "EN",
-      "currentFlag": "us",
-      "languages": [
-        {
-          "name": "English",
-          "langCode": "EN",
-          "flag": "us"
-        }
-      ]
-    },
-    {
       "_component": "building-blocks/core-elements/button",
       "text": "Log in",
       "hideText": false,
