@@ -5,6 +5,7 @@ import Image from "@core-elements/image/Image.astro";
 import Text from "@core-elements/text/Text.astro";
 import Card from "@wrappers/card/Card.astro";
 import Split from "@wrappers/split/Split.astro";
+import theme from "@data/theme.json";
 
 const {
   eventPhoto = { source: "", alt: "" },
@@ -23,7 +24,92 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-const styleParts = [`--event-brand-color: ${brandColor};`];
+/* ---------------------------------------------------------------------------
+ * Contrast floor for the coloured panel.
+ *
+ * brandColor is an author-chosen field, but most of the text sitting on it is
+ * not: the date and the CTA fall back to --color-brand (the Stevie gold) and
+ * the heading/description to --color-text-on-brand. On a mid-luminance brand
+ * colour that gold lands around 1.9:1 — measured on the live homepage for
+ * #99844b and #e67b2c — so six of the eight cards failed WCAG 1.4.3.
+ *
+ * Recolouring the text would break the shared white + gold treatment on the
+ * three light cards while leaving the other five alone, and asking editors to
+ * compute ratios in the CMS is not a fix. So deepen (or lift) the panel along
+ * its own hue until every foreground on it clears AA. Cards that already pass
+ * are emitted exactly as authored, and an unparseable or unfixable colour is
+ * left untouched rather than replaced with something unrecognisable.
+ * ------------------------------------------------------------------------- */
+const parseHex = (value) => {
+  const match = /^#?([0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/i.exec(String(value ?? "").trim());
+
+  if (!match) return null;
+
+  const hex =
+    match[1].length === 3
+      ? match[1]
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : match[1];
+
+  return [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
+};
+
+const toHex = (rgb) => `#${rgb.map((v) => Math.round(v).toString(16).padStart(2, "0")).join("")}`;
+
+const channel = (c) => {
+  const v = c / 255;
+
+  return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+};
+
+const luminance = ([r, g, b]) => 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+
+const contrast = (a, b) => {
+  const [x, y] = [luminance(a), luminance(b)];
+
+  return (Math.max(x, y) + 0.05) / (Math.min(x, y) + 0.05);
+};
+
+// Both themes declare identical values for these two tokens, so the panel can
+// be resolved at build time without knowing which one the section renders in.
+const brandAccent = parseHex(theme.light.colorBrand);
+const onBrandText = parseHex(theme.light.colorTextOnBrand);
+const panel = parseHex(brandColor);
+
+// [colour, required ratio]. The heading needs only 3:1 — it renders at 36px.
+const foregrounds = [
+  [parseHex(textColor) || onBrandText, 3],
+  [parseHex(subtitleColor) || parseHex(textColor) || onBrandText, 4.5],
+  [parseHex(accentColor) || brandAccent, 4.5],
+  [parseHex(buttonColor) || brandAccent, 4.5],
+].filter(([colour]) => colour);
+
+const clearsAA = (background) =>
+  foregrounds.every(([colour, required]) => contrast(colour, background) >= required);
+
+const accessiblePanel = (() => {
+  if (!panel || !foregrounds.length || clearsAA(panel)) return null;
+
+  // Blend toward black or white, whichever reaches AA with the smaller shift.
+  // Past 55% the hue stops reading as the brand at all, so bail out instead.
+  for (let step = 1; step <= 55; step++) {
+    const ratio = step / 100;
+    const darker = panel.map((v) => v * (1 - ratio));
+
+    if (clearsAA(darker)) return darker;
+
+    const lighter = panel.map((v) => v + (255 - v) * ratio);
+
+    if (clearsAA(lighter)) return lighter;
+  }
+  return null;
+})();
+
+const styleParts = [
+  `--event-brand-color: ${accessiblePanel ? toHex(accessiblePanel) : brandColor};`,
+];
 
 if (textColor) styleParts.push(`--event-text-color: ${textColor};`);
 if (subtitleColor) styleParts.push(`--event-subtitle-color: ${subtitleColor};`);

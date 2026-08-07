@@ -78,11 +78,17 @@ function activeLocaleDisplay(children) {
 }
 ---
 
+<!-- CSS state holder, not a control: it is display:none at every breakpoint and
+     the drawer's real semantics live on .nav-hamburger below (aria-expanded,
+     aria-controls, aria-label). Saying so explicitly keeps DOM-only auditors
+     from filing it as an unlabelled form field. -->
 <input
   type="checkbox"
   id={toggleId}
   class="nav-toggle"
   autocomplete="off"
+  aria-hidden="true"
+  tabindex="-1"
 />
 <button
   type="button"
@@ -160,6 +166,7 @@ function activeLocaleDisplay(children) {
 
           return (
             <li class="nav-item has-children">
+              {/* CSS state holder, not a control — see .nav-toggle above. */}
               <input
                 type="radio"
                 name={itemData.groupName}
@@ -168,6 +175,8 @@ function activeLocaleDisplay(children) {
                 aria-controls={itemData.contentId}
                 autocomplete="off"
                 checked={itemData.hasCurrent}
+                aria-hidden="true"
+                tabindex="-1"
               />
               <button
                 type="button"
@@ -251,6 +260,7 @@ function activeLocaleDisplay(children) {
 
                     return (
                       <li class="nav-item has-children">
+                        {/* CSS state holder, not a control — see .nav-toggle above. */}
                         <input
                           type="radio"
                           name={childData.groupName}
@@ -259,6 +269,8 @@ function activeLocaleDisplay(children) {
                           aria-controls={childData.contentId}
                           autocomplete="off"
                           checked={childData.hasCurrent}
+                          aria-hidden="true"
+                          tabindex="-1"
                         />
                         <button
                           type="button"

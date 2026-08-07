@@ -69,6 +69,10 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
         return (
           <li class="nav-item has-children">
+            {/* CSS state holder, not a control: display:none at every breakpoint,
+                with the real semantics (aria-expanded, aria-controls, aria-label)
+                on the trigger button below. Marking it so keeps DOM-only auditors
+                from filing it as an unlabelled form field. */}
             <input
               type="checkbox"
               name={itemData.groupName}
@@ -76,6 +80,8 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
               class="nav-item-toggle"
               aria-controls={itemData.contentId}
               autocomplete="off"
+              aria-hidden="true"
+              tabindex="-1"
             />
             {itemData.hasSplitLink ? (
               <div class="nav-item-split">
@@ -153,6 +159,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
                   return (
                     <li class="nav-item has-children">
+                      {/* CSS state holder, not a control — see above. */}
                       <input
                         type="radio"
                         name={childData.groupName}
@@ -160,6 +167,8 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
                         class="nav-item-toggle"
                         aria-controls={childData.contentId}
                         autocomplete="off"
+                        aria-hidden="true"
+                        tabindex="-1"
                       />
                       {childData.hasSplitLink ? (
                         <div class="nav-item-split">

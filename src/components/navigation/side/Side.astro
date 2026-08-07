@@ -47,6 +47,8 @@ function hasCurrentChild(item) {
         if (hasChildren) {
           return (
             <li class="nav-item has-children">
+              {/* CSS state holder, not a control: display:none at every breakpoint,
+                  with the real semantics on the .nav-item-trigger button below. */}
               <input
                 type="radio"
                 name={`side-nav-top-${navInstanceId}`}
@@ -55,6 +57,8 @@ function hasCurrentChild(item) {
                 aria-controls={contentId}
                 autocomplete="off"
                 checked={hasCurrent}
+                aria-hidden="true"
+                tabindex="-1"
               />
               <button
                 type="button"
@@ -89,6 +93,7 @@ function hasCurrentChild(item) {
                     if (childHasChildren) {
                       return (
                         <li class="nav-item has-children">
+                          {/* CSS state holder, not a control — see above. */}
                           <input
                             type="radio"
                             name={`side-nav-${parentGroupId}`}
@@ -97,6 +102,8 @@ function hasCurrentChild(item) {
                             aria-controls={childContentId}
                             autocomplete="off"
                             checked={childHasCurrent}
+                            aria-hidden="true"
+                            tabindex="-1"
                           />
                           <button
                             type="button"
