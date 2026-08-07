@@ -151,7 +151,7 @@ pageSections:
       <script src="https://js.hsforms.net/forms/embed/35655.js" defer></script>
 
       <div class="hs-form-frame" data-region="na1"
-      data-form-id="2b17765d-19c4-4b74-b0fc-7347a6e5fec7"
+      data-form-id="8c8fe571-1bef-44a9-b3f0-31964149cdfc"
       data-portal-id="35655"></div>
     formCardColorScheme: light
     formCardBackgroundColor: base
@@ -230,7 +230,7 @@ pageSections:
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/split-list-form
-    subheading: Stevie® Awards for Sales &amp; Customer Service
+    subheading: The International Business Awards®
     heading: FEATURE STORIES
     description:
     list:
@@ -262,20 +262,11 @@ pageSections:
     buttonSections: []
     formHeading: Stay in the Know! Subscribe to the Stevie® Awards Email Newsletter
     formEmbed: >-
-      <div id="hubspot-schedule-form-container" data-astro-cid-anhwevce=""> <div
-      id="hubspotScheduleForm" data-astro-cid-anhwevce=""
-      data-hs-forms-root="true"><div class="hs-form-frame"
-      data-portal-id="35655" data-form-id="4efdd4d5-a101-48a9-a83a-de234d43d7e9"
-      data-target="#hubspotScheduleForm"
-      data-on-form-ready="function(e){setTimeout(()=&gt;{u(e)},300),setTimeout(()=&gt;{u(e)},800)}"
-      data-on-form-submit="function(e){}"
-      data-on-form-submitted="function(e){l(&quot;&quot;,&quot;success&quot;)}"
-      style="height: 671.5px; background-color: #ffff "><iframe
-      src="https://js.hsforms.net/ui-forms-embed-components-app/frame.html?_hsPortalId=35655&amp;_hsFormId=4efdd4d5-a101-48a9-a83a-de234d43d7e9&amp;_hsIsQa=false&amp;_hsHublet=na1&amp;_hsDisableScriptloader=true&amp;_hsDisableRedirect=true&amp;_hsInstanceId=dfc8f47a-13ed-47e9-b2db-db65c06feffa&amp;_hsUtk=c9d14285c0c99ecef07fc6ffb25c22fa" 
-      loading="lazy"
-      data-test-id="embedded-form-4efdd4d5-a101-48a9-a83a-de234d43d7e9"
-      title="Stevie Awards newsletter signup form" scrolling="no" style="border:
-      none; height: 100%; width: 100%;"></iframe></div></div> </div>
+      <script src="https://js.hsforms.net/forms/embed/35655.js" defer></script>
+
+      <div class="hs-form-frame" data-region="na1"
+      data-form-id="4efdd4d5-a101-48a9-a83a-de234d43d7e9"
+      data-portal-id="35655"></div>
     formCardColorScheme: light
     formCardBackgroundColor: base
     colorScheme: light
@@ -365,7 +356,8 @@ pageSections:
       speeches of winners from a variety of industries and nations.
 
 
-      Visit the [2025 Stevie Awards Winners Page](/awards/iba-winners/2025/winners-circle) to browse photos of the
+      Visit the [2025 Stevie Awards Winners
+      Page](/awards/iba-winners/2025/winners-circle) to browse photos of the
       awards event and watch individual awards presentations and red carpet
       interviews with winners.
     images:
