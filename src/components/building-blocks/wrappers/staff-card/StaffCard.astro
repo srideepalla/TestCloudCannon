@@ -44,8 +44,11 @@ const uid = `staff-bio-${heading.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
     </Fragment>
     <Fragment slot="second">
       <div class="staff-card-content">
+        <!-- h2, not h3: these cards sit directly under the page <h1>, so h3 skips a
+             level. h2 is also safe under a section h2 — heading-order only fails on
+             skips, not on repeats. -->
         <Heading
-          level="h3"
+          level="h2"
           size="md"
           text={heading}
           data-prop="heading"
@@ -127,7 +130,11 @@ const uid = `staff-bio-${heading.toLowerCase().replace(/[^a-z0-9]/g, "-")}`;
     .staff-card-job-title {
       margin: 0;
       color: var(--color-text);
-      opacity: 0.6;
+
+      /* 0.6 composited to #767c85 on the card surface — 4.01:1, under the 4.5:1
+         minimum. 0.7 keeps the muted look and clears it on every surface the card
+         is used on (light/dark × bg, bg-surface, bg-muted): lowest measured 4.99:1. */
+      opacity: 0.7;
     }
 
     .staff-card-bio-wrapper {
