@@ -19,6 +19,7 @@
     "lint:a11y": "node scripts/check-image-alt.js --strict",
     "lint:a11y:all": "node scripts/check-image-alt.js --locales",
     "test:a11y:runtime": "node scripts/check-a11y-runtime.js",
+    "test:anchors": "node scripts/check-anchors.js",
     "lint:js": "eslint .",
     "lint:yml": "eslint \"**/*.{yml,yaml}\"",
     "lint:fix": "npm run lint:js:fix && npm run lint:css:fix && npm run lint:yml:fix",
