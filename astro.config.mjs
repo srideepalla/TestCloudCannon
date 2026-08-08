@@ -105,6 +105,18 @@ export default defineConfig({
     build: {
       chunkSizeWarningLimit: 1024,
     },
+    // Dev-only. The People's Choice API sends no CORS headers for localhost
+    // origins, so PeoplesChoiceVoting routes through this proxy when the site is
+    // served from localhost/127.0.0.1. In production it calls the API directly.
+    server: {
+      proxy: {
+        "/pc-proxy": {
+          target: "https://api.the-stevie-awards.com",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/pc-proxy/, "/pc"),
+        },
+      },
+    },
     css: {
       devSourcemap: true,
       transformer: "lightningcss",

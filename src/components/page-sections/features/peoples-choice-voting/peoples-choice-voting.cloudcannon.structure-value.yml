@@ -1,0 +1,36 @@
+label: People's Choice Voting
+icon: how_to_vote
+description: >-
+  Interactive voting widget backed by the Stevie Awards People's Choice API, with
+  search, category filter, pagination and a one-vote-per-category guard.
+comment: >-
+  Nominations are loaded in the visitor's browser, so this section stays empty in
+  the editor preview. One vote per category is allowed every 24 hours. Program 12 /
+  campaign 5 is the IBA People's Choice campaign running 13 Aug - 3 Sep 2026 - both
+  IDs must be updated for a new campaign year.
+value:
+  _component: page-sections/features/peoples-choice-voting
+  heading: Vote for your favorites
+  description: ""
+  apiBaseUrl: ""
+  mode: live
+  testingMode: false
+  programId: 12
+  campaignId: 5
+  showCampaign: false
+  showSort: false
+  debug: false
+  colorScheme: inherit
+  backgroundColor: none
+  paddingVertical: 4xl
+preview:
+  text:
+    - People's Choice Voting
+  subtext:
+    - key: heading
+  icon: how_to_vote
+picker_preview:
+  text: People's Choice Voting
+  subtext: Live voting widget with search, filtering and pagination.
+_inputs_from_glob:
+  - /src/components/page-sections/features/peoples-choice-voting/peoples-choice-voting.cloudcannon.inputs.yml

@@ -1,0 +1,1724 @@
+---
+/**
+ * PeoplesChoiceVoting — public voting widget for the People's Choice Stevie Awards.
+ *
+ * Ported from the React + Tailwind island on release/iba-stable
+ * (src/components/ContentComponent/PeoplesChoiceVoting/PeoplesChoiceVoting.jsx).
+ * This template has neither @astrojs/react nor Tailwind, so the logic is rewritten
+ * as a plain client script and the styling as design tokens. No new dependencies.
+ *
+ * Talks to the Stevie People's Choice API entirely from the browser — nothing is
+ * fetched at build time, so the section stays compatible with the static build:
+ *   GET  /pc/public/campaigns/
+ *   GET  /pc/public/campaigns/{id}/ballot/
+ *   POST /pc/public/campaigns/{id}/vote/
+ *
+ * The endpoint is public and unauthenticated; no credentials are sent from the
+ * browser. Duplicate voting is enforced by the API (HTTP 409) — the localStorage
+ * bookkeeping here only keeps the UI honest between reloads, it is not a control.
+ *
+ * On localhost the API is reached through the /pc-proxy dev proxy (astro.config.mjs)
+ * because the upstream host does not send CORS headers for local origins.
+ */
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Icon from "@core-elements/icon/Icon.astro";
+
+// Production. The staging host (api.staging.the-stevie-awards.com) is what the old
+// Bookshop blueprint defaulted to, but every shipped page on release/iba-stable
+// points here. Override per placement, or with PUBLIC_PC_API_BASE_URL.
+const DEFAULT_API_BASE = "https://api.the-stevie-awards.com";
+
+const {
+  heading = "Vote for your favorites",
+  description = "",
+  apiBaseUrl = "",
+  mode = "live",
+  testingMode = false,
+  programId,
+  campaignId,
+  showSort = false,
+  showCampaign = false,
+  debug = false,
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+// PUBLIC_ vars are exposed to the browser by Astro; the CloudCannon field wins over
+// the env default so an editor can repoint a single placement without a rebuild.
+const resolvedApiBase =
+  (apiBaseUrl ?? "").toString().trim() ||
+  import.meta.env.PUBLIC_PC_API_BASE_URL ||
+  DEFAULT_API_BASE;
+
+// Unique per placement so two sections on one page cannot collide on popover ids,
+// label `for=` targets or localStorage-driven DOM lookups.
+const uid = `pc-${crypto.randomUUID().slice(0, 8)}`;
+
+/**
+ * A positive integer id, or null. Guards the empty cases explicitly: CloudCannon
+ * leaves cleared number fields as null or "", and Number(null) is 0 — which would
+ * otherwise be sent as a real `program_id=0`.
+ */
+const toId = (value: unknown): number | null => {
+  if (value === null || value === undefined || value === "") return null;
+
+  const n = Number(value);
+
+  return Number.isInteger(n) && n > 0 ? n : null;
+};
+
+const config = {
+  apiBaseUrl: resolvedApiBase,
+  mode: (mode ?? "live").toString(),
+  testingMode: !!testingMode,
+  programId: toId(programId),
+  campaignId: toId(campaignId),
+  showSort: !!showSort,
+  showCampaign: !!showCampaign,
+  debug: !!debug,
+};
+---
+
+<CustomSection
+  class:list={["peoples-choice-voting", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div
+    class="pc-root"
+    data-pc-root
+    data-pc-config={JSON.stringify(config)}
+  >
+    <div class="pc-panel">
+      <div class="pc-intro">
+        {
+          heading && (
+            <h2
+              class="pc-heading"
+              data-editable="text"
+              data-prop="heading"
+            >
+              {heading}
+            </h2>
+          )
+        }
+        {
+          description && (
+            <p
+              class="pc-description"
+              data-editable="text"
+              data-prop="description"
+            >
+              {description}
+            </p>
+          )
+        }
+        {
+          config.showCampaign && (
+            <p
+              class="pc-campaign-status"
+              data-pc-campaign-status
+            >
+              Loading campaigns…
+            </p>
+          )
+        }
+        <p
+          class="pc-error"
+          data-pc-error
+          role="alert"
+          hidden
+        >
+        </p>
+      </div>
+
+      <div class="pc-card">
+        <div class="pc-toolbar">
+          <div class="pc-field pc-field-search">
+            <label
+              class="pc-sr-only"
+              for={`${uid}-search`}>Search nominations</label
+            >
+            <input
+              id={`${uid}-search`}
+              class="pc-input"
+              type="search"
+              placeholder="Search nominations..."
+              autocomplete="off"
+              data-pc-search
+            />
+          </div>
+
+          <div class="pc-field pc-field-category">
+            <label
+              class="pc-sr-only"
+              for={`${uid}-category`}>Category</label
+            >
+            <select
+              id={`${uid}-category`}
+              class="pc-select"
+              data-pc-category
+            >
+              <option value="all">All Categories</option>
+            </select>
+          </div>
+
+          {
+            config.showSort && (
+              <div class="pc-field pc-field-sort">
+                <label
+                  class="pc-sr-only"
+                  for={`${uid}-sort`}
+                >
+                  Sort
+                </label>
+                <select
+                  id={`${uid}-sort`}
+                  class="pc-select"
+                  data-pc-sort
+                >
+                  <option value="default">Default</option>
+                  <option value="votes">Most votes</option>
+                  <option value="-votes">Least votes</option>
+                </select>
+              </div>
+            )
+          }
+
+          {
+            config.showCampaign && (
+              <div class="pc-field pc-field-campaign">
+                <label
+                  class="pc-sr-only"
+                  for={`${uid}-campaign`}
+                >
+                  Campaign
+                </label>
+                <select
+                  id={`${uid}-campaign`}
+                  class="pc-select"
+                  data-pc-campaign
+                  disabled></select>
+              </div>
+            )
+          }
+        </div>
+
+        <p
+          class="pc-count"
+          data-pc-count
+          aria-live="polite"
+        >
+          Loading nominations…
+        </p>
+
+        <div
+          class="pc-grid"
+          data-pc-grid
+        >
+        </div>
+
+        <p
+          class="pc-empty"
+          data-pc-empty
+          hidden
+        >
+        </p>
+
+        <nav
+          class="pc-pagination"
+          data-pc-pagination
+          aria-label="Nomination pages"
+          hidden
+        >
+          <p
+            class="pc-page-status"
+            data-pc-page-status
+          >
+          </p>
+          <div class="pc-page-controls">
+            <button
+              type="button"
+              class="pc-page-btn pc-page-arrow"
+              data-pc-prev
+              aria-label="Previous page"
+            >
+              <Icon
+                name="chevron-left"
+                size="sm"
+              />
+            </button>
+            <div
+              class="pc-page-numbers"
+              data-pc-page-numbers
+            >
+            </div>
+            <button
+              type="button"
+              class="pc-page-btn pc-page-arrow"
+              data-pc-next
+              aria-label="Next page"
+            >
+              <Icon
+                name="chevron-right"
+                size="sm"
+              />
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    {/*
+      Cards are cloned from these templates and filled with textContent rather than
+      built as HTML strings. Nomination titles and organisation names come from a
+      remote API; React used to escape them for free, and string-built innerHTML
+      would hand that data an injection path.
+    */}
+    <template data-pc-card-template>
+      <article class="pc-nomination">
+        <div class="pc-nomination-main">
+          {/*
+            The logo is deliberately not a link. The title beside it already points
+            at the same site, and two adjacent links to one destination make a
+            screen reader announce the nomination twice.
+          */}
+          <span class="pc-logo-wrap">
+            <img
+              class="pc-logo"
+              data-pc-logo
+              alt=""
+              loading="lazy"
+              width="48"
+              height="48"
+            />
+          </span>
+          <div class="pc-nomination-text">
+            <p class="pc-category">
+              <Icon
+                class="pc-category-icon"
+                name="trophy"
+                size="sm"
+              />
+              <span data-pc-category-name></span>
+            </p>
+            {/*
+              Title and organisation are paragraphs, not anchors. An anchor is
+              created inside them at runtime only when the nomination has a usable
+              website, so the markup never carries a bare href-less link.
+            */}
+            <p
+              class="pc-title"
+              data-pc-title
+            >
+            </p>
+            <p
+              class="pc-org"
+              data-pc-org
+            >
+            </p>
+            <p
+              class="pc-votes"
+              data-pc-votes
+              hidden
+            >
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="pc-vote-btn"
+          data-pc-vote
+        >
+          <Icon
+            name="hand-thumb-up"
+            size="sm"
+          />
+          <span data-pc-vote-label>Vote</span>
+        </button>
+      </article>
+    </template>
+
+    <template data-pc-skeleton-template>
+      <div
+        class="pc-nomination pc-skeleton"
+        aria-hidden="true"
+      >
+        <div class="pc-skeleton-line pc-skeleton-sm"></div>
+        <div class="pc-skeleton-line pc-skeleton-lg"></div>
+        <div class="pc-skeleton-line pc-skeleton-md"></div>
+      </div>
+    </template>
+
+    <div
+      id={`${uid}-confirm`}
+      class="pc-dialog"
+      popover="auto"
+      role="dialog"
+      aria-labelledby={`${uid}-confirm-title`}
+      data-pc-confirm
+    >
+      <h3
+        class="pc-dialog-title"
+        id={`${uid}-confirm-title`}
+      >
+        Confirm your vote
+      </h3>
+      <p class="pc-dialog-body">Are you sure you want to vote for this nomination?</p>
+      <div class="pc-dialog-actions">
+        <button
+          type="button"
+          class="pc-btn pc-btn-secondary"
+          popovertarget={`${uid}-confirm`}
+          popovertargetaction="hide"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="pc-btn pc-btn-primary"
+          data-pc-confirm-accept
+        >
+          Confirm Vote
+        </button>
+      </div>
+    </div>
+
+    <div
+      id={`${uid}-success`}
+      class="pc-dialog"
+      popover="auto"
+      role="dialog"
+      aria-labelledby={`${uid}-success-title`}
+      data-pc-success
+    >
+      <h3
+        class="pc-dialog-title"
+        id={`${uid}-success-title`}
+      >
+        Vote submitted
+      </h3>
+      <p class="pc-dialog-body">
+        Congratulations! You have cast your vote. You can vote for this nomination again after 24
+        hours.
+      </p>
+      <div class="pc-dialog-actions">
+        <button
+          type="button"
+          class="pc-btn pc-btn-primary"
+          popovertarget={`${uid}-success`}
+          popovertargetaction="hide"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</CustomSection>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+  import { trapFocus } from "@component-utils/focusTrap";
+
+  type Nomination = Record<string, any>;
+  type Campaign = Record<string, any>;
+
+  const VOTE_TTL_MS = 24 * 60 * 60 * 1000;
+  const PAGE_SIZE = 20;
+  const PLACEHOLDER_LOGO = "/images/placeholder-image.png";
+
+  /** Join base + path + query, dropping empty params and bare-flagging `true`. */
+  function buildUrl(base: string, path: string, params: Record<string, unknown>): string {
+    const baseTrimmed = base.endsWith("/") ? base.slice(0, -1) : base;
+    const pathWithSlash = path.startsWith("/") ? path : `/${path}`;
+
+    const parts: string[] = [];
+    Object.entries(params || {}).forEach(([k, v]) => {
+      if (v === undefined || v === null || v === "") return;
+      if (v === true) {
+        parts.push(encodeURIComponent(k));
+        return;
+      }
+      parts.push(`${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`);
+    });
+
+    const query = parts.join("&");
+    return `${baseTrimmed}${pathWithSlash}${query ? `?${query}` : ""}`;
+  }
+
+  /**
+   * The API lives under /pc. Skip the prefix when the base is already a proxy path
+   * (the dev proxy rewrites to /pc itself) or when a caller passed a base ending /pc.
+   */
+  function apiPath(base: string, path: string): string {
+    const needsPrefix = !base.startsWith("/") && !/\/pc\/?$/.test(base);
+    const p = path.startsWith("/") ? path : `/${path}`;
+    return `${needsPrefix ? "/pc" : ""}${p}`;
+  }
+
+  function resolveTestingMode(mode: string, flag: boolean): boolean {
+    if (mode === "testing") return true;
+    if (mode === "live") return false;
+    return !!flag;
+  }
+
+  /** Field renames introduced by API v1.2, accepted alongside the older names. */
+  function normalizeNomination(item: Nomination): Nomination {
+    if (!item || typeof item !== "object") return item;
+    return {
+      ...item,
+      category_id: item.category_id ?? item.pc_category_id,
+      category_name: item.category_name ?? item.pc_category_name,
+      display_title: item.display_title ?? item.nomination_title,
+      organization_logo_url: item.organization_logo_url ?? item.org_logo_url,
+      website_url: item.website_url ?? item.website,
+    };
+  }
+
+  function normalizeCampaign(item: Campaign): Campaign {
+    if (!item || typeof item !== "object") return item;
+    return {
+      ...item,
+      id: item.id ?? item.campaign_id ?? null,
+      allowed_category_ids: item.allowed_category_ids ?? item.allowed_pc_category_ids,
+    };
+  }
+
+  /** Absolute http(s) URL, or null. Rejects javascript:/data: and other schemes. */
+  function normalizeExternalUrl(value: unknown): string | null {
+    const raw = (value ?? "").toString().trim();
+    if (!raw) return null;
+
+    if (raw.startsWith("//")) return `https:${raw}`;
+
+    // A scheme is anything before the first colon that precedes any slash.
+    const schemeMatch = /^([a-z][a-z0-9+.-]*):/i.exec(raw);
+    if (schemeMatch) {
+      const scheme = schemeMatch[1].toLowerCase();
+      return scheme === "http" || scheme === "https" ? raw : null;
+    }
+
+    // Bare domain such as www.example.com
+    return `https://${raw}`;
+  }
+
+  function getLogoSrc(item: Nomination): string {
+    return (
+      item?.organization_logo_url ||
+      item?.company_logo_url ||
+      item?.logo_url ||
+      item?.logo ||
+      item?.image_url ||
+      ""
+    );
+  }
+
+  function readStore(key: string): Record<string, any> {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "{}");
+      return parsed && typeof parsed === "object" ? parsed : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function writeStore(key: string, value: Record<string, any>): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      // Private mode or a full quota — the API remains the real duplicate-vote gate.
+    }
+  }
+
+  /** Drop entries older than the 24h window; accepts the older boolean/number shapes. */
+  function pruneVoted(raw: Record<string, any>, now: number): Record<string, number> {
+    const out: Record<string, number> = {};
+    for (const [k, v] of Object.entries(raw)) {
+      const ts =
+        typeof v === "number" ? v : v === true ? now : typeof v?.ts === "number" ? v.ts : null;
+      if (typeof ts !== "number") continue;
+      if (now - ts < VOTE_TTL_MS) out[k] = ts;
+    }
+    return out;
+  }
+
+  function pruneVotedCategories(
+    raw: Record<string, any>,
+    now: number
+  ): Record<string, { nominationId: number; ts: number }> {
+    const out: Record<string, { nominationId: number; ts: number }> = {};
+    for (const [k, v] of Object.entries(raw)) {
+      const nominationId =
+        typeof v === "number"
+          ? v
+          : typeof v?.nominationId === "number"
+            ? v.nominationId
+            : typeof v?.nomination_id === "number"
+              ? v.nomination_id
+              : null;
+      const ts = typeof v?.ts === "number" ? v.ts : now;
+      if (typeof nominationId !== "number") continue;
+      if (now - ts < VOTE_TTL_MS) out[k] = { nominationId, ts };
+    }
+    return out;
+  }
+
+  /** Page numbers with ellipsis markers: 1 … 4 5 6 … 12 */
+  function buildPaginationItems(current: number, total: number): (number | string)[] {
+    const totalPages = Math.max(1, Number(total) || 1);
+    const currentPage = Math.min(Math.max(1, Number(current) || 1), totalPages);
+
+    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+    const left = Math.max(currentPage - 1, 1);
+    const right = Math.min(currentPage + 1, totalPages);
+    const items: (number | string)[] = [1];
+
+    if (left > 2) items.push("dots-left");
+    else for (let p = 2; p < left; p += 1) items.push(p);
+
+    for (let p = left; p <= right; p += 1) {
+      if (p !== 1 && p !== totalPages) items.push(p);
+    }
+
+    if (right < totalPages - 1) items.push("dots-right");
+    else for (let p = right + 1; p < totalPages; p += 1) items.push(p);
+
+    items.push(totalPages);
+    return items;
+  }
+
+  function setupWidget(root: HTMLElement): void {
+    if (root.hasAttribute("data-pc-initialized")) return;
+    root.setAttribute("data-pc-initialized", "");
+
+    let config: Record<string, any>;
+    try {
+      config = JSON.parse(root.dataset.pcConfig || "{}");
+    } catch {
+      return;
+    }
+
+    const debug = !!config.debug;
+    const log = (...args: unknown[]) => {
+      if (debug) console.log("[PeoplesChoiceVoting]", ...args);
+    };
+
+    // Upstream sends no CORS headers for localhost, so dev goes through the proxy
+    // declared in astro.config.mjs. Anything already relative is left alone.
+    const base = (config.apiBaseUrl ?? "").toString();
+    const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+    const apiBase = base.startsWith("/") || !isLocal ? base : "/pc-proxy";
+
+    const testing = resolveTestingMode(config.mode, config.testingMode);
+
+    const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
+
+    const searchInput = $<HTMLInputElement>("[data-pc-search]");
+    const categorySelect = $<HTMLSelectElement>("[data-pc-category]");
+    const sortSelect = $<HTMLSelectElement>("[data-pc-sort]");
+    const campaignSelect = $<HTMLSelectElement>("[data-pc-campaign]");
+    const campaignStatus = $("[data-pc-campaign-status]");
+    const errorEl = $("[data-pc-error]");
+    const countEl = $("[data-pc-count]");
+    const grid = $("[data-pc-grid]");
+    const emptyEl = $("[data-pc-empty]");
+    const pagination = $("[data-pc-pagination]");
+    const pageStatus = $("[data-pc-page-status]");
+    const pageNumbers = $("[data-pc-page-numbers]");
+    const prevBtn = $<HTMLButtonElement>("[data-pc-prev]");
+    const nextBtn = $<HTMLButtonElement>("[data-pc-next]");
+    const confirmDialog = $("[data-pc-confirm]");
+    const successDialog = $("[data-pc-success]");
+    const confirmAccept = $<HTMLButtonElement>("[data-pc-confirm-accept]");
+    const cardTemplate = $<HTMLTemplateElement>("[data-pc-card-template]");
+    const skeletonTemplate = $<HTMLTemplateElement>("[data-pc-skeleton-template]");
+
+    if (!grid || !cardTemplate || !skeletonTemplate) return;
+
+    if (confirmDialog) trapFocus(confirmDialog);
+    if (successDialog) trapFocus(successDialog);
+
+    let campaigns: Campaign[] = [];
+    let selectedCampaignId: number | null = config.campaignId ?? null;
+    let ballot: Nomination[] = [];
+    let query = "";
+    let category = "all";
+    let sort = "default";
+    let page = 1;
+    let loadingBallot = true;
+    let pendingNominationId: number | null = null;
+    // Trigger that opened the confirm dialog, so focus can be returned to it.
+    let confirmTrigger: HTMLButtonElement | null = null;
+    let voted: Record<string, number> = {};
+    let votedCategories: Record<string, { nominationId: number; ts: number }> = {};
+    const busy = new Set<number>();
+
+    const votedKey = () => `pc-voted:${selectedCampaignId ?? "none"}`;
+    const votedCategoryKey = () => `pc-voted-category:${selectedCampaignId ?? "none"}`;
+
+    function loadVoteState(): void {
+      const now = Date.now();
+
+      const rawVoted = readStore(votedKey());
+      voted = pruneVoted(rawVoted, now);
+      if (JSON.stringify(rawVoted) !== JSON.stringify(voted)) writeStore(votedKey(), voted);
+
+      const rawCats = readStore(votedCategoryKey());
+      votedCategories = pruneVotedCategories(rawCats, now);
+      if (JSON.stringify(rawCats) !== JSON.stringify(votedCategories)) {
+        writeStore(votedCategoryKey(), votedCategories);
+      }
+    }
+
+    function showError(message: string): void {
+      if (!errorEl) return;
+      errorEl.textContent = message;
+      errorEl.hidden = !message;
+    }
+
+    async function fetchJson(url: string, init?: RequestInit) {
+      log("request", url, init);
+      const res = await fetch(url, init);
+      let json: any = null;
+      try {
+        json = await res.json();
+      } catch {
+        // A body-less or non-JSON response is handled by the status checks below.
+      }
+      log("response", { url, status: res.status, ok: res.ok, json });
+      return { res, json };
+    }
+
+    function isCategoryLocked(item: Nomination): boolean {
+      const cat = item?.category_name;
+      if (!cat) return false;
+      const entry = votedCategories[cat];
+      if (typeof entry?.ts !== "number") return false;
+      return Date.now() - entry.ts < VOTE_TTL_MS;
+    }
+
+    function activeCampaign(): Campaign | null {
+      return campaigns.find((c) => String(c?.id) === String(selectedCampaignId)) || null;
+    }
+
+    /**
+     * Same selection as release/iba-stable: the campaign that is open right now,
+     * else the first one the API returned. Only used when the placement does not
+     * pin a campaignId — the IBA page pins campaign 5, so this does not run there.
+     */
+    function pickCampaign(): number | null {
+      const active = campaigns.find((c) => c?.is_active_now && c?.is_enabled);
+
+      return (active || campaigns[0])?.id ?? null;
+    }
+
+    function votingClosed(): boolean {
+      const c = activeCampaign();
+      return c?.is_active_now === false || c?.is_enabled === false;
+    }
+
+    /** Search + category + sort, applied client-side over the current ballot. */
+    function filtered(): Nomination[] {
+      const q = query.trim().toLowerCase();
+      const searched = !q
+        ? ballot
+        : ballot.filter((x) =>
+            `${x?.display_title ?? ""} ${x?.organization_name ?? ""} ${x?.category_name ?? ""}`
+              .toLowerCase()
+              .includes(q)
+          );
+
+      const base = category === "all" ? searched : searched.filter((x) => x?.category_name === category);
+
+      if (sort === "votes" || sort === "-votes") {
+        const dir = sort === "votes" ? -1 : 1;
+        return [...base].sort(
+          (a, b) =>
+            ((typeof a?.votes === "number" ? a.votes : 0) -
+              (typeof b?.votes === "number" ? b.votes : 0)) *
+            dir
+        );
+      }
+
+      return [...base].sort((a, b) =>
+        (a?.display_title || a?.organization_name || "")
+          .toString()
+          .toLowerCase()
+          .localeCompare((b?.display_title || b?.organization_name || "").toString().toLowerCase())
+      );
+    }
+
+    function renderCategories(): void {
+      if (!categorySelect) return;
+      const names = Array.from(
+        new Set(ballot.map((i) => i?.category_name).filter(Boolean) as string[])
+      ).sort((a, b) => a.localeCompare(b));
+
+      const previous = category;
+      categorySelect.replaceChildren();
+
+      const all = document.createElement("option");
+      all.value = "all";
+      all.textContent = "All Categories";
+      categorySelect.append(all);
+
+      for (const name of names) {
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        categorySelect.append(opt);
+      }
+
+      // Keep the editor's choice across reloads when the category still exists.
+      category = names.includes(previous) ? previous : "all";
+      categorySelect.value = category;
+    }
+
+    function renderCampaigns(): void {
+      if (!campaignSelect) return;
+      campaignSelect.replaceChildren();
+
+      for (const c of campaigns) {
+        const opt = document.createElement("option");
+        opt.value = String(c.id);
+        opt.textContent = `#${c.id}${c?.is_active_now ? " (Active)" : ""}`;
+        campaignSelect.append(opt);
+      }
+
+      campaignSelect.disabled = campaigns.length === 0;
+      if (selectedCampaignId !== null) campaignSelect.value = String(selectedCampaignId);
+    }
+
+    function renderCampaignStatus(loading: boolean): void {
+      if (!campaignStatus) return;
+      const c = activeCampaign();
+      campaignStatus.textContent = loading
+        ? "Loading campaigns…"
+        : c
+          ? `Campaign #${c.id}${c?.is_active_now ? " (Active)" : ""}`
+          : "Select a campaign to begin.";
+    }
+
+    /**
+     * Put `text` in `host`, wrapped in a link when the nomination has a website.
+     * Building the anchor here rather than in the template means an anchor only
+     * ever exists with both a real href and real content.
+     */
+    function applyLink(host: HTMLElement | null, href: string | null, text: string): void {
+      if (!host) return;
+      // Long names are clamped to two lines; the full string stays on the tooltip.
+      host.title = text;
+
+      if (!href) {
+        host.textContent = text;
+        return;
+      }
+
+      const anchor = document.createElement("a");
+      anchor.href = href;
+      anchor.target = "_blank";
+      anchor.rel = "noreferrer noopener";
+      anchor.textContent = text;
+      host.replaceChildren(anchor);
+    }
+
+    function renderCard(item: Nomination): HTMLElement {
+      const node = cardTemplate!.content.firstElementChild!.cloneNode(true) as HTMLElement;
+      const nominationId = Number(item?.nomination_id);
+      const href = normalizeExternalUrl(item?.website_url);
+      const title = (item?.display_title || "").toString();
+      const org = (item?.organization_name || item?.website_url || "").toString();
+
+      const logo = node.querySelector<HTMLImageElement>("[data-pc-logo]");
+      if (logo) {
+        logo.src = getLogoSrc(item) || PLACEHOLDER_LOGO;
+        // A dead logo URL falls back once. Comparing against the resolved absolute
+        // URL stops the handler firing forever if the placeholder itself 404s.
+        logo.addEventListener("error", () => {
+          if (logo.src !== new URL(PLACEHOLDER_LOGO, window.location.origin).href) {
+            logo.src = PLACEHOLDER_LOGO;
+          }
+        });
+      }
+
+      const categoryName = node.querySelector("[data-pc-category-name]");
+      if (categoryName) categoryName.textContent = (item?.category_name || "").toString();
+
+      applyLink(node.querySelector<HTMLElement>("[data-pc-title]"), href, title);
+      applyLink(node.querySelector<HTMLElement>("[data-pc-org]"), href, org);
+
+      const votesEl = node.querySelector<HTMLElement>("[data-pc-votes]");
+      if (votesEl && typeof item?.votes === "number") {
+        votesEl.textContent = `${item.votes.toLocaleString()} votes`;
+        votesEl.hidden = false;
+      }
+
+      const voteBtn = node.querySelector<HTMLButtonElement>("[data-pc-vote]");
+      const voteLabel = node.querySelector("[data-pc-vote-label]");
+      if (voteBtn && voteLabel) {
+        const voteTs = voted[String(nominationId)];
+        const hasVoted = typeof voteTs === "number" && Date.now() - voteTs < VOTE_TTL_MS;
+        const locked = isCategoryLocked(item);
+        const isBusy = busy.has(nominationId);
+
+        voteBtn.dataset.nominationId = String(nominationId);
+        voteBtn.disabled = isBusy || hasVoted || locked || votingClosed();
+        voteLabel.textContent = hasVoted || locked ? "Voted" : isBusy ? "Voting…" : "Vote";
+        // Distinguish the two disabled reasons for screen readers.
+        voteBtn.setAttribute(
+          "aria-label",
+          hasVoted || locked
+            ? `Already voted in ${item?.category_name || "this category"}`
+            : `Vote for ${title || "this nomination"}`
+        );
+      }
+
+      return node;
+    }
+
+    function renderPagination(total: number, current: number, totalPages: number): void {
+      if (!pagination || !pageNumbers || !pageStatus) return;
+
+      if (loadingBallot || total === 0) {
+        pagination.hidden = true;
+        return;
+      }
+
+      pagination.hidden = false;
+      pageStatus.textContent = `Page ${current} of ${totalPages}`;
+      if (prevBtn) prevBtn.disabled = current <= 1;
+      if (nextBtn) nextBtn.disabled = current >= totalPages;
+
+      pageNumbers.replaceChildren();
+      for (const item of buildPaginationItems(current, totalPages)) {
+        if (typeof item === "string") {
+          const dots = document.createElement("span");
+          dots.className = "pc-page-dots";
+          dots.setAttribute("aria-hidden", "true");
+          dots.textContent = "…";
+          pageNumbers.append(dots);
+          continue;
+        }
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pc-page-btn";
+        btn.textContent = String(item);
+        btn.setAttribute("aria-label", `Page ${item}`);
+        if (item === current) {
+          btn.classList.add("is-current");
+          btn.setAttribute("aria-current", "page");
+          btn.disabled = true;
+        }
+        btn.addEventListener("click", () => {
+          page = item;
+          render();
+          // Keep the results in view when paging from the bottom of a long list.
+          grid!.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        pageNumbers.append(btn);
+      }
+    }
+
+    function render(): void {
+      const items = filtered();
+      const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
+      const currentPage = Math.min(Math.max(1, page), totalPages);
+      page = currentPage;
+
+      grid!.replaceChildren();
+
+      if (loadingBallot) {
+        for (let i = 0; i < 6; i += 1) {
+          grid!.append(skeletonTemplate!.content.firstElementChild!.cloneNode(true));
+        }
+        if (countEl) countEl.textContent = "Loading nominations…";
+        if (emptyEl) emptyEl.hidden = true;
+        renderPagination(items.length, currentPage, totalPages);
+        return;
+      }
+
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const paged = items.slice(start, start + PAGE_SIZE);
+
+      for (const item of paged) grid!.append(renderCard(item));
+
+      if (countEl) {
+        countEl.textContent = `Showing ${items.length === 0 ? 0 : start + 1}–${
+          start + paged.length
+        } of ${items.length} nominations`;
+      }
+
+      if (emptyEl) {
+        if (items.length === 0) {
+          emptyEl.textContent =
+            ballot.length === 0
+              ? "People's Choice voting is not open yet. Please come back again after some time."
+              : "No nominations match your filters.";
+          emptyEl.hidden = false;
+        } else {
+          emptyEl.hidden = true;
+        }
+      }
+
+      renderPagination(items.length, currentPage, totalPages);
+    }
+
+    async function loadCampaigns(): Promise<void> {
+      renderCampaignStatus(true);
+      showError("");
+      try {
+        const url = buildUrl(apiBase, apiPath(apiBase, "/public/campaigns/"), {
+          testing_mode: testing ? true : undefined,
+          program_id: config.programId ?? undefined,
+        });
+        const { res, json } = await fetchJson(url, { headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`Failed to load campaigns (${res.status})`);
+
+        campaigns = (Array.isArray(json) ? json : []).map(normalizeCampaign);
+
+        if (selectedCampaignId === null) selectedCampaignId = pickCampaign();
+
+        renderCampaigns();
+        renderCampaignStatus(false);
+        loadVoteState();
+      } catch (e: any) {
+        campaigns = [];
+        selectedCampaignId = null;
+        ballot = [];
+        renderCampaignStatus(false);
+        showError(e?.message || "Failed to load campaigns");
+        loadingBallot = false;
+        render();
+      }
+    }
+
+    async function loadBallot(): Promise<void> {
+      if (selectedCampaignId === null) {
+        loadingBallot = false;
+        render();
+        return;
+      }
+
+      loadingBallot = true;
+      render();
+      showError("");
+
+      try {
+        const url = buildUrl(
+          apiBase,
+          apiPath(apiBase, `/public/campaigns/${selectedCampaignId}/ballot/`),
+          {
+            testing_mode: testing ? true : undefined,
+            q: query || undefined,
+            sort: sort === "default" ? undefined : sort,
+          }
+        );
+        const { res, json } = await fetchJson(url, { headers: { Accept: "application/json" } });
+        if (!res.ok) throw new Error(`Failed to load ballot (${res.status})`);
+
+        const data = Array.isArray(json) ? json : Array.isArray(json?.data) ? json.data : [];
+        ballot = data.map(normalizeNomination);
+        renderCategories();
+      } catch (e: any) {
+        ballot = [];
+        showError(e?.message || "Failed to load ballot");
+      } finally {
+        loadingBallot = false;
+        render();
+      }
+    }
+
+    async function castVote(nominationId: number): Promise<void> {
+      if (selectedCampaignId === null || !Number.isFinite(nominationId)) return;
+
+      // Only ever vote for something on the ballot actually in hand.
+      const nomination = ballot.find((x) => Number(x?.nomination_id) === nominationId);
+      if (!nomination) {
+        showError("Invalid nomination. Please refresh and try again.");
+        return;
+      }
+
+      const categoryName = nomination?.category_name;
+      if (isCategoryLocked(nomination)) return;
+
+      showError("");
+      busy.add(nominationId);
+      render();
+
+      const markVoted = () => {
+        const now = Date.now();
+        voted = { ...voted, [String(nominationId)]: now };
+        writeStore(votedKey(), voted);
+
+        if (categoryName) {
+          votedCategories = { ...votedCategories, [categoryName]: { nominationId, ts: now } };
+          writeStore(votedCategoryKey(), votedCategories);
+        }
+      };
+
+      try {
+        const url = buildUrl(
+          apiBase,
+          apiPath(apiBase, `/public/campaigns/${selectedCampaignId}/vote/`),
+          { testing_mode: testing ? true : undefined }
+        );
+
+        const { res, json } = await fetchJson(url, {
+          method: "POST",
+          headers: { Accept: "application/json", "Content-Type": "application/json" },
+          body: JSON.stringify({ nomination_id: nominationId }),
+        });
+
+        // 409 means the API already counted a vote for this category in the window.
+        if (res.status === 409) {
+          markVoted();
+          successDialog?.showPopover();
+          return;
+        }
+
+        if (!res.ok) {
+          const detail = json?.detail || json?.message || "";
+          throw new Error(detail ? `Vote failed: ${detail}` : `Vote failed (${res.status})`);
+        }
+
+        if (json && typeof json === "object" && json.success === false) {
+          const detail = json?.detail || json?.message || "";
+          throw new Error(detail ? `Vote failed: ${detail}` : "Vote failed");
+        }
+
+        markVoted();
+        successDialog?.showPopover();
+      } catch (e: any) {
+        showError(e?.message || "Vote failed");
+      } finally {
+        busy.delete(nominationId);
+        render();
+      }
+    }
+
+    // --- Events -------------------------------------------------------------
+
+    // Delegated: cards are replaced on every render, so per-card listeners would
+    // have to be rebound each time.
+    grid.addEventListener("click", (event) => {
+      const btn = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-pc-vote]");
+      if (!btn || btn.disabled) return;
+
+      pendingNominationId = Number(btn.dataset.nominationId);
+      confirmTrigger = btn;
+      confirmDialog?.showPopover();
+    });
+
+    confirmAccept?.addEventListener("click", () => {
+      const id = pendingNominationId;
+      confirmDialog?.hidePopover();
+      pendingNominationId = null;
+      if (id !== null) castVote(id);
+    });
+
+    // Return focus to the vote button when the confirm dialog closes for any
+    // reason (Cancel, Esc, outside click), matching Modal.astro's behaviour.
+    confirmDialog?.addEventListener("toggle", (event) => {
+      if ((event as ToggleEvent).newState === "closed") {
+        confirmTrigger?.focus();
+        confirmTrigger = null;
+      }
+    });
+
+    searchInput?.addEventListener("input", () => {
+      query = searchInput.value;
+      page = 1;
+
+      // Same as release/iba-stable: the ballot refetches on every keystroke (the
+      // API also honours `q`), with the local filter applied on top.
+      render();
+      syncSearchParam();
+      loadBallot();
+    });
+
+    categorySelect?.addEventListener("change", () => {
+      category = categorySelect.value;
+      page = 1;
+      render();
+    });
+
+    sortSelect?.addEventListener("change", () => {
+      sort = sortSelect.value;
+      page = 1;
+      loadBallot();
+    });
+
+    campaignSelect?.addEventListener("change", () => {
+      selectedCampaignId = campaignSelect.value ? Number(campaignSelect.value) : null;
+      page = 1;
+      loadVoteState();
+      renderCampaignStatus(false);
+      loadBallot();
+    });
+
+    prevBtn?.addEventListener("click", () => {
+      page = Math.max(1, page - 1);
+      render();
+    });
+
+    nextBtn?.addEventListener("click", () => {
+      page += 1;
+      render();
+    });
+
+    /** Mirror the search term into ?q= so a filtered view can be shared. */
+    function syncSearchParam(): void {
+      const url = new URL(window.location.href);
+      if (query) {
+        url.searchParams.set("q", query);
+        url.searchParams.delete("search");
+      } else {
+        url.searchParams.delete("q");
+        url.searchParams.delete("search");
+      }
+      window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
+    }
+
+    // --- Boot ---------------------------------------------------------------
+
+    const initialQuery =
+      new URL(window.location.href).searchParams.get("search") ||
+      new URL(window.location.href).searchParams.get("q") ||
+      "";
+    if (initialQuery) {
+      query = initialQuery;
+      if (searchInput) searchInput.value = initialQuery;
+    }
+
+    loadVoteState();
+    render();
+    loadCampaigns().then(loadBallot);
+  }
+
+  function setupPeoplesChoiceVoting(): void {
+    const roots = document.querySelectorAll<HTMLElement>("[data-pc-root]");
+    if (!roots.length) return;
+    roots.forEach(setupWidget);
+  }
+
+  onPageLoad(setupPeoplesChoiceVoting);
+</script>
+
+<style>
+  @layer page-sections {
+    .peoples-choice-voting {
+      .pc-root {
+        container-type: inline-size;
+      }
+
+      .pc-sr-only {
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+        height: 1px;
+        overflow: hidden;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      }
+
+      .pc-panel {
+        background-color: var(--color-bg-surface);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+      }
+
+      .pc-intro {
+        margin-bottom: var(--spacing-md);
+      }
+
+      .pc-heading {
+        color: var(--color-text-strong);
+        font-family: var(--font-headings);
+        font-size: var(--font-size-heading-sm);
+        font-weight: var(--font-weight-semibold);
+        margin: 0;
+      }
+
+      .pc-description {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin: var(--spacing-xs) 0 0;
+      }
+
+      .pc-campaign-status {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin: var(--spacing-xs) 0 0;
+      }
+
+      .pc-error {
+        color: var(--color-error);
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        margin: var(--spacing-sm) 0 0;
+      }
+
+      .pc-card {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: var(--spacing-md);
+      }
+
+      /* Toolbar: stacked on narrow containers, inline once there is room. */
+      .pc-toolbar {
+        display: grid;
+        gap: var(--spacing-sm);
+        grid-template-columns: 1fr;
+      }
+
+      .pc-input,
+      .pc-select {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border-inputs);
+        border-radius: var(--radius-sm);
+        color: var(--color-text);
+        font-family: inherit;
+        font-size: var(--font-size-md);
+        min-height: 2.75rem;
+        padding-inline: var(--spacing-sm);
+        width: 100%;
+
+        &:focus-visible {
+          outline: 2px solid var(--color-focus-ring);
+          outline-offset: 2px;
+        }
+      }
+
+      .pc-select:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .pc-count {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin: var(--spacing-md) 0 0;
+      }
+
+      .pc-grid {
+        display: grid;
+        gap: var(--spacing-md);
+        grid-template-columns: 1fr;
+        margin-top: var(--spacing-md);
+      }
+
+      .pc-nomination {
+        align-items: flex-start;
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        display: flex;
+        gap: var(--spacing-md);
+        justify-content: space-between;
+        padding: var(--spacing-md);
+      }
+
+      .pc-nomination-main {
+        display: flex;
+        gap: var(--spacing-sm);
+        min-width: 0;
+      }
+
+      .pc-logo-wrap {
+        flex-shrink: 0;
+        line-height: 0;
+      }
+
+      .pc-logo {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        height: 3rem;
+        object-fit: contain;
+        width: 3rem;
+      }
+
+      .pc-nomination-text {
+        min-width: 0;
+      }
+
+      .pc-category {
+        align-items: center;
+        color: var(--color-text-muted);
+        display: flex;
+        font-size: var(--font-size-xs);
+        font-weight: var(--font-weight-semibold);
+        gap: var(--spacing-xs);
+        margin: 0;
+      }
+
+      .pc-category-icon {
+        color: var(--color-brand);
+        flex-shrink: 0;
+      }
+
+      /*
+       * Long names are clamped rather than marquee'd. The source component scrolled
+       * them on a loop, which is moving content with no pause control (WCAG 2.2.2);
+       * the full string stays reachable via the title attribute.
+       */
+      .pc-title,
+      .pc-org,
+      .pc-category > span {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        overflow-wrap: anywhere;
+      }
+
+      .pc-title {
+        color: var(--color-text-strong);
+        font-size: var(--font-size-md);
+        font-weight: var(--font-weight-semibold);
+        line-height: 1.35;
+        margin: var(--spacing-xs) 0 0;
+      }
+
+      .pc-org {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin: 0;
+      }
+
+      /* The anchor is added by the client script only when a website is known. */
+      .pc-title :global(a),
+      .pc-org :global(a) {
+        color: inherit;
+        text-decoration: none;
+
+        &:hover,
+        &:focus-visible {
+          text-decoration: underline;
+        }
+      }
+
+      .pc-votes {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        margin: var(--spacing-sm) 0 0;
+      }
+
+      .pc-vote-btn,
+      .pc-btn,
+      .pc-page-btn {
+        align-items: center;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        display: inline-flex;
+        font-family: inherit;
+        font-size: var(--font-size-sm);
+        font-weight: var(--font-weight-semibold);
+        gap: var(--spacing-xs);
+        justify-content: center;
+        min-height: 2.25rem;
+        padding-inline: var(--spacing-md);
+        transition: background-color var(--animation-fast) ease-out;
+
+        &:focus-visible {
+          outline: 2px solid var(--color-focus-ring);
+          outline-offset: 2px;
+        }
+      }
+
+      .pc-vote-btn,
+      .pc-btn-primary {
+        background-color: var(--color-brand);
+        border: 1px solid var(--color-brand);
+        color: var(--color-text-on-brand);
+        flex-shrink: 0;
+
+        &:hover:not(:disabled) {
+          background-color: var(--color-brand-muted);
+          border-color: var(--color-brand-muted);
+        }
+      }
+
+      .pc-vote-btn:disabled {
+        background-color: var(--color-bg-muted);
+        border-color: var(--color-border);
+        color: var(--color-text-muted);
+        cursor: not-allowed;
+      }
+
+      .pc-btn-secondary {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        color: var(--color-text);
+
+        &:hover {
+          background-color: var(--color-state-hover);
+        }
+      }
+
+      .pc-empty {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin-top: var(--spacing-lg);
+      }
+
+      /* Skeletons: three shimmering bars standing in for a card while loading. */
+      .pc-skeleton {
+        display: block;
+        min-height: 7rem;
+      }
+
+      .pc-skeleton-line {
+        animation: pc-pulse 1.5s ease-in-out infinite;
+        background-color: var(--color-bg-muted);
+        border-radius: var(--radius-xs);
+        height: 1rem;
+        margin-bottom: var(--spacing-sm);
+      }
+
+      .pc-skeleton-sm {
+        width: 40%;
+      }
+
+      .pc-skeleton-lg {
+        height: 1.25rem;
+        width: 66%;
+      }
+
+      .pc-skeleton-md {
+        margin-bottom: 0;
+        width: 33%;
+      }
+
+      .pc-pagination {
+        align-items: center;
+        color: var(--color-text-muted);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: var(--font-size-sm);
+        gap: var(--spacing-sm);
+        justify-content: space-between;
+        margin-top: var(--spacing-lg);
+      }
+
+      .pc-page-status {
+        margin: 0;
+      }
+
+      .pc-page-controls {
+        align-items: center;
+        display: flex;
+        gap: var(--spacing-xs);
+        max-width: 100%;
+      }
+
+      .pc-page-numbers {
+        align-items: center;
+        display: flex;
+        gap: var(--spacing-xs);
+        overflow-x: auto;
+      }
+
+      .pc-page-btn {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        color: var(--color-text);
+        min-width: 2.25rem;
+        padding-inline: var(--spacing-sm);
+
+        &:hover:not(:disabled) {
+          background-color: var(--color-state-hover);
+        }
+
+        &:disabled {
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+
+        &.is-current {
+          background-color: var(--color-brand);
+          border-color: var(--color-brand);
+          color: var(--color-text-on-brand);
+          opacity: 1;
+        }
+      }
+
+      .pc-page-arrow {
+        padding-inline: var(--spacing-xs);
+      }
+
+      .pc-page-dots {
+        color: var(--color-text-muted);
+        padding-inline: var(--spacing-xs);
+      }
+
+      /*
+       * Dialogs use the native popover API, so Esc and light-dismiss come for free;
+       * focusTrap adds Tab containment, background inert and aria-modal.
+       */
+      .pc-dialog {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        box-shadow: 0 16px 48px rgb(0 0 0 / 20%);
+        color: var(--color-text);
+        inset: 0;
+        margin: auto;
+        max-width: 28rem;
+        padding: var(--spacing-lg);
+        width: calc(100% - var(--spacing-xl));
+
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity var(--animation-normal) ease-out,
+          transform var(--animation-normal) ease-out,
+          overlay var(--animation-normal) ease-out allow-discrete,
+          display var(--animation-normal) ease-out allow-discrete;
+
+        &:popover-open {
+          opacity: 1;
+          transform: translateY(0);
+
+          @starting-style {
+            opacity: 0;
+            transform: translateY(16px);
+          }
+        }
+
+        &::backdrop {
+          background-color: var(--color-overlay);
+        }
+      }
+
+      .pc-dialog-title {
+        color: var(--color-text-strong);
+        font-family: var(--font-headings);
+        font-size: var(--font-size-lg);
+        font-weight: var(--font-weight-semibold);
+        margin: 0;
+      }
+
+      .pc-dialog-body {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-sm);
+        margin: var(--spacing-sm) 0 0;
+      }
+
+      .pc-dialog-actions {
+        display: flex;
+        gap: var(--spacing-sm);
+        justify-content: flex-end;
+        margin-top: var(--spacing-md);
+      }
+
+      /* Container queries, matching the wider/narrower behaviour of the source. */
+      @container (width >= 40rem) {
+        .pc-panel {
+          padding: var(--spacing-lg);
+        }
+
+        .pc-card {
+          padding: var(--spacing-lg);
+        }
+
+        .pc-toolbar {
+          grid-template-columns: repeat(12, minmax(0, 1fr));
+        }
+
+        .pc-field-search {
+          grid-column: span 7;
+        }
+
+        .pc-field-category {
+          grid-column: span 5;
+        }
+
+        .pc-toolbar:has(.pc-field-sort) {
+          .pc-field-search {
+            grid-column: span 6;
+          }
+
+          .pc-field-category {
+            grid-column: span 4;
+          }
+
+          .pc-field-sort {
+            grid-column: span 2;
+          }
+        }
+
+        .pc-toolbar:has(.pc-field-campaign) {
+          .pc-field-search {
+            grid-column: span 6;
+          }
+
+          .pc-field-category {
+            grid-column: span 4;
+          }
+
+          .pc-field-campaign {
+            grid-column: span 2;
+          }
+        }
+
+        .pc-toolbar:has(.pc-field-sort):has(.pc-field-campaign) {
+          .pc-field-search {
+            grid-column: span 5;
+          }
+
+          .pc-field-category {
+            grid-column: span 3;
+          }
+
+          .pc-field-sort {
+            grid-column: span 2;
+          }
+
+          .pc-field-campaign {
+            grid-column: span 2;
+          }
+        }
+
+        .pc-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+    }
+  }
+
+  @keyframes pc-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .peoples-choice-voting .pc-skeleton-line {
+      animation: none;
+    }
+
+    .peoples-choice-voting .pc-dialog {
+      transition: none;
+    }
+  }
+</style>

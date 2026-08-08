@@ -1,0 +1,103 @@
+heading:
+  type: text
+  comment: Heading shown above the voting panel. Leave empty to hide it.
+
+description:
+  type: text
+  comment: Short line of supporting text under the heading. Leave empty to hide it.
+
+apiBaseUrl:
+  type: text
+  comment: >-
+    Base URL of the People's Choice API. Leave empty to use the site default
+    (the staging API). The widget adds the /pc prefix itself.
+
+mode:
+  type: select
+  comment: >-
+    Which set of data to read. Auto follows the Testing Mode switch below;
+    Live and Testing ignore it and force that choice.
+  options:
+    values:
+      - id: auto
+        name: Auto (follow Testing Mode)
+      - id: live
+        name: Live
+      - id: testing
+        name: Testing
+
+testingMode:
+  type: switch
+  comment: Read test campaigns and ballots. Only applies when Mode is set to Auto.
+
+programId:
+  type: number
+  comment: Optional. Limit the campaign list to a single program ID.
+
+campaignId:
+  type: number
+  comment: >-
+    Optional. Pin the widget to one campaign ID. Leave empty to auto-select the
+    campaign that is currently active.
+
+showCampaign:
+  type: switch
+  comment: Show the campaign picker and the "Campaign #N" status line.
+
+showSort:
+  type: switch
+  comment: Show the sort dropdown (Default / Most votes / Least votes).
+
+debug:
+  type: switch
+  comment: Log every API request and response to the browser console. Turn off in production.
+
+colorScheme:
+  type: select
+  comment: Force a light or dark theme for this section, or inherit the page theme.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  comment: Background colour behind the section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight
+
+paddingVertical:
+  type: select
+  comment: Vertical padding above and below the section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: sm
+        name: Small
+      - id: md
+        name: Medium
+      - id: lg
+        name: Large
+      - id: xl
+        name: Extra large
+      - id: 2xl
+        name: 2XL
+      - id: 3xl
+        name: 3XL
+      - id: 4xl
+        name: 4XL
