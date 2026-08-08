@@ -39,7 +39,10 @@ const {
   showSort = false,
   showCampaign = false,
   debug = false,
-  colorScheme = "inherit",
+  // The panel is a fixed pale blue, so its contents must resolve against light
+  // tokens. The site root defaults to dark, so "inherit" would put white text on
+  // that blue. Same reasoning as EnquiryForm.astro.
+  colorScheme = "light",
   backgroundColor,
   paddingVertical = "4xl",
   class: className,
@@ -228,12 +231,12 @@ const config = {
         >
         </div>
 
-        <p
+        <div
           class="pc-empty"
           data-pc-empty
           hidden
         >
-        </p>
+        </div>
 
         <nav
           class="pc-pagination"
@@ -955,17 +958,30 @@ const config = {
       for (const item of paged) grid!.append(renderCard(item));
 
       if (countEl) {
-        countEl.textContent = `Showing ${items.length === 0 ? 0 : start + 1}–${
-          start + paged.length
-        } of ${items.length} nominations`;
+        // Stable's phrasing: a running total shown so far, not a "from-to" range.
+        const shown = start + Math.min(paged.length, PAGE_SIZE);
+
+        countEl.textContent = `Showing ${shown} of ${items.length} nominations`;
       }
 
       if (emptyEl) {
         if (items.length === 0) {
-          emptyEl.textContent =
+          // Two lines when the ballot itself is empty, one when filters excluded
+          // everything — the same split, and wording, as release/iba-stable.
+          const lines =
             ballot.length === 0
-              ? "People's Choice voting is not open yet. Please come back again after some time."
-              : "No nominations match your filters.";
+              ? ["People Choice voting is not open yet.", "Please come back again after some time."]
+              : ["No nominations match your filters."];
+
+          emptyEl.replaceChildren(
+            ...lines.map((text) => {
+              const div = document.createElement("div");
+
+              div.textContent = text;
+
+              return div;
+            })
+          );
           emptyEl.hidden = false;
         } else {
           emptyEl.hidden = true;
@@ -1233,8 +1249,9 @@ const config = {
         width: 1px;
       }
 
+      /* Pale blue tray behind the white card, as on release/iba-stable. */
       .pc-panel {
-        background-color: var(--color-bg-surface);
+        background-color: var(--blue-light);
         border-radius: var(--radius-md);
         padding: var(--spacing-md);
       }
@@ -1274,6 +1291,7 @@ const config = {
         background-color: var(--color-bg);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
+        box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
         padding: var(--spacing-md);
       }
 
