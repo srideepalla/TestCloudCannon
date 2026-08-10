@@ -38,18 +38,18 @@
     "heading": "Awards",
     "links": [
       {
-        "text": "The Stevie Award",
+        "text": " IBA Winners",
+        "href": "/awards/IBA-Winners/2025/Stevie-Award-Winners",
+        "openInNewTab": false
+      },
+      {
+        "text": "The Stevie Award trophy",
         "href": "/awards/thestevieaward",
         "openInNewTab": false
       },
       {
         "text": "Categories",
         "href": "/awards/categories",
-        "openInNewTab": false
-      },
-      {
-        "text": " IBA Winners",
-        "href": "/awards/IBA-Winners/2025/Stevie-Award-Winners",
         "openInNewTab": false
       },
       {
