@@ -5,6 +5,11 @@ const {
   title,
   source,
   thumbnail,
+  // Captions for the locally hosted path (WCAG 1.2.2). YouTube and Vimeo carry
+  // their own caption tracks, so this applies only to the <video> branch below.
+  captionsSource,
+  captionsLanguage = "en",
+  captionsLabel = "English",
   class: className,
   useDefaultEditableBinding: _useDefaultEditableBinding = false,
   _component,
@@ -47,6 +52,7 @@ const {
       preload="none"
       controls
       poster={thumbnail}
+      title={title}
       class:list={["video", className]}
       {...htmlAttributes}
     >
@@ -54,6 +60,17 @@ const {
         src={`${source}`}
         type="video/mp4"
       />
+      {
+        captionsSource && (
+          <track
+            kind="captions"
+            src={captionsSource}
+            srclang={captionsLanguage}
+            label={captionsLabel}
+            default
+          />
+        )
+      }
       Your browser does not support the HTML5 video element.
     </video>
   )

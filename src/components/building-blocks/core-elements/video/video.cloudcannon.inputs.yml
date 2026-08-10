@@ -10,7 +10,7 @@ type:
         name: Local Source
 title:
   type: text
-  comment: Used for externally hosted videos - The video title provides accessibility information for assistive technologies (like screen readers) and can display a tooltip when a user hovers over the video.
+  comment: The video title provides accessibility information for assistive technologies (like screen readers) and can display a tooltip when a user hovers over the video. Used for both externally and locally hosted videos.
 id:
   type: text
   comment: Used for externally hosted videos - Enter the YouTube or Vimeo id.
@@ -24,6 +24,29 @@ source:
     paths:
       uploads: public/videos
       static: public
+captionsSource:
+  type: file
+  label: Captions (WebVTT)
+  comment: >-
+    Used for locally hosted videos - REQUIRED if the video contains speech or
+    meaningful audio (WCAG 1.2.2, Level A). A .vtt caption track. YouTube and
+    Vimeo videos carry their own captions and do not need this.
+  options:
+    accepts_mime_types:
+      - text/vtt
+      - .vtt
+    paths:
+      uploads: public/videos
+      static: public
+
+captionsLanguage:
+  type: text
+  comment: Used for locally hosted videos - BCP 47 language tag for the caption track, e.g. en.
+
+captionsLabel:
+  type: text
+  comment: Used for locally hosted videos - The caption track name a viewer picks from the player menu, e.g. English.
+
 thumbnail:
   type: image
   comment: Used for locally hosted videos - The image displayed before the video plays or while it is loading.

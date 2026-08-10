@@ -8,6 +8,9 @@ value:
   title: ""
   source: ""
   thumbnail: ""
+  captionsSource: ""
+  captionsLanguage: en
+  captionsLabel: English
 preview:
   text:
     - template: Video - {type}

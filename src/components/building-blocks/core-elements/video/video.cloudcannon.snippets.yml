@@ -31,5 +31,17 @@ video:
         type: string
         optional: true
         remove_empty: true
+      - editor_key: captionsSource
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: captionsLanguage
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: captionsLabel
+        type: string
+        optional: true
+        remove_empty: true
   _inputs_from_glob:
     - /src/components/building-blocks/core-elements/video/video.cloudcannon.inputs.yml
