@@ -156,7 +156,10 @@ const getPageUrl = (pageNum: number) => {
       a,
       span {
         background-color: var(--color-bg);
-        border: 1px solid var(--color-border);
+        /* border-inputs, not border: these are the page controls and their fill
+           matches the page, so the border is the only thing marking each hit
+           area and needs 3:1 (WCAG 1.4.11). See the note in Button.astro. */
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         border-inline-start: none;
         color: var(--color-text-strong);
         font-weight: var(--font-weight-semibold);
@@ -179,7 +182,7 @@ const getPageUrl = (pageNum: number) => {
 
         &:first-child:not(.pagination-arrow) {
           border-bottom-left-radius: var(--radius-sm);
-          border-inline-start: 1px solid var(--color-border);
+          border-inline-start: 1px solid var(--color-border-inputs, var(--color-border));
           border-top-left-radius: var(--radius-sm);
         }
 
@@ -221,7 +224,7 @@ const getPageUrl = (pageNum: number) => {
 
       .pagination-prev {
         border-bottom-left-radius: var(--radius-sm);
-        border-inline-start: 1px solid var(--color-border);
+        border-inline-start: 1px solid var(--color-border-inputs, var(--color-border));
         border-top-left-radius: var(--radius-sm);
       }
 

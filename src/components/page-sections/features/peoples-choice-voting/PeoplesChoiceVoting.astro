@@ -1480,7 +1480,10 @@ const config = {
 
       .pc-btn-secondary {
         background-color: var(--color-bg);
-        border: 1px solid var(--color-border);
+        /* border-inputs, not border: Cancel is filled with the dialog's own
+           background, so this border is its only boundary (WCAG 1.4.11, 3:1).
+           See the note in Button.astro. */
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         color: var(--color-text);
 
         &:hover {
@@ -1553,7 +1556,8 @@ const config = {
 
       .pc-page-btn {
         background-color: var(--color-bg);
-        border: 1px solid var(--color-border);
+        /* Same reasoning as .pc-btn-secondary — the border is the hit area. */
+        border: 1px solid var(--color-border-inputs, var(--color-border));
         color: var(--color-text);
         min-width: 2.25rem;
         padding-inline: var(--spacing-sm);
