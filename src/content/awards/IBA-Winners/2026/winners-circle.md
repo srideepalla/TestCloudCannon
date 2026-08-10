@@ -60,7 +60,7 @@ We've created several predesigned images you may post on social media. Please no
 
 **2026 Stevie Winner Background Image for Your LinkedIn Profile**
 
-<a href="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" target="_blank" rel="noopener" title="2026 Winner LinkedIn Profile Header Image"><strong><img alt="IBA26 winner LinkedIn profile header image" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" /></strong></a>
+<a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg?__hstc=242898397.bfd199c5dc4290a8893f4f562f760e42.1786024430480.1786390024246.1786404788817.12&amp;__hssc=242898397.21.1786404788817&amp;__hsfp=16ca992f2511b6625b5fc1a320a35f66&amp;_gl=1*9hw2ha*_gcl_au*NTI3MzA1OTk0LjE3ODYwMjQ0Mjk.*_ga*MTUxNjAyMTk1Ny4xNzg2MDI0NDI5*_ga_75EDJ0F52B*czE3ODY0MDQ3ODckbzE1JGcxJHQxNzg2NDA1NDg2JGo0MCRsMCRoMA.." target="_blank" rel="noopener" title="2026 Winner LinkedIn Profile Header Image"><strong><img alt="IBA26 winner LinkedIn profile header image" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" /></strong></a>
 
 <a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" target="_blank" rel="noopener"><strong>Add this image</strong></a> to the header background on your LinkedIn profile to show the world that you and your organization are 2026 Stevie winners.
 
