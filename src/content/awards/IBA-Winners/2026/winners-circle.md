@@ -12,7 +12,7 @@ pageSections: []
 ---
 Congratulations on winning one or more awards in the 2026 International Business Awards®. This page features resources to help you and your organization promote your win(s). They include
 
-**♦** [**A Press Release Template**](#Press-Release)**<br />♦** **Multipurpose Winner Logos<br />♦** **Resources for Promoting Your Win(s) on Social Media<br />♦** **How to customize the header image on your LinkedIn Profile with a 2026 Stevie Winner banner<br />♦** **How to join the Stevie Awards Winners group on LinkedIn<br />♦** **How to be profiled on the Stevie Awards blog, newsletter, and/or social media**
+**♦** [**A Press Release Template**](#Press-Release)**<br />♦** [**Multipurpose Winner Logos**](#Multipurpose-Winner-Logo)**<br />♦** [**Resources for Promoting Your Win(s) on Social Media**](#Social-Media)**<br />♦** [**How to customize the header image on your LinkedIn Profile with a 2026 Stevie Winner banner**](#LinkedIn)**<br />♦** [**How to join the Stevie Awards Winners group on LinkedIn**](#LinkedIn-Group)**<br />♦** [**How to be profiled on the Stevie Awards blog, newsletter, and/or social media**](#Profiled)
 
 Questions about awards publicity? Contact: Nina Moore, Director of Marketing & Communications. Email: [**nina@stevieawards.com**](mailto:nina@stevieawards.com) Telephone: +1 703-547-8389
 
@@ -34,6 +34,8 @@ Download a template (in Word format) that you may use to write a press release a
 
 ---
 
+<Anchor id="Multipurpose-Winner-Logo"/>
+
 **Multipurpose Winner Logos**
 
 If you use any of these logos to signify one or more Stevie wins in the 2026 International Business Awards, you agree to use them AS IS. You agree not to alter them in *any* way, other than to resize them. If you wish to render an altered version of one or more of these logos, you must first receive <a href="mailto:michael@stevieawards.com" target="_blank" rel="noopener"><strong>approval from us</strong></a>. Logos may be used for promotional purposes only. They may *not* be used to produce keepsakes, mementos, or mock awards.<br /><br />If you use one or more of these logos online, please link it to open <a href="https://iba.stevieawards.com/" target="_blank" rel="noopener" title="https://iba.stevieawards.com/">iba.stevieawards.com</a> in a new tab or browser window.
@@ -41,6 +43,8 @@ If you use any of these logos to signify one or more Stevie wins in the 2026 Int
 <table><tbody><tr><td><p><img alt="IBA26 Gold Winner" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26_Gold_Winner_x1080.jpg" /></p></td><td><p><img alt="IBA26 Siver Winner" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26_Silver_Winner_x1080.jpg" /></p></td><td><p><img alt="IBA26 Bronze Winner" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26_Bronze_Winner_x1080.jpg" /></p></td></tr><tr><td><p><a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/2026%20Gold%20Logos-20260807T145942Z-1-001.zip" title="Gold Winner Logos" target="_blank" rel="noopener"><strong>Download Gold Multipurpose Winner Logos</strong></a></p></td><td><p><a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/2026%20Silver%20Logos-20260807T145950Z-1-001.zip" title="Silver Winner Logos" target="_blank" rel="noopener"><strong>Download Silver Multipurpose Winner Logos</strong></a></p></td><td><p><a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/2026%20Bronze%20Logos-20260807T145939Z-1-001.zip" title="Bronze Winner Logos" target="_blank" rel="noopener"><strong>Download Bronze Multipurpose Winner Logos</strong></a></p></td></tr></tbody></table>
 
 ---
+
+<Anchor id="Social-Media"/>
 
 **Resources for Promoting Your Win(s) on Social Media**
 
@@ -52,6 +56,8 @@ We've created several predesigned images you may post on social media. Please no
 
 ---
 
+<Anchor id="LinkedIn"/>
+
 **2026 Stevie Winner Background Image for Your LinkedIn Profile**
 
 <a href="https://blog.stevieawards.com/hubfs/SAGE26/SAGE26%20Winners%20Circle/SAGE26-Winner-Circle-LinkedIn-v2-banner.jpg" target="_blank" rel="noopener" title="2026 Winner LinkedIn Profile Header Image"><strong><img alt="IBA26 winner LinkedIn profile header image" src="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26-Winner-Circle-LinkedIn-v2-Banner.jpg" /></strong></a>
@@ -60,9 +66,13 @@ We've created several predesigned images you may post on social media. Please no
 
 ---
 
+<Anchor id="LinkedIn-Group"/>
+
 **STEVIE AWARD HONOREES Group on LinkedIn**<br /><br />As a 2026 Stevie winner, you are invited to join the STEVIE AWARD HONOREES group on LinkedIn and to display the STEVIE AWARD HONOREES logo on your LinkedIn profile. You'll be in elite company and will be able to share and network with other Stevie honorees around the world. <a href="https://www.linkedin.com/groups/56979/" target="_blank" rel="noopener"><strong>Request to Join LinkedIn Group.</strong></a>
 
 ---
+
+<Anchor id="Profiled"/>
 
 **How to Be Profiled in Stevie Awards Media**
 
