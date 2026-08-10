@@ -183,8 +183,19 @@ if (!_component && !hasText && !hasSlotContent) return;
         :global(span.brand-subtle-color) {
           color: var(--color-brand-subtle);
         }
+        /* Was `color: red`. Pure #ff0000 is 3.99:1 on white — under AA — and this
+           class carries fee deadlines and "New for 2026" notices on 23 category
+           pages, which made one declaration responsible for 208 of the site's
+           contrast failures (WCAG 1.4.3).
+
+           A token, not a literal, because the class is theme-blind: a single dark
+           red would fail on a dark section and a single light red on a light one.
+           colorTextRed is #933 light (7.3:1 on white, 5.9:1 on the muted grey) and
+           #ff6b6b dark (7.6:1 on black, 5.6:1 on the dark surface). It is declared
+           in BOTH themes on purpose — a token missing from one theme drops the
+           whole declaration and the text would silently inherit body colour. */
         :global(span.red) {
-          color: red;
+          color: var(--color-text-red);
         }
 
         :global(.align-left) { text-align: left; }
