@@ -94,7 +94,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-first-name">
           First name <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -119,7 +119,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-last-name">
           Last name <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -144,7 +144,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-email">
           Work Email Preferred <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -169,7 +169,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-program">
           Stevie Awards Program <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -220,7 +220,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-category">
           What can we help you with? <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -254,7 +254,7 @@ const codeMeta = Object.fromEntries(
         <label for="enquiry-subcategory">
           Select a Support Category <span
             class="req"
-            aria-label="required"
+            aria-hidden="true"
             >*</span
           >
         </label>
@@ -733,6 +733,12 @@ const codeMeta = Object.fromEntries(
       }
     }
 
+    /* The asterisk is aria-hidden, not aria-labelled. It used to carry
+       aria-label="required", which axe flags as aria-prohibited-attr: an
+       aria-label on a <span> with no role is not reliably announced, so
+       "required" could reach nobody. Every field it marks already has both
+       `required` and aria-required="true", so assistive tech announces the
+       state from the input itself and the asterisk is purely visual. */
     .req {
       color: var(--color-error);
       margin-inline-start: var(--spacing-em-xs);
