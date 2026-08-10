@@ -51,8 +51,8 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "2025 Stevie Award Winners",
-          "path": "/awards/IBA-Winners/2025/stevie-award-winners",
+          "name": "2026 Stevie Award Winners",
+          "path": "/awards/iba-winners/2026/stevie-award-winners/",
           "openInNewTab": false,
           "children": []
         },
@@ -198,6 +198,12 @@
         {
           "name": "People's Choice Stevie Awards for Favorite Companies",
           "path": "/awards/peopleschoice/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "2026 Winners' Circle",
+          "path": "/awards/IBA-Winners/2026/winners-circle",
           "openInNewTab": false,
           "children": []
         }

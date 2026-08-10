@@ -39,7 +39,7 @@
     "links": [
       {
         "text": " IBA Winners",
-        "href": "/awards/IBA-Winners/2025/Stevie-Award-Winners",
+        "href": "/awards/iba-winners/2026/stevie-award-winners/",
         "openInNewTab": false
       },
       {
@@ -60,6 +60,10 @@
       {
         "text": "People's Choice Stevie Awards",
         "href": "/awards/peopleschoice/"
+      },
+      {
+        "text": "2026 Winners' Circle",
+        "href": "/awards/IBA-Winners/2026/winners-circle"
       }
     ]
   },
