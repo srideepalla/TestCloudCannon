@@ -51,6 +51,18 @@
       "openInNewTab": false,
       "children": [
         {
+          "name": "2025 Stevie Award Winners",
+          "path": "/awards/IBA-Winners/2025/stevie-award-winners",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "The Stevie® Award Trophy",
+          "path": "/awards/thestevieaward/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
           "name": "Categories",
           "path": "/awards/categories/",
           "openInNewTab": false,
@@ -178,18 +190,6 @@
           ]
         },
         {
-          "name": "The Stevie® Award Trophy",
-          "path": "/awards/thestevieaward/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "2025 Stevie Award Winners",
-          "path": "/awards/IBA-Winners/2025/stevie-award-winners",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
           "name": "Best of the IBA Awards",
           "path": "/awards/best-iba-awards/",
           "openInNewTab": false,
@@ -258,14 +258,14 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Apply to Be a Judge",
-          "path": "/judges/you-be-the-judge",
+          "name": "Judging & Awards Process",
+          "path": "/judges/judging-awards-process",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
+          "name": "Apply to Be a Judge",
+          "path": "/judges/you-be-the-judge",
           "openInNewTab": false,
           "children": []
         },
@@ -389,13 +389,13 @@
       "openInNewTab": false,
       "children": [
         {
-          "name": "Awards Event",
+          "name": "2026 Awards Event",
           "path": "/tickets/awards-banquet/",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Watch Awards Presentations",
+          "name": "Watch the 2025 Awards Presentations",
           "path": "/tickets/watch-awards-presentations/",
           "openInNewTab": false,
           "children": []
