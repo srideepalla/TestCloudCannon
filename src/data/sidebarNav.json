@@ -8,13 +8,13 @@
         "openInNewTab": false
       },
       {
-        "text": "Calendar",
-        "href": "/about/calendar",
+        "text": "FAQ",
+        "href": "/about/faq",
         "openInNewTab": false
       },
       {
-        "text": "FAQ",
-        "href": "/about/faq",
+        "text": "Calendar",
+        "href": "/about/calendar",
         "openInNewTab": false
       },
       {
@@ -48,7 +48,7 @@
         "openInNewTab": false
       },
       {
-        "text": "Winners",
+        "text": " IBA Winners",
         "href": "/awards/IBA-Winners/2025/Stevie-Award-Winners",
         "openInNewTab": false
       },
@@ -107,13 +107,13 @@
     "heading": "Judges",
     "links": [
       {
-        "text": "Apply to Be a Judge",
-        "href": "/judges/you-be-the-judge",
+        "text": "Judging & Awards Process",
+        "href": "/judges/judging-awards-process",
         "openInNewTab": false
       },
       {
-        "text": "Judging & Awards Process",
-        "href": "/judges/judging-awards-process",
+        "text": "Apply to Be a Judge",
+        "href": "/judges/you-be-the-judge",
         "openInNewTab": false
       },
       {
@@ -152,12 +152,12 @@
     "heading": "Tickets",
     "links": [
       {
-        "text": "Awards Event",
+        "text": "2026 Awards Event",
         "href": "/tickets/awards-banquet",
         "openInNewTab": false
       },
       {
-        "text": "Watch the Awards Presentations",
+        "text": "Watch the 2025 Awards Presentations",
         "href": "/tickets/watch-awards-presentations",
         "openInNewTab": false
       }
