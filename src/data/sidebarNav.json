@@ -157,8 +157,13 @@
         "openInNewTab": false
       },
       {
-        "text": "Watch the 2025 Awards Presentations",
-        "href": "/tickets/watch-awards-presentations",
+        "text": "Watch the Luncheon Ceremony Awards Presentations",
+        "href": "/tickets/watch-awards-presentations-luncheon/",
+        "openInNewTab": false
+      },
+      {
+        "text": "Watch the Evening Ceremony Awards Presentations",
+        "href": "/tickets/watch-awards-presentations-evening/",
         "openInNewTab": false
       }
     ]

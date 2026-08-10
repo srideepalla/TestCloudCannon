@@ -395,8 +395,14 @@
           "children": []
         },
         {
-          "name": "Watch the 2025 Awards Presentations",
-          "path": "/tickets/watch-awards-presentations/",
+          "name": "Watch the Luncheon Ceremony Awards Presentations",
+          "path": "/tickets/watch-awards-presentations-luncheon/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "Watch the Evening Ceremony Awards Presentations",
+          "path": "/tickets/watch-awards-presentations-evening/",
           "openInNewTab": false,
           "children": []
         }
