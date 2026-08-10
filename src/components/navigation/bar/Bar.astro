@@ -416,6 +416,92 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         trigger.addEventListener("click", handleTriggerClick);
       });
 
+      // Tabbing out of a focus-opened menu used to land on <body>, and the next
+      // Tab skipped the menu entirely — so its links were reachable only after
+      // Enter/Space (WCAG 2.1.1, and focus vanishing breaks 2.4.3).
+      //
+      // Cause: the panel is displayed only while
+      // `.nav-item.has-children:has(:focus-visible)` matches. Tab blurs the
+      // trigger before focus reaches the first link, so for that instant nothing
+      // inside the item is :focus-visible, the panel flips to display:none, and
+      // the link the browser was moving to stops being focusable — focus falls
+      // back to <body>.
+      //
+      // CSS cannot bridge that gap (:focus-within would also pin a menu open
+      // after a mouse click, which is why :has(:focus-visible) was chosen). So
+      // commit the open state to the checkbox *before* the browser moves focus:
+      // `.nav-item-toggle:checked ~ .nav-item-content` then holds the panel open
+      // regardless of where focus is mid-transition.
+      // Descendant selectors, not `>`: a nested submenu's control is a
+      // .nav-item-toggle-btn inside .nav-item-split, so a child selector matches
+      // only the top-level triggers and leaves the nested ones dropping focus.
+      // closest() below resolves whichever item actually owns the control.
+      barNav
+        .querySelectorAll(
+          ".nav-item.has-children .nav-item-trigger, .nav-item.has-children .nav-item-toggle-btn"
+        )
+        .forEach((trigger) => {
+          trigger.addEventListener("keydown", (event) => {
+            const e = event as KeyboardEvent;
+
+            if (e.key !== "Tab" || e.shiftKey || e.altKey || e.ctrlKey || e.metaKey) return;
+
+            const item = (trigger as HTMLElement).closest(".nav-item.has-children");
+            const toggle = item?.querySelector(
+              ":scope > .nav-item-toggle"
+            ) as HTMLInputElement | null;
+
+            if (!item || !toggle || toggle.checked) return;
+
+            // Only when the menu is genuinely open on focus. A closed menu must
+            // let Tab move on to the next item, as it does today.
+            let openOnFocus = false;
+
+            try {
+              openOnFocus = item.matches(":has(:focus-visible)");
+            } catch {
+              // :has() unsupported (Firefox ESR 115) — the CSS rule that opens on
+              // focus does not apply either, so there is nothing to hold open.
+              return;
+            }
+            if (!openOnFocus) return;
+
+            toggle.checked = true;
+            updateAriaStates(toggle, true);
+          });
+        });
+
+      // Counterpart to the commit above: once focus has genuinely left the item,
+      // release the checkbox so the menu does not stay pinned open. Read
+      // activeElement on the next frame rather than trusting relatedTarget, which
+      // is null when focus lands on <body> mid-transition.
+      barNav.querySelectorAll(".nav-item.has-children").forEach((item) => {
+        item.addEventListener("focusout", () => {
+          requestAnimationFrame(() => {
+            if (item.contains(document.activeElement)) return;
+
+            let hovered = false;
+            try {
+              hovered = item.matches(":hover");
+            } catch {
+              hovered = false;
+            }
+            // Hover owns the menu while the cursor is on it; closing here would
+            // fight the hover rule.
+            if (hovered) return;
+
+            const toggle = item.querySelector(
+              ":scope > .nav-item-toggle"
+            ) as HTMLInputElement | null;
+
+            if (toggle?.checked) {
+              toggle.checked = false;
+              updateAriaStates(toggle, false);
+            }
+          });
+        });
+      });
+
       // Keep aria-expanded honest for the hover- and focus-opened paths.
       barNav.querySelectorAll(".nav-item.has-children").forEach((item) => {
         ["mouseenter", "mouseleave", "focusin", "focusout"].forEach((evt) => {
