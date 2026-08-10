@@ -75,7 +75,15 @@ const localizedFooter = localizeData(footer, locale);
     <MainNavigation {...localizedNav} />
   </header>
 
-  <main id="main">
+  <!-- tabindex="-1" so the skip link actually moves focus here. Without it the
+       browser sets the hash and scrolls, but document.activeElement stays on
+       <body>: Chrome then moves only the sequential-focus starting point, and
+       some screen readers leave the virtual cursor where it was. Negative, so
+       it is never a Tab stop itself. -->
+  <main
+    id="main"
+    tabindex="-1"
+  >
     {
       sections.length > 0 && (
         <div

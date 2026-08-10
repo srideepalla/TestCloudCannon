@@ -210,10 +210,13 @@ const articleAuthor = entry?.data?.author ?? null;
             </aside>
           )
         }
+        <!-- tabindex="-1" so the skip link moves focus here, not just the scroll
+             position. See the same note in Page.astro. -->
         <main
           id="main"
           slot="second"
           class="collection-content"
+          tabindex="-1"
         >
           {
             pageHeading ? (
