@@ -365,5 +365,77 @@ const ogLocale = DEFAULT_LOCALE.ogLocale;
       src="https://js.hsforms.net/forms/embed/35655.js"
       defer
     ></script>
+    <script>
+      /**
+       * HubSpot injects its form iframes with title="Form" — identical for every
+       * form on the page. Two of them on one page is a WCAG 4.1.2 failure
+       * (axe: frame-title-unique): a screen-reader user listing frames hears
+       * "Form", "Form" with nothing to tell them apart. The homepage embeds two.
+       *
+       * The title cannot be set at build time because the iframe does not exist
+       * until HubSpot's script runs, and it cannot be configured from this repo.
+       * So retitle after injection, using the nearest preceding heading as the
+       * label — that is the text a sighted user associates with the form.
+       *
+       * Only ever rewrites HubSpot's own generic title, so a descriptive title
+       * (theirs or ours) is never clobbered.
+       */
+      const GENERIC = /^(form|hubspot form|)$/i;
+
+      function labelFor(container: Element, index: number): string {
+        const scope =
+          container.closest("section, article, .card, .split, footer") || document.body;
+        const heading = scope.querySelector("h1, h2, h3, h4, h5, h6");
+        const text = (heading?.textContent || "").replace(/\s+/g, " ").trim();
+
+        // Index suffix only when the heading cannot disambiguate on its own.
+        return text ? `${text} — form` : `Form ${index + 1}`;
+      }
+
+      function titleHubSpotFrames(): void {
+        const containers = [...document.querySelectorAll(".hs-form-frame")];
+        const used = new Set<string>();
+
+        containers.forEach((container, i) => {
+          const frame = container.querySelector("iframe");
+
+          if (!frame) return;
+          if (!GENERIC.test((frame.getAttribute("title") || "").trim())) return;
+
+          let label = labelFor(container, i);
+
+          // Two forms under the same heading would still collide.
+          if (used.has(label)) label = `${label} (${i + 1})`;
+          used.add(label);
+
+          frame.setAttribute("title", label);
+        });
+      }
+
+      // The iframe arrives asynchronously, so watch rather than poll. Disconnects
+      // once every container on the page has a titled frame.
+      function watchHubSpotFrames(): void {
+        if (!document.querySelector(".hs-form-frame")) return;
+
+        titleHubSpotFrames();
+
+        const observer = new MutationObserver(() => {
+          titleHubSpotFrames();
+
+          const pending = [...document.querySelectorAll(".hs-form-frame")].some(
+            (c) => !c.querySelector("iframe")
+          );
+
+          if (!pending) observer.disconnect();
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+
+        // Backstop: stop watching after 30s even if a form never loads.
+        setTimeout(() => observer.disconnect(), 30000);
+      }
+
+      watchHubSpotFrames();
+    </script>
   </body>
 </html>
