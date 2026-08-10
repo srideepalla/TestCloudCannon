@@ -13,6 +13,7 @@ description: >-
 pageSections:
   - _component: page-sections/heroes/hero-banner
     heading: Stay Tuned!
+    headingLevel: h1
     text: Entries open for The 2026 American Business Awards® on Oct 7.
     colorScheme: light
     backgroundColor: surface

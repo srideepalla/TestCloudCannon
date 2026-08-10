@@ -4,6 +4,7 @@ description: Simple centered hero with large heading and body text.
 value:
   _component: page-sections/heroes/hero-banner
   heading: "Heading Text"
+  headingLevel: h2
   text: "Description Text"
   colorScheme: inherit
   backgroundColor: surface

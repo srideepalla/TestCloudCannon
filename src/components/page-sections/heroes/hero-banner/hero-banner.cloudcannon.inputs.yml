@@ -2,6 +2,21 @@ heading:
   type: text
   comment: Large centered heading text.
 
+headingLevel:
+  type: select
+  comment: >-
+    Heading level for the banner text. Leave as H2 when the page already has a
+    main heading; choose H1 only when this banner IS the page's main heading,
+    otherwise the page has no H1 for screen readers.
+  options:
+    values:
+      - id: h1
+        name: H1 — this banner is the page's main heading
+      - id: h2
+        name: H2 — a section within the page (default)
+      - id: h3
+        name: H3 — a subsection
+
 text:
   type: markdown
   comment: Body text displayed below the heading.
