@@ -1,0 +1,28 @@
+label: Search Past Winners
+icon: search
+description: Searchable, filterable directory of past Stevie Award winners, with a counted summary panel.
+value:
+  # Must match the kebab path under src/components/ — renderBlock.astro resolves
+  # the component by this exact key.
+  _component: page-sections/features/search-past-winners
+  heading: "Search Past Stevie Award Winners"
+  description: "Search every past winner by company, person, category, country or year."
+  apiEndpoint: ""
+  pageSize: 24
+  showFilters: true
+  showOverview: true
+  initialQuery: ""
+  emptyStateText: "Enter a search above, or browse every record."
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Search Past Winners
+  subtext:
+    - key: heading
+  icon: search
+picker_preview:
+  text: Search Past Winners
+  subtext: Searchable, filterable directory of past Stevie Award winners, with a counted summary panel.
+_inputs_from_glob:
+  - /src/components/page-sections/features/search-past-winners/search-past-winners.cloudcannon.inputs.yml

@@ -1,0 +1,71 @@
+heading:
+  type: text
+  comment: Section heading shown above the search form.
+
+description:
+  type: text
+  comment: Short line of copy explaining what can be searched.
+
+apiEndpoint:
+  type: url
+  comment: >-
+    Base URL of the Search Past Winners API, with no trailing slash (e.g.
+    https://your-tunnel.trycloudflare.com). Leave blank to use the site's
+    PUBLIC_WINNERS_API_ENDPOINT build setting. A quick-tunnel URL changes every
+    time the tunnel restarts, so expect to update this when testing.
+
+pageSize:
+  type: number
+  comment: Records per page. The API caps this at 50.
+  options:
+    min: 1
+    max: 50
+    step: 1
+
+showFilters:
+  type: checkbox
+  comment: >-
+    Show the award level, country, industry and year filters. The dropdown
+    values are read from the live data, so they stay correct as the records grow.
+
+showOverview:
+  type: checkbox
+  comment: >-
+    Show the summary panel above the results — totals, award-level counts and
+    top organizations, counted across every match rather than just this page.
+
+initialQuery:
+  type: text
+  comment: >-
+    Optional search to run on page load. Leave blank to open on the full record
+    list, which is the usual choice for a browsable winners directory.
+
+emptyStateText:
+  type: text
+  comment: Message shown before the first set of results arrives.
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

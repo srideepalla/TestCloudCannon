@@ -1,0 +1,36 @@
+# Lets an editor drop <SearchPastWinners /> straight into MDX body content.
+# The existing winners pages (src/content/awards/2025-sawib-winners.mdx) are
+# hand-authored MDX prose, so a search box is far more likely to be wanted
+# mid-page than as a top-level page section. MDX components are auto-registered
+# by filename in src/pages/[...slug].astro, so no import is needed in the page.
+search_past_winners:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Search Past Winners
+    subtext:
+      - key: heading
+      - Searchable directory of past winners
+    icon: search
+  definitions:
+    component_name: SearchPastWinners
+    named_args:
+      - editor_key: heading
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: description
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: apiEndpoint
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: initialQuery
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/page-sections/features/search-past-winners/search-past-winners.cloudcannon.inputs.yml

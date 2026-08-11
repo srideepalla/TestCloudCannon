@@ -1,0 +1,817 @@
+---
+/**
+ * SearchPastWinners — search the scraped Stevie Awards winner records.
+ *
+ * WHY THE FETCH IS CLIENT-SIDE
+ * This site builds static (no `output: "server"`, no active adapter), so
+ * frontmatter runs once at build time. A frontmatter fetch would bake one set of
+ * results into the HTML and could never respond to what a visitor types. So the
+ * search runs in the browser against the winners API, the same way
+ * EnquiryForm.astro posts to Zendesk from the browser.
+ *
+ * WHY THE ENDPOINT IS A `PUBLIC_` ENV VAR
+ * It is baked into the client bundle and therefore visible to anyone. That is
+ * fine and intended: the API is read-only and unauthenticated by design (see
+ * public_api.py). Never put a token here — there is nowhere private to hide it
+ * in a static build.
+ *
+ * CSS-FIRST, PER THE COMPONENT SKILL
+ * The form is a real <form> with real inputs and a real submit button, so it is
+ * legible and focusable with JavaScript disabled; the results panel simply
+ * stays in its empty state. JS is the enhancement that fills it in.
+ */
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const WINNERS_API_ENDPOINT = "http://127.0.0.1:8010";
+
+const {
+  heading = "Search Past Stevie Award Winners",
+  description = "Search every past winner by company, person, category, country or year.",
+  // Overridable in CloudCannon so an editor can repoint the component at a
+  // tunnel URL without a code change, and by env for per-environment builds.
+  apiEndpoint = "",
+  pageSize = 24,
+  showFilters = true,
+  showOverview = true,
+  initialQuery = "",
+  emptyStateText = "Enter a search above, or browse every record.",
+
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const endpoint = (
+  apiEndpoint ||
+  import.meta.env.PUBLIC_WINNERS_API_ENDPOINT ||
+  WINNERS_API_ENDPOINT
+).replace(/\/+$/, "");
+
+// Clamped: the API caps `limit` at 50, and a request over that is rejected
+// rather than quietly truncated, which would silently break paging.
+const perPage = Math.max(1, Math.min(Number(pageSize) || 24, 50));
+
+const config = {
+  endpoint,
+  perPage,
+  showOverview: !!showOverview,
+  initialQuery: String(initialQuery || ""),
+};
+---
+
+<CustomSection
+  class:list={["search-past-winners", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div
+    class="spw"
+    data-spw
+    data-config={JSON.stringify(config)}
+  >
+    <Heading
+      level="h2"
+      size="lg"
+      text={heading}
+      data-prop="heading"
+    />
+    <Text
+      text={description}
+      data-prop="description"
+    />
+
+    <form
+      class="spw__form"
+      data-spw-form
+      novalidate
+    >
+      <div class="spw__row">
+        <label class="spw__field spw__field--grow">
+          <span class="spw__label">Search</span>
+          <input
+            type="search"
+            name="q"
+            class="spw__input"
+            data-spw-q
+            placeholder="e.g. IBM, customer service team, gold winners in 2024"
+            autocomplete="off"
+          />
+        </label>
+        <button
+          type="submit"
+          class="spw__submit"
+          data-spw-submit
+          >Search</button
+        >
+      </div>
+
+      {
+        showFilters && (
+          <div
+            class="spw__row spw__row--filters"
+            data-spw-filters
+          >
+            <label class="spw__field">
+              <span class="spw__label">Award level</span>
+              <select
+                name="award"
+                class="spw__select"
+                data-spw-filter="award"
+              >
+                <option value="">All levels</option>
+              </select>
+            </label>
+            <label class="spw__field">
+              <span class="spw__label">Country</span>
+              <select
+                name="country"
+                class="spw__select"
+                data-spw-filter="country"
+              >
+                <option value="">All countries</option>
+              </select>
+            </label>
+            <label class="spw__field">
+              <span class="spw__label">Industry</span>
+              <select
+                name="industry"
+                class="spw__select"
+                data-spw-filter="industry"
+              >
+                <option value="">All industries</option>
+              </select>
+            </label>
+            <label class="spw__field spw__field--narrow">
+              <span class="spw__label">Year from</span>
+              <input
+                type="number"
+                name="year_from"
+                class="spw__input"
+                data-spw-filter="year_from"
+                min="1990"
+                max="2100"
+                placeholder="1996"
+              />
+            </label>
+            <label class="spw__field spw__field--narrow">
+              <span class="spw__label">Year to</span>
+              <input
+                type="number"
+                name="year_to"
+                class="spw__input"
+                data-spw-filter="year_to"
+                min="1990"
+                max="2100"
+                placeholder="2026"
+              />
+            </label>
+            <button
+              type="reset"
+              class="spw__reset"
+              data-spw-reset
+            >
+              Clear
+            </button>
+          </div>
+        )
+      }
+    </form>
+
+    <p
+      class="spw__status"
+      data-spw-status
+      role="status"
+      aria-live="polite"
+    >
+      {emptyStateText}
+    </p>
+
+    {
+      showOverview && (
+        <section
+          class="spw__overview"
+          data-spw-overview
+          hidden
+        >
+          <div class="spw__overview-head">
+            <span class="spw__overview-title">Overview</span>
+            <span
+              class="spw__overview-source"
+              data-spw-overview-source
+            />
+          </div>
+          <p
+            class="spw__answer"
+            data-spw-answer
+          />
+          <p
+            class="spw__detail"
+            data-spw-detail
+          />
+          <div
+            class="spw__chips"
+            data-spw-levels
+          />
+          <div
+            class="spw__orgs"
+            data-spw-orgs
+          />
+        </section>
+      )
+    }
+
+    <div
+      class="spw__results"
+      data-spw-results
+    >
+    </div>
+
+    <nav
+      class="spw__pager"
+      data-spw-pager
+      hidden
+      aria-label="Search results pages"
+    >
+      <button
+        type="button"
+        class="spw__page-btn"
+        data-spw-prev
+        >Previous</button
+      >
+      <span
+        class="spw__page-info"
+        data-spw-page-info
+      ></span>
+      <button
+        type="button"
+        class="spw__page-btn"
+        data-spw-next
+        >Next</button
+      >
+    </nav>
+  </div>
+</CustomSection>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  const NS = "[search-past-winners]";
+
+  type Row = {
+    organization_name?: string;
+    nomination_title?: string;
+    category?: string;
+    year?: string;
+    city?: string;
+    country?: string;
+    industry?: string;
+    award?: string;
+  };
+
+  const esc = (value: unknown): string =>
+    String(value ?? "").replace(
+      /[&<>"']/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c
+    );
+
+  const num = (value: unknown): string => Number(value ?? 0).toLocaleString("en-US");
+
+  /** The stored award string is "Gold Stevie® Award"; the chip wants "Gold". */
+  const levelOf = (award: unknown): string => {
+    const text = String(award ?? "");
+    const hit = ["Grand", "Gold", "Silver", "Bronze", "Finalist", "People's Choice"].find((label) =>
+      text.toLowerCase().includes(label.toLowerCase())
+    );
+    return hit || (text.trim() ? "Other" : "");
+  };
+
+  const initSearchPastWinners = () => {
+    const roots = document.querySelectorAll<HTMLElement>("[data-spw]");
+    if (!roots.length) return;
+
+    roots.forEach((root) => {
+      // Astro re-runs module scripts on view transitions; without this a second
+      // set of listeners would fire one request per past navigation.
+      if (root.dataset.spwReady === "true") return;
+      root.dataset.spwReady = "true";
+
+      let config: {
+        endpoint: string;
+        perPage: number;
+        showOverview: boolean;
+        initialQuery: string;
+      };
+      try {
+        config = JSON.parse(root.dataset.config || "{}");
+      } catch (err) {
+        console.error(`${NS} bad config`, err);
+        return;
+      }
+      const { endpoint, perPage, showOverview } = config;
+      if (!endpoint) {
+        console.error(`${NS} no API endpoint configured`);
+        return;
+      }
+
+      const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
+      const form = $<HTMLFormElement>("[data-spw-form]");
+      const qInput = $<HTMLInputElement>("[data-spw-q]");
+      const statusEl = $("[data-spw-status]");
+      const resultsEl = $("[data-spw-results]");
+      const pagerEl = $("[data-spw-pager]");
+      const pageInfoEl = $("[data-spw-page-info]");
+      const prevBtn = $<HTMLButtonElement>("[data-spw-prev]");
+      const nextBtn = $<HTMLButtonElement>("[data-spw-next]");
+      const submitBtn = $<HTMLButtonElement>("[data-spw-submit]");
+      const overviewEl = $("[data-spw-overview]");
+      if (!form || !qInput || !statusEl || !resultsEl) return;
+
+      const filterEls = Array.from(
+        root.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-spw-filter]")
+      );
+
+      let offset = 0;
+      let total = 0;
+      // Only the newest request may paint. Without this, a slow early request
+      // can land after a newer one and repaint the grid with stale rows — the
+      // exact fault this project already hit on its internal search page.
+      let seq = 0;
+
+      const filters = (): Record<string, string> => {
+        const out: Record<string, string> = {};
+        filterEls.forEach((el) => {
+          const key = el.dataset.spwFilter;
+          const value = el.value.trim();
+          if (key && value) out[key] = value;
+        });
+        return out;
+      };
+
+      const url = (path: string, params: Record<string, string | number>) => {
+        const qs = new URLSearchParams();
+        Object.entries(params).forEach(([k, v]) => {
+          if (v !== "" && v !== undefined && v !== null) qs.set(k, String(v));
+        });
+        return `${endpoint}${path}?${qs.toString()}`;
+      };
+
+      const renderRows = (rows: Row[]) => {
+        if (!rows.length) {
+          resultsEl.innerHTML = "";
+          return;
+        }
+        resultsEl.innerHTML = `
+          <table class="spw__table">
+            <thead>
+              <tr>
+                <th scope="col">Organization</th>
+                <th scope="col">Nomination</th>
+                <th scope="col">Category</th>
+                <th scope="col">Award</th>
+                <th scope="col">Year</th>
+                <th scope="col">Location</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map((r) => {
+                  const place = [r.city, r.country].filter(Boolean).join(", ");
+                  const level = levelOf(r.award);
+                  return `<tr>
+                    <td class="spw__cell-org">${esc(r.organization_name)}</td>
+                    <td>${esc(r.nomination_title)}</td>
+                    <td class="spw__cell-muted">${esc(r.category)}</td>
+                    <td>${level ? `<span class="spw__level spw__level--${esc(level.toLowerCase().replace(/[^a-z]+/g, "-"))}">${esc(level)}</span>` : ""}</td>
+                    <td>${esc(r.year)}</td>
+                    <td class="spw__cell-muted">${esc(place)}</td>
+                  </tr>`;
+                })
+                .join("")}
+            </tbody>
+          </table>`;
+      };
+
+      const renderPager = () => {
+        if (!pagerEl || !pageInfoEl || !prevBtn || !nextBtn) return;
+        const pages = Math.max(1, Math.ceil(total / perPage));
+        const page = Math.floor(offset / perPage) + 1;
+        pagerEl.hidden = total <= perPage;
+        pageInfoEl.textContent = `Page ${num(page)} of ${num(pages)}`;
+        prevBtn.disabled = offset <= 0;
+        nextBtn.disabled = offset + perPage >= total;
+      };
+
+      const renderOverview = (data: Record<string, unknown> | null) => {
+        if (!overviewEl) return;
+        if (!data || !data.available || !data.total) {
+          overviewEl.hidden = true;
+          return;
+        }
+        overviewEl.hidden = false;
+
+        const answerEl = $("[data-spw-answer]");
+        const detailEl = $("[data-spw-detail]");
+        const sourceEl = $("[data-spw-overview-source]");
+        const levelsEl = $("[data-spw-levels]");
+        const orgsEl = $("[data-spw-orgs]");
+
+        if (answerEl) answerEl.textContent = String(data.answer ?? "");
+        if (detailEl) detailEl.textContent = String(data.headline ?? "");
+        if (sourceEl) {
+          // Says plainly whether a model wrote the sentence. The NUMBERS are
+          // SQL-counted either way; claiming "not generated" unconditionally
+          // would be false as soon as generated_by is "ai".
+          const byAi = data.generated_by === "ai";
+          const provider = String(data.ai_provider || "ai").toUpperCase();
+          sourceEl.textContent = byAi
+            ? `Counted from all ${num(data.total)} matches · sentence by ${provider}`
+            : `Counted from all ${num(data.total)} matches`;
+        }
+        if (levelsEl) {
+          const levels = (data.levels as { level: string; count: number }[]) || [];
+          levelsEl.innerHTML = levels
+            .map(
+              (l) =>
+                `<span class="spw__chip spw__level--${esc(
+                  String(l.level)
+                    .toLowerCase()
+                    .replace(/[^a-z]+/g, "-")
+                )}">${esc(l.level)} <b>${num(l.count)}</b></span>`
+            )
+            .join("");
+        }
+        if (orgsEl) {
+          const orgs = (data.top_orgs as { name: string; awards: number }[]) || [];
+          orgsEl.innerHTML = orgs.length
+            ? `<span class="spw__orgs-label">Top organizations</span>${orgs
+                .slice(0, 10)
+                .map((o) => `<span class="spw__chip">${esc(o.name)} <b>${num(o.awards)}</b></span>`)
+                .join("")}`
+            : "";
+        }
+      };
+
+      const run = async (nextOffset = 0) => {
+        const mine = ++seq;
+        offset = nextOffset;
+        const q = qInput.value.trim();
+        const params = { q, limit: perPage, offset, ...filters() };
+
+        statusEl.textContent = "Searching…";
+        statusEl.dataset.kind = "";
+        if (submitBtn) submitBtn.disabled = true;
+
+        try {
+          const res = await fetch(url("/v1/search", params));
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return; // superseded by a newer search
+
+          total = Number(data.total || 0);
+          const rows: Row[] = data.results || [];
+          renderRows(rows);
+          renderPager();
+
+          const from = total ? offset + 1 : 0;
+          const to = offset + rows.length;
+          statusEl.textContent = total
+            ? `${num(from)}–${num(to)} of ${num(total)} ${data.browse ? "records" : "results"}`
+            : "No matching records.";
+
+          // Reported honestly: a term the corpus has never seen is dropped
+          // rather than silently ANDed into oblivion, so say which.
+          const ignored = (data.ignored_terms || []) as string[];
+          if (ignored.length) {
+            statusEl.textContent += ` · not found in any record: ${ignored.join(", ")}`;
+          }
+        } catch (err) {
+          if (mine !== seq) return;
+          console.error(`${NS} search failed`, err);
+          statusEl.textContent = "Search is unavailable right now. Please try again.";
+          statusEl.dataset.kind = "error";
+          resultsEl.innerHTML = "";
+          if (pagerEl) pagerEl.hidden = true;
+        } finally {
+          if (mine === seq && submitBtn) submitBtn.disabled = false;
+        }
+
+        if (!showOverview || !overviewEl) return;
+        try {
+          const res = await fetch(url("/v1/overview", { q, ...filters() }));
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return;
+          renderOverview(data);
+        } catch (err) {
+          // The results grid is the product; a failed summary must never look
+          // like a failed search.
+          console.warn(`${NS} overview unavailable`, err);
+          overviewEl.hidden = true;
+        }
+      };
+
+      /** Populate the dropdowns from the real data, so a re-scrape that adds a
+       *  country shows up without a code change. */
+      const loadFacets = async () => {
+        if (!filterEls.length) return;
+        try {
+          const res = await fetch(url("/v1/facets", { limit: 250 }));
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const fill = (key: string, items: { name: string; count: number }[]) => {
+            const sel = filterEls.find(
+              (el) => el.dataset.spwFilter === key && el.tagName === "SELECT"
+            ) as HTMLSelectElement | undefined;
+            if (!sel || !items) return;
+            items.forEach((item) => {
+              if (!item.name) return;
+              const opt = document.createElement("option");
+              opt.value = item.name;
+              opt.textContent = `${item.name} (${num(item.count)})`;
+              sel.appendChild(opt);
+            });
+          };
+          fill("award", data.awards);
+          fill("country", data.countries);
+          fill("industry", data.industries);
+        } catch (err) {
+          // Filters degrade to "All" only; free-text search still works.
+          console.warn(`${NS} facets unavailable`, err);
+        }
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        run(0);
+      });
+      filterEls.forEach((el) => el.addEventListener("change", () => run(0)));
+      form.addEventListener("reset", () => {
+        // The reset lands after this handler, so defer past it.
+        window.setTimeout(() => run(0), 0);
+      });
+      prevBtn?.addEventListener("click", () => run(Math.max(0, offset - perPage)));
+      nextBtn?.addEventListener("click", () => run(offset + perPage));
+
+      qInput.value = config.initialQuery || "";
+      void loadFacets();
+      void run(0); // land on the full record list rather than an empty panel
+    });
+  };
+
+  onPageLoad(initSearchPastWinners);
+</script>
+
+<style is:global>
+  @layer page-sections {
+    .search-past-winners .spw__form {
+      margin-top: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: flex-end;
+    }
+
+    .search-past-winners .spw__row--filters {
+      margin-top: var(--spacing-md);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-border-subtle, var(--color-border));
+    }
+
+    .search-past-winners .spw__field {
+      display: flex;
+      flex: 1 1 12rem;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      min-width: 0;
+    }
+
+    .search-past-winners .spw__field--grow {
+      flex: 4 1 20rem;
+    }
+
+    .search-past-winners .spw__field--narrow {
+      flex: 0 1 7rem;
+    }
+
+    .search-past-winners .spw__label {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .search-past-winners .spw__input,
+    .search-past-winners .spw__select {
+      width: 100%;
+      padding: var(--spacing-sm);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__input:focus-visible,
+    .search-past-winners .spw__select:focus-visible {
+      outline: 2px solid var(--color-focus-ring, var(--color-brand));
+      outline-offset: 2px;
+    }
+
+    .search-past-winners .spw__submit,
+    .search-past-winners .spw__reset,
+    .search-past-winners .spw__page-btn {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--color-brand);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg-brand, var(--color-brand));
+      color: var(--color-text-on-brand, var(--color-text-strong));
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: background-color var(--animation-fast) ease;
+    }
+
+    .search-past-winners .spw__reset,
+    .search-past-winners .spw__page-btn {
+      border-color: var(--color-border);
+      background-color: transparent;
+      color: var(--color-text);
+    }
+
+    .search-past-winners .spw__submit:hover:not(:disabled),
+    .search-past-winners .spw__reset:hover:not(:disabled),
+    .search-past-winners .spw__page-btn:hover:not(:disabled) {
+      background-color: var(--color-state-hover, var(--color-bg-muted));
+    }
+
+    .search-past-winners .spw__submit:disabled,
+    .search-past-winners .spw__page-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .search-past-winners .spw__status {
+      margin-top: var(--spacing-md);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__status[data-kind="error"] {
+      color: var(--color-error, #b3261e);
+    }
+
+    .search-past-winners .spw__overview {
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-lg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg-surface, var(--color-bg-muted));
+    }
+
+    .search-past-winners .spw__overview-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .search-past-winners .spw__overview-title {
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .search-past-winners .spw__overview-source {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+    }
+
+    .search-past-winners .spw__answer {
+      margin-top: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-left: 3px solid var(--color-brand);
+      background-color: var(--color-bg-accent, transparent);
+      color: var(--color-text-strong);
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.4;
+    }
+
+    .search-past-winners .spw__answer:empty,
+    .search-past-winners .spw__detail:empty,
+    .search-past-winners .spw__orgs:empty,
+    .search-past-winners .spw__chips:empty {
+      display: none;
+    }
+
+    .search-past-winners .spw__detail {
+      margin-top: var(--spacing-sm);
+      color: var(--color-text);
+      font-size: var(--font-size-sm);
+      line-height: 1.6;
+    }
+
+    .search-past-winners .spw__chips,
+    .search-past-winners .spw__orgs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      align-items: center;
+      margin-top: var(--spacing-md);
+    }
+
+    .search-past-winners .spw__orgs-label,
+    .search-past-winners .spw__chip {
+      font-size: var(--font-size-xs);
+    }
+
+    .search-past-winners .spw__orgs-label {
+      margin-right: var(--spacing-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .search-past-winners .spw__chip {
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg);
+    }
+
+    .search-past-winners .spw__chip b {
+      font-weight: var(--font-weight-bold);
+    }
+
+    /* Results table leans on the site's global table styles in
+       styles/base/_tables.css; only the overflow guard and cell tone are local. */
+    .search-past-winners .spw__results {
+      overflow-x: auto;
+      margin-top: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__table {
+      width: 100%;
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__cell-org {
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .search-past-winners .spw__cell-muted {
+      color: var(--color-text-muted);
+    }
+
+    .search-past-winners .spw__level {
+      display: inline-block;
+      padding: 2px var(--spacing-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+    }
+
+    .search-past-winners .spw__level--gold {
+      border-color: var(--color-brand);
+      color: var(--color-brand);
+    }
+
+    .search-past-winners .spw__pager {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: center;
+      justify-content: center;
+      margin-top: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__page-info {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    @media (width < 768px) {
+      .search-past-winners .spw__field--narrow {
+        flex: 1 1 6rem;
+      }
+    }
+  }
+</style>
