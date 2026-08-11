@@ -30,7 +30,7 @@ Stevie Award winners and judges are welcome to use artificial intelligence (AI) 
 
 Download a template (in Word format) that you may use to write a press release announcing your achievement. ***Limitations:*** If you issue a press release based on this template, do not alter the paragraphs highlighted in red *if* you choose to use them.
 
-<a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26%20winner%20release%20template.docx" title="Download PR Template" target="_blank" rel="noopener"><strong>2026 Stevie Winner Press Release Template</strong></a>
+<a href="https://blog.stevieawards.com/hubfs/IBA26/IBA26%20Winners%20Circle/IBA26%20Winner%20Release%20Template.docx" title="PR Template" target="_blank" rel="noopener"><strong>2026 Stevie Winner Press Release Template</strong></a>
 
 ---
 
