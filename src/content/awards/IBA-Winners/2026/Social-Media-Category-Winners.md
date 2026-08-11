@@ -12,4 +12,16 @@ pageSections: []
 ---
 These are the Stevie® Award-winning nominations in The 23rd Annual International Business Awards®, which recognizes achievement in the workplace worldwide. The winners were determined by the average scores of more than <a href="https://judges/judging-committees" target="_blank" rel="noopener">300 professionals</a> during two months of judging. Learn about the judging and awards process <a href="https://i/judges/judging-awards-process" target="_blank" rel="noopener">here</a>.
 
-&nbsp;
+##### [**Social Media Categories - Innovation in Social Media Channels**](#Social-Media-Channel)**\|** [**Social Media Categories - Most Innovative Social Media Professionals**](#Social-Media-Professional)
+
+<Anchor id="Social-Media-Channel"/>
+
+###### **Social Media Categories - Innovation in Social Media Channels**
+
+**Most Innovative LinkedIn Page <br />***<u>GOLD STEVIE® WINNER</u><br />*Cisco, San Jose, California, United States: Disrupting the Feed: The WeAreCisco Ecosystem as LinkedIn Innovation<br />**<br />Most Innovative TikTok Channel <br />***<u>GOLD STEVIE® WINNER</u><br />*Viettel Cambodia Pte., Ltd., Phnom Penh, Cambodia: When a Telecom Brand Becomes Cambodia’s TikTok Celebrity<br />**<br />Most Innovative Use of Social Media <br />***<u>GOLD STEVIE® WINNER</u><br />*Strategic Works, Inc., Taguig City, Metro Manila, Philippines: Smashing Benchmarks: How the Digital Engine of the Philippine Women's Open Served a Masterclass in Fan Engagement<br />*<u>BRONZE STEVIE® WINNER</u><br />*Besler, Istanbul, Türkiye: SuperFresh Becoming a Lovemark Through Use of Social Media
+
+<Anchor id="Social-Media-Professional"/>
+
+###### **Social Media Categories - Most Innovative Social Media Professionals**
+
+**Most Innovative Content Creator of the Year <br />***<u>GOLD STEVIE® WINNER</u><br />*Cebuana Lhuillier, Makati City, Metro Manila, Philippines: Jean Henri Lhuillier: Turning Financial Literacy into a Daily Digital Habit<br />**<br />Short-Form Video Creator of the Year <br />***<u>GOLD STEVIE® WINNER</u><br />*XCLAMATION GENERAL CONSULTANCY, OPC, Taguig, Metro Manila, Philippines: Abi Marquez
