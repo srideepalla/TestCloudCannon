@@ -5,4 +5,14 @@
 # markdown paragraph with tangled `**`/`***`/`<br />` sequences; this rewrites
 # them to <strong>/<em><u> HTML so the parser has nothing to misinterpret.
 # See scripts/fix-emphasis.js header for the exact pattern.
+# Guard: fail the build if any .md files sneak into IBA-Winners.
+# CloudCannon's Markdown serializer breaks bold/italic boundaries in .md files;
+# .mdx files use the MDX-aware serializer which handles them correctly.
+md_files=$(find src/content/awards/IBA-Winners -name '*.md' 2>/dev/null)
+if [ -n "$md_files" ]; then
+  echo "ERROR: .md files found in IBA-Winners — these must be .mdx to avoid formatting bugs:"
+  echo "$md_files"
+  exit 1
+fi
+
 node scripts/fix-emphasis.js
