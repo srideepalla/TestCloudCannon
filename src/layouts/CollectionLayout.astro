@@ -352,6 +352,23 @@ const articleAuthor = entry?.data?.author ?? null;
   }
 
   .prose {
+    /* Markdown wraps blank-line-separated content in <p> elements. Do not let
+       the browser's user-agent stylesheet decide their margins: it creates a
+       large, browser-dependent gap between winner categories and award levels.
+       Keep ordinary prose rhythm explicit, and treat a paragraph containing
+       only <strong> as the category label used by the winners pages. */
+    p {
+      margin-block: 0 var(--spacing-md);
+    }
+
+    p:has(> strong:only-child) {
+      margin-block: var(--spacing-lg) var(--spacing-xs);
+    }
+
+    p:first-child {
+      margin-block-start: 0;
+    }
+
     a {
       color: var(--color-link-strong);
       text-decoration: underline;
