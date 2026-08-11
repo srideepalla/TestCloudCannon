@@ -13,7 +13,7 @@ pageSections:
     backgroundImage:
       source: /images/IBA/IBA-Home-5.jpg
       alt: International Business Awards®
-    subheading:
+    subheading: WINNERS ANNOUNCED
     heading: The 23rd Annual International Business Awards®
     description: >-
       The International Business Awards® are the top honors for achievement in
@@ -34,16 +34,16 @@ pageSections:
         uppercase: true
         size: md
       - _component: building-blocks/core-elements/button
-        text: How To Enter
+        text: See the 2026 Winners
         hideText: false
-        link: /enter/how-to-enter
+        link: /awards/iba-winners/2026/stevie-award-winners/
         openInNewTab: false
         iconName: ''
         iconPosition: before
         variant: tertiary
         uppercase: true
         size: md
-    deadlinesHeading: Upcoming Deadlines & Events
+    deadlinesHeading: Upcoming Deadlines &amp; Events
     socialLinks: []
     colorScheme: dark
     backgroundColor: base
