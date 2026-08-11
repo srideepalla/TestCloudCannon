@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Normalize Word-paste emphasis before Astro reads the content.
+# CloudCannon's rich-text editor collapses Word's paragraph runs into a single
+# markdown paragraph with tangled `**`/`***`/`<br />` sequences; this rewrites
+# them to <strong>/<em><u> HTML so the parser has nothing to misinterpret.
+# See scripts/fix-emphasis.js header for the exact pattern.
+node scripts/fix-emphasis.js
