@@ -54,7 +54,128 @@
           "name": "2026 Stevie Award Winners",
           "path": "/awards/iba-winners/2026/stevie-award-winners/",
           "openInNewTab": false,
-          "children": []
+          "children": [
+            {
+              "name": "Achievement Category Winners",
+              "path": "/awards/IBA-Winners/2026/Achievement-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Achievement in Management Category Winners",
+              "path": "/awards/IBA-Winners/2026/Achievement-in-Management-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Achievement in Marketing Category Winners",
+              "path": "/awards/IBA-Winners/2026/Achievement-in-Marketing-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Achievement in Public Relations Category Winners",
+              "path": "/awards/IBA-Winners/2026/Achievement-in-Public-Relations-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "AI Innovation & Transformation Category Winners",
+              "path": "/awards/IBA-Winners/2026/AI-Innovation-Transformation-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "App Category Winners",
+              "path": "/awards/IBA-Winners/2026/App-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Company/Organization Category Winners",
+              "path": "/awards/IBA-Winners/2026/Company-Organization-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Creative Category Winners",
+              "path": "/awards/IBA-Winners/2026/Creative-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Customer Service Category Winners",
+              "path": "/awards/IBA-Winners/2026/Customer-Service-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Entrepreneur Category Winners",
+              "path": "/awards/IBA-Winners/2026/Entrepreneur-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Event Category Winners",
+              "path": "/awards/IBA-Winners/2026/Event-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Human Resources Category Winners",
+              "path": "/awards/IBA-Winners/2026/Human-Resources-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Individual Category Winners",
+              "path": "/awards/IBA-Winners/2026/Individual-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "New Product & Product Management Category Winners",
+              "path": "/awards/IBA-Winners/2026/New-Product-Product-Management-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Podcast Category Winners",
+              "path": "/awards/IBA-Winners/2026/Podcast-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Public Sector & Government Innovation Category Winners",
+              "path": "/awards/IBA-Winners/2026/Public-Sector-Government-Innovation-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Publication Category Winners",
+              "path": "/awards/IBA-Winners/2026/Publication-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Social Media Category Winners",
+              "path": "/awards/IBA-Winners/2026/Social-Media-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Support Category Winners",
+              "path": "/awards/IBA-Winners/2026/Support-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Sustainability Category Winners",
+              "path": "/awards/IBA-Winners/2026/Sustainability-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Technology Category Winners",
+              "path": "/awards/IBA-Winners/2026/Technology-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Thought Leadership Category Winners",
+              "path": "/awards/IBA-Winners/2026/Thought-Leadership-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Video Category Winners",
+              "path": "/awards/IBA-Winners/2026/Video-Category-Winners",
+              "openInNewTab": false
+            },
+            {
+              "name": "Web Achievement Category Winners",
+              "path": "/awards/IBA-Winners/2026/Web-Achievement-Category-Winners",
+              "openInNewTab": false
+            }
+          ]
         },
         {
           "name": "The Stevie® Award Trophy",
