@@ -20,10 +20,66 @@ These are the Stevie® Award-winning nominations in The 23rd Annual Internationa
 
 ##### **Web Achievement Categories - Industry Categories**
 
-**Health Products & Services <br />***<u>GOLD STEVIE® WINNER</u><br />*CeCe Digital T/A My Medical Website, London, England, United Kingdom: My Medical Website: Specialist Web Design for Private Healthcare<br />**<br />Hospitality & Leisure <br />***<u>GOLD STEVIE® WINNER</u><br />*Accor, Paris, France: Accor's New Corporate Website<br />**<br />Insurance <br />***<u>GOLD STEVIE® WINNER</u><br />*MicroHealth, LLC, Vienna, Virginia, United States: Next-Generation Military Healthcare Enrollment: The Atlanta EEE Pilot<br />**<br />Media & Entertainment <br />***<u>GOLD STEVIE® WINNER</u><br />*SME Today, Rugeley, Staffordshire, United Kingdom: SME Today: A Tailored Digital Resource for UK Small and Medium-Sized Businesses<br />**<br />Non-Profit or Government Organizations <br />***<u>GOLD STEVIE® WINNER</u><br />*Cherishers 811 CIC, Rugeley, Staffordshire, United Kingdom: Cherishers 811 CIC: A Clear, Trust-Building Website Where Care Income Funds Free Community Support***<br />***
+<strong>Health Products & Services</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+CeCe Digital T/A My Medical Website, London, England, United Kingdom: My Medical Website: Specialist Web Design for Private Healthcare
+
+<strong>Hospitality & Leisure</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Accor, Paris, France: Accor's New Corporate Website
+
+<strong>Insurance</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+MicroHealth, LLC, Vienna, Virginia, United States: Next-Generation Military Healthcare Enrollment: The Atlanta EEE Pilot
+
+<strong>Media & Entertainment</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+SME Today, Rugeley, Staffordshire, United Kingdom: SME Today: A Tailored Digital Resource for UK Small and Medium-Sized Businesses
+
+<strong>Non-Profit or Government Organizations</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Cherishers 811 CIC, Rugeley, Staffordshire, United Kingdom: Cherishers 811 CIC: A Clear, Trust-Building Website Where Care Income Funds Free Community Support
 
 <Anchor id="Specialty"/>
 
 ##### Web Achievement Categories - Specialty Categories
 
-**Achievement in Community & Membership Experience <br />***<u>GOLD STEVIE® WINNER</u><br />*Valtech, Dubai, United Arab Emirates: INFINITI BEYOND Digital Membership Experience<br />**<br />Achievement in Localization & Multilingual Experience <br />***<u>GOLD STEVIE® WINNER</u><br />*DHL Group, Bonn, Germany: DHL.com<br />**<br />Achievement in the Use of AI <br />***<u>GOLD STEVIE® WINNER</u><br />*Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation<br />**<br />Achievement in User Experience <br />***<u>GOLD STEVIE® WINNER</u><br />*Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation<br />**<br />Achievement in Web Design <br />***<u>GOLD STEVIE® WINNER</u><br />*Valtech, Dubai, United Arab Emirates: Kerzner International: One Design System Across Six Luxury Hotel Brands<br />**<br />Achievement in Web Writing/Content <br />***<u>GOLD STEVIE® WINNER</u><br />*TechArena, Portland, Oregon, United States: TechArena Forum<br />**<br />Technical Achievement of the Year <br />***<u>GOLD STEVIE® WINNER</u><br />*Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation
+<strong>Achievement in Community & Membership Experience</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Valtech, Dubai, United Arab Emirates: INFINITI BEYOND Digital Membership Experience
+
+<strong>Achievement in Localization & Multilingual Experience</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+DHL Group, Bonn, Germany: DHL.com
+
+<strong>Achievement in the Use of AI</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation
+
+<strong>Achievement in User Experience</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation
+
+<strong>Achievement in Web Design</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Valtech, Dubai, United Arab Emirates: Kerzner International: One Design System Across Six Luxury Hotel Brands
+
+<strong>Achievement in Web Writing/Content</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+TechArena, Portland, Oregon, United States: TechArena Forum
+
+<strong>Technical Achievement of the Year</strong>
+
+<em><u>GOLD STEVIE® WINNER</u></em>  
+Tata Consultancy Services (TCS North America), New York City, New York, United States: RunConcierge powered by TCS and Neurun: Setting a new standard for marathon participation
