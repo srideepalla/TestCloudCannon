@@ -201,7 +201,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           : "",
       ].join("");
 
-      answersEl.prepend(block);
+      answersEl.replaceChildren(block);
     }
 
     function renderError(question, message) {
@@ -212,7 +212,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
         `<div class="stevie-chatbot__text">${escapeHtml(message)}</div>`,
       ].join("");
 
-      answersEl.prepend(block);
+      answersEl.replaceChildren(block);
     }
   }
 </script>
@@ -269,7 +269,15 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     font-size: 0.85rem;
     opacity: 0.7;
   }
+</style>
 
+<!--
+  The answer blocks are created by JavaScript after the page loads, so they do
+  not carry Astro's data-astro-cid scope attribute and scoped rules cannot
+  match them. Every rule below is therefore global, and every selector is
+  prefixed with .stevie-chatbot__ so nothing leaks into the rest of the site.
+-->
+<style is:global>
   .stevie-chatbot__answers {
     display: grid;
     gap: 1rem;
