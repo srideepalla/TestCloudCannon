@@ -155,7 +155,7 @@
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 1px;
   margin-top: 2rem;
-  background: var(--line);
+  background: color-mix(in srgb, var(--line), white 45%);
   border: 1px solid var(--line);
   border-radius: var(--pd-radius);
   overflow: hidden;

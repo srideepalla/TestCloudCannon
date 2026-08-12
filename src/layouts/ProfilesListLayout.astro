@@ -104,20 +104,37 @@ const breadcrumbItems = [
                   class="profile-card"
                   link={localizePath(`/profiles/${entry.id}`, Astro.url.pathname)}
                   rounded={true}
+                  border={true}
+                  backgroundColor="surface"
                 >
                   {entry.data.photo?.source && (
-                    <Image
-                      source={entry.data.photo.source}
-                      alt={entry.data.photo.alt || entry.data.name}
-                      aspectRatio="square"
-                    />
+                    <div class="profile-card-media">
+                      <Image
+                        source={entry.data.photo.source}
+                        alt={entry.data.photo.alt || entry.data.name}
+                        aspectRatio="landscape"
+                        rounded={true}
+                      />
+                    </div>
                   )}
-                  <Heading
-                    level="h2"
-                    size="md"
-                    text={entry.data.name}
-                  />
-                  {entry.data.tagline && <Text text={entry.data.tagline} size="sm" />}
+                  <div class="profile-card-body">
+                    <span class="profile-card-type">
+                      {entry.data.type === "person" ? "Person" : "Organization"}
+                    </span>
+                    <Heading
+                      level="h2"
+                      size="md"
+                      text={entry.data.name}
+                      class="profile-card-name"
+                    />
+                    {entry.data.tagline && (
+                      <Text
+                        text={entry.data.tagline}
+                        size="sm"
+                        class="profile-card-tagline"
+                      />
+                    )}
+                  </div>
                 </Card>
               ))
             }
@@ -162,11 +179,47 @@ const breadcrumbItems = [
   .profiles-grid {
     margin-top: var(--spacing-xl);
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--spacing-xl);
   }
 
   .profiles-grid .profile-card {
     margin-top: 0;
+  }
+
+  .profiles-grid .profile-card .card-inner:hover {
+    box-shadow: var(--shadow-md, 0 8px 24px rgba(0, 0, 0, 0.08));
+  }
+
+  .profile-card-media {
+    margin: 0;
+  }
+
+  .profile-card-media .image {
+    margin-top: 0;
+  }
+
+  .profile-card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-lg);
+  }
+
+  .profile-card-type {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .profile-card-name {
+    margin: 0;
+  }
+
+  .profile-card-tagline {
+    color: var(--color-text-muted);
+    margin: 0;
   }
 </style>
