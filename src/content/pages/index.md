@@ -237,7 +237,7 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
-            source: /src/assets/images/winner-announcement.webp
+            source: /src/assets/images/iba-winners.png
             alt: IBA26 Winner Announcement
           title: >-
             Stevie® Awards Announce Winners in The 23rd Annual International
