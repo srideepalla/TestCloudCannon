@@ -130,6 +130,20 @@ const config = {
             data-spw-filters
           >
             <label class="spw__field">
+              <span class="spw__label">Profile type</span>
+              <select
+                name="profile_type"
+                class="spw__select"
+                data-spw-filter="profile_type"
+              >
+                <option value="all">All</option>
+                <option value="org" selected>
+                  Organizations
+                </option>
+                <option value="person">People</option>
+              </select>
+            </label>
+            <label class="spw__field">
               <span class="spw__label">Award level</span>
               <select
                 name="award"
@@ -150,13 +164,13 @@ const config = {
               </select>
             </label>
             <label class="spw__field">
-              <span class="spw__label">Industry</span>
+              <span class="spw__label">Sector</span>
               <select
-                name="industry"
+                name="category"
                 class="spw__select"
-                data-spw-filter="industry"
+                data-spw-filter="category"
               >
-                <option value="">All industries</option>
+                <option value="">All sectors</option>
               </select>
             </label>
             <label class="spw__field spw__field--narrow">
@@ -277,6 +291,53 @@ const config = {
         >Next</button
       >
     </nav>
+
+    <!-- Profile detail overlay. Hidden until a row is clicked; closed by the
+         close button, the scrim, or Escape. Built once in markup rather than
+         injected on demand, so there is a stable element for the script to
+         attach listeners to regardless of how many times results re-render. -->
+    <div
+      class="spw__scrim"
+      data-spw-scrim
+      hidden
+    >
+    </div>
+    <aside
+      class="spw__drawer"
+      data-spw-drawer
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spw-drawer-name"
+    >
+      <div class="spw__drawer-head">
+        <div>
+          <h3
+            class="spw__drawer-name"
+            id="spw-drawer-name"
+            data-spw-drawer-name
+          >
+            —
+          </h3>
+          <p
+            class="spw__drawer-sub"
+            data-spw-drawer-sub
+          />
+        </div>
+        <button
+          type="button"
+          class="spw__drawer-close"
+          data-spw-drawer-close
+          aria-label="Close"
+          >✕</button
+        >
+      </div>
+      <div
+        class="spw__drawer-body"
+        data-spw-drawer-body
+      >
+      </div>
+    </aside>
   </div>
 </CustomSection>
 
@@ -285,15 +346,40 @@ const config = {
 
   const NS = "[search-past-winners]";
 
-  type Row = {
-    organization_name?: string;
-    nomination_title?: string;
-    category?: string;
+  // One row per ORGANIZATION or PERSON (a rolled-up profile), not one row per
+  // award -- so IBM's 894 nominations are one clickable row with a total, the
+  // same shape the dashboard's own Explorer settled on after the same
+  // question came up there ("why are there two different result tables for
+  // one search").
+  type ProfileRow = {
+    profile_key?: string;
+    display_name?: string;
+    profile_type?: "org" | "person";
+    category?: string; // sector (orgs) or role (people)
+    country?: string;
+    city?: string;
+    award_count?: number;
+    gold?: number;
+    silver?: number;
+    bronze?: number;
+    first_year?: string;
+    last_year?: string;
+    programs?: string;
+  };
+
+  type AwardRow = {
     year?: string;
+    award?: string;
+    award_programs?: string;
+    category?: string;
+    category_group?: string;
+    nomination_title?: string;
+    industry?: string;
     city?: string;
     country?: string;
-    industry?: string;
-    award?: string;
+    organization_name?: string;
+    role?: string;
+    org_name?: string;
   };
 
   const esc = (value: unknown): string =>
@@ -369,6 +455,12 @@ const config = {
       const nextBtn = $<HTMLButtonElement>("[data-spw-next]");
       const submitBtn = $<HTMLButtonElement>("[data-spw-submit]");
       const overviewEl = $("[data-spw-overview]");
+      const scrimEl = $("[data-spw-scrim]");
+      const drawerEl = $("[data-spw-drawer]");
+      const drawerNameEl = $("[data-spw-drawer-name]");
+      const drawerSubEl = $("[data-spw-drawer-sub]");
+      const drawerBodyEl = $("[data-spw-drawer-body]");
+      const drawerCloseBtn = $<HTMLButtonElement>("[data-spw-drawer-close]");
       if (!form || !qInput || !statusEl || !resultsEl) return;
 
       const filterEls = Array.from(
@@ -400,35 +492,56 @@ const config = {
         return `${endpoint}${path}?${qs.toString()}`;
       };
 
-      const renderRows = (rows: Row[]) => {
+      /** "2003–2026", or a single year, or "" when neither is known. */
+      const spanOf = (first?: string, last?: string): string =>
+        first && last ? (first === last ? first : `${first}–${last}`) : first || last || "";
+
+      const renderRows = (rows: ProfileRow[]) => {
         if (!rows.length) {
           resultsEl.innerHTML = "";
           return;
         }
+        const showType = (filters().profile_type || "org") === "all";
         resultsEl.innerHTML = `
           <table class="spw__table">
             <thead>
               <tr>
-                <th scope="col">Organization</th>
-                <th scope="col">Nomination</th>
-                <th scope="col">Category</th>
-                <th scope="col">Award</th>
-                <th scope="col">Year</th>
-                <th scope="col">Location</th>
+                <th scope="col">Profile</th>
+                ${showType ? '<th scope="col">Type</th>' : ""}
+                <th scope="col">Sector / role</th>
+                <th scope="col">Country</th>
+                <th scope="col" class="spw__num">Awards</th>
+                <th scope="col">Medals</th>
+                <th scope="col">Span</th>
               </tr>
             </thead>
             <tbody>
               ${rows
                 .map((r) => {
-                  const place = [r.city, r.country].filter(Boolean).join(", ");
-                  const level = levelOf(r.award);
+                  const key = r.profile_key || r.display_name || "";
+                  const ptype = r.profile_type === "person" ? "person" : "org";
+                  const medals = [
+                    r.gold ? `<span class="spw__medal spw__medal--gold">${num(r.gold)}G</span>` : "",
+                    r.silver ? `<span class="spw__medal spw__medal--silver">${num(r.silver)}S</span>` : "",
+                    r.bronze ? `<span class="spw__medal spw__medal--bronze">${num(r.bronze)}B</span>` : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
                   return `<tr>
-                    <td class="spw__cell-org">${esc(r.organization_name)}</td>
-                    <td>${esc(r.nomination_title)}</td>
+                    <td class="spw__cell-org">
+                      <button
+                        type="button"
+                        class="spw__profile-link"
+                        data-profile-type="${esc(ptype)}"
+                        data-profile-key="${esc(key)}"
+                      >${esc(r.display_name || key)}</button>
+                    </td>
+                    ${showType ? `<td><span class="spw__type-badge spw__type-badge--${ptype}">${ptype === "org" ? "Org" : "Person"}</span></td>` : ""}
                     <td class="spw__cell-muted">${esc(r.category)}</td>
-                    <td>${level ? `<span class="spw__level spw__level--${esc(level.toLowerCase().replace(/[^a-z]+/g, "-"))}">${esc(level)}</span>` : ""}</td>
-                    <td>${esc(r.year)}</td>
-                    <td class="spw__cell-muted">${esc(place)}</td>
+                    <td class="spw__cell-muted">${esc(r.country)}</td>
+                    <td class="spw__num">${num(r.award_count)}</td>
+                    <td>${medals}</td>
+                    <td class="spw__cell-muted">${esc(spanOf(r.first_year, r.last_year))}</td>
                   </tr>`;
                 })
                 .join("")}
@@ -486,11 +599,43 @@ const config = {
             .join("");
         }
         if (orgsEl) {
-          const orgs = (data.top_orgs as { name: string; awards: number }[]) || [];
+          type TopOrg = {
+            name: string;
+            awards: number;
+            gold?: number;
+            silver?: number;
+            bronze?: number;
+            first_year?: string;
+            last_year?: string;
+          };
+          const orgs = ((data.top_orgs as TopOrg[]) || []).slice(0, 10);
+          // Proportional to the LEADER within this visible list, not to some
+          // fixed scale -- the same convention the main dashboard's search
+          // page uses, so a bar reads the same way everywhere in the project.
+          const max = orgs.reduce((m, o) => Math.max(m, o.awards || 0), 0);
           orgsEl.innerHTML = orgs.length
             ? `<span class="spw__orgs-label">Top organizations</span>${orgs
-                .slice(0, 10)
-                .map((o) => `<span class="spw__chip">${esc(o.name)} <b>${num(o.awards)}</b></span>`)
+                .map((o) => {
+                  const pct = max ? Math.round(((o.awards || 0) / max) * 100) : 0;
+                  const span = spanOf(o.first_year, o.last_year);
+                  const mix = [
+                    o.gold ? `${num(o.gold)}G` : "",
+                    o.silver ? `${num(o.silver)}S` : "",
+                    o.bronze ? `${num(o.bronze)}B` : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" · ");
+                  return `<div class="spw__org-row">
+                    <div class="spw__org-head">
+                      <span class="spw__org-name">${esc(o.name)}</span>
+                      <span class="spw__org-count">${num(o.awards)}</span>
+                    </div>
+                    <div class="spw__org-meta">
+                      <span class="spw__org-bar"><i style="width:${pct}%"></i></span>
+                      <span class="spw__org-sub">${esc(mix)}${span ? ` · ${esc(span)}` : ""}</span>
+                    </div>
+                  </div>`;
+                })
                 .join("")}`
             : "";
         }
@@ -506,34 +651,34 @@ const config = {
         statusEl.dataset.kind = "";
         if (submitBtn) submitBtn.disabled = true;
 
-        const searchUrl = url("/v1/search", params);
-        log(`fetching search: ${searchUrl}`);
+        // One results table: PROFILES (one row per organization/person), not
+        // one row per award. `q` runs through the same natural-language parser
+        // the search API uses, applied to profiles instead of award rows, so
+        // "which companies from Germany won gold" answers with the companies
+        // themselves rather than their individual nomination records.
+        const searchUrl = url("/v1/profiles", params);
+        log(`fetching profiles: ${searchUrl}`);
 
         try {
           const res = await fetch(searchUrl);
-          log(`search response: HTTP ${res.status}`);
+          log(`profiles response: HTTP ${res.status}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
-          log(`search parsed OK: total=${data.total} rows=${(data.results || []).length}`);
+          if (data.error) throw new Error(data.error);
+          log(`profiles parsed OK: total=${data.total} rows=${(data.results || []).length}`);
           if (mine !== seq) return; // superseded by a newer search
 
           total = Number(data.total || 0);
-          const rows: Row[] = data.results || [];
+          const rows: ProfileRow[] = data.results || [];
           renderRows(rows);
           renderPager();
 
+          const noun = (filters().profile_type || "org") === "person" ? "people" : "profiles";
           const from = total ? offset + 1 : 0;
           const to = offset + rows.length;
           statusEl.textContent = total
-            ? `${num(from)}–${num(to)} of ${num(total)} ${data.browse ? "records" : "results"}`
-            : "No matching records.";
-
-          // Reported honestly: a term the corpus has never seen is dropped
-          // rather than silently ANDed into oblivion, so say which.
-          const ignored = (data.ignored_terms || []) as string[];
-          if (ignored.length) {
-            statusEl.textContent += ` · not found in any record: ${ignored.join(", ")}`;
-          }
+            ? `${num(from)}–${num(to)} of ${num(total)} ${noun}`
+            : `No matching ${noun}.`;
         } catch (err) {
           if (mine !== seq) return;
           // "Failed to fetch" / TypeError with no HTTP status is the classic
@@ -602,13 +747,144 @@ const config = {
           };
           fill("award", data.awards);
           fill("country", data.countries);
-          fill("industry", data.industries);
+          // The curated ~21-value organization taxonomy, not `industries`
+          // (which is `winners.industry` -- 1,175 free-text scrape values,
+          // not a real filter vocabulary). See public_api.py's /v1/facets.
+          fill("category", data.sectors);
         } catch (err) {
           // Filters degrade to "All" only; free-text search still works.
           const detail = err instanceof Error ? err.message : String(err);
           log(`facets unavailable (non-fatal): ${detail}`);
         }
       };
+
+      /** Full profile: rollup stats plus every award in its history. Fetched
+       *  on click rather than bundled into the list response, because a list
+       *  page of 50 profiles would otherwise carry 50 full award histories
+       *  (some organizations have 700+) whether or not any of them get opened. */
+      const openProfile = async (profileType: string, profileKey: string) => {
+        if (!scrimEl || !drawerEl || !drawerNameEl || !drawerBodyEl) return;
+        scrimEl.hidden = false;
+        drawerEl.hidden = false;
+        drawerNameEl.textContent = profileKey;
+        if (drawerSubEl) drawerSubEl.textContent = profileType === "person" ? "Person" : "Organization";
+        drawerBodyEl.innerHTML = `<p class="spw__drawer-loading">Loading profile…</p>`;
+
+        const detailUrl = `${endpoint}/v1/profile/${encodeURIComponent(profileType)}/${encodeURIComponent(profileKey)}`;
+        log(`fetching profile detail: ${detailUrl}`);
+        try {
+          const res = await fetch(detailUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          log(`profile detail parsed OK: awards=${data.award_history_count}`);
+
+          drawerNameEl.textContent = data.display_name || profileKey;
+          const p = data.profile || {};
+          const awards: AwardRow[] = data.awards || [];
+          const tiles = [
+            ["Total awards", num(data.award_count)],
+            ["Gold", num(p.gold)],
+            ["Silver", num(p.silver)],
+            ["Bronze", num(p.bronze)],
+            ["Active", spanOf(p.first_year, p.last_year)],
+          ]
+            .filter(([, v]) => v && v !== "0")
+            .map(([label, value]) => `<div class="spw__tile"><b>${esc(value)}</b><span>${esc(label)}</span></div>`)
+            .join("");
+
+          // Multi-value fields are stored pipe-separated ("Brazil | Germany |
+          // India"); render each as its own chip rather than one long string.
+          const chipRow = (label: string, raw: unknown, limit = 8) => {
+            const items = String(raw ?? "")
+              .split("|")
+              .map((s) => s.trim())
+              .filter(Boolean);
+            if (!items.length) return "";
+            const shown = items.slice(0, limit);
+            const more = items.length > limit ? ` +${items.length - limit}` : "";
+            return `<div class="spw__fact-row">
+              <span class="spw__fact-label">${esc(label)}</span>
+              <span class="spw__fact-chips">${shown.map((v) => `<span class="spw__chip">${esc(v)}</span>`).join("")}${more ? `<span class="spw__chip">${esc(more.trim())}</span>` : ""}</span>
+            </div>`;
+          };
+
+          const facts = profileType === "person"
+            ? chipRow("Roles", p.roles) + chipRow("Organizations", p.orgs) + chipRow("Programs", p.programs) + chipRow("Countries", p.countries)
+            : chipRow("Sector", p.industry_sector, 1) +
+              chipRow("Programs", p.programs) +
+              chipRow("Categories", p.categories, 6) +
+              chipRow("Country", p.country);
+
+          // domain/employee_count/linkedin_url come from an earlier, less
+          // rigorous enrichment pass than the isolated/verified pipeline this
+          // project settled on -- the internal Explorer never presents them as
+          // confirmed, and this drawer shouldn't either. Shown, but labelled.
+          const companyBits = [
+            p.domain ? `<a href="https://${esc(p.domain)}" target="_blank" rel="noopener noreferrer">${esc(p.domain)}</a>` : "",
+            p.employee_count ? `${esc(p.employee_count)} employees` : "",
+            p.linkedin_url ? `<a href="${esc(p.linkedin_url)}" target="_blank" rel="noopener noreferrer">LinkedIn</a>` : "",
+          ].filter(Boolean);
+          const companyInfo = companyBits.length
+            ? `<p class="spw__drawer-note">${companyBits.join(" · ")} <em>(unverified, from an earlier research pass)</em></p>`
+            : "";
+
+          const historyRows = awards
+            .slice(0, 200)
+            .map((a) => {
+              const level = levelOf(a.award);
+              const place = [a.city, a.country].filter(Boolean).join(", ");
+              return `<tr>
+                <td>${esc(a.year)}</td>
+                <td>${level ? `<span class="spw__level spw__level--${esc(level.toLowerCase().replace(/[^a-z]+/g, "-"))}">${esc(level)}</span>` : ""}</td>
+                <td class="spw__cell-muted">${esc(a.category || a.category_group)}</td>
+                <td>${esc(a.nomination_title)}</td>
+                <td class="spw__cell-muted">${esc(place)}</td>
+              </tr>`;
+            })
+            .join("");
+
+          drawerBodyEl.innerHTML = `
+            ${tiles ? `<div class="spw__tiles">${tiles}</div>` : ""}
+            ${facts ? `<div class="spw__facts">${facts}</div>` : ""}
+            ${companyInfo}
+            <h4 class="spw__drawer-heading">Award history</h4>
+            ${
+              awards.length
+                ? `<table class="spw__table spw__table--history">
+                    <thead><tr><th>Year</th><th>Level</th><th>Category</th><th>Nomination</th><th>Location</th></tr></thead>
+                    <tbody>${historyRows}</tbody>
+                  </table>
+                  ${awards.length > 200 ? `<p class="spw__drawer-note">Showing the first 200 of ${num(awards.length)} awards.</p>` : ""}`
+                : `<p class="spw__drawer-note">No award history on file for this profile.</p>`
+            }`;
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`profile detail FAILED: ${detail}`);
+          drawerBodyEl.innerHTML = `<p class="spw__drawer-note">Could not load this profile right now.</p>`;
+        }
+      };
+
+      const closeDrawer = () => {
+        if (scrimEl) scrimEl.hidden = true;
+        if (drawerEl) drawerEl.hidden = true;
+      };
+
+      // Delegated: rows are replaced wholesale on every search/page, so a
+      // listener bound to each button at render time would be discarded along
+      // with it. One listener on the results container outlives every re-render.
+      resultsEl.addEventListener("click", (event) => {
+        const btn = (event.target as HTMLElement)?.closest<HTMLElement>("[data-profile-key]");
+        if (!btn) return;
+        const key = btn.dataset.profileKey;
+        const type = btn.dataset.profileType || "org";
+        if (key) openProfile(type, key);
+      });
+      scrimEl?.addEventListener("click", closeDrawer);
+      drawerCloseBtn?.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && drawerEl && !drawerEl.hidden) closeDrawer();
+      });
 
       form.addEventListener("submit", (event) => {
         event.preventDefault();
@@ -788,12 +1064,20 @@ const config = {
       line-height: 1.6;
     }
 
-    .search-past-winners .spw__chips,
-    .search-past-winners .spw__orgs {
+    .search-past-winners .spw__chips {
       display: flex;
       flex-wrap: wrap;
       gap: var(--spacing-xs);
       align-items: center;
+      margin-top: var(--spacing-md);
+    }
+
+    /* A vertical list, not a chip wrap -- each row carries its own bar, which
+       needs the full row width to be proportional against the leader. */
+    .search-past-winners .spw__orgs {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
       margin-top: var(--spacing-md);
     }
 
@@ -803,7 +1087,7 @@ const config = {
     }
 
     .search-past-winners .spw__orgs-label {
-      margin-right: var(--spacing-xs);
+      margin-bottom: var(--spacing-xs);
       color: var(--color-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -814,6 +1098,67 @@ const config = {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-full);
       background-color: var(--color-bg);
+    }
+
+    /* One organization's bar, same convention as the main dashboard's search
+       page (index.html ovOrgRow): proportional to the leader of THIS visible
+       list, not a fixed scale, so the longest bar is always the top result. */
+    .search-past-winners .spw__org-row + .spw__org-row {
+      padding-top: var(--spacing-sm);
+      border-top: 1px solid var(--color-border-subtle, var(--color-border));
+    }
+
+    .search-past-winners .spw__org-head {
+      display: flex;
+      align-items: baseline;
+      gap: var(--spacing-sm);
+    }
+
+    .search-past-winners .spw__org-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: var(--font-weight-semibold);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__org-count {
+      font-weight: var(--font-weight-bold);
+      font-variant-numeric: tabular-nums;
+      color: var(--color-brand);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__org-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      margin-top: 2px;
+    }
+
+    .search-past-winners .spw__org-bar {
+      flex: 1;
+      display: block;
+      height: 4px;
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg-muted);
+      overflow: hidden;
+    }
+
+    .search-past-winners .spw__org-bar i {
+      display: block;
+      height: 100%;
+      border-radius: var(--radius-full);
+      background-color: var(--color-brand);
+    }
+
+    .search-past-winners .spw__org-sub {
+      flex-shrink: 0;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      white-space: nowrap;
     }
 
     .search-past-winners .spw__chip b {
@@ -887,9 +1232,206 @@ const config = {
       font-size: var(--font-size-sm);
     }
 
+    .search-past-winners .spw__num {
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .search-past-winners .spw__profile-link {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--color-link, var(--color-brand));
+      font: inherit;
+      font-weight: var(--font-weight-semibold);
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .search-past-winners .spw__profile-link:hover {
+      color: var(--color-link-hover, var(--color-brand));
+      text-decoration: underline;
+    }
+
+    .search-past-winners .spw__type-badge {
+      display: inline-block;
+      padding: 2px var(--spacing-sm);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      white-space: nowrap;
+    }
+
+    .search-past-winners .spw__medal {
+      display: inline-block;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      margin-right: 2px;
+    }
+
+    .search-past-winners .spw__medal--gold {
+      color: var(--color-brand);
+    }
+
+    .search-past-winners .spw__medal--silver {
+      color: var(--color-text-muted);
+    }
+
+    .search-past-winners .spw__medal--bronze {
+      color: #b06a3a;
+    }
+
+    /* Detail overlay: a scrim plus a fixed side panel, matching the pattern
+       already established by Modal.astro (Popover-API-driven there; this one
+       is plain fixed-position + hidden attribute, since the content is filled
+       in dynamically per profile rather than known at markup time). */
+    .search-past-winners .spw__scrim {
+      position: fixed;
+      inset: 0;
+      z-index: var(--layer-6, 60);
+      background: var(--color-overlay, rgba(0, 0, 0, 0.45));
+    }
+
+    .search-past-winners .spw__drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: calc(var(--layer-6, 60) + 1);
+      display: flex;
+      flex-direction: column;
+      width: min(32rem, 100vw);
+      background-color: var(--color-bg);
+      border-left: 1px solid var(--color-border);
+      box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+      overflow-y: auto;
+    }
+
+    .search-past-winners .spw__drawer-head {
+      display: flex;
+      gap: var(--spacing-md);
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 0;
+      background-color: var(--color-bg);
+    }
+
+    .search-past-winners .spw__drawer-name {
+      margin: 0;
+      font-size: var(--font-size-heading-xs);
+    }
+
+    .search-past-winners .spw__drawer-sub {
+      margin: var(--spacing-xs) 0 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__drawer-close {
+      border: 1px solid var(--color-border);
+      background: none;
+      border-radius: var(--radius-sm);
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__drawer-body {
+      padding: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__drawer-loading,
+    .search-past-winners .spw__drawer-note {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__tile {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg-surface, var(--color-bg-muted));
+      min-width: 5rem;
+    }
+
+    .search-past-winners .spw__tile b {
+      font-size: var(--font-size-lg);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .search-past-winners .spw__tile span {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .search-past-winners .spw__table--history {
+      font-size: var(--font-size-xs);
+    }
+
+    .search-past-winners .spw__facts {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-lg);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .search-past-winners .spw__fact-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs) var(--spacing-sm);
+      align-items: baseline;
+    }
+
+    .search-past-winners .spw__fact-label {
+      flex: 0 0 6rem;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .search-past-winners .spw__fact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-past-winners .spw__drawer-heading {
+      margin: 0 0 var(--spacing-sm);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--color-text-muted);
+    }
+
     @media (width < 768px) {
       .search-past-winners .spw__field--narrow {
         flex: 1 1 6rem;
+      }
+
+      .search-past-winners .spw__drawer {
+        width: 100vw;
       }
     }
   }
