@@ -83,7 +83,15 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
   <Text alignX="center" text={text} data-prop="text" />
 
-  <form class="stevie-chatbot__form" id="stevie-chatbot-form">
+  <!--
+    Deliberately a div, not a form. CloudCannon's visual editor renders the page
+    in a sandboxed iframe without the 'allow-forms' permission, so the browser
+    blocks submission before any handler runs — "Blocked form submission to ''
+    because the form's frame is sandboxed". A form works on the live site and
+    silently does nothing in the editor, which is where an editor will try it
+    first. A button click and an Enter keypress work in both.
+  -->
+  <div class="stevie-chatbot__form" id="stevie-chatbot-form">
     <label class="stevie-chatbot__label" for="stevie-chatbot-input">Your question</label>
     <div class="stevie-chatbot__row">
       <input
@@ -96,10 +104,10 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
         maxlength="500"
         required
       />
-      <button class="stevie-chatbot__submit" type="submit">{buttonLabel}</button>
+      <button class="stevie-chatbot__submit" type="button">{buttonLabel}</button>
     </div>
     <p class="stevie-chatbot__status" id="stevie-chatbot-status" role="status" aria-live="polite"></p>
-  </form>
+  </div>
 
   <div class="stevie-chatbot__answers" id="stevie-chatbot-answers"></div>
 </CustomSection>
@@ -129,9 +137,15 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char],
       );
 
-    form.addEventListener("submit", async (event) => {
-      event.preventDefault();
+    submitBtn.addEventListener("click", () => ask());
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        ask();
+      }
+    });
 
+    async function ask() {
       const question = input.value.trim();
       if (!question) return;
 
@@ -180,7 +194,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       } finally {
         submitBtn.disabled = false;
       }
-    });
+    }
 
     function renderAnswer(question, data) {
       const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
