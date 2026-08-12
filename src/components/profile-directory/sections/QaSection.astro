@@ -1,0 +1,38 @@
+---
+interface Props {
+  items: {
+    number?: number | string;
+    prompt: string;
+    note?: string;
+    paragraphs: string[];
+    bullets: string[];
+  }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="qa">
+  {
+    items.map((item) => (
+      <div class="qa-item">
+        <div class="qa-head">
+          {item.number !== undefined && <span class="qa-number">{item.number}</span>}
+          <h3 class="qa-prompt">{item.prompt}</h3>
+        </div>
+        {item.note && <span class="qa-count">{item.note}</span>}
+        <div class="qa-body">
+          {item.paragraphs.map((paragraph) => (
+            <p>{paragraph}</p>
+          ))}
+          {item.bullets.length > 0 && (
+            <ul>
+              {item.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,172 @@
+---
+import BreadcrumbBar from "@components/navigation/breadcrumb-bar/BreadcrumbBar.astro";
+import BreadcrumbSchema from "@components/utils/BreadcrumbSchema.astro";
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Card from "@wrappers/card/Card.astro";
+import Footer from "@components/navigation/footer/Footer.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
+import SidebarNavBox from "@components/navigation/side/SidebarNavBox.astro";
+import Split from "@wrappers/split/Split.astro";
+import Text from "@core-elements/text/Text.astro";
+import footerData from "@data/footer.json";
+import mainNavData from "@data/mainNav.json";
+import sidebarNavData from "@data/sidebarNav.json";
+import Layout from "@layouts/BaseLayout.astro";
+import { getCurrentLocale, localizeData, localizePath, localizeText } from "@utils/i18n";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  title: string;
+  description?: string;
+  breadcrumbCurrent?: string;
+  entries: CollectionEntry<"profiles">[];
+}
+
+const { title, description, breadcrumbCurrent, entries } = Astro.props;
+const locale = getCurrentLocale(Astro.url.pathname);
+
+const sidebar = sidebarNavData.profiles;
+const sidebarNavItems = sidebar.links.map((link) => ({
+  name: localizeText(link.text, locale) as string,
+  path: link.href,
+  openInNewTab: link.openInNewTab,
+}));
+
+const siteOrigin = "https://women.stevieawards.com";
+const breadcrumbItems = [
+  { name: "Home", url: `${siteOrigin}/` },
+  { name: "Profiles", url: `${siteOrigin}/profiles` },
+  ...(breadcrumbCurrent ? [{ name: breadcrumbCurrent, url: Astro.url.href }] : []),
+];
+---
+
+<Layout
+  title={title}
+  description={description}
+>
+  <BreadcrumbSchema
+    slot="head"
+    items={breadcrumbItems}
+  />
+
+  <MainNavigation {...localizeData(mainNavData, locale)} />
+
+  <BreadcrumbBar
+    items={[
+      { name: "Home", href: "/" },
+      breadcrumbCurrent ? { name: "Profiles", href: "/profiles" } : { name: "Profiles" },
+      ...(breadcrumbCurrent ? [{ name: breadcrumbCurrent }] : []),
+    ]}
+  />
+
+  <main class="profiles-list-layout">
+    <CustomSection
+      colorScheme="light"
+      backgroundColor="base"
+      maxContentWidth="3xl"
+      paddingHorizontal="xl"
+      paddingVertical="3xl"
+      class="profiles-list-section"
+    >
+      <Split
+        distributionMode="fixed-flexible"
+        fixedWidth={280}
+        minSplitWidth={1024}
+        gap="6xl"
+        class="profiles-list-split"
+      >
+        <aside
+          slot="first"
+          class="collection-sidebar"
+        >
+          <SidebarNavBox
+            heading={sidebar.heading}
+            links={sidebarNavItems}
+          />
+        </aside>
+        <div
+          slot="second"
+          class="profiles-list-content"
+        >
+          <Heading
+            level="h1"
+            size="3xl"
+            text={title}
+            class="profiles-list-title"
+          />
+
+          <div class="profiles-grid">
+            {
+              entries.map((entry) => (
+                <Card
+                  class="profile-card"
+                  link={localizePath(`/profiles/${entry.id}`, Astro.url.pathname)}
+                  rounded={true}
+                >
+                  {entry.data.photo?.source && (
+                    <Image
+                      source={entry.data.photo.source}
+                      alt={entry.data.photo.alt || entry.data.name}
+                      aspectRatio="square"
+                    />
+                  )}
+                  <Heading
+                    level="h2"
+                    size="md"
+                    text={entry.data.name}
+                  />
+                  {entry.data.tagline && <Text text={entry.data.tagline} size="sm" />}
+                </Card>
+              ))
+            }
+          </div>
+        </div>
+      </Split>
+    </CustomSection>
+  </main>
+
+  <Footer {...localizeData(footerData, locale)} />
+</Layout>
+
+<style is:global>
+  .profiles-list-layout {
+    min-height: 60vh;
+  }
+
+  .profiles-list-section .split {
+    margin-top: 0;
+  }
+
+  @media (width < 1024px) {
+    .profiles-list-section .split > .split-inner,
+    .profiles-list-section .split > .split-inner.gap-6xl {
+      gap: var(--spacing-3xl) !important;
+    }
+
+    .profiles-list-content {
+      margin-top: 0;
+    }
+
+    .profiles-list-content > :first-child {
+      margin-top: 0 !important;
+    }
+  }
+
+  .profiles-list-title {
+    font-weight: var(--font-weight-semibold);
+    margin-top: 0;
+  }
+
+  .profiles-grid {
+    margin-top: var(--spacing-xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .profiles-grid .profile-card {
+    margin-top: 0;
+  }
+</style>

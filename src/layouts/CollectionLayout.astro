@@ -2,23 +2,22 @@
 import ArticleSchema from "@components/utils/ArticleSchema.astro";
 import BreadcrumbSchema from "@components/utils/BreadcrumbSchema.astro";
 import CustomSection from "@builders/custom-section/CustomSection.astro";
+import BreadcrumbBar from "@components/navigation/breadcrumb-bar/BreadcrumbBar.astro";
 import Footer from "@components/navigation/footer/Footer.astro";
 import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
-import Side from "@components/navigation/side/Side.astro";
+import SidebarNavBox from "@components/navigation/side/SidebarNavBox.astro";
 import MainComponent from "@components/utils/MainComponent.astro";
 import LocalizedLink from "@components/utils/LocalizedLink.astro";
-import Embed from "@core-elements/embed/Embed.astro";
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
 import footerData from "@data/footer.json";
 import mainNavData from "@data/mainNav.json";
 import seoData from "@data/seo.json";
-import sidebarAdData from "@data/sidebarAd.json";
 import sidebarNavData from "@data/sidebarNav.json";
 import Layout from "@layouts/BaseLayout.astro";
 import Split from "@wrappers/split/Split.astro";
 import { render } from "astro:content";
-import { getCurrentLocale, localizeData, localizeText, localizePath } from "@utils/i18n";
+import { getCurrentLocale, localizeData, localizeText } from "@utils/i18n";
 
 const componentImports = {
   ...import.meta.glob("../components/building-blocks/**/*.astro", { eager: true }),
@@ -58,15 +57,12 @@ const sidebar = (sidebarNavData as Record<string, { heading: string; links: Side
   collection
 ];
 const locale = getCurrentLocale(Astro.url.pathname);
-const sidebarNavItems = sidebar?.links.map((link) => ({ name: localizeText(link.text, locale), path: link.href, openInNewTab: link.openInNewTab })) ?? [];
-const sidebarHeading = localizeText(sidebar?.heading, locale);
-const homeLabel = localizeText("Home", locale);
+const sidebarNavItems = sidebar?.links.map((link) => ({ name: localizeText(link.text, locale) as string, path: link.href, openInNewTab: link.openInNewTab })) ?? [];
+const sidebarHeading = localizeText(sidebar?.heading, locale) as string;
+const homeLabel = localizeText("Home", locale) as string;
 const Content = entry ? (await render(entry)).Content : null;
 const pageSections = entry?.data?.pageSections ?? [];
 const sidebarBlocks = entry?.data?.sidebarBlocks ?? [];
-// Sidebar ad tag, shared across every page with a sidebar. Edit or disable it in
-// src/data/sidebarAd.json rather than per page.
-const sidebarAd = sidebarAdData?.enabled && sidebarAdData?.html ? sidebarAdData : null;
 const pageDescription = description || seoData.description;
 
 const siteOrigin = "https://women.stevieawards.com";
@@ -111,20 +107,15 @@ const articleAuthor = entry?.data?.author ?? null;
 
   <MainNavigation {...localizeData(mainNavData, locale)} />
 
-  <CustomSection
-    colorScheme="dark"
-    backgroundColor="base"
-    maxContentWidth="3xl"
-    paddingHorizontal="xl"
-    paddingVertical="sm"
-    class="breadcrumb-bar"
-  >
-    <a href={localizePath("/", Astro.url.pathname)}>{homeLabel}</a>
-    <span class="breadcrumb-sep">&gt;</span>
-    <a href={localizePath(`/${collection}/${sidebar?.links[0]?.href.split("/").pop()}`, Astro.url.pathname)}>{sidebarHeading}</a>
-    <span class="breadcrumb-sep">&gt;</span>
-    <span class="breadcrumb-current">{title}</span>
-  </CustomSection>
+  <BreadcrumbBar
+    items={[
+      { name: homeLabel, href: "/" },
+      ...(sidebar
+        ? [{ name: sidebarHeading, href: `/${collection}/${sidebar.links[0]?.href.split("/").pop()}` }]
+        : []),
+      { name: title },
+    ]}
+  />
 
   <main class="collection-layout">
     <CustomSection
@@ -148,33 +139,19 @@ const articleAuthor = entry?.data?.author ?? null;
               slot="first"
               class="collection-sidebar"
             >
-              <div
-                class="sidebar-heading"
-                data-theme="dark"
+              <SidebarNavBox
+                heading={sidebar.heading}
+                links={sidebarNavItems}
               >
-                {sidebar.heading}
-              </div>
-              <Side
-                navData={sidebarNavItems}
-                class="collection-sidenav"
-              />
-              <div
-                class="sidebar-blocks"
-                data-editable="component"
-                data-component="utils/main-component"
-                data-prop-sections="sidebarBlocks"
-              >
-                <MainComponent sections={sidebarBlocks} />
-              </div>
-              {sidebarAd && (
-                <div class="sidebar-ad">
-                  <Embed
-                    html={sidebarAd.html}
-                    aspectRatio={sidebarAd.aspectRatio || "square"}
-                    placeholderText="Sidebar ad - visible on the live site"
-                  />
+                <div
+                  class="sidebar-blocks"
+                  data-editable="component"
+                  data-component="utils/main-component"
+                  data-prop-sections="sidebarBlocks"
+                >
+                  <MainComponent sections={sidebarBlocks} />
                 </div>
-              )}
+              </SidebarNavBox>
             </aside>
           )
         }
@@ -253,75 +230,8 @@ const articleAuthor = entry?.data?.author ?? null;
     }
   }
 
-  .breadcrumb-bar a {
-    font-size: var(--font-size-sm);
-    color: var(--color-link-strong);
-    text-decoration: none;
-  }
-
-  .breadcrumb-bar a:hover {
-    text-decoration: underline;
-  }
-
-  .breadcrumb-sep {
-    color: var(--color-link-strong);
-    margin: 0 0.5rem;
-    font-size: var(--font-size-sm);
-  }
-
-  .breadcrumb-current {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-strong);
-  }
-
-  .sidebar-heading {
-    font-family: var(--font-headings), sans-serif;
-    font-weight: var(--font-weight-bold);
-    background-color: var(--color-bg);
-    color: var(--color-text-strong);
-    padding: 0.75rem 1rem;
-    font-size: var(--font-size-md);
-    text-transform: uppercase;
-  }
-
-  .collection-sidenav .nav-item a,
-  .collection-sidenav .nav-item .nav-item-trigger {
-    color: var(--color-text-strong);
-  }
-
-  .collection-sidenav .nav-item a:hover,
-  .collection-sidenav .nav-item a:focus-visible {
-    color: var(--color-brand);
-  }
   .collection-title {
     font-weight: var(--font-weight-semibold);
-    margin-top: 0;
-  }
-
-  .sidebar-blocks {
-    margin-top: -4px;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    align-items: center;
-  }
-
-  /* Unlike .sidebar-blocks, the ad sits detached from the nav box. */
-  .sidebar-ad {
-    margin-top: var(--spacing-lg);
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    align-items: center;
-  }
-
-  .sidebar-blocks .embed-wrapper,
-  .sidebar-ad .embed-wrapper {
-    width: 100%;
-    max-width: 280px;
-  }
-
-  .sidebar-blocks > :global(*) {
     margin-top: 0;
   }
 

@@ -1,0 +1,30 @@
+{
+  "type": "person",
+  "name": "",
+  "headline": "",
+  "eyebrow": "",
+  "tagline": "",
+  "summary": "",
+  "role": "",
+  "affiliation": "",
+  "badge": {
+    "primary": "",
+    "secondary": "",
+    "tertiary": ""
+  },
+  "photo": {
+    "source": "",
+    "alt": ""
+  },
+  "bio": "",
+  "location": "",
+  "email": "",
+  "phone": "",
+  "website": "",
+  "socialLinks": [],
+  "details": [],
+  "tags": [],
+  "sections": [],
+  "description": "",
+  "draft": false
+}

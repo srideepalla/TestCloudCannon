@@ -26,7 +26,8 @@
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "convert:spanish": "node scripts/convert-spanish-pages.js es",
-    "convert:pages": "node scripts/convert-spanish-pages.js"
+    "convert:pages": "node scripts/convert-spanish-pages.js",
+    "add": "node scripts/add-profile.js"
   },
   "dependencies": {
     "@astrojs/compiler-rs": "^0.1.6",

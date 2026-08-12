@@ -1,0 +1,20 @@
+---
+interface Props {
+  paragraphs: string[];
+  bullets: string[];
+}
+const { paragraphs, bullets } = Astro.props;
+---
+
+<div class="prose">
+  {paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+  {
+    bullets.length > 0 && (
+      <ul>
+        {bullets.map((bullet) => (
+          <li>{bullet}</li>
+        ))}
+      </ul>
+    )
+  }
+</div>

@@ -1,0 +1,92 @@
+---
+import Embed from "@core-elements/embed/Embed.astro";
+import Side from "@components/navigation/side/Side.astro";
+import sidebarAdData from "@data/sidebarAd.json";
+
+interface SidebarNavItem {
+  name: string;
+  path: string;
+  openInNewTab?: boolean;
+}
+
+interface Props {
+  heading: string;
+  links: SidebarNavItem[];
+  showAd?: boolean;
+}
+
+const { heading, links, showAd = true } = Astro.props;
+const sidebarAd = showAd && sidebarAdData?.enabled && sidebarAdData?.html ? sidebarAdData : null;
+---
+
+<div
+  class="sidebar-heading"
+  data-theme="dark"
+>
+  {heading}
+</div>
+<Side
+  navData={links}
+  class="collection-sidenav"
+/>
+<slot />
+{
+  sidebarAd && (
+    <div class="sidebar-ad">
+      <Embed
+        html={sidebarAd.html}
+        aspectRatio={sidebarAd.aspectRatio || "square"}
+        placeholderText="Sidebar ad - visible on the live site"
+      />
+    </div>
+  )
+}
+
+<style is:global>
+  .sidebar-heading {
+    font-family: var(--font-headings), sans-serif;
+    font-weight: var(--font-weight-bold);
+    background-color: var(--color-bg);
+    color: var(--color-text-strong);
+    padding: 0.75rem 1rem;
+    font-size: var(--font-size-md);
+    text-transform: uppercase;
+  }
+
+  .collection-sidenav .nav-item a,
+  .collection-sidenav .nav-item .nav-item-trigger {
+    color: var(--color-text-strong);
+  }
+
+  .collection-sidenav .nav-item a:hover,
+  .collection-sidenav .nav-item a:focus-visible {
+    color: var(--color-brand);
+  }
+
+  .sidebar-blocks {
+    margin-top: -4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+
+  /* Unlike .sidebar-blocks, the ad sits detached from the nav box. */
+  .sidebar-ad {
+    margin-top: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    align-items: center;
+  }
+
+  .sidebar-blocks .embed-wrapper,
+  .sidebar-ad .embed-wrapper {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .sidebar-blocks > :global(*) {
+    margin-top: 0;
+  }
+</style>

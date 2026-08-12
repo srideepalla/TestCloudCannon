@@ -1,0 +1,23 @@
+---
+interface Props {
+  items: { quote: string; attribution?: string; source?: string }[];
+}
+const { items } = Astro.props;
+---
+
+<div class="quotes">
+  {
+    items.map((item) => (
+      <figure class="quote">
+        <blockquote>{item.quote}</blockquote>
+        {(item.attribution || item.source) && (
+          <figcaption>
+            {item.attribution}
+            {item.attribution && item.source && <span class="quote-sep"> · </span>}
+            {item.source && <span class="quote-source">{item.source}</span>}
+          </figcaption>
+        )}
+      </figure>
+    ))
+  }
+</div>

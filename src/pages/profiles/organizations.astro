@@ -1,0 +1,17 @@
+---
+import ProfilesListLayout from "@layouts/ProfilesListLayout.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection } from "astro:content";
+
+const entries = await getCollection(
+  "profiles",
+  (entry) => draftFilter(entry) && entry.data.type === "organization",
+);
+---
+
+<ProfilesListLayout
+  title="Organizations"
+  description="Organization profiles."
+  breadcrumbCurrent="Organizations"
+  entries={entries}
+/>

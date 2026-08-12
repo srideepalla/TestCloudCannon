@@ -240,6 +240,109 @@ collections_config:
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
+  profiles:
+    path: src/content/profiles
+    glob:
+      - "**/*.json"
+    icon: person
+    disable_url: false
+    _enabled_editors:
+      - content
+      - data
+    _inputs:
+      type:
+        type: select
+        comment: "Whether this profile describes a person or an organization."
+        options:
+          values:
+            - person
+            - organization
+      name:
+        type: text
+        comment: "Full name of the person, or the organization's name."
+      tagline:
+        type: text
+        comment: "Job title (person) or short descriptor (organization)."
+      bio:
+        type: markdown
+        comment: "Longer biography or company description."
+      location:
+        type: text
+      email:
+        type: text
+      phone:
+        type: text
+      website:
+        type: url
+      socialLinks:
+        type: array
+        comment: "Social media links (platform must match an icon, e.g. linkedin, x, instagram, facebook, github, youtube, tiktok)."
+        options:
+          structures:
+            values:
+              - label: Social Link
+                icon: share
+                value:
+                  platform: ""
+                  url: ""
+                _inputs:
+                  platform:
+                    type: text
+                    comment: "Platform name matching an icon, e.g. linkedin, x, instagram."
+                  url:
+                    type: url
+      details:
+        type: array
+        comment: "Freeform label/value facts shown on the profile (e.g. Founded, Industry)."
+        options:
+          structures:
+            values:
+              - label: Detail
+                icon: list
+                value:
+                  label: ""
+                  value: ""
+                _inputs:
+                  label:
+                    type: text
+                  value:
+                    type: text
+      tags:
+        type: array
+        comment: "Short tags/keywords shown on the profile."
+      description:
+        type: text
+        comment: "SEO description."
+      draft:
+        type: switch
+    add_options:
+      - name: Add New Person
+        icon: person
+        schema: person
+      - name: Add New Organization
+        icon: business
+        schema: organization
+    create:
+      path: "[relative_base_path]/{filename|slugify|lowercase}.json"
+    new_preview_url: /profiles
+    schemas:
+      person:
+        path: .cloudcannon/schemas/profile-person.json
+        reorder_inputs: true
+        hide_extra_inputs: false
+        remove_empty_inputs: false
+        remove_extra_inputs: true
+        name: New Person
+      organization:
+        path: .cloudcannon/schemas/profile-organization.json
+        reorder_inputs: true
+        hide_extra_inputs: false
+        remove_empty_inputs: false
+        remove_extra_inputs: true
+        name: New Organization
+    disable_add: false
+    disable_add_folder: false
+    disable_file_actions: false
   data:
     path: src/data
     glob:

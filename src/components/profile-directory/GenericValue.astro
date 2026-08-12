@@ -1,0 +1,79 @@
+---
+/**
+ * Renders literally any JSON value — used when a section type isn't
+ * registered in SectionRenderer. Recurses into itself for nested
+ * arrays/objects. All casting happens here in the frontmatter, not inline in
+ * the template below — esbuild's Astro compiler misparses generics like
+ * `Record<string, unknown>` written inline in the markup section as JSX.
+ */
+import GenericValue from './GenericValue.astro';
+
+interface Props {
+  value: unknown;
+}
+
+const { value } = Astro.props;
+
+function humanize(key: string): string {
+  const words = key
+    .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+    .replace(/[_-]+/g, ' ')
+    .trim();
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
+
+function displayPrimitive(v: unknown): string {
+  if (v === null || v === undefined || v === '') return '—';
+  if (typeof v === 'boolean') return v ? 'Yes' : 'No';
+  return String(v);
+}
+
+const isPrimitive = (v: unknown) => v === null || typeof v !== 'object';
+
+const isArrayValue = Array.isArray(value);
+const arrayItems: unknown[] = isArrayValue ? (value as unknown[]) : [];
+const isAllPrimitiveArray = isArrayValue && arrayItems.every(isPrimitive);
+
+const isObjectValue = !isArrayValue && typeof value === 'object' && value !== null;
+const objectEntries: [string, unknown][] = isObjectValue ? Object.entries(value as object) : [];
+---
+
+{isPrimitive(value) && <span class="generic-primitive">{displayPrimitive(value)}</span>}
+
+{
+  isAllPrimitiveArray && arrayItems.length > 0 && (
+    <ul class="generic-list">
+      {arrayItems.map((item) => (
+        <li>{displayPrimitive(item)}</li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  isArrayValue && !isAllPrimitiveArray && arrayItems.length > 0 && (
+    <div class="generic-array">
+      {arrayItems.map((item, i) => (
+        <div class="generic-array-item">
+          <span class="generic-array-index">{i + 1}</span>
+          <GenericValue value={item} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
+{
+  isObjectValue && objectEntries.length > 0 && (
+    <dl class="generic-object">
+      {objectEntries.map(([key, v]) => (
+        <div class="generic-object-row">
+          <dt>{humanize(key)}</dt>
+          <dd>
+            <GenericValue value={v} />
+          </dd>
+        </div>
+      ))}
+    </dl>
+  )
+}

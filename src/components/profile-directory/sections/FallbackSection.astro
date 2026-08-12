@@ -1,0 +1,24 @@
+---
+/**
+ * Renders a section whose `type` isn't in SectionRenderer's REGISTRY. Since
+ * profileSectionSchema (content.config.ts) is a strict discriminated union,
+ * this only fires for section types not yet registered here — not malformed
+ * data, which zod would already have rejected at build time.
+ */
+import GenericValue from '../GenericValue.astro';
+
+interface Props {
+  [key: string]: unknown;
+}
+
+const { title, intro, type, ...rest } = Astro.props;
+const hasContent = Object.keys(rest).length > 0;
+---
+
+{
+  hasContent ? (
+    <GenericValue value={rest} />
+  ) : (
+    <p class="fallback-empty">This section has no content to show.</p>
+  )
+}

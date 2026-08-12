@@ -1,0 +1,61 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import { localizePath } from "@utils/i18n";
+
+interface Crumb {
+  name: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+const pathname = Astro.url.pathname;
+---
+
+<CustomSection
+  colorScheme="dark"
+  backgroundColor="base"
+  maxContentWidth="3xl"
+  paddingHorizontal="xl"
+  paddingVertical="sm"
+  class="breadcrumb-bar"
+>
+  {
+    items.map((item, index) => (
+      <>
+        {item.href ? (
+          <a href={localizePath(item.href, pathname)}>{item.name}</a>
+        ) : (
+          <span class="breadcrumb-current">{item.name}</span>
+        )}
+        {index < items.length - 1 && <span class="breadcrumb-sep">&gt;</span>}
+      </>
+    ))
+  }
+</CustomSection>
+
+<style is:global>
+  .breadcrumb-bar a {
+    font-size: var(--font-size-sm);
+    color: var(--color-link-strong);
+    text-decoration: none;
+  }
+
+  .breadcrumb-bar a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb-sep {
+    color: var(--color-link-strong);
+    margin: 0 0.5rem;
+    font-size: var(--font-size-sm);
+  }
+
+  .breadcrumb-current {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-strong);
+  }
+</style>

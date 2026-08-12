@@ -1,0 +1,600 @@
+/* Profile Directory — ported from the standalone Profile Directory CMS.
+   Everything is scoped under .profile-directory so it can't leak onto the
+   rest of the site, and its color/font tokens are mapped onto this site's
+   own theme variables (src/data/theme.json, generated in BaseLayout.astro)
+   instead of carrying a separate palette. Falls back to the CMS's original
+   defaults if a mapped variable is ever missing. */
+
+.profile-directory {
+  --ink: var(--color-text, #1f2937);
+  --ink-soft: var(--gray-6, #4b5563);
+  --ink-faint: var(--color-text-muted, #a16107);
+  --paper: var(--color-bg, #ffffff);
+  --paper-raised: var(--color-bg, #ffffff);
+  --paper-surface: var(--color-bg-surface, #f8f9fa);
+  --line: var(--color-border, #d1d5db);
+  --gold: var(--color-brand, #dfba19);
+  --gold-soft: var(--color-bg-accent, #fff7e0);
+  --gold-deep: var(--color-text-muted, #a16107);
+  --pd-radius: var(--radius-md, 16px);
+  --pd-font-display: var(--font-headings, 'Oswald', 'Arial Narrow', sans-serif);
+  --pd-font-body: var(--font-body, 'Inter', sans-serif);
+  --pd-weight-normal: var(--font-weight-normal, 400);
+  --pd-weight-semibold: var(--font-weight-semibold, 600);
+  --pd-weight-bold: var(--font-weight-bold, 700);
+}
+
+.profile-directory {
+  font-family: var(--pd-font-body);
+  font-size: var(--font-size-md, 17px);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.profile-directory h1,
+.profile-directory h2,
+.profile-directory h3 {
+  font-family: var(--pd-font-display);
+  font-weight: var(--pd-weight-bold);
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.profile-directory p {
+  margin: 0 0 1.1em;
+}
+
+.profile-directory p:last-child {
+  margin-bottom: 0;
+}
+
+.profile-directory a {
+  color: var(--gold-deep);
+}
+
+.profile-directory img {
+  max-width: 100%;
+  height: auto;
+}
+
+.profile-directory .wrap {
+  width: 100%;
+  max-width: 64rem;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+.profile-directory .eyebrow {
+  font-size: var(--font-size-sm, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin: 0 0 0.6rem;
+}
+
+/* ---------- hero ---------- */
+
+.profile-directory .hero {
+  padding: 4.5rem 0 3rem;
+}
+
+.profile-directory .hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.profile-directory .hero h1 {
+  font-size: var(--font-size-heading-3xl, clamp(2.2rem, 5.5vw, 3.4rem));
+  margin-bottom: 0.9rem;
+}
+
+.profile-directory .hero .lede {
+  font-size: var(--font-size-lg, 1.12rem);
+  color: var(--ink-soft);
+  max-width: 42ch;
+}
+
+.profile-directory .hero-summary {
+  margin-top: 0.9rem;
+  color: var(--ink-soft);
+  max-width: 82ch;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.profile-directory .profile-photo {
+  margin-top: 2rem;
+  max-width: 320px;
+}
+
+.profile-directory .badge {
+  display: grid;
+  place-items: center;
+  gap: 0.25rem;
+  width: 148px;
+  padding: 1.1rem 0.75rem;
+  text-align: center;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  aspect-ratio: 1;
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+}
+
+.profile-directory .badge-year {
+  font-family: var(--pd-font-display);
+  font-size: var(--font-size-xl, 1.5rem);
+  font-weight: var(--pd-weight-bold);
+  line-height: 1;
+}
+
+.profile-directory .badge-result {
+  font-size: var(--font-size-sm, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.profile-directory .badge-name {
+  font-size: var(--font-size-xs, 0.66rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ---------- meta table ---------- */
+
+.profile-directory .meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1px;
+  margin-top: 2rem;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--pd-radius);
+  overflow: hidden;
+}
+
+.profile-directory .meta div {
+  background: var(--paper-raised);
+  padding: 1rem 1.15rem;
+}
+
+.profile-directory .meta dt {
+  font-size: var(--font-size-xs, 0.7rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 0.3rem;
+}
+
+.profile-directory .meta dd {
+  margin: 0;
+  font-size: var(--font-size-md, 0.95rem);
+}
+
+.profile-directory .meta-note {
+  font-size: var(--font-size-sm, 0.84rem);
+  color: var(--ink-faint);
+}
+
+/* ---------- sections ---------- */
+
+.profile-directory .section {
+  padding: 3.5rem 0;
+}
+
+.profile-directory .section-title {
+  font-size: var(--font-size-heading-xl, 1.6rem);
+  margin-bottom: 1.75rem;
+}
+
+.profile-directory .section-intro {
+  margin: -0.9rem 0 1.75rem;
+  color: var(--ink-faint);
+  max-width: 62ch;
+}
+
+/* ---------- stats ---------- */
+
+.profile-directory .stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.profile-directory .stat {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--pd-radius);
+  padding: 1.4rem 1.3rem;
+}
+
+.profile-directory .stat-value {
+  font-family: var(--pd-font-display);
+  font-size: var(--font-size-xl, 1.85rem);
+  font-weight: var(--pd-weight-bold);
+  line-height: 1.1;
+  color: var(--gold-deep);
+  margin-bottom: 0.4rem;
+}
+
+.profile-directory .stat-label {
+  font-size: var(--font-size-sm, 0.94rem);
+  font-weight: var(--pd-weight-semibold);
+}
+
+.profile-directory .stat-note {
+  font-size: var(--font-size-xs, 0.84rem);
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+
+/* ---------- Q&A ---------- */
+
+.profile-directory .qa {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.profile-directory .qa-item {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--pd-radius);
+  padding: 1.75rem;
+}
+
+.profile-directory .qa-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.profile-directory .qa-number {
+  font-family: var(--pd-font-display);
+  font-size: var(--font-size-heading-sm, 1.5rem);
+  color: var(--gold);
+  line-height: 1;
+}
+
+.profile-directory .qa-prompt {
+  font-size: var(--font-size-heading-sm, 1.02rem);
+  font-weight: var(--pd-weight-semibold);
+  color: var(--ink);
+}
+
+.profile-directory .qa-count {
+  display: inline-block;
+  font-size: var(--font-size-xs, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  background: var(--gold-soft);
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.profile-directory .qa-body p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.profile-directory .qa-body ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.profile-directory .qa-body li {
+  margin-bottom: 0.45rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* ---------- attachments/links ---------- */
+
+.profile-directory .attachments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.profile-directory .attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--pd-radius);
+  padding: 1rem 1.25rem;
+}
+
+.profile-directory .attachment .tag {
+  font-size: var(--font-size-xs, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.2rem 0.65rem;
+}
+
+/* ---------- chips & tags ---------- */
+
+.profile-directory .chip {
+  flex-shrink: 0;
+  font-size: var(--font-size-xs, 0.66rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  background: var(--gold-soft);
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+}
+
+.profile-directory .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+}
+
+.profile-directory .count {
+  font-family: var(--pd-font-body);
+  font-size: var(--font-size-sm, 0.8rem);
+  font-weight: var(--pd-weight-bold);
+  color: var(--ink-faint);
+  vertical-align: middle;
+}
+
+/* ---------- prose ---------- */
+
+.profile-directory .prose {
+  max-width: 85ch;
+}
+
+.profile-directory .prose p {
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+.profile-directory .prose ul {
+  margin: 0.75rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.profile-directory .prose li {
+  margin-bottom: 0.45rem;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+/* ---------- timeline ---------- */
+
+.profile-directory .timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 1.75rem;
+  border-left: 2px solid var(--line);
+  display: grid;
+  gap: 2rem;
+}
+
+.profile-directory .timeline-item {
+  position: relative;
+}
+
+.profile-directory .timeline-item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1.75rem - 6px);
+  top: 0.45rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--paper);
+}
+
+.profile-directory .timeline-date {
+  font-size: var(--font-size-xs, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+  margin-bottom: 0.25rem;
+}
+
+.profile-directory .timeline-title {
+  font-size: var(--font-size-heading-xs, 1.15rem);
+  margin-bottom: 0.3rem;
+}
+
+.profile-directory .timeline-body {
+  color: var(--ink-soft);
+  font-size: var(--font-size-md, 0.95rem);
+  max-width: 60ch;
+}
+
+/* ---------- quotes ---------- */
+
+.profile-directory .quotes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+.profile-directory .quote {
+  margin: 0;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--pd-radius);
+  padding: 1.6rem;
+}
+
+.profile-directory .quote blockquote {
+  margin: 0 0 0.9rem;
+  font-family: var(--pd-font-display);
+  font-size: var(--font-size-heading-xs, 1.1rem);
+  line-height: 1.45;
+}
+
+.profile-directory .quote blockquote::before {
+  content: '\201C';
+  color: var(--gold);
+  margin-right: 0.1em;
+}
+
+.profile-directory .quote blockquote::after {
+  content: '\201D';
+  color: var(--gold);
+}
+
+.profile-directory .quote figcaption {
+  font-size: var(--font-size-sm, 0.85rem);
+  font-weight: var(--pd-weight-semibold);
+  color: var(--ink-soft);
+}
+
+.profile-directory .quote-source {
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+/* ---------- generic fallback rendering ---------- */
+
+.profile-directory .fallback-empty {
+  color: var(--ink-faint);
+  font-style: italic;
+}
+
+.profile-directory .generic-primitive {
+  color: var(--ink);
+}
+
+.profile-directory .generic-list {
+  margin: 0.25rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.profile-directory .generic-list li {
+  margin-bottom: 0.35rem;
+}
+
+.profile-directory .generic-array {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.profile-directory .generic-array-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--pd-radius);
+  background: var(--paper-raised);
+}
+
+.profile-directory .generic-array-index {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: var(--gold-soft);
+  color: var(--gold-deep);
+  font-size: var(--font-size-xs, 0.72rem);
+  font-weight: var(--pd-weight-bold);
+}
+
+.profile-directory .generic-object {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.profile-directory .generic-object-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+}
+
+.profile-directory .generic-object-row dt {
+  font-size: var(--font-size-xs, 0.78rem);
+  font-weight: var(--pd-weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.profile-directory .generic-object-row dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+@media (max-width: 640px) {
+  .profile-directory .generic-object-row {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-directory .hero {
+    padding-top: 3rem;
+  }
+
+  .profile-directory .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-directory .qa-item {
+    padding: 1.25rem;
+  }
+}
+
+/* ---------- contact / social (TestCloudCannon-specific profile fields) ---------- */
+
+.profile-directory .profile-contact,
+.profile-directory .profile-socials {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 1rem 0 0;
+  padding: 0;
+  gap: 1rem;
+}
+
+.profile-directory .profile-contact a {
+  font-size: var(--font-size-sm, 0.9rem);
+}
+
+.profile-directory .profile-location {
+  margin-top: 0.4rem;
+  font-size: var(--font-size-sm, 0.9rem);
+  color: var(--ink-soft);
+}

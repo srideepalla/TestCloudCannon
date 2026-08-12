@@ -1,0 +1,22 @@
+---
+import ProfileLayout from "@layouts/ProfileLayout.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("profiles", draftFilter);
+
+  return entries.map((entry: CollectionEntry<"profiles">) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"profiles">;
+}
+
+const { entry } = Astro.props;
+---
+
+<ProfileLayout entry={entry} />

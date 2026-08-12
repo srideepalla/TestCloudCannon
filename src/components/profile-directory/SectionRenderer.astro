@@ -1,0 +1,57 @@
+---
+/**
+ * Walks a profile's `sections` array and draws each one. Ported from the
+ * standalone Profile Directory CMS (see its README, "Embedding on another
+ * site" / theming) — ties into this site's own colors via
+ * @styles/profile-directory.css rather than a separate palette.
+ *
+ * Unlike the standalone CMS, `type` alone decides the component: TestCloudCannon's
+ * profileSectionSchema (content.config.ts) is a strict zod discriminated union,
+ * so anything reaching this renderer already has a valid shape for its type —
+ * there's no need for the CMS's extra "well-formed vs. just labelled" __kind check.
+ *
+ * To support a new section type: add it to profileSectionSchema in
+ * content.config.ts, then register it below.
+ */
+import StatsSection from './sections/StatsSection.astro';
+import QaSection from './sections/QaSection.astro';
+import ProseSection from './sections/ProseSection.astro';
+import TimelineSection from './sections/TimelineSection.astro';
+import QuotesSection from './sections/QuotesSection.astro';
+import LinksSection from './sections/LinksSection.astro';
+import DetailsSection from './sections/DetailsSection.astro';
+import FallbackSection from './sections/FallbackSection.astro';
+
+const REGISTRY: Record<string, any> = {
+  stats: StatsSection,
+  qa: QaSection,
+  prose: ProseSection,
+  timeline: TimelineSection,
+  quotes: QuotesSection,
+  links: LinksSection,
+  details: DetailsSection,
+};
+
+interface Props {
+  sections: any[];
+}
+
+const { sections } = Astro.props;
+---
+
+{
+  sections.map((section) => {
+    const { type, title, intro, ...props } = section;
+    const Component = REGISTRY[type] ?? FallbackSection;
+
+    return (
+      <section class="section" data-section={type ?? 'fallback'}>
+        <div class="wrap">
+          {title && <h2 class="section-title">{title}</h2>}
+          {intro && <p class="section-intro">{intro}</p>}
+          <Component {...props} />
+        </div>
+      </section>
+    );
+  })
+}

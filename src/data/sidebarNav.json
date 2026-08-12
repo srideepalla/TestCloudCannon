@@ -124,6 +124,26 @@
       }
     ]
   },
+  "profiles": {
+    "heading": "Profiles",
+    "links": [
+      {
+        "text": "All Profiles",
+        "href": "/profiles",
+        "openInNewTab": false
+      },
+      {
+        "text": "People",
+        "href": "/profiles/people",
+        "openInNewTab": false
+      },
+      {
+        "text": "Organizations",
+        "href": "/profiles/organizations",
+        "openInNewTab": false
+      }
+    ]
+  },
   "press": {
     "heading": "Press",
     "links": [

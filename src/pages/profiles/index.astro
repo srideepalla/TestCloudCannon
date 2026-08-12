@@ -1,0 +1,13 @@
+---
+import ProfilesListLayout from "@layouts/ProfilesListLayout.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection } from "astro:content";
+
+const entries = await getCollection("profiles", draftFilter);
+---
+
+<ProfilesListLayout
+  title="Profiles"
+  description="Person and organization profiles."
+  entries={entries}
+/>

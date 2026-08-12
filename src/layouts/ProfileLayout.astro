@@ -1,0 +1,266 @@
+---
+/**
+ * Renders every profile through the Profile Directory CMS's own rendering
+ * layer (SectionRenderer + section components + profile-directory.css)
+ * instead of this site's Heading/Text/Button/Split building blocks. Colors
+ * and fonts still come from this site's own theme — see the variable
+ * mapping at the top of profile-directory.css — so the visuals track
+ * whatever this site's theme.json says, they just use the CMS's own layout
+ * and CSS classes to get there.
+ */
+import BreadcrumbBar from "@components/navigation/breadcrumb-bar/BreadcrumbBar.astro";
+import BreadcrumbSchema from "@components/utils/BreadcrumbSchema.astro";
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Footer from "@components/navigation/footer/Footer.astro";
+import Image from "@core-elements/image/Image.astro";
+import MainNavigation from "@components/navigation/main-nav/MainNav.astro";
+import SectionRenderer from "@components/profile-directory/SectionRenderer.astro";
+import SidebarNavBox from "@components/navigation/side/SidebarNavBox.astro";
+import Split from "@wrappers/split/Split.astro";
+import footerData from "@data/footer.json";
+import mainNavData from "@data/mainNav.json";
+import seoData from "@data/seo.json";
+import sidebarNavData from "@data/sidebarNav.json";
+import Layout from "@layouts/BaseLayout.astro";
+import "@styles/profile-directory.css";
+import { getCurrentLocale, localizeData, localizeText } from "@utils/i18n";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  entry: CollectionEntry<"profiles">;
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const isPerson = data.type === "person";
+
+const locale = getCurrentLocale(Astro.url.pathname);
+const pageDescription =
+  data.description || data.summary || data.bio || data.tagline || seoData.description;
+
+const sidebar = sidebarNavData.profiles;
+const sidebarNavItems = sidebar.links.map((link) => ({
+  name: localizeText(link.text, locale) as string,
+  path: link.href,
+  openInNewTab: link.openInNewTab,
+}));
+
+const subtitle = data.tagline || [data.role, data.affiliation].filter(Boolean).join(", ");
+const hasBadge = data.badge?.primary || data.badge?.secondary || data.badge?.tertiary;
+
+const siteOrigin = "https://women.stevieawards.com";
+const breadcrumbItems = [
+  { name: "Home", url: `${siteOrigin}/` },
+  { name: "Profiles", url: `${siteOrigin}/profiles` },
+  { name: data.name, url: Astro.url.href },
+];
+
+const contactLinks = [
+  data.email ? { label: data.email, href: `mailto:${data.email}` } : null,
+  data.phone ? { label: data.phone, href: `tel:${data.phone.replace(/[^+\d]/g, "")}` } : null,
+  data.website ? { label: data.website.replace(/^https?:\/\//, ""), href: data.website } : null,
+].filter((link): link is { label: string; href: string } => link !== null);
+
+const profileStructuredData: Record<string, any> = {
+  "@context": "https://schema.org",
+  "@type": isPerson ? "Person" : "Organization",
+  name: data.name,
+};
+
+if (isPerson && (data.role || data.tagline)) profileStructuredData.jobTitle = data.role || data.tagline;
+if (data.summary || data.bio) profileStructuredData.description = data.summary || data.bio;
+if (data.website) profileStructuredData.url = data.website;
+if (data.email) profileStructuredData.email = data.email;
+if (data.phone) profileStructuredData.telephone = data.phone;
+if (data.photo?.source) profileStructuredData.image = data.photo.source;
+---
+
+<Layout
+  title={data.name}
+  description={pageDescription}
+  image={data.image || data.photo?.source}
+>
+  <BreadcrumbSchema
+    slot="head"
+    items={breadcrumbItems}
+  />
+  <script
+    type="application/ld+json"
+    slot="head"
+    set:html={JSON.stringify(profileStructuredData)}
+  />
+
+  <MainNavigation {...localizeData(mainNavData, locale)} />
+
+  <BreadcrumbBar
+    items={[{ name: "Home", href: "/" }, { name: "Profiles", href: "/profiles" }, { name: data.name }]}
+  />
+
+  <main class="profile-detail-layout">
+    <CustomSection
+      colorScheme="light"
+      backgroundColor="base"
+      maxContentWidth="3xl"
+      paddingHorizontal="xl"
+      paddingVertical="lg"
+      class="profile-detail-section"
+    >
+      <Split
+        distributionMode="fixed-flexible"
+        fixedWidth={280}
+        minSplitWidth={1024}
+        gap="6xl"
+        class="profile-detail-split"
+      >
+        <aside
+          slot="first"
+          class="collection-sidebar"
+        >
+          <SidebarNavBox
+            heading={sidebar.heading}
+            links={sidebarNavItems}
+          />
+        </aside>
+        <div slot="second">
+  <article
+    class="profile-directory profile-directory--with-sidebar"
+    data-theme="light"
+  >
+    <section class="hero">
+      <div class="wrap">
+        {data.eyebrow && <p class="eyebrow">{data.eyebrow}</p>}
+        <div class="hero-grid">
+          <div>
+            <h1>{data.headline ?? data.name}</h1>
+            {subtitle && <p class="lede">{subtitle}</p>}
+            {data.summary && <p class="hero-summary">{data.summary}</p>}
+          </div>
+          {
+            hasBadge && (
+              <div class="badge">
+                {data.badge?.primary && <span class="badge-year">{data.badge.primary}</span>}
+                {data.badge?.secondary && <span class="badge-result">{data.badge.secondary}</span>}
+                {data.badge?.tertiary && <span class="badge-name">{data.badge.tertiary}</span>}
+              </div>
+            )
+          }
+        </div>
+
+        {
+          data.photo?.source && (
+            <Image
+              source={data.photo.source}
+              alt={data.photo.alt || data.name}
+              aspectRatio={isPerson ? "portrait" : "landscape"}
+              rounded={true}
+              class="profile-photo"
+            />
+          )
+        }
+
+        {
+          data.location && <p class="profile-location">{data.location}</p>
+        }
+
+        {
+          contactLinks.length > 0 && (
+            <ul class="profile-contact">
+              {contactLinks.map((link) => (
+                <li>
+                  <a href={link.href}>{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          data.socialLinks.length > 0 && (
+            <ul class="profile-socials">
+              {data.socialLinks.map((social) => (
+                <li>
+                  <a
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {social.platform}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          data.tags.length > 0 && (
+            <ul class="tags">
+              {data.tags.map((tag) => (
+                <li class="chip">{tag}</li>
+              ))}
+            </ul>
+          )
+        }
+
+        {
+          data.details.length > 0 && (
+            <dl class="meta">
+              {data.details.map((detail) => (
+                <div>
+                  <dt>{detail.label}</dt>
+                  <dd>{detail.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </div>
+    </section>
+
+    {
+      data.bio && (
+        <section
+          class="section"
+          data-section="bio"
+        >
+          <div class="wrap prose">
+            <p>{data.bio}</p>
+          </div>
+        </section>
+      )
+    }
+
+    <SectionRenderer sections={data.sections} />
+  </article>
+        </div>
+      </Split>
+    </CustomSection>
+  </main>
+
+  <Footer {...localizeData(footerData, locale)} />
+</Layout>
+
+<style is:global>
+  .profile-detail-section .split {
+    margin-top: 0;
+  }
+
+  @media (width < 1024px) {
+    .profile-detail-section .split > .split-inner,
+    .profile-detail-section .split > .split-inner.gap-6xl {
+      gap: var(--spacing-3xl) !important;
+    }
+  }
+
+  /* The sidebar layout's CustomSection already provides horizontal padding
+     and vertical spacing, so the profile-directory CSS's own .wrap
+     max-width/padding (built for a full-bleed page) would double up here. */
+  .profile-directory--with-sidebar .wrap {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  .profile-directory--with-sidebar .hero {
+    padding-top: 0;
+  }
+</style>
