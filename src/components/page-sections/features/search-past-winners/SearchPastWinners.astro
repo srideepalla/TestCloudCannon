@@ -328,9 +328,9 @@ const config = {
           type="button"
           class="spw__drawer-close"
           data-spw-drawer-close
-          aria-label="Close"
-          >✕</button
         >
+          Close
+        </button>
       </div>
       <div
         class="spw__drawer-body"
@@ -783,8 +783,17 @@ const config = {
        *  on click rather than bundled into the list response, because a list
        *  page of 50 profiles would otherwise carry 50 full award histories
        *  (some organizations have 700+) whether or not any of them get opened. */
+      // Measured fresh on every open rather than cached: the nav's height can
+      // change between opens (responsive breakpoint, promo banner, etc.), and
+      // there's no --header-height design token to read instead.
+      const getNavOffset = () => {
+        const nav = document.querySelector<HTMLElement>(".main-nav");
+        return nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+      };
+
       const openProfile = async (profileType: string, profileKey: string) => {
         if (!scrimEl || !drawerEl || !drawerNameEl || !drawerBodyEl) return;
+        drawerEl.style.setProperty("--spw-nav-offset", `${getNavOffset()}px`);
         scrimEl.hidden = false;
         drawerEl.hidden = false;
         drawerNameEl.textContent = profileKey;
@@ -1318,22 +1327,46 @@ const config = {
        already established by Modal.astro (Popover-API-driven there; this one
        is plain fixed-position + hidden attribute, since the content is filled
        in dynamically per profile rather than known at markup time). */
+    /* --layer-6 (60) lost to the site's own sticky main nav in practice, even
+       though the nav's own rule asks for only --layer-2 (20) -- confirmed
+       live: the drawer's close button rendered underneath the nav bar,
+       invisible and unclickable. Sticky/fixed elements compare z-index within
+       whatever stacking context they end up in, not always as one flat list
+       against every other z-index on the page, so a numerically-larger value
+       is not a guarantee once a component is dropped into someone else's
+       page. --layer-8 ("critical UI elements", 1000) is deliberately the
+       highest tier the design tokens define, to make this win outright rather
+       than needing to reason about the surrounding page's stacking contexts. */
     .search-past-winners .spw__scrim {
       position: fixed;
       inset: 0;
-      z-index: var(--layer-6, 60);
+      z-index: calc(var(--layer-8, 1000) - 1);
       background: var(--color-overlay, rgba(0, 0, 0, 0.45));
     }
 
     .search-past-winners .spw__drawer {
       position: fixed;
-      top: 0;
+      /* --layer-8 still isn't enough on its own: the site's sticky main nav
+         (position: sticky, --layer-2) visually paints over a position:fixed
+         descendant regardless of the fixed element's own (much higher)
+         z-index -- confirmed live via elementFromPoint(), which kept
+         returning the nav's own .outer-content instead of this drawer's
+         close button. Stacking-context rules don't guarantee a numeric
+         z-index win across that fixed-vs-sticky boundary, so this is a
+         geometric fix instead: start the drawer below the nav's actual
+         rendered height (set as --spw-nav-offset by the script on open),
+         so the close button never spatially overlaps the nav at all. */
+      top: var(--spw-nav-offset, 0px);
       right: 0;
       bottom: 0;
-      z-index: calc(var(--layer-6, 60) + 1);
+      z-index: var(--layer-8, 1000);
       display: flex;
       flex-direction: column;
-      width: min(32rem, 100vw);
+      /* Wide enough that the award-history table (Year/Level/Category/
+         Nomination/Location) has real room -- at the previous 32rem cap the
+         Year column had so little space the browser wrapped "Year" one
+         letter per line rather than shrink further. */
+      width: min(56rem, 92vw);
       background-color: var(--color-bg);
       border-left: 1px solid var(--color-border);
       box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
@@ -1382,10 +1415,17 @@ const config = {
       border: 1px solid var(--color-border);
       background: none;
       border-radius: var(--radius-sm);
-      width: 2rem;
-      height: 2rem;
+      padding: var(--spacing-xs) var(--spacing-md);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
       cursor: pointer;
       flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__drawer-close:hover {
+      background-color: var(--color-state-hover, var(--color-bg-muted));
     }
 
     .search-past-winners .spw__drawer-body {
@@ -1430,6 +1470,22 @@ const config = {
 
     .search-past-winners .spw__table--history {
       font-size: var(--font-size-xs);
+    }
+
+    /* Year and Level are always short ("2025", "Gold") -- without this the
+       table's auto column-width algorithm still tried to shrink them to fit
+       the wider Category/Nomination columns, wrapping "Year" one letter per
+       line rather than giving those columns the room the content needs. */
+    .search-past-winners .spw__table--history th:nth-child(1),
+    .search-past-winners .spw__table--history td:nth-child(1) {
+      white-space: nowrap;
+      width: 4rem;
+    }
+
+    .search-past-winners .spw__table--history th:nth-child(2),
+    .search-past-winners .spw__table--history td:nth-child(2) {
+      white-space: nowrap;
+      width: 5rem;
     }
 
     .search-past-winners .spw__facts {
