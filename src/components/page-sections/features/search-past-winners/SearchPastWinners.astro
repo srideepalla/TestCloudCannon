@@ -1340,6 +1340,21 @@ const config = {
       overflow-y: auto;
     }
 
+    /* The `hidden` attribute is what the script actually toggles, but this
+       class's own `display: flex` above has higher specificity than the
+       browser's default `[hidden] { display: none }` rule, so it was WINNING
+       -- confirmed live: the drawer rendered at all times, full page height,
+       fixed over the right side of the content, background matching the page
+       (so nearly invisible) with only its left border and shadow showing.
+       That is exactly the "vertical line down the whole screen, with content
+       cut off beside it" symptom: not a text-wrapping bug, a permanently
+       open, mostly-invisible panel sitting on top of real content. This rule
+       has to win regardless of source order, hence the repeated class plus
+       the attribute selector for the extra specificity. */
+    .search-past-winners .spw__drawer[hidden] {
+      display: none;
+    }
+
     .search-past-winners .spw__drawer-head {
       display: flex;
       gap: var(--spacing-md);
