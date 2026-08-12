@@ -35,6 +35,13 @@ pageSections:
       Business Awards®
     headingLevel: h2
     text: >-
+      &nbsp;
+
+
+      <p><img src="/uploads/iba-webinar.png" loading="lazy"
+      class="astro-qvaelhz7" /></p>
+
+
       Presented Live on March 25, 2026
 
 
