@@ -237,6 +237,14 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
+            source: /src/assets/images/winner-announcement.webp
+            alt: IBA26 Winner Announcement
+          title: >-
+            Stevie® Awards Announce Winners in The 23rd Annual International
+            Business Awards® From Across the Globe
+          link: >-
+            https://blog.stevieawards.com/blog/stevie-awards-announce-winners-in-the-23rd-annual-international-business-awards-from-across-the-globe
+        - image:
             source: /images/iba25-winners-1.webp
             alt: IBA25 Winner Announcement
           title: Winners in the 2025 International Business Awards® Announced
