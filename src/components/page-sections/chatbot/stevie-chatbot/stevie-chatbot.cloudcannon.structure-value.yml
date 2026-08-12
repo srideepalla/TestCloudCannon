@@ -1,10 +1,14 @@
-label: Stevie Chatbot
+label: Stevie Awards Assistant
 icon: chat
-description: Ask-a-question box answered by the StevieIntel chatbot API.
+description: >-
+  Ask-a-question box answered by the StevieIntel chatbot API. Covers the awards
+  themselves and looks up winning organizations and honorees.
 value:
   _component: page-sections/chatbot/stevie-chatbot
-  heading: "Ask about the Stevie Awards"
-  text: "Entry fees, deadlines, categories, judging, and past winners."
+  heading: "Stevie Awards Assistant"
+  text: >-
+    Ask about entering — fees, deadlines, categories, judging — or look up a
+    winning organization or honoree. Every answer cites its source.
   placeholder: "What is the late entry fee?"
   buttonLabel: "Ask"
   apiEndpoint: ""
@@ -13,12 +17,12 @@ value:
   backgroundColor: surface
 preview:
   text:
-    - Stevie Chatbot
+    - Stevie Awards Assistant
   subtext:
     - key: heading
   icon: chat
 picker_preview:
-  text: Stevie Chatbot
-  subtext: Ask-a-question box answered by the StevieIntel chatbot API.
+  text: Stevie Awards Assistant
+  subtext: Answers award questions and looks up winning organizations and people.
 _inputs_from_glob:
   - /src/components/page-sections/chatbot/stevie-chatbot/stevie-chatbot.cloudcannon.inputs.yml

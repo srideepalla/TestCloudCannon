@@ -44,8 +44,15 @@ import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
 
 const {
-  heading = "Ask about the Stevie Awards",
-  text = "Entry fees, deadlines, categories, judging, and past winners.",
+  // Two distinct jobs, so the copy has to name both. The chatbot answers
+  // questions about the awards themselves (fees, deadlines, categories,
+  // judging) AND looks up individual winning organizations and honorees from
+  // the scraped winner records. Earlier copy advertised only the first, so
+  // nobody thought to ask the second kind of question.
+  heading = "Stevie Awards Assistant",
+  text =
+    "Ask about entering — fees, deadlines, categories, judging — or look up a " +
+    "winning organization or honoree. Every answer cites its source.",
   placeholder = "What is the late entry fee?",
   buttonLabel = "Ask",
   apiEndpoint = "",
@@ -208,10 +215,17 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           ? `<span class="stevie-chatbot__badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>`
           : "",
         `<div class="stevie-chatbot__text">${escapeHtml(data.answer || "")}</div>`,
+        // Collapsed by default. An answer citing eight pages was showing eight
+        // lines of internal references under two lines of answer, which buried
+        // the answer and made every reply look like a search dump. The count in
+        // the summary keeps the sources discoverable without spending the space.
         sources.length
-          ? `<ul class="stevie-chatbot__sources">${sources
+          ? `<details class="stevie-chatbot__sources-panel">` +
+            `<summary class="stevie-chatbot__sources-summary">` +
+            `Sources (${sources.length})</summary>` +
+            `<ul class="stevie-chatbot__sources">${sources
               .map((source, index) => `<li>[${index + 1}] ${escapeHtml(source)}</li>`)
-              .join("")}</ul>`
+              .join("")}</ul></details>`
           : "",
       ].join("");
 
@@ -345,8 +359,46 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     white-space: pre-wrap;
   }
 
+  .stevie-chatbot__sources-panel {
+    margin-top: 0.9rem;
+    border-top: 1px solid currentcolor;
+    padding-top: 0.6rem;
+    /* The border is structural, not decorative — at full strength it competes
+       with the answer text above it. */
+    border-color: color-mix(in srgb, currentcolor 20%, transparent);
+  }
+
+  .stevie-chatbot__sources-summary {
+    cursor: pointer;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.65;
+    /* list-style covers Firefox; ::marker and ::-webkit-details-marker cover the
+       triangle in Chrome and Safari, which ignore list-style on a summary. */
+    list-style: none;
+  }
+
+  .stevie-chatbot__sources-summary::marker,
+  .stevie-chatbot__sources-summary::-webkit-details-marker {
+    display: none;
+    content: "";
+  }
+
+  .stevie-chatbot__sources-summary::before {
+    content: "▸ ";
+  }
+
+  .stevie-chatbot__sources-panel[open] .stevie-chatbot__sources-summary::before {
+    content: "▾ ";
+  }
+
+  .stevie-chatbot__sources-summary:hover {
+    opacity: 0.9;
+  }
+
   .stevie-chatbot__sources {
-    margin: 0.9rem 0 0;
+    margin: 0.6rem 0 0;
     padding-left: 1.1rem;
     font-size: 0.8rem;
     opacity: 0.7;
