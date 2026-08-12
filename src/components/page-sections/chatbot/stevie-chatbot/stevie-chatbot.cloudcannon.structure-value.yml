@@ -1,0 +1,24 @@
+label: Stevie Chatbot
+icon: chat
+description: Ask-a-question box answered by the StevieIntel chatbot API.
+value:
+  _component: page-sections/chatbot/stevie-chatbot
+  heading: "Ask about the Stevie Awards"
+  text: "Entry fees, deadlines, categories, judging, and past winners."
+  placeholder: "What is the late entry fee?"
+  buttonLabel: "Ask"
+  apiEndpoint: ""
+  showSources: true
+  colorScheme: inherit
+  backgroundColor: surface
+preview:
+  text:
+    - Stevie Chatbot
+  subtext:
+    - key: heading
+  icon: chat
+picker_preview:
+  text: Stevie Chatbot
+  subtext: Ask-a-question box answered by the StevieIntel chatbot API.
+_inputs_from_glob:
+  - /src/components/page-sections/chatbot/stevie-chatbot/stevie-chatbot.cloudcannon.inputs.yml

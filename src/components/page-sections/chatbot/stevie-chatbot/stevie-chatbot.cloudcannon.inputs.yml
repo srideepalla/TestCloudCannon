@@ -1,0 +1,59 @@
+heading:
+  type: text
+  comment: Section heading shown above the chat box.
+
+text:
+  type: markdown
+  comment: Short line of copy explaining what can be asked.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+placeholder:
+  type: text
+  comment: Example question shown greyed out inside the input box.
+
+buttonLabel:
+  type: text
+  comment: Label on the submit button.
+
+apiEndpoint:
+  type: text
+  comment: >-
+    Base URL of the chatbot API, with no trailing slash (e.g.
+    https://your-tunnel.trycloudflare.com). Leave blank to use the site's
+    PUBLIC_STEVIE_API_URL build setting. A quick-tunnel URL changes every time
+    the tunnel restarts, so expect to update this when testing.
+
+showSources:
+  type: checkbox
+  comment: >-
+    Show the list of sources beneath each answer. Worth leaving on: it is how a
+    reader checks where an answer came from.
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

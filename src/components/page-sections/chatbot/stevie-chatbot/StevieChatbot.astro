@@ -1,0 +1,336 @@
+---
+/**
+ * StevieChatbot — asks the StevieIntel chatbot API and renders the answer.
+ *
+ * WHY THIS COMPONENT DOES NOT ANSWER ANYTHING ITSELF
+ * Answering a Stevie Awards question means searching 2,048 scraped passages and
+ * 83,574 winner records, then calling a paid AI model. None of that can happen
+ * in a browser — there is no database there, no server runtime, and a paid API
+ * key in a page's source is readable by anyone. So this component is the input
+ * box and the answer area; the thinking happens in the API it calls.
+ *
+ * PATTERN
+ * Follows EnquiryForm.astro, which already calls an external API from the
+ * browser using a PUBLIC_ environment variable and passes values into client
+ * script with `define:vars`. Same approach, so this behaves like the rest of the
+ * codebase rather than introducing a second style.
+ *
+ * ONE DELIBERATE DIFFERENCE FROM EnquiryForm
+ * EnquiryForm's own comment reads: "NO API token is sent ... so no credentials
+ * are exposed in the browser." It uses Zendesk's anonymous endpoints to achieve
+ * that.
+ *
+ * This component DOES send a key, and anyone can read it from the page source.
+ * That is acceptable only while both hold:
+ *   - it is a test key, never a production one
+ *   - the API enforces a daily spend cap, so a leaked key cannot run up a bill
+ *
+ * Before this goes to a public production page, pick one:
+ *   a) drop the key requirement on the API and rely on its spend cap and rate
+ *      limit alone — this matches EnquiryForm's existing approach; or
+ *   b) put a proxy on your own domain that holds the key server-side. Note
+ *      CloudCannon cannot host that proxy: it serves static files only.
+ *
+ * ENVIRONMENT
+ * Set in CloudCannon under Site Settings → Environment Variables. The PUBLIC_
+ * prefix is required: Astro only exposes PUBLIC_-prefixed variables to browser
+ * code, and this request is made from the browser.
+ *
+ *   PUBLIC_STEVIE_API_URL   e.g. https://xxxx.trycloudflare.com  (or http://localhost:8003)
+ *   PUBLIC_STEVIE_API_KEY   the API's STEVIE_API_KEY
+ */
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+
+const {
+  heading = "Ask about the Stevie Awards",
+  text = "Entry fees, deadlines, categories, judging, and past winners.",
+  placeholder = "What is the late entry fee?",
+  buttonLabel = "Ask",
+  apiEndpoint = "",
+  showSources = true,
+
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+// apiEndpoint is editable in CloudCannon and takes precedence over the build
+// setting. A quick-tunnel URL changes every time the tunnel restarts, so an
+// editor has to be able to update it without a code change and a rebuild —
+// the same reason the Search Past Winners section exposes its endpoint as an
+// input rather than relying on an environment variable alone.
+const apiUrl = (apiEndpoint || import.meta.env.PUBLIC_STEVIE_API_URL || "http://localhost:8003")
+  .toString()
+  .replace(/\/+$/, "");
+const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
+---
+
+<CustomSection
+  class:list={["stevie-chatbot", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="2xl"
+  paddingVertical="2xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
+  <Text alignX="center" text={text} data-prop="text" />
+
+  <form class="stevie-chatbot__form" id="stevie-chatbot-form">
+    <label class="stevie-chatbot__label" for="stevie-chatbot-input">Your question</label>
+    <div class="stevie-chatbot__row">
+      <input
+        id="stevie-chatbot-input"
+        class="stevie-chatbot__input"
+        type="text"
+        name="question"
+        placeholder={placeholder}
+        autocomplete="off"
+        maxlength="500"
+        required
+      />
+      <button class="stevie-chatbot__submit" type="submit">{buttonLabel}</button>
+    </div>
+    <p class="stevie-chatbot__status" id="stevie-chatbot-status" role="status" aria-live="polite"></p>
+  </form>
+
+  <div class="stevie-chatbot__answers" id="stevie-chatbot-answers"></div>
+</CustomSection>
+
+<script define:vars={{ apiUrl, apiKey, showSources }}>
+  // The API returns a `tier` naming where the answer came from. Showing it is
+  // the point: a reader can tell "from our own verified records" apart from
+  // "found on the open web", which is otherwise invisible and matters a lot for
+  // a question about fees or deadlines.
+  const TIERS = {
+    profile: ["is-records", "From our winner records"],
+    tier1: ["is-verified", "From our verified knowledge base"],
+    tier2a: ["is-live", "Found live on stevieawards.com"],
+    tier2b: ["is-web", "Found on the web — not an official source"],
+  };
+
+  const form = document.getElementById("stevie-chatbot-form");
+
+  if (form) {
+    const input = document.getElementById("stevie-chatbot-input");
+    const statusEl = document.getElementById("stevie-chatbot-status");
+    const answersEl = document.getElementById("stevie-chatbot-answers");
+    const submitBtn = form.querySelector(".stevie-chatbot__submit");
+
+    const escapeHtml = (value) =>
+      String(value ?? "").replace(/[&<>"']/g, (char) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char],
+      );
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const question = input.value.trim();
+      if (!question) return;
+
+      submitBtn.disabled = true;
+      statusEl.textContent = "Thinking…";
+
+      try {
+        const response = await fetch(`${apiUrl}/ask`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(apiKey ? { "X-API-Key": apiKey } : {}),
+          },
+          body: JSON.stringify({ q: question }),
+        });
+
+        if (!response.ok) {
+          // The API sends a plain-language `detail` for 401 (bad key), 402
+          // (daily spend cap reached) and 429 (rate limited). Showing it beats a
+          // bare status code, which reads as "broken" whatever the cause.
+          let detail = `Request failed (${response.status})`;
+          try {
+            const body = await response.json();
+            if (body && body.detail) detail = body.detail;
+          } catch {
+            /* response was not JSON — keep the status-based message */
+          }
+          throw new Error(detail);
+        }
+
+        renderAnswer(question, await response.json());
+        input.value = "";
+        statusEl.textContent = "";
+      } catch (error) {
+        // A browser-blocked cross-origin request surfaces as a bare
+        // "Failed to fetch" with no detail, so name the two causes that
+        // actually occur rather than showing that to a visitor.
+        const message =
+          error && error.message && !/^Failed to fetch$/i.test(error.message)
+            ? error.message
+            : "Could not reach the chatbot. It may be offline, or the browser blocked the " +
+              "request — a page served over https cannot call an http address, and this " +
+              "site's domain must be listed in the API's allowed origins.";
+        renderError(question, message);
+        statusEl.textContent = "";
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    function renderAnswer(question, data) {
+      const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
+      const sources = showSources && Array.isArray(data.sources) ? data.sources : [];
+
+      const block = document.createElement("article");
+      block.className = "stevie-chatbot__answer";
+      block.innerHTML = [
+        `<p class="stevie-chatbot__asked">${escapeHtml(question)}</p>`,
+        badgeLabel
+          ? `<span class="stevie-chatbot__badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>`
+          : "",
+        `<div class="stevie-chatbot__text">${escapeHtml(data.answer || "")}</div>`,
+        sources.length
+          ? `<ul class="stevie-chatbot__sources">${sources
+              .map((source, index) => `<li>[${index + 1}] ${escapeHtml(source)}</li>`)
+              .join("")}</ul>`
+          : "",
+      ].join("");
+
+      answersEl.prepend(block);
+    }
+
+    function renderError(question, message) {
+      const block = document.createElement("article");
+      block.className = "stevie-chatbot__answer has-error";
+      block.innerHTML = [
+        `<p class="stevie-chatbot__asked">${escapeHtml(question)}</p>`,
+        `<div class="stevie-chatbot__text">${escapeHtml(message)}</div>`,
+      ].join("");
+
+      answersEl.prepend(block);
+    }
+  }
+</script>
+
+<style>
+  .stevie-chatbot__form {
+    margin-top: 1.5rem;
+  }
+
+  .stevie-chatbot__label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+  }
+
+  .stevie-chatbot__row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .stevie-chatbot__input {
+    flex: 1 1 18rem;
+    padding: 0.8rem 0.9rem;
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 1px solid currentcolor;
+    border-radius: 0.25rem;
+  }
+
+  .stevie-chatbot__submit {
+    padding: 0.8rem 1.6rem;
+    font: inherit;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+    background: #0b6e6e;
+    border: 0;
+    border-radius: 0.25rem;
+  }
+
+  .stevie-chatbot__submit:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+
+  .stevie-chatbot__status {
+    min-height: 1.2rem;
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  .stevie-chatbot__answers {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .stevie-chatbot__answer {
+    padding: 1rem 1.1rem;
+    border: 1px solid currentcolor;
+    border-radius: 0.25rem;
+  }
+
+  .stevie-chatbot__answer.has-error {
+    border-left: 3px solid #99302b;
+  }
+
+  .stevie-chatbot__asked {
+    margin: 0 0 0.7rem;
+    font-size: 0.85rem;
+    opacity: 0.65;
+  }
+
+  .stevie-chatbot__badge {
+    display: inline-block;
+    margin-bottom: 0.7rem;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid currentcolor;
+    border-radius: 0.15rem;
+  }
+
+  .stevie-chatbot__badge.is-records {
+    color: #1c6e45;
+  }
+
+  .stevie-chatbot__badge.is-verified {
+    color: #0b6e6e;
+  }
+
+  .stevie-chatbot__badge.is-live {
+    color: #8a5a0c;
+  }
+
+  .stevie-chatbot__badge.is-web {
+    color: #99302b;
+  }
+
+  .stevie-chatbot__text {
+    white-space: pre-wrap;
+  }
+
+  .stevie-chatbot__sources {
+    margin: 0.9rem 0 0;
+    padding-left: 1.1rem;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+
+  .stevie-chatbot__sources li {
+    word-break: break-all;
+  }
+</style>
