@@ -496,6 +496,25 @@ const config = {
       const spanOf = (first?: string, last?: string): string =>
         first && last ? (first === last ? first : `${first}–${last}`) : first || last || "";
 
+      /** A pipe-separated field ("Brazil | Germany | India | ...", up to 11 for
+       *  a global company) truncated to `keep` items plus a "+N" count, with the
+       *  full list in the returned title for hover. Same convention the
+       *  dashboard's own Explorer uses (see pipes() in explorer.html) --
+       *  without it a table cell can be a single 200-character unbroken run
+       *  that forces its whole column wider than the page rather than wrapping,
+       *  since a table in the default auto layout sizes columns to fit content
+       *  first and only wraps once nothing else can shrink further. */
+      const pipes = (value: unknown, keep = 2): { text: string; title: string } => {
+        const parts = String(value ?? "")
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (!parts.length) return { text: "—", title: "" };
+        const head = parts.slice(0, keep).join(", ");
+        const extra = parts.length - keep;
+        return { text: extra > 0 ? `${head} +${extra}` : head, title: parts.join(", ") };
+      };
+
       const renderRows = (rows: ProfileRow[]) => {
         if (!rows.length) {
           resultsEl.innerHTML = "";
@@ -520,6 +539,8 @@ const config = {
                 .map((r) => {
                   const key = r.profile_key || r.display_name || "";
                   const ptype = r.profile_type === "person" ? "person" : "org";
+                  const cat = pipes(r.category, 2);
+                  const ctry = pipes(r.country, 2);
                   const medals = [
                     r.gold ? `<span class="spw__medal spw__medal--gold">${num(r.gold)}G</span>` : "",
                     r.silver ? `<span class="spw__medal spw__medal--silver">${num(r.silver)}S</span>` : "",
@@ -537,8 +558,8 @@ const config = {
                       >${esc(r.display_name || key)}</button>
                     </td>
                     ${showType ? `<td><span class="spw__type-badge spw__type-badge--${ptype}">${ptype === "org" ? "Org" : "Person"}</span></td>` : ""}
-                    <td class="spw__cell-muted">${esc(r.category)}</td>
-                    <td class="spw__cell-muted">${esc(r.country)}</td>
+                    <td class="spw__cell-muted" title="${esc(cat.title)}">${esc(cat.text)}</td>
+                    <td class="spw__cell-muted" title="${esc(ctry.title)}">${esc(ctry.text)}</td>
                     <td class="spw__num">${num(r.award_count)}</td>
                     <td>${medals}</td>
                     <td class="spw__cell-muted">${esc(spanOf(r.first_year, r.last_year))}</td>
@@ -1048,6 +1069,7 @@ const config = {
       font-size: var(--font-size-md);
       font-weight: var(--font-weight-semibold);
       line-height: 1.4;
+      overflow-wrap: anywhere;
     }
 
     .search-past-winners .spw__answer:empty,
@@ -1062,6 +1084,7 @@ const config = {
       color: var(--color-text);
       font-size: var(--font-size-sm);
       line-height: 1.6;
+      overflow-wrap: anywhere;
     }
 
     .search-past-winners .spw__chips {
@@ -1186,8 +1209,13 @@ const config = {
     }
 
     /* Results table leans on the site's global table styles in
-       styles/base/_tables.css; only the overflow guard and cell tone are local. */
+       styles/base/_tables.css; only the overflow guard and cell tone are local.
+       max-width (not just overflow-x) matters here: without it, a table whose
+       auto layout wants more room than the page can still push the CONTAINER
+       wider first and only then scroll, widening the whole page along with it
+       rather than scrolling in place. */
     .search-past-winners .spw__results {
+      max-width: 100%;
       overflow-x: auto;
       margin-top: var(--spacing-lg);
     }
@@ -1195,6 +1223,11 @@ const config = {
     .search-past-winners .spw__table {
       width: 100%;
       font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__table th,
+    .search-past-winners .spw__table td {
+      overflow-wrap: anywhere;
     }
 
     .search-past-winners .spw__cell-org {
