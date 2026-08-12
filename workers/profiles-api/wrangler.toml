@@ -1,0 +1,11 @@
+name = "stevie-profiles-api"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Non-secret configuration. Secrets (API_TOKEN, GITHUB_TOKEN) are set separately
+# with `wrangler secret put` — see README.md.
+[vars]
+GITHUB_OWNER = "srideepalla"
+GITHUB_REPO = "TestCloudCannon"
+GITHUB_BRANCH = "profiles-directory"
+SITE_URL = "https://women.stevieawards.com"
