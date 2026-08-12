@@ -121,6 +121,40 @@ const config = {
           data-spw-submit
           >Search</button
         >
+        {
+          showFilters && (
+            <button
+              type="button"
+              class="spw__filters-toggle"
+              data-spw-filters-toggle
+              aria-expanded="false"
+              aria-controls="spw-filters-panel"
+            >
+              <svg
+                class="spw__filters-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <circle cx="9" cy="6" r="2" fill="currentColor" stroke="none" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <circle cx="15" cy="12" r="2" fill="currentColor" stroke="none" />
+                <line x1="4" y1="18" x2="20" y2="18" />
+                <circle cx="9" cy="18" r="2" fill="currentColor" stroke="none" />
+              </svg>
+              Filters
+              <span
+                class="spw__filters-count"
+                data-spw-filters-count
+                hidden
+              />
+            </button>
+          )
+        }
       </div>
 
       {
@@ -128,6 +162,8 @@ const config = {
           <div
             class="spw__row spw__row--filters"
             data-spw-filters
+            id="spw-filters-panel"
+            hidden
           >
             <label class="spw__field">
               <span class="spw__label">Profile type</span>
@@ -454,6 +490,9 @@ const config = {
       const prevBtn = $<HTMLButtonElement>("[data-spw-prev]");
       const nextBtn = $<HTMLButtonElement>("[data-spw-next]");
       const submitBtn = $<HTMLButtonElement>("[data-spw-submit]");
+      const filtersToggleBtn = $<HTMLButtonElement>("[data-spw-filters-toggle]");
+      const filtersPanel = $("[data-spw-filters]");
+      const filtersCountEl = $("[data-spw-filters-count]");
       const overviewEl = $("[data-spw-overview]");
       const scrimEl = $("[data-spw-scrim]");
       const drawerEl = $("[data-spw-drawer]");
@@ -466,6 +505,23 @@ const config = {
       const filterEls = Array.from(
         root.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-spw-filter]")
       );
+
+      // Captured before loadFacets() appends any option and before the user
+      // can touch a control, so it's each field's true rest state -- "org" for
+      // profile_type (its only pre-selected option), "" for everything else.
+      // Filters live behind an icon now instead of an always-visible row, so
+      // the button needs to say how many are actually narrowing the search
+      // without the panel being open to show it.
+      const filterDefaults = new Map(filterEls.map((el) => [el, el.value]));
+
+      const updateFiltersCount = () => {
+        if (!filtersCountEl) return;
+        const active = filterEls.filter(
+          (el) => el.value.trim() !== (filterDefaults.get(el) ?? "").trim()
+        ).length;
+        filtersCountEl.textContent = String(active);
+        filtersCountEl.hidden = active === 0;
+      };
 
       let offset = 0;
       let total = 0;
@@ -920,15 +976,37 @@ const config = {
         event.preventDefault();
         run(0);
       });
-      filterEls.forEach((el) => el.addEventListener("change", () => run(0)));
+      filterEls.forEach((el) =>
+        el.addEventListener("change", () => {
+          updateFiltersCount();
+          run(0);
+        })
+      );
       form.addEventListener("reset", () => {
-        // The reset lands after this handler, so defer past it.
-        window.setTimeout(() => run(0), 0);
+        // The reset lands after this handler, so defer past both it and the
+        // count update to the same tick run() already waits for.
+        window.setTimeout(() => {
+          updateFiltersCount();
+          run(0);
+        }, 0);
       });
       prevBtn?.addEventListener("click", () => run(Math.max(0, offset - perPage)));
       nextBtn?.addEventListener("click", () => run(offset + perPage));
 
+      // Filters live in a collapsed panel behind this button rather than an
+      // always-visible row -- six fields plus Clear were pushing the actual
+      // results below the fold on a phone screen before a visitor had typed
+      // anything. aria-expanded (not just [hidden]) so a screen reader
+      // announces the toggle state, not just a DOM node appearing.
+      filtersToggleBtn?.addEventListener("click", () => {
+        if (!filtersPanel) return;
+        const open = filtersPanel.hidden;
+        filtersPanel.hidden = !open;
+        filtersToggleBtn.setAttribute("aria-expanded", String(open));
+      });
+
       qInput.value = config.initialQuery || "";
+      updateFiltersCount();
       void loadFacets();
       void run(0); // land on the full record list rather than an empty panel
     });
@@ -954,6 +1032,68 @@ const config = {
       margin-top: var(--spacing-md);
       padding-top: var(--spacing-md);
       border-top: 1px solid var(--color-border-subtle, var(--color-border));
+    }
+
+    /* Same specificity trap the drawer already hit (see the [hidden] note
+       further down): .spw__row's own `display: flex` is an author rule, and
+       an author rule beats the browser default [hidden]{display:none} at
+       equal specificity regardless of source order, so the panel would
+       otherwise stay visibly flexed even while hidden. */
+    .search-past-winners .spw__row--filters[hidden] {
+      display: none;
+    }
+
+    .search-past-winners .spw__filters-toggle {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background-color: transparent;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: background-color var(--animation-fast) ease, border-color var(--animation-fast) ease,
+        color var(--animation-fast) ease;
+    }
+
+    .search-past-winners .spw__filters-toggle:hover {
+      background-color: var(--color-state-hover, var(--color-bg-muted));
+    }
+
+    /* Set by the script, not :focus/:hover -- this is "the panel this button
+       controls is currently open", so it needs to persist while focus and the
+       pointer move elsewhere into the panel itself. */
+    .search-past-winners .spw__filters-toggle[aria-expanded="true"] {
+      border-color: var(--color-brand);
+      color: var(--color-brand);
+    }
+
+    .search-past-winners .spw__filters-icon {
+      width: 1.1em;
+      height: 1.1em;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__filters-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.3em;
+      height: 1.3em;
+      padding: 0 0.3em;
+      border-radius: var(--radius-full);
+      background-color: var(--color-brand);
+      color: var(--color-text-on-brand, #000);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
     }
 
     .search-past-winners .spw__field {
