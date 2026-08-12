@@ -37,6 +37,12 @@ const {
   showOverview = true,
   initialQuery = "",
   emptyStateText = "Enter a search above, or browse every record.",
+  // Prints every step (config read, each fetch, each error) into a visible
+  // on-page panel, not just the browser console. Needed because the CMS
+  // editor's live-preview iframe is awkward to open devtools against, and
+  // "records are not loading" with no visible error is otherwise a guess.
+  // Default true while this component is new; turn off once trusted.
+  debug = true,
 
   colorScheme = "inherit",
   backgroundColor,
@@ -62,6 +68,7 @@ const config = {
   perPage,
   showOverview: !!showOverview,
   initialQuery: String(initialQuery || ""),
+  debug: !!debug,
 };
 ---
 
@@ -231,6 +238,16 @@ const config = {
       )
     }
 
+    {
+      debug && (
+        <pre class="spw__debug" data-spw-debug>
+          {"Debug: waiting for the client script to start…\n" +
+            "(if this line never changes, the <script> below never ran " +
+            "in this preview — that is itself the finding)"}
+        </pre>
+      )
+    }
+
     <div
       class="spw__results"
       data-spw-results
@@ -306,21 +323,38 @@ const config = {
       if (root.dataset.spwReady === "true") return;
       root.dataset.spwReady = "true";
 
+      const debugEl = root.querySelector<HTMLElement>("[data-spw-debug]");
+      // Writes to BOTH the browser console and a visible on-page panel, so a
+      // CMS preview iframe that is awkward to open devtools against still
+      // shows exactly where this broke. debugEl is null when the `debug` prop
+      // is off, so this degrades to console-only with no extra cost.
+      const log = (msg: string, ...rest: unknown[]) => {
+        const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        console.log(NS, msg, ...rest);
+        if (debugEl) {
+          debugEl.textContent += "\n" + line + (rest.length ? " " + JSON.stringify(rest[0]) : "");
+        }
+      };
+
+      log("component script started");
+
       let config: {
         endpoint: string;
         perPage: number;
         showOverview: boolean;
         initialQuery: string;
+        debug: boolean;
       };
       try {
         config = JSON.parse(root.dataset.config || "{}");
       } catch (err) {
-        console.error(`${NS} bad config`, err);
+        log("FAILED to parse config JSON", String(err));
         return;
       }
       const { endpoint, perPage, showOverview } = config;
+      log(`config parsed: endpoint="${endpoint}" perPage=${perPage} showOverview=${showOverview}`);
       if (!endpoint) {
-        console.error(`${NS} no API endpoint configured`);
+        log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
         return;
       }
 
@@ -472,10 +506,15 @@ const config = {
         statusEl.dataset.kind = "";
         if (submitBtn) submitBtn.disabled = true;
 
+        const searchUrl = url("/v1/search", params);
+        log(`fetching search: ${searchUrl}`);
+
         try {
-          const res = await fetch(url("/v1/search", params));
+          const res = await fetch(searchUrl);
+          log(`search response: HTTP ${res.status}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
+          log(`search parsed OK: total=${data.total} rows=${(data.results || []).length}`);
           if (mine !== seq) return; // superseded by a newer search
 
           total = Number(data.total || 0);
@@ -497,7 +536,19 @@ const config = {
           }
         } catch (err) {
           if (mine !== seq) return;
-          console.error(`${NS} search failed`, err);
+          // "Failed to fetch" / TypeError with no HTTP status is the classic
+          // signature of CORS being blocked or the tunnel being unreachable --
+          // called out explicitly because that distinction is exactly what
+          // determines the fix, and the browser's own message is too generic
+          // to read at a glance.
+          const detail = err instanceof Error ? err.message : String(err);
+          const looksLikeCorsOrNetwork = err instanceof TypeError;
+          log(
+            `SEARCH FAILED: ${detail}` +
+              (looksLikeCorsOrNetwork
+                ? " -- likely CORS blocked, tunnel down, or wrong URL (no HTTP status reached)"
+                : "")
+          );
           statusEl.textContent = "Search is unavailable right now. Please try again.";
           statusEl.dataset.kind = "error";
           resultsEl.innerHTML = "";
@@ -507,8 +558,11 @@ const config = {
         }
 
         if (!showOverview || !overviewEl) return;
+        const overviewUrl = url("/v1/overview", { q, ...filters() });
+        log(`fetching overview: ${overviewUrl}`);
         try {
-          const res = await fetch(url("/v1/overview", { q, ...filters() }));
+          const res = await fetch(overviewUrl);
+          log(`overview response: HTTP ${res.status}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (mine !== seq) return;
@@ -516,7 +570,8 @@ const config = {
         } catch (err) {
           // The results grid is the product; a failed summary must never look
           // like a failed search.
-          console.warn(`${NS} overview unavailable`, err);
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`overview unavailable (non-fatal): ${detail}`);
           overviewEl.hidden = true;
         }
       };
@@ -525,8 +580,11 @@ const config = {
        *  country shows up without a code change. */
       const loadFacets = async () => {
         if (!filterEls.length) return;
+        const facetsUrl = url("/v1/facets", { limit: 250 });
+        log(`fetching facets: ${facetsUrl}`);
         try {
-          const res = await fetch(url("/v1/facets", { limit: 250 }));
+          const res = await fetch(facetsUrl);
+          log(`facets response: HTTP ${res.status}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           const fill = (key: string, items: { name: string; count: number }[]) => {
@@ -547,7 +605,8 @@ const config = {
           fill("industry", data.industries);
         } catch (err) {
           // Filters degrade to "All" only; free-text search still works.
-          console.warn(`${NS} facets unavailable`, err);
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`facets unavailable (non-fatal): ${detail}`);
         }
       };
 
@@ -759,6 +818,26 @@ const config = {
 
     .search-past-winners .spw__chip b {
       font-weight: var(--font-weight-bold);
+    }
+
+    /* Deliberately loud (dark, monospace, high-contrast) rather than matching
+       the theme -- this panel is a troubleshooting tool, not part of the
+       page's design, and should look like one so nobody mistakes it for a
+       finished feature if the `debug` prop gets left on by accident. */
+    .search-past-winners .spw__debug {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm) var(--spacing-md);
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px dashed var(--color-error, #b3261e);
+      border-radius: var(--radius-sm);
+      background-color: #0b0f19;
+      color: #7ee787;
+      font-family: var(--font-mono, monospace);
+      font-size: var(--font-size-xs);
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
     }
 
     /* Results table leans on the site's global table styles in

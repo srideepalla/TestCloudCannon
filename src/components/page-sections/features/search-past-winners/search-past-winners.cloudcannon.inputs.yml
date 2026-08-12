@@ -44,6 +44,14 @@ emptyStateText:
   type: text
   comment: Message shown before the first set of results arrives.
 
+debug:
+  type: checkbox
+  comment: >-
+    Show a live log panel under the search box — every fetch it makes and every
+    error, in plain text, right on the page. Turn this on when search isn't
+    loading and you need to see why without opening browser devtools. Turn it
+    off once things are working; it is not meant to ship visible to visitors.
+
 colorScheme:
   type: select
   options:

@@ -13,6 +13,7 @@ value:
   showOverview: true
   initialQuery: ""
   emptyStateText: "Enter a search above, or browse every record."
+  debug: true
   colorScheme: inherit
   backgroundColor: base
 preview:
