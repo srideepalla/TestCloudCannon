@@ -1009,7 +1009,8 @@ const config = {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-semibold);
       cursor: pointer;
-      transition: background-color var(--animation-fast) ease;
+      transition: background-color var(--animation-fast) ease, color var(--animation-fast) ease,
+        border-color var(--animation-fast) ease;
     }
 
     .search-past-winners .spw__reset,
@@ -1019,7 +1020,23 @@ const config = {
       color: var(--color-text);
     }
 
-    .search-past-winners .spw__submit:hover:not(:disabled),
+    /* .spw__submit needs its own rule, not the shared one below: its default
+       state is a solid brand-colored fill with BLACK text
+       (--color-text-on-brand), so swapping only the background to
+       --color-state-hover (a ~4%-opacity white tint) left the button nearly
+       black -- the tint barely lightens a dark page background at all -- with
+       black text on top of it, i.e. invisible. Confirmed live via
+       getComputedStyle: background rgba(255,255,255,0.04) over this page's
+       black section background rendered as black, text stayed rgb(0,0,0).
+       Fixed by flipping to the same transparent+light-text pair the site's
+       own Button.astro uses for its primary-variant hover, instead of only
+       touching one half of the pairing. */
+    .search-past-winners .spw__submit:hover:not(:disabled) {
+      background-color: transparent;
+      border-color: var(--color-border-strong, var(--color-border));
+      color: var(--color-text-strong, var(--color-text));
+    }
+
     .search-past-winners .spw__reset:hover:not(:disabled),
     .search-past-winners .spw__page-btn:hover:not(:disabled) {
       background-color: var(--color-state-hover, var(--color-bg-muted));
