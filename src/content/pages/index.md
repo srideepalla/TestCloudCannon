@@ -240,7 +240,7 @@ pageSections:
             source: /src/assets/images/iba-winners.png
             alt: IBA26 Winner Announcement
           title: >-
-            Stevie® Awards Announce Winners in The 23rd Annual International
+            Stevie® Awards Announce Winners in the 2026 Annual International
             Business Awards® From Across the Globe
           link: >-
             https://blog.stevieawards.com/blog/stevie-awards-announce-winners-in-the-23rd-annual-international-business-awards-from-across-the-globe
