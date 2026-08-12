@@ -2,15 +2,26 @@
 title: Chatbot Test
 description: Temporary page for testing the Stevie Awards chatbot component.
 pageHeading:
-pageSections: []
+pageSections:
+  - _component: page-sections/chatbot/stevie-chatbot
+    heading: Ask about the Stevie Awards
+    text: >-
+      Entry fees, deadlines, categories, judging, and past winners. Every answer
+      shows where it came from.
+    placeholder: What is the late entry fee?
+    buttonLabel: Ask
+    apiEndpoint: ""
+    showSources: true
+    colorScheme: inherit
+    backgroundColor: surface
 image:
 ---
 
 Temporary page for testing the `StevieChatbot` component against the StevieIntel
 chatbot API. Delete this page before merging to a release branch.
 
-Every answer carries a badge naming where it came from — our winner records, our
-scraped knowledge base, a live search of the official sites, or the wider web.
-The badge is the point: a reader can tell a verified answer from a web one.
-
-<StevieChatbot />
+The chatbot is added through **Page Sections** above rather than written into this
+body. That matters for CloudCannon: a section's values live in the page's
+front matter, which is what the component's `data-prop` bindings point at. Used
+inline in the body it has no such path, and the visual editor reports
+"Failed to render text editable region ... received a value of type 'undefined'".
