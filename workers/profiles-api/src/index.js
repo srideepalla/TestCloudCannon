@@ -16,6 +16,7 @@
  *
  * Endpoints:
  *   GET  /                 health check, no auth required
+ *   GET  /profiles/:slug   read a profile's JSON, no auth required (public content)
  *   POST /profiles         create (or update, with ?overwrite=true) a profile
  *   POST /pages             create (or update, with ?overwrite=true) a page built from one component
  *
@@ -344,6 +345,7 @@ function slugify(value) {
 function tokensMatch(a, b) {
   if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) return false;
   let mismatch = 0;
+
   for (let i = 0; i < a.length; i++) {
     mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
@@ -353,6 +355,7 @@ function tokensMatch(a, b) {
 function utf8ToBase64(str) {
   const bytes = new TextEncoder().encode(str);
   let binary = "";
+
   for (const byte of bytes) binary += String.fromCharCode(byte);
   return btoa(binary);
 }
@@ -395,6 +398,7 @@ function validatePageSectionRequest(data) {
 // of how deeply nested `data` is, without needing a YAML library.
 function buildPageMarkdown({ title, pageHeading, description, image, draft, component, data }) {
   const frontmatter = { title };
+
   if (pageHeading !== undefined) frontmatter.pageHeading = pageHeading;
   if (description !== undefined) frontmatter.description = description;
   if (image !== undefined) frontmatter.image = image;
@@ -402,6 +406,7 @@ function buildPageMarkdown({ title, pageHeading, description, image, draft, comp
   frontmatter.pageSections = [{ _component: component, ...data }];
 
   const lines = Object.entries(frontmatter).map(([key, value]) => `${key}: ${JSON.stringify(value)}`);
+
   return `---\n${lines.join("\n")}\n---\n`;
 }
 
@@ -417,6 +422,7 @@ async function githubRequest(env, path, init = {}) {
       ...(init.headers || {}),
     },
   });
+
   return response;
 }
 
@@ -425,11 +431,13 @@ async function getExistingFileSha(env, filePath) {
     env,
     `contents/${filePath}?ref=${encodeURIComponent(env.GITHUB_BRANCH)}`
   );
+
   if (response.status === 404) return null;
   if (!response.ok) {
     throw new Error(`GitHub lookup failed (${response.status}): ${await response.text()}`);
   }
   const data = await response.json();
+
   return data.sha ?? null;
 }
 
@@ -439,6 +447,7 @@ async function getExistingFileSha(env, filePath) {
 // message text differs but is only known once we've checked for an existing file.
 async function commitFile(env, { filePath, contents, getCommitMessage, overwrite, pageUrlPath }) {
   let existingSha = null;
+
   try {
     existingSha = await getExistingFileSha(env, filePath);
   } catch (error) {
@@ -467,6 +476,7 @@ async function commitFile(env, { filePath, contents, getCommitMessage, overwrite
 
   if (!putResponse.ok) {
     const errorText = await putResponse.text();
+
     return { error: json({ error: `GitHub commit failed (${putResponse.status}): ${errorText}` }, 502) };
   }
 
@@ -495,11 +505,13 @@ async function commitFile(env, { filePath, contents, getCommitMessage, overwrite
 async function handleCreateProfile(request, env) {
   const auth = request.headers.get("Authorization") || "";
   const [scheme, token] = auth.split(" ");
+
   if (scheme !== "Bearer" || !tokensMatch(token || "", env.API_TOKEN || "")) {
     return json({ error: "Unauthorized. Send `Authorization: Bearer <API_TOKEN>`." }, 401);
   }
 
   let body;
+
   try {
     body = await request.json();
   } catch {
@@ -507,10 +519,12 @@ async function handleCreateProfile(request, env) {
   }
 
   const validationError = validateProfile(body);
+
   if (validationError) return json({ error: validationError }, 400);
 
   const requestedSlug = body.slug ?? body.name;
   const slug = slugify(requestedSlug);
+
   if (!slug) return json({ error: "Could not derive a filename slug from name/slug." }, 400);
 
   // Drop the transient "slug" field before writing — it's not part of the content schema.
@@ -530,21 +544,25 @@ async function handleCreateProfile(request, env) {
     overwrite,
     pageUrlPath: `/profiles/${slug}`,
   });
+
   if (error) return error;
 
   // commitFile's response omits the slug (it doesn't know about it) — add it back.
   const data = await result.clone().json();
+
   return json({ slug, ...data }, result.status);
 }
 
 async function handleCreatePageSection(request, env) {
   const auth = request.headers.get("Authorization") || "";
   const [scheme, token] = auth.split(" ");
+
   if (scheme !== "Bearer" || !tokensMatch(token || "", env.API_TOKEN || "")) {
     return json({ error: "Unauthorized. Send `Authorization: Bearer <API_TOKEN>`." }, 401);
   }
 
   let body;
+
   try {
     body = await request.json();
   } catch {
@@ -552,10 +570,12 @@ async function handleCreatePageSection(request, env) {
   }
 
   const validationError = validatePageSectionRequest(body);
+
   if (validationError) return json({ error: validationError }, 400);
 
   const requestedSlug = body.slug ?? body.title;
   const slug = slugify(requestedSlug);
+
   if (!slug) return json({ error: "Could not derive a filename slug from title/slug." }, 400);
 
   const url = new URL(request.url);
@@ -572,9 +592,11 @@ async function handleCreatePageSection(request, env) {
     overwrite,
     pageUrlPath: `/${slug}`,
   });
+
   if (error) return error;
 
   const data = await result.clone().json();
+
   return json({ slug, component: body.component, ...data }, result.status);
 }
 
@@ -582,6 +604,35 @@ function htmlResponse() {
   return new Response(FORM_PAGE, {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8", ...CORS_HEADERS },
+  });
+}
+
+const SLUG_PATTERN = /^[a-z0-9-]+$/;
+
+// Public, read-only — no bearer token required, since this only re-serves
+// content that's already published (and public) in the GitHub repo. Reads
+// straight from raw.githubusercontent.com rather than the GitHub Contents
+// API, so it doesn't need GITHUB_TOKEN and doesn't spend its rate limit.
+async function handleGetProfile(env, slug) {
+  if (!SLUG_PATTERN.test(slug)) {
+    return json({ error: "slug must contain only lowercase letters, numbers, and hyphens." }, 400);
+  }
+
+  const rawUrl = `https://raw.githubusercontent.com/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/${env.GITHUB_BRANCH}/${PROFILES_DIR}/${slug}.json`;
+  const response = await fetch(rawUrl);
+
+  if (response.status === 404) {
+    return json({ error: `No profile found at slug "${slug}".` }, 404);
+  }
+  if (!response.ok) {
+    return json({ error: `Upstream fetch failed (${response.status}).` }, 502);
+  }
+
+  const body = await response.text();
+
+  return new Response(body, {
+    status: 200,
+    headers: { "Content-Type": "application/json; charset=utf-8", ...CORS_HEADERS },
   });
 }
 
@@ -599,7 +650,14 @@ export default {
 
     if (request.method === "GET" && url.pathname === "/") {
       const acceptsHtml = (request.headers.get("Accept") || "").includes("text/html");
+
       return acceptsHtml ? htmlResponse() : json({ ok: true, service: "profiles-api" });
+    }
+
+    if (request.method === "GET" && url.pathname.startsWith("/profiles/")) {
+      const slug = url.pathname.slice("/profiles/".length);
+
+      return handleGetProfile(env, slug);
     }
 
     if (request.method === "POST" && url.pathname === "/profiles") {

@@ -147,6 +147,26 @@ On success:
 }
 ```
 
+### Read a profile
+
+```sh
+curl "https://stevie-profiles-api.<your-subdomain>.workers.dev/profiles/donna-dror"
+```
+
+Public, no auth required — it just re-serves the already-published JSON from
+`src/content/profiles/<slug>.json` (proxied from
+`raw.githubusercontent.com`, so it doesn't touch `GITHUB_TOKEN` or its rate
+limit). 404s if the slug doesn't exist, 400s if the slug contains anything
+other than lowercase letters, numbers, and hyphens.
+
+This is what you point the **Profile** page-section component's `apiUrl`
+field at (see the main site's `src/components/page-sections/people/profile-section/`)
+to embed an existing profile on another page:
+
+```
+https://stevie-profiles-api.<your-subdomain>.workers.dev/profiles/donna-dror
+```
+
 ### Updating an existing profile
 
 By default the API refuses to overwrite a file that already exists (`409

@@ -2,10 +2,13 @@ apiUrl:
   type: url
   comment: >-
     Optional. If set, the profile JSON is fetched from this URL at build
-    time (when the site rebuilds) and used to populate this section. Must be
-    a public, read-only endpoint — never one that requires a secret/bearer
-    token, since anything entered here is committed to this page's content.
-    Leave empty to use the JSON data field below instead.
+    time (when the site rebuilds) and used to populate this section. To
+    embed an existing profile, use the profiles-api Worker's read endpoint:
+    https://<worker-subdomain>.workers.dev/profiles/<slug> (e.g. .../profiles/donna-dror)
+    — it's public and needs no token. Must always be a public, read-only
+    endpoint — never one that requires a secret/bearer token, since anything
+    entered here is committed to this page's content. Leave empty to use
+    the JSON data field below instead.
 data:
   type: code
   syntax: json
