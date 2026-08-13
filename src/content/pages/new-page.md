@@ -1,6 +1,6 @@
 ---
 _schema: default
-title:
+title: New Page
 description: ''
 pageSections:
   - _component: page-sections/chatbot/stevie-chatbot

@@ -151,6 +151,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     tier2b: ["is-web", "Found on the web — not an official source"],
   };
 
+  // The conversation so far, sent with each question so the API can turn a
+  // follow-up ("what about 2023?") into a standalone question before searching.
+  // Only the last few turns are sent — the API caps it anyway, and a long
+  // transcript is pure cost.
+  const HISTORY_TURNS = 6;
+  const history = [];
+
   const composer = document.getElementById("stevie-chatbot-composer");
 
   if (composer) {
@@ -203,6 +210,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
         (badgeLabel
           ? `<span class="stevie-chatbot__badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>`
           : "") +
+        // When a follow-up was rewritten, show what was actually searched. The
+        // rewrite is a guess — "what about 2023?" after two different questions
+        // is genuinely ambiguous — so a wrong guess should be visible rather
+        // than leaving the reader wondering why the answer changed subject.
+        (data.rewritten
+          ? `<p class="stevie-chatbot__rewritten">Answering: ${escapeHtml(data.rewritten)}</p>`
+          : "") +
         `<div class="stevie-chatbot__text">${escapeHtml(data.answer || "")}</div>` +
         // Collapsed by default. An answer citing eight pages was showing eight
         // lines of internal references under two lines of answer, which buried
@@ -252,7 +266,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
             "Content-Type": "application/json",
             ...(apiKey ? { "X-API-Key": apiKey } : {}),
           },
-          body: JSON.stringify({ q: question }),
+          body: JSON.stringify({ q: question, history: history.slice(-HISTORY_TURNS) }),
         });
 
         if (!response.ok) {
@@ -269,7 +283,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           throw new Error(detail);
         }
 
-        fillAnswer(pending, await response.json());
+        const data = await response.json();
+        fillAnswer(pending, data);
+        // Recorded only on success. A failed turn has no answer, and a history
+        // entry with a missing reply would give the rewriter a dangling question
+        // to resolve the next follow-up against.
+        history.push({ role: "user", content: question });
+        history.push({ role: "assistant", content: String(data.answer || "").slice(0, 600) });
       } catch (error) {
         // A browser-blocked cross-origin request surfaces as a bare
         // "Failed to fetch" with no detail, so name the two causes that
@@ -423,6 +443,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   .stevie-chatbot__badge.is-verified { color: #35b0b0; }
   .stevie-chatbot__badge.is-live { color: #d3922a; }
   .stevie-chatbot__badge.is-web { color: #d9645e; }
+
+  .stevie-chatbot__rewritten {
+    margin: 0 0 0.5rem;
+    font-size: 0.78rem;
+    font-style: italic;
+    opacity: 0.7;
+  }
 
   .stevie-chatbot__text {
     white-space: pre-wrap;
