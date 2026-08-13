@@ -604,6 +604,13 @@ const config = {
                   ]
                     .filter(Boolean)
                     .join(" ");
+                  // data-label carries each cell's column name so the narrow
+                  // -screen layout can print it via ::before. Below 768px the
+                  // header row is hidden and every row becomes a stacked card,
+                  // because six columns in ~360px left each one so narrow that
+                  // the browser broke words -- and worse, NUMBERS -- mid
+                  // character: an award count of 772 rendered as "77" above a
+                  // lone "2", which reads as a different figure entirely.
                   return `<tr>
                     <td class="spw__cell-org">
                       <button
@@ -613,12 +620,12 @@ const config = {
                         data-profile-key="${esc(key)}"
                       >${esc(r.display_name || key)}</button>
                     </td>
-                    ${showType ? `<td><span class="spw__type-badge spw__type-badge--${ptype}">${ptype === "org" ? "Org" : "Person"}</span></td>` : ""}
-                    <td class="spw__cell-muted" title="${esc(cat.title)}">${esc(cat.text)}</td>
-                    <td class="spw__cell-muted" title="${esc(ctry.title)}">${esc(ctry.text)}</td>
-                    <td class="spw__num">${num(r.award_count)}</td>
-                    <td>${medals}</td>
-                    <td class="spw__cell-muted">${esc(spanOf(r.first_year, r.last_year))}</td>
+                    ${showType ? `<td data-label="Type"><span class="spw__type-badge spw__type-badge--${ptype}">${ptype === "org" ? "Org" : "Person"}</span></td>` : ""}
+                    <td class="spw__cell-muted" data-label="${showType ? "Sector / role" : "Sector"}" title="${esc(cat.title)}">${esc(cat.text)}</td>
+                    <td class="spw__cell-muted" data-label="Country" title="${esc(ctry.title)}">${esc(ctry.text)}</td>
+                    <td class="spw__num" data-label="Awards">${num(r.award_count)}</td>
+                    <td data-label="Medals"><span class="spw__medal-group">${medals || "—"}</span></td>
+                    <td class="spw__cell-muted" data-label="Span">${esc(spanOf(r.first_year, r.last_year)) || "—"}</td>
                   </tr>`;
                 })
                 .join("")}
@@ -937,10 +944,17 @@ const config = {
             <h4 class="spw__drawer-heading">Award history</h4>
             ${
               awards.length
-                ? `<table class="spw__table spw__table--history">
-                    <thead><tr><th>Year</th><th>Level</th><th>Category</th><th>Nomination</th><th>Location</th></tr></thead>
-                    <tbody>${historyRows}</tbody>
-                  </table>
+                // Scrolls sideways in its own box rather than restyling into
+                // cards like the results table does: this is five columns of
+                // short, comparable values read down a column (which year, what
+                // level), and 200 rows x 5 stacked labels would be a far longer
+                // and less scannable page than a table you can nudge sideways.
+                ? `<div class="spw__table-scroll">
+                    <table class="spw__table spw__table--history">
+                      <thead><tr><th>Year</th><th>Level</th><th>Category</th><th>Nomination</th><th>Location</th></tr></thead>
+                      <tbody>${historyRows}</tbody>
+                    </table>
+                  </div>
                   ${awards.length > 200 ? `<p class="spw__drawer-note">Showing the first 200 of ${num(awards.length)} awards.</p>` : ""}`
                 : `<p class="spw__drawer-note">No award history on file for this profile.</p>`
             }`;
@@ -1391,9 +1405,44 @@ const config = {
       font-size: var(--font-size-sm);
     }
 
+    /* break-word, NOT anywhere. `anywhere` also shrinks a column's intrinsic
+       minimum width, which let the table squeeze every column to a few
+       characters and then break mid-word to fit -- on a phone that turned an
+       award count of 772 into "77" above a lone "2", i.e. a wrong number
+       rather than merely ugly wrapping. `break-word` still rescues a single
+       unbreakable run that genuinely cannot fit, but stops the layout from
+       treating every cell as infinitely compressible. */
     .search-past-winners .spw__table th,
     .search-past-winners .spw__table td {
-      overflow-wrap: anywhere;
+      overflow-wrap: break-word;
+    }
+
+    /* Figures must never break or wrap: they are read as one token, and half a
+       number silently reads as a different number. */
+    .search-past-winners .spw__num,
+    .search-past-winners .spw__medal {
+      white-space: nowrap;
+      overflow-wrap: normal;
+    }
+
+    /* One wrapper around the three medal counts. Needed because the mobile card
+       layout makes each cell a two-column grid (label | value), and a grid
+       container treats every ELEMENT child as its own grid item -- so three
+       bare <span> medals were being dealt into separate grid cells instead of
+       sitting together beside their label. Grouping them keeps the cell at
+       exactly two items whatever it contains. */
+    .search-past-winners .spw__medal-group {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0 var(--spacing-xs);
+      min-width: 0;
+    }
+
+    /* Wide tabular data (the drawer's award history) scrolls inside its own box
+       so it can keep real column widths without widening the page. */
+    .search-past-winners .spw__table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
     }
 
     .search-past-winners .spw__cell-org {
@@ -1693,6 +1742,130 @@ const config = {
 
       .search-past-winners .spw__drawer {
         width: 100vw;
+      }
+
+      /* ---- results table -> one card per profile -------------------------
+         Six columns cannot coexist in ~360px: measured on a real phone, every
+         header wrapped ("Secto r / role", "Meda ls", "Spa n"), single words
+         split across lines ("Techn ology", "Indonesi a"), and award counts
+         broke mid-number. Horizontal scrolling was the other option, but it
+         hides the columns that carry the answer (Awards, Medals) off-screen
+         by default, so the reader has to discover them. Stacking each row
+         into a labelled card keeps every field visible and readable at any
+         width, and is why each cell renders a data-label (see renderRows). */
+      .search-past-winners .spw__results {
+        overflow-x: visible;      /* nothing left to scroll once stacked */
+      }
+
+      .search-past-winners .spw__table thead {
+        /* Column names move into each cell's ::before label below. */
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      .search-past-winners .spw__table,
+      .search-past-winners .spw__table tbody,
+      .search-past-winners .spw__table tr,
+      .search-past-winners .spw__table td {
+        display: block;
+        width: auto;
+      }
+
+      .search-past-winners .spw__table tr {
+        margin-bottom: var(--spacing-md);
+        padding: var(--spacing-md);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        background-color: var(--color-bg-surface, var(--color-bg-muted));
+      }
+
+      .search-past-winners .spw__table td {
+        display: grid;
+        grid-template-columns: 5.5rem 1fr;
+        gap: var(--spacing-sm);
+        align-items: baseline;
+        padding: 3px 0;
+        border: 0;
+      }
+
+      .search-past-winners .spw__table td::before {
+        content: attr(data-label);
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        line-height: 1.5;
+      }
+
+      /* The profile name is the card's heading, not a labelled field. */
+      .search-past-winners .spw__table td.spw__cell-org {
+        display: block;
+        margin-bottom: var(--spacing-xs);
+        padding-bottom: var(--spacing-xs);
+        border-bottom: 1px solid var(--color-border-subtle, var(--color-border));
+        font-size: var(--font-size-md);
+      }
+
+      .search-past-winners .spw__table td.spw__cell-org::before {
+        content: none;
+      }
+
+      /* Right-alignment is for a numeric COLUMN; in a card the value sits
+         beside its label, so it reads left-aligned like every other field. */
+      .search-past-winners .spw__table td.spw__num {
+        text-align: left;
+      }
+
+      /* The drawer's award history keeps its table shape and scrolls, so it
+         must NOT inherit the stacking above. */
+      .search-past-winners .spw__table-scroll .spw__table,
+      .search-past-winners .spw__table-scroll .spw__table tbody {
+        display: table;
+        width: 100%;
+      }
+
+      .search-past-winners .spw__table-scroll .spw__table thead {
+        display: table-header-group;
+        position: static;
+        width: auto;
+        height: auto;
+        clip-path: none;
+      }
+
+      .search-past-winners .spw__table-scroll .spw__table tr {
+        display: table-row;
+        margin: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background-color: transparent;
+      }
+
+      .search-past-winners .spw__table-scroll .spw__table td {
+        display: table-cell;
+        padding: var(--spacing-xs) var(--spacing-sm);
+      }
+
+      .search-past-winners .spw__table-scroll .spw__table td::before {
+        content: none;
+      }
+
+      /* Category and Nomination carry real prose; without a floor they
+         collapse to a few characters per line inside the scroll box. */
+      .search-past-winners .spw__table--history th:nth-child(3),
+      .search-past-winners .spw__table--history td:nth-child(3),
+      .search-past-winners .spw__table--history th:nth-child(4),
+      .search-past-winners .spw__table--history td:nth-child(4) {
+        min-width: 11rem;
+      }
+
+      .search-past-winners .spw__table--history th:nth-child(5),
+      .search-past-winners .spw__table--history td:nth-child(5) {
+        min-width: 7rem;
       }
     }
   }
