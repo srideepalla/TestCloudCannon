@@ -1,6 +1,6 @@
 ---
 _schema: default
-title:
+title: Natalee Gibson
 description: ''
 pageSections:
   - _component: page-sections/people/profile-section
