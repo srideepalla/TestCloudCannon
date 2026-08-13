@@ -1,0 +1,117 @@
+{
+  "type": "person",
+  "name": "Julie Walker",
+  "headline": "Julie Walker – Championing People-First Leadership in Healthcare Technology",
+  "summary": "CEO of Propelus who unified a fragmented healthcare compliance company into one brand, launched its Data Solutions growth vector, and built a woman-majority leadership team driving industry-leading employee engagement and customer retention.",
+  "role": "CEO",
+  "affiliation": "Propelus",
+  "location": "Jacksonville, FL",
+  "eyebrow": "Best Female CEO of the Year",
+  "badge": {
+    "primary": "2025",
+    "secondary": "Gold Winner",
+    "tertiary": "Stevie Awards"
+  },
+  "details": [
+    {
+      "label": "Company",
+      "value": "Propelus, Jacksonville, FL"
+    },
+    {
+      "label": "Category",
+      "value": "Individual Awards Categories"
+    },
+    {
+      "label": "Sub category",
+      "value": "Best Female CEO of the Year"
+    },
+    {
+      "label": "Submission format",
+      "value": "Written answers to the questions"
+    },
+    {
+      "label": "Achievements since",
+      "value": "1 July 2023"
+    }
+  ],
+  "draft": false,
+  "sections": [
+    {
+      "title": "About the company",
+      "type": "prose",
+      "paragraphs": [
+        "Propelus provides industry-leading healthcare solutions for dynamic workforce compliance. Through privileged partnerships with state agencies, associations, licensing boards, and compacts, and utilizing innovative technology, we are modernizing how professionals, employers, regulators, and partners work together to support critical compliance programs and safeguard our communities."
+      ],
+      "bullets": []
+    },
+    {
+      "title": "The nomination",
+      "type": "qa",
+      "items": [
+        {
+          "number": 1,
+          "prompt": "Briefly describe the nominated individual: history and past performance (up to 200 words):",
+          "note": "Total 174 words used.",
+          "paragraphs": [
+            "Julie Walker serves as the Chief Executive Officer at Propelus, a leading technology company moving healthcare forward by doing good, doing what’s human, and doing what makes a difference. Its innovative solutions include CE Broker, EverCheck, Data Solutions, and Immuware. Julie Walker came to Propelus as a first-time CEO, and with a wealth of experience, knowledge, and passion for advancing healthcare. Prior to joining Propelus, she previously served as Executive Vice President and Managing Director at symplr, a healthcare operations software provider, and other senior leadership roles at ProviderTrust and Ascend Learning.",
+            "Walker holds a Bachelor of Business Administration degree from Valparaiso University and a Master of Business Administration degree from Lipscomb University. In recent years, she has been recognized as a Woman Power Player in Health IT (2022), a Woman in IT to Watch (2022), and a winner of the Gold and Silver Stevie ® Awards in the Best Female Entrepreneur – Business Products and Woman of the Year – Healthcare categories in the 19th annual Stevie Awards for Women in Business (2022)."
+          ],
+          "bullets": []
+        },
+        {
+          "number": 2,
+          "prompt": "Outline the nominee's achievements since July 1 2023 that you wish to bring to the judges' attention (up to 250 words):",
+          "note": "Total 244 words used.",
+          "paragraphs": [
+            "Since July 2023, Julie has masterfully transformed Propelus from a collection of disparate solutions/entities with varied cultures into a single, powerhouse organization. When she arrived, teams were siloed and strategy was fragmented. Julie shattered these internal barriers, uniting a highly engaged team of over 220 individuals across the US and LATAM around a singular mission, culminating in the successful launch of the unified Propelus brand in August 2023.",
+            "A true visionary, Julie recognized that the company’s competitive advantage lay not just in its software solutions, but in its 20+ years of deep and privileged industry relationships. She spearheaded the launch of Data Solutions, a groundbreaking new growth vector that leveraged this untapped potential. This strategic move created outsized enterprise value, substantially expanded the company’s addressable market, and provided customers with new options for accessing critical workforce compliance data.",
+            "Julie’s leadership is defined by this blend of action and empathy. She has intentionally cultivated and empowered a woman-majority management team, acting as a dedicated ally and advocate as each leader flourished and expanded their scope. Her vision is anchored in 'doing good,' forging partnerships that reflect the company’s soul. This includes supporting The DAISY Foundation’s mission to recognize and honor nurses (partnership launched Fall 2023) and providing Propelus’s technology pro bono to The Maven Project (partnership launched Summer 2025) to help deliver specialty healthcare to underserved communities. Julie is building a company that not only is profitable, but is also a force for good."
+          ],
+          "bullets": []
+        },
+        {
+          "number": 3,
+          "prompt": "Reference any attachments of supporting materials throughout this nomination and how they provide evidence of the claims you have made in this nomination (up to 250 words):",
+          "note": "Total 228 words used.",
+          "paragraphs": [
+            "Julie Walker Testimonials: The following testimonials reflect Julie’s people-first approach to leadership."
+          ],
+          "bullets": [
+            "Julie Walker, CEO, LinkedIn: Julie’s impressive background is marked by deep healthcare industry experience.",
+            "Propelus Anniversary: CEO Julie Walker highlights the company’s continued commitment to innovation, life-centricity, and expanding its reach to better serve healthcare professionals and organizations.",
+            "Propelus Brand Announcement: The parent company behind leading workforce compliance management and continuing education products, CE Broker, EverCheck, and Immuware, today unveiled a new corporate brand — Propelus.",
+            "DAISY Partnership: Propelus™ is proud to join the DAISY Foundation™ to spotlight the compassion and positive impact within the nursing profession.",
+            "Gratitude: At Propelus™, gratitude is more than a mere sentiment; it’s a compass that directs our values and collective actions.",
+            "DAISY Interview: Propelus spotlighted Tiffany Banks, Director of Nursing at Baptist Health Lexington and DAISY Nurse Leader Award nominee, in an inspiring Nurses Month interview with Propelus CEO Julie Walker.",
+            "Stevie Award-Employee Engagement: Propelus has been awarded a Silver Stevie® Award in the Achievement in Employee Engagement category at the 2025 Stevie Awards for Great Employers.",
+            "Stevie Awards-Technology Excellence: Propelus was honored with a Silver Stevie® Award for Technical Innovation of the Year in the inaugural Stevie Awards for Technology Excellence 2024.",
+            "Customer Testimonials: Demonstrates the connection between employee engagement and exceptional service, reflecting our people-first approach and the positive impact of a motivated workforce on customer success."
+          ]
+        },
+        {
+          "number": 6,
+          "prompt": "Explain why the achievements you have highlighted are unique or significant. If possible compare the achievements to the performance of other players in your industry and/or to the nominee's past performance (up to 250 words):",
+          "note": "Total 211 words used.",
+          "paragraphs": [
+            "Julie’s achievements are significant because they prove that empathetic, people-first leadership is a powerful catalyst for elite business performance. In an industry often fixated on a \"growth-at-all-costs\" mentality, Julie’s approach has created remarkable, quantifiable value for every stakeholder.",
+            "The internal transformation she led is profound. By unifying disparate teams into \"one Propelus,\" she drove the employee Net Promoter Score (eNPS) to +56, more than double the tech industry average of +26, and boosted engagement scores to an exceptional 90 out of 100. This is a direct testament to the high-trust, mission-driven culture she built from previously siloed entities.",
+            "This internal health translates to world-class customer loyalty. Propelus achieves over 115% net revenue retention with its health system clients, a figure that significantly surpasses the average healthcare SaaS benchmark of approximately 108%. This demonstrates an incredible ability not only to retain but also to expand customer relationships. This success, coupled with the acquisition of nearly 50 new large-scale health systems across 2024-2025, validates the market’s deep trust in her vision.",
+            "For investors, Julie delivers a rare and coveted combination of financial discipline and aggressive growth. Propelus consistently operates as a \"Rule of 40+\" company, showcasing a masterful balance of profitability and strategic investment in innovation that fuels sustainable, long-term enterprise value."
+          ],
+          "bullets": []
+        }
+      ]
+    },
+    {
+      "title": "Attachments, videos & links",
+      "type": "links",
+      "items": [
+        {
+          "title": "Julie Walker – Championing People-First Leadership in Healthcare Technology",
+          "url": "",
+          "note": "Redacted for publication"
+        }
+      ]
+    }
+  ]
+}
