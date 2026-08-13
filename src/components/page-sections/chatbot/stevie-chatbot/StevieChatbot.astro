@@ -1,24 +1,35 @@
 ---
 /**
- * StevieChatbot — asks the StevieIntel chatbot API and renders the answer.
+ * StevieChatbot — a chat transcript backed by the StevieIntel chatbot API.
  *
  * WHY THIS COMPONENT DOES NOT ANSWER ANYTHING ITSELF
  * Answering a Stevie Awards question means searching 2,048 scraped passages and
  * 83,574 winner records, then calling a paid AI model. None of that can happen
  * in a browser — there is no database there, no server runtime, and a paid API
  * key in a page's source is readable by anyone. So this component is the input
- * box and the answer area; the thinking happens in the API it calls.
+ * box and the transcript; the thinking happens in the API it calls.
+ *
+ * WHY A TRANSCRIPT AND NOT A SINGLE ANSWER
+ * The first version showed one answer at a time and replaced it on the next
+ * question. That is a search box, not a chat: a reader could not see what they
+ * had already asked, compare two answers, or scroll back. Every message now
+ * stays on screen in the order it happened, which is what "chatbot" leads people
+ * to expect.
+ *
+ * WHAT THIS UI PROMISES THAT THE API DOES NOT YET KEEP
+ * A transcript implies memory. The API has none — each question is answered on
+ * its own, so "what about 2023?" is not understood as a follow-up and gets
+ * answered as if asked cold. The layout makes that limitation more surprising,
+ * not less, so it is worth fixing in the API rather than hiding in the UI.
  *
  * PATTERN
  * Follows EnquiryForm.astro, which already calls an external API from the
  * browser using a PUBLIC_ environment variable and passes values into client
- * script with `define:vars`. Same approach, so this behaves like the rest of the
- * codebase rather than introducing a second style.
+ * script with `define:vars`.
  *
  * ONE DELIBERATE DIFFERENCE FROM EnquiryForm
  * EnquiryForm's own comment reads: "NO API token is sent ... so no credentials
- * are exposed in the browser." It uses Zendesk's anonymous endpoints to achieve
- * that.
+ * are exposed in the browser." It uses Zendesk's anonymous endpoints for that.
  *
  * This component DOES send a key, and anyone can read it from the page source.
  * That is acceptable only while both hold:
@@ -36,7 +47,7 @@
  * prefix is required: Astro only exposes PUBLIC_-prefixed variables to browser
  * code, and this request is made from the browser.
  *
- *   PUBLIC_STEVIE_API_URL   e.g. https://xxxx.trycloudflare.com  (or http://localhost:8003)
+ *   PUBLIC_STEVIE_API_URL   e.g. https://xxxx.trycloudflare.com
  *   PUBLIC_STEVIE_API_KEY   the API's STEVIE_API_KEY
  */
 import CustomSection from "@builders/custom-section/CustomSection.astro";
@@ -90,33 +101,41 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
   <Text alignX="center" text={text} data-prop="text" />
 
-  <!--
-    Deliberately a div, not a form. CloudCannon's visual editor renders the page
-    in a sandboxed iframe without the 'allow-forms' permission, so the browser
-    blocks submission before any handler runs — "Blocked form submission to ''
-    because the form's frame is sandboxed". A form works on the live site and
-    silently does nothing in the editor, which is where an editor will try it
-    first. A button click and an Enter keypress work in both.
-  -->
-  <div class="stevie-chatbot__form" id="stevie-chatbot-form">
-    <label class="stevie-chatbot__label" for="stevie-chatbot-input">Your question</label>
-    <div class="stevie-chatbot__row">
-      <input
-        id="stevie-chatbot-input"
-        class="stevie-chatbot__input"
-        type="text"
-        name="question"
-        placeholder={placeholder}
-        autocomplete="off"
-        maxlength="500"
-        required
-      />
-      <button class="stevie-chatbot__submit" type="button">{buttonLabel}</button>
+  <div class="stevie-chatbot__window">
+    <!--
+      role="log" with aria-live="polite" so a screen reader announces each new
+      message as it arrives, rather than the reader having to hunt for it.
+    -->
+    <div class="stevie-chatbot__transcript" id="stevie-chatbot-transcript" role="log" aria-live="polite">
+      <p class="stevie-chatbot__empty" id="stevie-chatbot-empty">
+        Ask a question to start. Answers show which source they came from.
+      </p>
     </div>
-    <p class="stevie-chatbot__status" id="stevie-chatbot-status" role="status" aria-live="polite"></p>
-  </div>
 
-  <div class="stevie-chatbot__answers" id="stevie-chatbot-answers"></div>
+    <!--
+      Deliberately a div, not a form. CloudCannon's visual editor renders the page
+      in a sandboxed iframe without the 'allow-forms' permission, so the browser
+      blocks submission before any handler runs — "Blocked form submission to ''
+      because the form's frame is sandboxed". A form works on the live site and
+      silently does nothing in the editor, which is where an editor will try it
+      first. A button click and an Enter keypress work in both.
+    -->
+    <div class="stevie-chatbot__composer" id="stevie-chatbot-composer">
+      <label class="stevie-chatbot__label" for="stevie-chatbot-input">Your question</label>
+      <div class="stevie-chatbot__row">
+        <input
+          id="stevie-chatbot-input"
+          class="stevie-chatbot__input"
+          type="text"
+          name="question"
+          placeholder={placeholder}
+          autocomplete="off"
+          maxlength="500"
+        />
+        <button class="stevie-chatbot__submit" type="button">{buttonLabel}</button>
+      </div>
+    </div>
+  </div>
 </CustomSection>
 
 <script define:vars={{ apiUrl, apiKey, showSources }}>
@@ -126,23 +145,86 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   // a question about fees or deadlines.
   const TIERS = {
     profile: ["is-records", "From our winner records"],
+    totals: ["is-records", "Counted from our winner records"],
     tier1: ["is-verified", "From our verified knowledge base"],
     tier2a: ["is-live", "Found live on stevieawards.com"],
     tier2b: ["is-web", "Found on the web — not an official source"],
   };
 
-  const form = document.getElementById("stevie-chatbot-form");
+  const composer = document.getElementById("stevie-chatbot-composer");
 
-  if (form) {
+  if (composer) {
     const input = document.getElementById("stevie-chatbot-input");
-    const statusEl = document.getElementById("stevie-chatbot-status");
-    const answersEl = document.getElementById("stevie-chatbot-answers");
-    const submitBtn = form.querySelector(".stevie-chatbot__submit");
+    const transcript = document.getElementById("stevie-chatbot-transcript");
+    const emptyHint = document.getElementById("stevie-chatbot-empty");
+    const submitBtn = composer.querySelector(".stevie-chatbot__submit");
 
     const escapeHtml = (value) =>
       String(value ?? "").replace(/[&<>"']/g, (char) =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char],
       );
+
+    /** Append a message element and keep the newest in view. */
+    function push(el) {
+      if (emptyHint) emptyHint.remove();
+      transcript.appendChild(el);
+      // scrollTop rather than scrollIntoView: the latter scrolls the whole page
+      // when the transcript is taller than the viewport, yanking the reader away
+      // from the input they are typing in.
+      transcript.scrollTop = transcript.scrollHeight;
+      return el;
+    }
+
+    function userMessage(question) {
+      const el = document.createElement("div");
+      el.className = "stevie-chatbot__msg is-user";
+      el.innerHTML = `<div class="stevie-chatbot__bubble">${escapeHtml(question)}</div>`;
+      return push(el);
+    }
+
+    /** A placeholder bubble, replaced in place once the answer arrives. */
+    function pendingMessage() {
+      const el = document.createElement("div");
+      el.className = "stevie-chatbot__msg is-bot is-pending";
+      el.innerHTML =
+        `<div class="stevie-chatbot__bubble">` +
+        `<span class="stevie-chatbot__dots" aria-label="Thinking">` +
+        `<i></i><i></i><i></i></span></div>`;
+      return push(el);
+    }
+
+    function fillAnswer(el, data) {
+      const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
+      const sources = showSources && Array.isArray(data.sources) ? data.sources : [];
+
+      el.className = "stevie-chatbot__msg is-bot";
+      el.innerHTML =
+        `<div class="stevie-chatbot__bubble">` +
+        (badgeLabel
+          ? `<span class="stevie-chatbot__badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>`
+          : "") +
+        `<div class="stevie-chatbot__text">${escapeHtml(data.answer || "")}</div>` +
+        // Collapsed by default. An answer citing eight pages was showing eight
+        // lines of internal references under two lines of answer, which buried
+        // the answer and made every reply look like a search dump.
+        (sources.length
+          ? `<details class="stevie-chatbot__sources-panel">` +
+            `<summary class="stevie-chatbot__sources-summary">Sources (${sources.length})</summary>` +
+            `<ul class="stevie-chatbot__sources">${sources
+              .map((source, index) => `<li>[${index + 1}] ${escapeHtml(source)}</li>`)
+              .join("")}</ul></details>`
+          : "") +
+        `</div>`;
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    function fillError(el, message) {
+      el.className = "stevie-chatbot__msg is-bot has-error";
+      el.innerHTML =
+        `<div class="stevie-chatbot__bubble">` +
+        `<div class="stevie-chatbot__text">${escapeHtml(message)}</div></div>`;
+      transcript.scrollTop = transcript.scrollHeight;
+    }
 
     submitBtn.addEventListener("click", () => ask());
     input.addEventListener("keydown", (event) => {
@@ -154,10 +236,14 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
     async function ask() {
       const question = input.value.trim();
-      if (!question) return;
+      if (!question || submitBtn.disabled) return;
 
+      userMessage(question);
+      // Cleared immediately, like every chat app: the question is already on
+      // screen above, so leaving it in the box reads as "not sent".
+      input.value = "";
       submitBtn.disabled = true;
-      statusEl.textContent = "Thinking…";
+      const pending = pendingMessage();
 
       try {
         const response = await fetch(`${apiUrl}/ask`, {
@@ -183,9 +269,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           throw new Error(detail);
         }
 
-        renderAnswer(question, await response.json());
-        input.value = "";
-        statusEl.textContent = "";
+        fillAnswer(pending, await response.json());
       } catch (error) {
         // A browser-blocked cross-origin request surfaces as a bare
         // "Failed to fetch" with no detail, so name the two causes that
@@ -196,67 +280,35 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
             : "Could not reach the chatbot. It may be offline, or the browser blocked the " +
               "request — a page served over https cannot call an http address, and this " +
               "site's domain must be listed in the API's allowed origins.";
-        renderError(question, message);
-        statusEl.textContent = "";
+        fillError(pending, message);
       } finally {
         submitBtn.disabled = false;
+        input.focus();
       }
-    }
-
-    function renderAnswer(question, data) {
-      const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
-      const sources = showSources && Array.isArray(data.sources) ? data.sources : [];
-
-      const block = document.createElement("article");
-      block.className = "stevie-chatbot__answer";
-      block.innerHTML = [
-        `<p class="stevie-chatbot__asked">${escapeHtml(question)}</p>`,
-        badgeLabel
-          ? `<span class="stevie-chatbot__badge ${badgeClass}">${escapeHtml(badgeLabel)}</span>`
-          : "",
-        `<div class="stevie-chatbot__text">${escapeHtml(data.answer || "")}</div>`,
-        // Collapsed by default. An answer citing eight pages was showing eight
-        // lines of internal references under two lines of answer, which buried
-        // the answer and made every reply look like a search dump. The count in
-        // the summary keeps the sources discoverable without spending the space.
-        sources.length
-          ? `<details class="stevie-chatbot__sources-panel">` +
-            `<summary class="stevie-chatbot__sources-summary">` +
-            `Sources (${sources.length})</summary>` +
-            `<ul class="stevie-chatbot__sources">${sources
-              .map((source, index) => `<li>[${index + 1}] ${escapeHtml(source)}</li>`)
-              .join("")}</ul></details>`
-          : "",
-      ].join("");
-
-      answersEl.replaceChildren(block);
-    }
-
-    function renderError(question, message) {
-      const block = document.createElement("article");
-      block.className = "stevie-chatbot__answer has-error";
-      block.innerHTML = [
-        `<p class="stevie-chatbot__asked">${escapeHtml(question)}</p>`,
-        `<div class="stevie-chatbot__text">${escapeHtml(message)}</div>`,
-      ].join("");
-
-      answersEl.replaceChildren(block);
     }
   }
 </script>
 
 <style>
-  .stevie-chatbot__form {
+  .stevie-chatbot__window {
     margin-top: 1.5rem;
+    border: 1px solid color-mix(in srgb, currentcolor 25%, transparent);
+    border-radius: 0.4rem;
+    overflow: hidden;
+  }
+
+  .stevie-chatbot__composer {
+    padding: 0.9rem 1rem 1rem;
+    border-top: 1px solid color-mix(in srgb, currentcolor 25%, transparent);
   }
 
   .stevie-chatbot__label {
     display: block;
     margin-bottom: 0.4rem;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: 0.7;
+    opacity: 0.6;
   }
 
   .stevie-chatbot__row {
@@ -266,7 +318,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   }
 
   .stevie-chatbot__input {
-    flex: 1 1 18rem;
+    flex: 1 1 16rem;
     padding: 0.8rem 0.9rem;
     font: inherit;
     color: inherit;
@@ -290,87 +342,135 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     cursor: default;
     opacity: 0.55;
   }
-
-  .stevie-chatbot__status {
-    min-height: 1.2rem;
-    margin: 0.6rem 0 0;
-    font-size: 0.85rem;
-    opacity: 0.7;
-  }
 </style>
 
 <!--
-  The answer blocks are created by JavaScript after the page loads, so they do
-  not carry Astro's data-astro-cid scope attribute and scoped rules cannot
-  match them. Every rule below is therefore global, and every selector is
-  prefixed with .stevie-chatbot__ so nothing leaks into the rest of the site.
+  The message elements are created by JavaScript after the page loads, so they do
+  not carry Astro's data-astro-cid scope attribute and scoped rules cannot match
+  them. Every rule below is therefore global, and every selector is prefixed with
+  .stevie-chatbot__ so nothing leaks into the rest of the site.
 -->
 <style is:global>
-  .stevie-chatbot__answers {
-    display: grid;
-    gap: 1rem;
-    margin-top: 1.5rem;
+  .stevie-chatbot__transcript {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    /* Tall enough to hold a few exchanges, capped so the composer stays on
+       screen instead of being pushed below the fold as the chat grows. */
+    min-height: 12rem;
+    max-height: 60vh;
+    padding: 1rem;
+    overflow-y: auto;
+    /* A chat reads bottom-up when it overflows; anchoring keeps the newest
+       message pinned while earlier ones scroll away above it. */
+    overflow-anchor: auto;
   }
 
-  .stevie-chatbot__answer {
-    padding: 1rem 1.1rem;
-    border: 1px solid currentcolor;
-    border-radius: 0.25rem;
+  .stevie-chatbot__empty {
+    margin: auto 0;
+    font-size: 0.9rem;
+    text-align: center;
+    opacity: 0.55;
   }
 
-  .stevie-chatbot__answer.has-error {
+  .stevie-chatbot__msg {
+    display: flex;
+    max-width: 100%;
+  }
+
+  .stevie-chatbot__msg.is-user {
+    justify-content: flex-end;
+  }
+
+  .stevie-chatbot__msg.is-bot {
+    justify-content: flex-start;
+  }
+
+  .stevie-chatbot__bubble {
+    max-width: 46ch;
+    padding: 0.7rem 0.9rem;
+    border-radius: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .stevie-chatbot__msg.is-user .stevie-chatbot__bubble {
+    color: #fff;
+    background: #0b6e6e;
+    border-bottom-right-radius: 0.2rem;
+  }
+
+  .stevie-chatbot__msg.is-bot .stevie-chatbot__bubble {
+    background: color-mix(in srgb, currentcolor 10%, transparent);
+    border-bottom-left-radius: 0.2rem;
+  }
+
+  .stevie-chatbot__msg.has-error .stevie-chatbot__bubble {
     border-left: 3px solid #99302b;
-  }
-
-  .stevie-chatbot__asked {
-    margin: 0 0 0.7rem;
-    font-size: 0.85rem;
-    opacity: 0.65;
   }
 
   .stevie-chatbot__badge {
     display: inline-block;
-    margin-bottom: 0.7rem;
-    padding: 0.2rem 0.5rem;
-    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.65rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     border: 1px solid currentcolor;
     border-radius: 0.15rem;
   }
 
-  .stevie-chatbot__badge.is-records {
-    color: #1c6e45;
-  }
-
-  .stevie-chatbot__badge.is-verified {
-    color: #0b6e6e;
-  }
-
-  .stevie-chatbot__badge.is-live {
-    color: #8a5a0c;
-  }
-
-  .stevie-chatbot__badge.is-web {
-    color: #99302b;
-  }
+  .stevie-chatbot__badge.is-records { color: #2e9e6b; }
+  .stevie-chatbot__badge.is-verified { color: #35b0b0; }
+  .stevie-chatbot__badge.is-live { color: #d3922a; }
+  .stevie-chatbot__badge.is-web { color: #d9645e; }
 
   .stevie-chatbot__text {
     white-space: pre-wrap;
   }
 
+  /* Three dots while a question is in flight. A question can take five seconds,
+     and a bubble that appears with nothing in it reads as a failure. */
+  .stevie-chatbot__dots {
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+    height: 1.2em;
+  }
+
+  .stevie-chatbot__dots i {
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: currentcolor;
+    opacity: 0.35;
+    animation: stevie-chatbot-blink 1.2s infinite ease-in-out;
+  }
+
+  .stevie-chatbot__dots i:nth-child(2) { animation-delay: 0.2s; }
+  .stevie-chatbot__dots i:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes stevie-chatbot-blink {
+    0%, 80%, 100% { opacity: 0.25; }
+    40% { opacity: 0.9; }
+  }
+
+  /* Respect a reader who has asked the system for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .stevie-chatbot__dots i {
+      animation: none;
+      opacity: 0.5;
+    }
+  }
+
   .stevie-chatbot__sources-panel {
-    margin-top: 0.9rem;
-    border-top: 1px solid currentcolor;
-    padding-top: 0.6rem;
-    /* The border is structural, not decorative — at full strength it competes
-       with the answer text above it. */
-    border-color: color-mix(in srgb, currentcolor 20%, transparent);
+    margin-top: 0.7rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid color-mix(in srgb, currentcolor 20%, transparent);
   }
 
   .stevie-chatbot__sources-summary {
     cursor: pointer;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     opacity: 0.65;
@@ -385,26 +485,18 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     content: "";
   }
 
-  .stevie-chatbot__sources-summary::before {
-    content: "▸ ";
-  }
-
-  .stevie-chatbot__sources-panel[open] .stevie-chatbot__sources-summary::before {
-    content: "▾ ";
-  }
-
-  .stevie-chatbot__sources-summary:hover {
-    opacity: 0.9;
-  }
+  .stevie-chatbot__sources-summary::before { content: "▸ "; }
+  .stevie-chatbot__sources-panel[open] .stevie-chatbot__sources-summary::before { content: "▾ "; }
+  .stevie-chatbot__sources-summary:hover { opacity: 0.9; }
 
   .stevie-chatbot__sources {
-    margin: 0.6rem 0 0;
+    margin: 0.5rem 0 0;
     padding-left: 1.1rem;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     opacity: 0.7;
   }
 
   .stevie-chatbot__sources li {
-    word-break: break-all;
+    word-break: break-word;
   }
 </style>
