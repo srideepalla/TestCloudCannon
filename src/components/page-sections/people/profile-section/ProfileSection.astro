@@ -1,0 +1,202 @@
+---
+/**
+ * Embeds a profile (same shape as a src/content/profiles/*.json entry) as a
+ * section on any page — reuses the profile-directory rendering layer
+ * (SectionRenderer + section components + profile-directory.css), the same
+ * one ProfileLayout.astro uses for standalone /profiles/<slug> pages, just
+ * without the breadcrumb/sidebar/full-page shell.
+ *
+ * Data source: if `apiUrl` is set, it's fetched at build time (this runs
+ * during Astro's static generation, once per build) and used as the profile.
+ * Otherwise, or if that fetch fails, `data` (pasted JSON) is used instead.
+ * Because this runs at build time against a plain GET, `apiUrl` must point
+ * to a public, read-only endpoint — never one that requires a secret/bearer
+ * token, since that token would end up committed in this page's content.
+ */
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Image from "@core-elements/image/Image.astro";
+import SectionRenderer from "@components/profile-directory/SectionRenderer.astro";
+import "@styles/profile-directory.css";
+
+function isPlainObject(value: unknown): value is Record<string, any> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+const {
+  apiUrl,
+  data,
+  colorScheme = "light",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+let profile: Record<string, any> | null = isPlainObject(data) ? data : null;
+
+if (typeof apiUrl === "string" && apiUrl.trim()) {
+  try {
+    const response = await fetch(apiUrl);
+    if (response.ok) {
+      const fetched = await response.json();
+      if (isPlainObject(fetched)) {
+        profile = fetched;
+      } else {
+        console.warn(`ProfileSection: response from ${apiUrl} was not a JSON object — using pasted data instead.`);
+      }
+    } else {
+      console.warn(`ProfileSection: fetch failed (${response.status}) for ${apiUrl} — using pasted data instead.`);
+    }
+  } catch (error) {
+    console.warn(
+      `ProfileSection: fetch error for ${apiUrl}: ${(error as Error).message} — using pasted data instead.`
+    );
+  }
+}
+
+// Only bail out on the live site with nothing to show — the CloudCannon
+// builder preview (identified by the presence of `_component`) still renders
+// so editors see a placeholder instead of a blank gap.
+if (!_component && !profile) return;
+
+const p = profile ?? {};
+const isPerson = p.type === "person";
+const socialLinks = Array.isArray(p.socialLinks) ? p.socialLinks : [];
+const details = Array.isArray(p.details) ? p.details : [];
+const tags = Array.isArray(p.tags) ? p.tags : [];
+const sections = Array.isArray(p.sections) ? p.sections : [];
+
+const subtitle = p.tagline || [p.role, p.affiliation].filter(Boolean).join(", ");
+const hasBadge = p.badge?.primary || p.badge?.secondary || p.badge?.tertiary;
+
+const contactLinks = [
+  p.email ? { label: p.email, href: `mailto:${p.email}` } : null,
+  p.phone ? { label: p.phone, href: `tel:${String(p.phone).replace(/[^+\d]/g, "")}` } : null,
+  p.website ? { label: String(p.website).replace(/^https?:\/\//, ""), href: p.website } : null,
+].filter((link): link is { label: string; href: string } => link !== null);
+---
+
+<CustomSection
+  colorScheme={colorScheme}
+  backgroundColor="base"
+  maxContentWidth="3xl"
+  paddingHorizontal="xl"
+  paddingVertical="lg"
+  class:list={["profile-section", className]}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <article
+    class="profile-directory"
+    data-theme={colorScheme === "dark" ? "dark" : "light"}
+  >
+    {
+      p.name ? (
+        <>
+          <section class="hero">
+            <div class="wrap">
+              {p.eyebrow && <p class="eyebrow">{p.eyebrow}</p>}
+              <div class="hero-grid">
+                <div>
+                  <h1>{p.headline ?? p.name}</h1>
+                  {subtitle && <p class="lede">{subtitle}</p>}
+                  {p.summary && <p class="hero-summary">{p.summary}</p>}
+                </div>
+                {
+                  hasBadge && (
+                    <div class="badge">
+                      {p.badge?.primary && <span class="badge-year">{p.badge.primary}</span>}
+                      {p.badge?.secondary && <span class="badge-result">{p.badge.secondary}</span>}
+                      {p.badge?.tertiary && <span class="badge-name">{p.badge.tertiary}</span>}
+                    </div>
+                  )
+                }
+              </div>
+
+              {
+                p.photo?.source && (
+                  <Image
+                    source={p.photo.source}
+                    alt={p.photo.alt || p.name}
+                    aspectRatio={isPerson ? "portrait" : "landscape"}
+                    rounded={true}
+                    class="profile-photo"
+                  />
+                )
+              }
+
+              {p.location && <p class="profile-location">{p.location}</p>}
+
+              {
+                contactLinks.length > 0 && (
+                  <ul class="profile-contact">
+                    {contactLinks.map((link) => (
+                      <li>
+                        <a href={link.href}>{link.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+
+              {
+                socialLinks.length > 0 && (
+                  <ul class="profile-socials">
+                    {socialLinks.map((social: { platform: string; url: string }) => (
+                      <li>
+                        <a href={social.url} target="_blank" rel="noopener noreferrer">
+                          {social.platform}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
+
+              {
+                tags.length > 0 && (
+                  <ul class="tags">
+                    {tags.map((tag: string) => (
+                      <li class="chip">{tag}</li>
+                    ))}
+                  </ul>
+                )
+              }
+
+              {
+                details.length > 0 && (
+                  <dl class="meta">
+                    {details.map((detail: { label: string; value: string }) => (
+                      <div>
+                        <dt>{detail.label}</dt>
+                        <dd>{detail.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                )
+              }
+            </div>
+          </section>
+
+          {
+            p.bio && (
+              <section class="section" data-section="bio">
+                <div class="wrap prose">
+                  <p>{p.bio}</p>
+                </div>
+              </section>
+            )
+          }
+
+          <SectionRenderer sections={sections} />
+        </>
+      ) : (
+        <div class="wrap">
+          <p class="lede">
+            Add an API URL or paste profile JSON to populate this section.
+          </p>
+        </div>
+      )
+    }
+  </article>
+</CustomSection>

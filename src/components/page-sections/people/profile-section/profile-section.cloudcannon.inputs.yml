@@ -1,0 +1,25 @@
+apiUrl:
+  type: url
+  comment: >-
+    Optional. If set, the profile JSON is fetched from this URL at build
+    time (when the site rebuilds) and used to populate this section. Must be
+    a public, read-only endpoint — never one that requires a secret/bearer
+    token, since anything entered here is committed to this page's content.
+    Leave empty to use the JSON data field below instead.
+data:
+  type: code
+  syntax: json
+  comment: >-
+    Profile JSON, used when apiUrl is empty or its fetch fails. Same shape
+    as an entry in the Profiles collection — see src/content/profiles/*.json
+    for examples (name, headline, summary, badge, photo, socialLinks,
+    details, tags, sections, etc.).
+colorScheme:
+  type: select
+  comment: Color scheme theme for this profile section.
+  options:
+    values:
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark

@@ -1,18 +1,23 @@
 # profiles-api
 
-A small Cloudflare Worker that turns the profiles directory into a service:
-POST a profile as JSON, and the Worker commits it to
-`src/content/profiles/<slug>.json` in the `TestCloudCannon` GitHub repo.
+A small Cloudflare Worker that turns profile and page creation into a
+service. Pick a CloudCannon component, POST its JSON, and the Worker commits
+a file straight into the `TestCloudCannon` GitHub repo:
+
+- `POST /profiles` → `src/content/profiles/<slug>.json` (person/organization profile)
+- `POST /pages` → `src/content/pages/<slug>.md` (a whole page built around one
+  page-section component — hero banner, staff grid, card carousel, etc.)
+
 CloudCannon watches that repo and rebuilds the Astro site automatically on
-every push, so the new profile appears live at `/profiles/<slug>` shortly
-after the API call — no manual file drop, no local `npm run add`.
+every push, so the new page appears live shortly after the API call — no
+manual file drop, no local `npm run add`.
 
 ```
-Client  --POST /profiles-->  Cloudflare Worker  --commit via GitHub API-->  GitHub repo
-                                                                                  |
-                                                                                  v
-                                                                     CloudCannon detects push,
-                                                                     rebuilds & publishes site
+Client  --POST /profiles or /pages-->  Cloudflare Worker  --commit via GitHub API-->  GitHub repo
+                                                                                             |
+                                                                                             v
+                                                                                CloudCannon detects push,
+                                                                                rebuilds & publishes site
 ```
 
 The Worker itself holds no state — it's a thin, authenticated translator from
@@ -154,6 +159,78 @@ curl -X POST ".../profiles?overwrite=true" \
   -d @profile.json
 ```
 
+### Create a page from a component
+
+`POST /pages` builds a whole page around a single CloudCannon page-section
+component — the same components available in CloudCannon's "Add Section"
+picker (`.cloudcannon/structures/pageSections.cloudcannon.structures.yml`).
+It writes `src/content/pages/<slug>.md` with frontmatter
+`pageSections: [{ _component: <component>, ...data }]`, which `[...slug].astro`
+already renders through `MainComponent` / `renderBlock.astro` — the exact
+pipeline that runs when an editor adds that component by hand inside
+CloudCannon. No new collection, route, or CloudCannon config was needed.
+
+```sh
+curl -X POST "https://stevie-profiles-api.<your-subdomain>.workers.dev/pages" \
+  -H "Authorization: Bearer <API_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "component": "page-sections/people/staff-grid",
+    "title": "Our Team",
+    "data": { "heading": "Our Team", "items": [] }
+  }'
+```
+
+| Field | Type | Notes |
+|---|---|---|
+| `component` | string | required — one of the values below |
+| `title` | string | required — page `<title>`; also the default slug source |
+| `slug` | string | optional — filename/URL override; defaults to a slugified `title` |
+| `pageHeading`, `description`, `image` | string | optional page metadata |
+| `draft` | boolean | keep the page out of listings until ready |
+| `data` | object | required — the component's own props, passed through as-is (see the component's `*.cloudcannon.inputs.yml` for its field shape) |
+
+Supported `component` values:
+
+| Value | Label |
+|---|---|
+| `page-sections/builders/custom-section` | Custom Section |
+| `page-sections/carousels/card-carousel` | Card Carousel |
+| `page-sections/carousels/embed-gallery` | Embed Gallery |
+| `page-sections/carousels/gallery-carousel` | Event Gallery Carousel |
+| `page-sections/features/feature-logo-scroller` | Feature Logo Scroller |
+| `page-sections/features/grid-calendar` | Grid Calendar |
+| `page-sections/features/grid-testimonials` | Grid Testimonials |
+| `page-sections/features/grid-videos` | Grid Videos |
+| `page-sections/features/split-list-form` | Split List Form |
+| `page-sections/heroes/hero-banner` | Hero Banner |
+| `page-sections/heroes/hero-calendar` | Hero Calendar |
+| `page-sections/people/staff-grid` | Staff Grid |
+| `page-sections/people/profile-section` | Profile |
+
+For `page-sections/people/profile-section`, `data` isn't the profile itself —
+it's `{ apiUrl?, data?, colorScheme? }`. Set `data.apiUrl` to a public,
+read-only endpoint to have the profile fetched at build time, or set
+`data.data` to the profile JSON directly (same shape as `/profiles`). Never
+put a bearer-token-protected URL in `apiUrl` — it gets committed as plain
+text in this page's content.
+
+On success (same shape as `/profiles`, plus `component`):
+
+```json
+{
+  "slug": "our-team",
+  "component": "page-sections/people/staff-grid",
+  "path": "src/content/pages/our-team.md",
+  "branch": "profiles-directory",
+  "url": "https://women.stevieawards.com/our-team",
+  "commit": { "sha": "...", "url": "https://github.com/..." },
+  "created": true
+}
+```
+
+Pass `?overwrite=true` to replace an existing page at that slug, same as `/profiles`.
+
 ### Health check (no auth)
 
 ```sh
@@ -163,12 +240,14 @@ curl https://stevie-profiles-api.<your-subdomain>.workers.dev/
 ### Browser form (no curl needed)
 
 Visit `https://stevie-profiles-api.<your-subdomain>.workers.dev/` (or `/new`)
-in a browser for a simple form: paste your API token once (optionally
-"remember" it on that device via `localStorage`), paste or load a `.json`
-file into the text box, click **Format & validate** to catch typos, then
-**Submit**. It calls the same `POST /profiles` endpoint under the hood and
-shows the resulting profile link or the error message. The token you type
-is never stored server-side — it only lives in your browser.
+in a browser for a simple form: pick a **Component** — either "Profile
+(person / organization)" or one of the page-section components above — paste
+your API token once (optionally "remember" it on that device via
+`localStorage`), fill in the title/slug (for page components) and the JSON
+data, click **Format & validate** to catch typos, then **Submit**. It calls
+`POST /profiles` or `POST /pages` under the hood depending on the component
+you picked, and shows the resulting page link or the error message. The
+token you type is never stored server-side — it only lives in your browser.
 
 ---
 

@@ -7,9 +7,17 @@
  * commit lands, so the profile shows up at /profiles/<slug> without any
  * further action.
  *
+ * POST a { component, title, data } document to /pages and this does the same
+ * thing for a single CloudCannon page-section component: it commits a new
+ * src/content/pages/<slug>.md file whose frontmatter is `pageSections: [{
+ * _component: <component>, ...data }]` — the same shape CloudCannon's "Add
+ * Section" picker produces when an editor adds that component by hand. See
+ * PAGE_SECTION_COMPONENTS below for the supported component values.
+ *
  * Endpoints:
  *   GET  /                 health check, no auth required
  *   POST /profiles         create (or update, with ?overwrite=true) a profile
+ *   POST /pages             create (or update, with ?overwrite=true) a page built from one component
  *
  * Required secrets (see README.md):
  *   API_TOKEN     shared bearer token clients must send as `Authorization: Bearer <token>`
@@ -20,6 +28,26 @@
  */
 
 const PROFILES_DIR = "src/content/profiles";
+const PAGES_DIR = "src/content/pages";
+
+// Mirrors the `_component` keys registered in
+// src/components/page-sections/**/*.cloudcannon.structure-value.yml — the
+// same list CloudCannon's "Add Section" picker offers inside the editor.
+const PAGE_SECTION_COMPONENTS = [
+  { value: "page-sections/builders/custom-section", label: "Custom Section" },
+  { value: "page-sections/carousels/card-carousel", label: "Card Carousel" },
+  { value: "page-sections/carousels/embed-gallery", label: "Embed Gallery" },
+  { value: "page-sections/carousels/gallery-carousel", label: "Event Gallery Carousel" },
+  { value: "page-sections/features/feature-logo-scroller", label: "Feature Logo Scroller" },
+  { value: "page-sections/features/grid-calendar", label: "Grid Calendar" },
+  { value: "page-sections/features/grid-testimonials", label: "Grid Testimonials" },
+  { value: "page-sections/features/grid-videos", label: "Grid Videos" },
+  { value: "page-sections/features/split-list-form", label: "Split List Form" },
+  { value: "page-sections/heroes/hero-banner", label: "Hero Banner" },
+  { value: "page-sections/heroes/hero-calendar", label: "Hero Calendar" },
+  { value: "page-sections/people/staff-grid", label: "Staff Grid" },
+  { value: "page-sections/people/profile-section", label: "Profile" },
+];
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -33,7 +61,7 @@ const FORM_PAGE = `<!doctype html>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="noindex" />
-<title>Add a Profile</title>
+<title>Add a Profile or Page</title>
 <style>
   :root { color-scheme: light dark; }
   * { box-sizing: border-box; }
@@ -51,10 +79,11 @@ const FORM_PAGE = `<!doctype html>
   p.lede { color: #9aa1ac; margin-top: 0; margin-bottom: 1.75rem; font-size: 0.92rem; }
   label { display: block; font-size: 0.85rem; font-weight: 600; margin: 1.1rem 0 0.35rem; }
   .hint { font-size: 0.78rem; color: #8b929c; margin: 0.15rem 0 0; }
-  input[type="password"], input[type="text"] {
+  input[type="password"], input[type="text"], select {
     width: 100%; padding: 0.6rem 0.7rem; font-size: 0.92rem;
     background: #181b21; border: 1px solid #2c313a; border-radius: 6px; color: #e6e8eb;
   }
+  .hidden { display: none !important; }
   textarea {
     width: 100%; min-height: 340px; padding: 0.75rem;
     background: #181b21; border: 1px solid #2c313a; border-radius: 6px; color: #d6f0e3;
@@ -86,9 +115,16 @@ const FORM_PAGE = `<!doctype html>
 </head>
 <body>
 <main>
-  <h1>Add a Profile</h1>
-  <p class="lede">Paste or load a profile JSON file below and submit. It's committed straight to the
-    site's GitHub repo — CloudCannon picks up the commit and publishes it automatically.</p>
+  <h1>Add a Profile or Page</h1>
+  <p class="lede">Pick a component, paste your API token, and add the JSON data for it. It's committed
+    straight to the site's GitHub repo — CloudCannon picks up the commit and builds the page automatically.</p>
+
+  <label for="component">Component</label>
+  <select id="component">
+    <option value="profile">Profile (person / organization)</option>
+    ${PAGE_SECTION_COMPONENTS.map((c) => `<option value="${c.value}">${c.label}</option>`).join("\n    ")}
+  </select>
+  <p class="hint" id="componentHint">Creates src/content/profiles/&lt;slug&gt;.json, rendered by the profile page template.</p>
 
   <label for="token">API token</label>
   <input id="token" type="password" placeholder="Bearer token" autocomplete="off" />
@@ -97,7 +133,14 @@ const FORM_PAGE = `<!doctype html>
     <label for="remember">Remember this token on this device</label>
   </div>
 
-  <label for="json">Profile JSON</label>
+  <div id="pageFields" class="hidden">
+    <label for="title">Page title</label>
+    <input id="title" type="text" placeholder="Shown as the page's <title> and used as the default slug" />
+    <label for="slug">Slug (optional)</label>
+    <input id="slug" type="text" placeholder="Overrides the filename/URL — defaults to a slugified title" />
+  </div>
+
+  <label for="json" id="jsonLabel">Profile JSON</label>
   <textarea id="json" spellcheck="false">{
   "type": "person",
   "name": ""
@@ -106,7 +149,7 @@ const FORM_PAGE = `<!doctype html>
 
   <div class="row">
     <input id="overwrite" type="checkbox" />
-    <label for="overwrite">Overwrite if a profile with this name already exists</label>
+    <label for="overwrite" id="overwriteLabel">Overwrite if a profile with this name already exists</label>
   </div>
 
   <div class="actions">
@@ -120,6 +163,13 @@ const FORM_PAGE = `<!doctype html>
 </main>
 <script>
 (function () {
+  var componentEl = document.getElementById("component");
+  var componentHintEl = document.getElementById("componentHint");
+  var pageFieldsEl = document.getElementById("pageFields");
+  var titleEl = document.getElementById("title");
+  var slugEl = document.getElementById("slug");
+  var jsonLabelEl = document.getElementById("jsonLabel");
+  var overwriteLabelEl = document.getElementById("overwriteLabel");
   var tokenEl = document.getElementById("token");
   var rememberEl = document.getElementById("remember");
   var jsonEl = document.getElementById("json");
@@ -137,6 +187,32 @@ const FORM_PAGE = `<!doctype html>
     tokenEl.value = savedToken;
     rememberEl.checked = true;
   }
+
+  function isProfileMode() {
+    return componentEl.value === "profile";
+  }
+
+  componentEl.addEventListener("change", function () {
+    if (isProfileMode()) {
+      pageFieldsEl.classList.add("hidden");
+      jsonLabelEl.textContent = "Profile JSON";
+      overwriteLabelEl.textContent = "Overwrite if a profile with this name already exists";
+      componentHintEl.textContent =
+        "Creates src/content/profiles/<slug>.json, rendered by the profile page template.";
+      jsonEl.value = '{\\n  "type": "person",\\n  "name": ""\\n}';
+    } else {
+      pageFieldsEl.classList.remove("hidden");
+      jsonLabelEl.textContent = "Component data (JSON)";
+      overwriteLabelEl.textContent = "Overwrite if a page with this slug already exists";
+      componentHintEl.textContent =
+        'Creates src/content/pages/<slug>.md with pageSections: [{ _component: "' +
+        componentEl.value +
+        '", ...data }].';
+      jsonEl.value = "{}";
+    }
+    jsonErrorEl.textContent = "";
+    jsonEl.classList.remove("invalid");
+  });
 
   fileEl.addEventListener("change", function () {
     var file = fileEl.files && fileEl.files[0];
@@ -182,6 +258,26 @@ const FORM_PAGE = `<!doctype html>
       return;
     }
 
+    var requestBody;
+    var path;
+    if (isProfileMode()) {
+      path = "/profiles" + (overwriteEl.checked ? "?overwrite=true" : "");
+      requestBody = parsed;
+    } else {
+      var title = titleEl.value.trim();
+      if (!title) {
+        showResult(false, "Enter a page title first.");
+        return;
+      }
+      path = "/pages" + (overwriteEl.checked ? "?overwrite=true" : "");
+      requestBody = {
+        component: componentEl.value,
+        title: title,
+        slug: slugEl.value.trim() || undefined,
+        data: parsed,
+      };
+    }
+
     try {
       if (rememberEl.checked) localStorage.setItem(STORAGE_KEY, token);
       else localStorage.removeItem(STORAGE_KEY);
@@ -191,12 +287,10 @@ const FORM_PAGE = `<!doctype html>
     submitBtn.textContent = "Submitting…";
     resultEl.className = "";
 
-    var path = "/profiles" + (overwriteEl.checked ? "?overwrite=true" : "");
-
     fetch(path, {
       method: "POST",
       headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
-      body: JSON.stringify(parsed),
+      body: JSON.stringify(requestBody),
     })
       .then(function (res) {
         return res.json().then(function (data) {
@@ -276,6 +370,41 @@ function validateProfile(data) {
   return null;
 }
 
+function isPlainObject(value) {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function validatePageSectionRequest(data) {
+  if (!isPlainObject(data)) {
+    return "request body must be a JSON object.";
+  }
+  if (!PAGE_SECTION_COMPONENTS.some((c) => c.value === data.component)) {
+    return `"component" must be one of: ${PAGE_SECTION_COMPONENTS.map((c) => c.value).join(", ")}.`;
+  }
+  if (!data.title || typeof data.title !== "string") {
+    return 'the JSON must have a "title" (non-empty string).';
+  }
+  if (!isPlainObject(data.data)) {
+    return '"data" must be an object holding the component\'s own fields.';
+  }
+  return null;
+}
+
+// Frontmatter values are emitted with JSON.stringify — JSON is a strict
+// subset of YAML flow syntax, so this can't produce broken YAML regardless
+// of how deeply nested `data` is, without needing a YAML library.
+function buildPageMarkdown({ title, pageHeading, description, image, draft, component, data }) {
+  const frontmatter = { title };
+  if (pageHeading !== undefined) frontmatter.pageHeading = pageHeading;
+  if (description !== undefined) frontmatter.description = description;
+  if (image !== undefined) frontmatter.image = image;
+  if (draft !== undefined) frontmatter.draft = Boolean(draft);
+  frontmatter.pageSections = [{ _component: component, ...data }];
+
+  const lines = Object.entries(frontmatter).map(([key, value]) => `${key}: ${JSON.stringify(value)}`);
+  return `---\n${lines.join("\n")}\n---\n`;
+}
+
 async function githubRequest(env, path, init = {}) {
   const url = `https://api.github.com/repos/${env.GITHUB_OWNER}/${env.GITHUB_REPO}/${path}`;
   const response = await fetch(url, {
@@ -302,6 +431,65 @@ async function getExistingFileSha(env, filePath) {
   }
   const data = await response.json();
   return data.sha ?? null;
+}
+
+// Shared "look up existing sha -> PUT via GitHub contents API" commit flow used
+// by every endpoint that writes a file into the site's content directories.
+// `getCommitMessage` receives whether this is a create or an update, since the
+// message text differs but is only known once we've checked for an existing file.
+async function commitFile(env, { filePath, contents, getCommitMessage, overwrite, pageUrlPath }) {
+  let existingSha = null;
+  try {
+    existingSha = await getExistingFileSha(env, filePath);
+  } catch (error) {
+    return { error: json({ error: `Failed to check for an existing file: ${error.message}` }, 502) };
+  }
+
+  if (existingSha && !overwrite) {
+    return {
+      error: json(
+        { error: `A file already exists at ${filePath}. Pass ?overwrite=true to replace it.` },
+        409
+      ),
+    };
+  }
+
+  const putResponse = await githubRequest(env, `contents/${filePath}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: getCommitMessage(Boolean(existingSha)),
+      content: utf8ToBase64(contents),
+      branch: env.GITHUB_BRANCH,
+      ...(existingSha ? { sha: existingSha } : {}),
+    }),
+  });
+
+  if (!putResponse.ok) {
+    const errorText = await putResponse.text();
+    return { error: json({ error: `GitHub commit failed (${putResponse.status}): ${errorText}` }, 502) };
+  }
+
+  const putData = await putResponse.json();
+
+  return {
+    result: json(
+      {
+        path: filePath,
+        branch: env.GITHUB_BRANCH,
+        url:
+          env.SITE_URL && pageUrlPath
+            ? `${env.SITE_URL.replace(/\/$/, "")}${pageUrlPath}`
+            : undefined,
+        commit: {
+          sha: putData.commit?.sha,
+          url: putData.commit?.html_url,
+        },
+        created: !existingSha,
+      },
+      existingSha ? 200 : 201
+    ),
+  };
 }
 
 async function handleCreateProfile(request, env) {
@@ -332,61 +520,62 @@ async function handleCreateProfile(request, env) {
   const overwrite = url.searchParams.get("overwrite") === "true";
 
   const filePath = `${PROFILES_DIR}/${slug}.json`;
-
-  let existingSha = null;
-  try {
-    existingSha = await getExistingFileSha(env, filePath);
-  } catch (error) {
-    return json({ error: `Failed to check for an existing profile: ${error.message}` }, 502);
-  }
-
-  if (existingSha && !overwrite) {
-    return json(
-      {
-        error: `A profile already exists at ${filePath}. Pass ?overwrite=true to replace it.`,
-        slug,
-      },
-      409
-    );
-  }
-
   const fileContents = `${JSON.stringify(profile, null, 2)}\n`;
-  const commitMessage = existingSha
-    ? `Update profile: ${profile.name} (${slug})`
-    : `Add profile: ${profile.name} (${slug})`;
 
-  const putResponse = await githubRequest(env, `contents/${filePath}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      message: commitMessage,
-      content: utf8ToBase64(fileContents),
-      branch: env.GITHUB_BRANCH,
-      ...(existingSha ? { sha: existingSha } : {}),
-    }),
+  const { result, error } = await commitFile(env, {
+    filePath,
+    contents: fileContents,
+    getCommitMessage: (isUpdate) =>
+      isUpdate ? `Update profile: ${profile.name} (${slug})` : `Add profile: ${profile.name} (${slug})`,
+    overwrite,
+    pageUrlPath: `/profiles/${slug}`,
   });
+  if (error) return error;
 
-  if (!putResponse.ok) {
-    const errorText = await putResponse.text();
-    return json({ error: `GitHub commit failed (${putResponse.status}): ${errorText}` }, 502);
+  // commitFile's response omits the slug (it doesn't know about it) — add it back.
+  const data = await result.clone().json();
+  return json({ slug, ...data }, result.status);
+}
+
+async function handleCreatePageSection(request, env) {
+  const auth = request.headers.get("Authorization") || "";
+  const [scheme, token] = auth.split(" ");
+  if (scheme !== "Bearer" || !tokensMatch(token || "", env.API_TOKEN || "")) {
+    return json({ error: "Unauthorized. Send `Authorization: Bearer <API_TOKEN>`." }, 401);
   }
 
-  const putData = await putResponse.json();
+  let body;
+  try {
+    body = await request.json();
+  } catch {
+    return json({ error: "Request body must be valid JSON." }, 400);
+  }
 
-  return json(
-    {
-      slug,
-      path: filePath,
-      branch: env.GITHUB_BRANCH,
-      url: env.SITE_URL ? `${env.SITE_URL.replace(/\/$/, "")}/profiles/${slug}` : undefined,
-      commit: {
-        sha: putData.commit?.sha,
-        url: putData.commit?.html_url,
-      },
-      created: !existingSha,
-    },
-    existingSha ? 200 : 201
-  );
+  const validationError = validatePageSectionRequest(body);
+  if (validationError) return json({ error: validationError }, 400);
+
+  const requestedSlug = body.slug ?? body.title;
+  const slug = slugify(requestedSlug);
+  if (!slug) return json({ error: "Could not derive a filename slug from title/slug." }, 400);
+
+  const url = new URL(request.url);
+  const overwrite = url.searchParams.get("overwrite") === "true";
+
+  const filePath = `${PAGES_DIR}/${slug}.md`;
+  const fileContents = buildPageMarkdown(body);
+
+  const { result, error } = await commitFile(env, {
+    filePath,
+    contents: fileContents,
+    getCommitMessage: (isUpdate) =>
+      isUpdate ? `Update page: ${body.title} (${slug})` : `Add page: ${body.title} (${slug})`,
+    overwrite,
+    pageUrlPath: `/${slug}`,
+  });
+  if (error) return error;
+
+  const data = await result.clone().json();
+  return json({ slug, component: body.component, ...data }, result.status);
 }
 
 function htmlResponse() {
@@ -415,6 +604,10 @@ export default {
 
     if (request.method === "POST" && url.pathname === "/profiles") {
       return handleCreateProfile(request, env);
+    }
+
+    if (request.method === "POST" && url.pathname === "/pages") {
+      return handleCreatePageSection(request, env);
     }
 
     return json({ error: "Not found." }, 404);
