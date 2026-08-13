@@ -6,16 +6,13 @@
  * one ProfileLayout.astro uses for standalone /profiles/<slug> pages, just
  * without the breadcrumb/sidebar/full-page shell.
  *
- * Three data sources, in priority order, all resolved at build time (once
+ * Two data sources, in priority order, both resolved at build time (once
  * per Astro static-generation run):
- *   1. `apiUrl`    — fetched over HTTP. Must be a public, read-only
- *      endpoint — never one requiring a secret/bearer token, since anything
- *      entered here is committed in this page's content.
- *   2. `jsonFile`  — a JSON file uploaded via CloudCannon's file picker,
+ *   1. `jsonFile`  — a JSON file uploaded via CloudCannon's file picker,
  *      read straight off disk (it's already a local file in `public/` by
  *      build time, so no network round-trip is needed).
- *   3. `data`      — JSON pasted directly into the field, used if neither
- *      of the above is set or succeeds.
+ *   2. `data`      — JSON pasted directly into the field, used if `jsonFile`
+ *      is empty or fails to parse.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -48,7 +45,6 @@ function parseProfileData(value: unknown): Record<string, any> | null {
 }
 
 const {
-  apiUrl,
   jsonFile,
   data,
   colorScheme = "light",
@@ -73,28 +69,6 @@ if (typeof jsonFile === "string" && jsonFile.trim()) {
   } catch (error) {
     console.warn(
       `ProfileSection: failed to read/parse ${jsonFile}: ${(error as Error).message} — using pasted data instead.`
-    );
-  }
-}
-
-if (typeof apiUrl === "string" && apiUrl.trim()) {
-  try {
-    const response = await fetch(apiUrl);
-
-    if (response.ok) {
-      const fetched = await response.json();
-
-      if (isPlainObject(fetched)) {
-        profile = fetched;
-      } else {
-        console.warn(`ProfileSection: response from ${apiUrl} was not a JSON object — using pasted/uploaded data instead.`);
-      }
-    } else {
-      console.warn(`ProfileSection: fetch failed (${response.status}) for ${apiUrl} — using pasted/uploaded data instead.`);
-    }
-  } catch (error) {
-    console.warn(
-      `ProfileSection: fetch error for ${apiUrl}: ${(error as Error).message} — using pasted/uploaded data instead.`
     );
   }
 }
@@ -238,7 +212,7 @@ const contactLinks = [
       ) : (
         <div class="wrap">
           <p class="lede">
-            Add an API URL or paste profile JSON to populate this section.
+            Upload a profile JSON file, or paste it below, to populate this section.
           </p>
         </div>
       )

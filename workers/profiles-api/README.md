@@ -157,15 +157,8 @@ Public, no auth required — it just re-serves the already-published JSON from
 `src/content/profiles/<slug>.json` (proxied from
 `raw.githubusercontent.com`, so it doesn't touch `GITHUB_TOKEN` or its rate
 limit). 404s if the slug doesn't exist, 400s if the slug contains anything
-other than lowercase letters, numbers, and hyphens.
-
-This is what you point the **Profile** page-section component's `apiUrl`
-field at (see the main site's `src/components/page-sections/people/profile-section/`)
-to embed an existing profile on another page:
-
-```
-https://stevie-profiles-api.<your-subdomain>.workers.dev/profiles/donna-dror
-```
+other than lowercase letters, numbers, and hyphens. Useful for any external
+tool that wants to read a profile's JSON without touching GitHub directly.
 
 ### Updating an existing profile
 
@@ -229,11 +222,10 @@ Supported `component` values:
 | `page-sections/people/profile-section` | Profile |
 
 For `page-sections/people/profile-section`, `data` isn't the profile itself —
-it's `{ apiUrl?, data?, colorScheme? }`. Set `data.apiUrl` to a public,
-read-only endpoint to have the profile fetched at build time, or set
-`data.data` to the profile JSON directly (same shape as `/profiles`). Never
-put a bearer-token-protected URL in `apiUrl` — it gets committed as plain
-text in this page's content.
+it's `{ jsonFile?, data?, colorScheme? }`. Set `data.jsonFile` to the path of
+a JSON file already uploaded through CloudCannon (read from disk at build
+time), or set `data.data` to the profile JSON directly (same shape as
+`/profiles`).
 
 On success (same shape as `/profiles`, plus `component`):
 

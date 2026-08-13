@@ -1,21 +1,10 @@
-apiUrl:
-  type: url
-  comment: >-
-    Optional, highest priority. If set, the profile JSON is fetched from
-    this URL at build time (when the site rebuilds) and used to populate
-    this section. To embed an existing profile, use the profiles-api
-    Worker's read endpoint: https://<worker-subdomain>.workers.dev/profiles/<slug>
-    (e.g. .../profiles/donna-dror) — it's public and needs no token. Must
-    always be a public, read-only endpoint — never one that requires a
-    secret/bearer token, since anything entered here is committed to this
-    page's content. Leave empty to use jsonFile or data instead.
 jsonFile:
   type: file
   comment: >-
-    Optional, second priority (used if apiUrl is empty or its fetch fails).
-    Upload a .json file containing the profile data — same shape as an
-    entry in the Profiles collection. Read directly from disk at build
-    time, so no network request is made for this one.
+    Optional, higher priority than the data field below. Upload a .json
+    file containing the profile data — same shape as an entry in the
+    Profiles collection. Read directly from disk at build time, so no
+    network request is made for this.
   options:
     accepts_mime_types:
       - application/json
@@ -26,11 +15,10 @@ data:
   type: code
   syntax: json
   comment: >-
-    Optional, lowest priority (used if apiUrl and jsonFile are both empty,
-    or fail). Paste profile JSON directly. Same shape as an entry in the
-    Profiles collection — see src/content/profiles/*.json for examples
-    (name, headline, summary, badge, photo, socialLinks, details, tags,
-    sections, etc.).
+    Optional, used if jsonFile is empty or fails to parse. Paste profile
+    JSON directly. Same shape as an entry in the Profiles collection — see
+    src/content/profiles/*.json for examples (name, headline, summary,
+    badge, photo, socialLinks, details, tags, sections, etc.).
 colorScheme:
   type: select
   comment: Color scheme theme for this profile section.
