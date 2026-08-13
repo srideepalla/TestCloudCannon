@@ -1,24 +1,27 @@
 label: Add Profile/Page (Admin Tool)
 icon: person_add
 description: >-
-  Embeds the profiles-api Worker's "Add a Profile or Page" form directly in
-  the page via iframe, so editors never have to leave CloudCannon. Internal
-  tool — keep pages using this off public navigation.
+  Native CloudCannon fields (Component/Title/Slug/JSON/Overwrite) that post
+  straight to the profiles-api Worker on submit — no iframe. Internal tool
+  — keep pages using this off public navigation.
 value:
   _component: page-sections/tools/add-profile-form
   heading: Add a Profile or Page
-  formUrl: https://stevie-profiles-api.stevieawards.workers.dev/new
-  height: 900
+  component: profile
+  title: ""
+  slug: ""
+  jsonData: '{"type": "person", "name": ""}'
+  overwrite: false
   colorScheme: dark
   backgroundColor: base
 preview:
   text:
     - Add Profile/Page (Admin Tool)
   subtext:
-    - key: formUrl
+    - key: component
   icon: person_add
 picker_preview:
   text: Add Profile/Page (Admin Tool)
-  subtext: Embeds the profiles-api form via iframe for editors.
+  subtext: Native CloudCannon fields that post straight to the profiles-api Worker.
 _inputs_from_glob:
   - /src/components/page-sections/tools/add-profile-form/add-profile-form.cloudcannon.inputs.yml

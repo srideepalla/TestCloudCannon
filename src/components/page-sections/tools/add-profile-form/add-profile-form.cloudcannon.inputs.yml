@@ -1,18 +1,63 @@
 heading:
   type: text
-  comment: Optional heading shown above the embedded form.
-formUrl:
-  type: url
+  comment: Optional heading shown above the form.
+component:
+  type: select
   comment: >-
-    URL of the profiles-api Worker's form (its /new route). Defaults to the
-    live Worker. Only point this at a temporary tunnel URL (e.g.
-    https://<random>.trycloudflare.com/new) while testing a local change to
-    the Worker, then switch it back to the live URL — quick tunnels stop
-    working as soon as the local `cloudflared`/`wrangler dev` process is
-    closed.
-height:
-  type: number
-  comment: Height of the embedded form in pixels.
+    What this submission creates. "Profile" posts to the profiles-api
+    Worker's /profiles endpoint; any other value posts to /pages using that
+    page-section component (see workers/profiles-api/README.md).
+  options:
+    values:
+      - id: profile
+        name: Profile (person / organization)
+      - id: page-sections/builders/custom-section
+        name: Custom Section
+      - id: page-sections/carousels/card-carousel
+        name: Card Carousel
+      - id: page-sections/carousels/embed-gallery
+        name: Embed Gallery
+      - id: page-sections/carousels/gallery-carousel
+        name: Event Gallery Carousel
+      - id: page-sections/features/feature-logo-scroller
+        name: Feature Logo Scroller
+      - id: page-sections/features/grid-calendar
+        name: Grid Calendar
+      - id: page-sections/features/grid-testimonials
+        name: Grid Testimonials
+      - id: page-sections/features/grid-videos
+        name: Grid Videos
+      - id: page-sections/features/split-list-form
+        name: Split List Form
+      - id: page-sections/heroes/hero-banner
+        name: Hero Banner
+      - id: page-sections/heroes/hero-calendar
+        name: Hero Calendar
+      - id: page-sections/people/staff-grid
+        name: Staff Grid
+      - id: page-sections/people/profile-section
+        name: Profile Section
+title:
+  type: text
+  comment: >-
+    Page <title> and default slug source. Only used when Component isn't
+    "Profile" — ignored for profiles (their slug comes from the JSON below).
+slug:
+  type: text
+  comment: Optional filename/URL override. Defaults to a slugified name/title.
+jsonData:
+  type: code
+  syntax: json
+  comment: >-
+    For "Profile": the profile JSON (type, name, ...) — see
+    src/content/profiles/*.json for examples. For a page component: just
+    that component's own data fields (the "data" object), not the
+    surrounding component/title.
+overwrite:
+  type: switch
+  comment: >-
+    Overwrite an existing profile/page at this slug instead of failing with
+    a 409 conflict.
 colorScheme:
   type: select
   comment: Color scheme for the section.

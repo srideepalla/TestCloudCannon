@@ -1,11 +1,26 @@
 ---
+/**
+ * Renders the profiles-api "add a profile or page" action as native page
+ * content instead of loading the Worker's own /new page in an iframe.
+ * Component/title/slug/JSON/overwrite are edited as CloudCannon fields on
+ * this section, same as any other component. The API token is entered
+ * client-side only (kept in this browser's localStorage at most) so it
+ * never gets written into a CloudCannon-saved file. On submit, the browser
+ * POSTs directly to the Worker (which allows cross-origin requests).
+ */
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+
+const WORKER_BASE_URL = "https://stevie-profiles-api.stevieawards.workers.dev";
 
 const {
   heading = "Add a Profile or Page",
-  formUrl = "https://stevie-profiles-api.stevieawards.workers.dev/new",
-  height = 900,
+  component = "profile",
+  title = "",
+  slug = "",
+  jsonData = '{"type": "person", "name": ""}',
+  overwrite = false,
   colorScheme = "dark",
   backgroundColor = "base",
   class: className,
@@ -13,14 +28,11 @@ const {
   _component,
   ...htmlAttributes
 } = Astro.props;
-
-const hasFormUrl = typeof formUrl === "string" && formUrl.trim().length > 0;
-const heightStyle = `--add-profile-form-height: ${Number(height) || 900}px;`;
 ---
 
 <CustomSection
   class:list={["add-profile-form", className]}
-  maxContentWidth="xl"
+  maxContentWidth="lg"
   paddingHorizontal="md"
   paddingVertical="2xl"
   colorScheme={colorScheme}
@@ -33,22 +45,120 @@ const heightStyle = `--add-profile-form-height: ${Number(height) || 900}px;`;
       <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
     )
   }
-  {
-    hasFormUrl ? (
-      <iframe
-        class="add-profile-form__frame"
-        style={heightStyle}
-        src={formUrl}
-        title="Add a profile or page"
-        loading="lazy"
-        data-prop="formUrl"
-      />
-    ) : (
-      <div class="add-profile-form__placeholder">
-        Set the "Form URL" field to the profiles-api Worker's /new URL.
-      </div>
-    )
-  }
+  <Text
+    alignX="center"
+    size="sm"
+    text="Set the Component, JSON, and Overwrite fields for this section in CloudCannon, then paste your API token below and submit — it's committed straight to the site's GitHub repo."
+  />
+
+  <div class="add-profile-form__panel">
+    <label class="add-profile-form__label" for="add-profile-form-token">API token</label>
+    <input
+      id="add-profile-form-token"
+      class="add-profile-form__token"
+      type="password"
+      autocomplete="off"
+      placeholder="Bearer token"
+    />
+    <label class="add-profile-form__remember-row">
+      <input type="checkbox" class="add-profile-form__remember" />
+      Remember this token on this device
+    </label>
+
+    <button type="button" class="add-profile-form__submit">Submit</button>
+    <p class="add-profile-form__result" role="status" hidden></p>
+
+    <script define:vars={{ workerBaseUrl: WORKER_BASE_URL, component, title, slug, jsonData, overwrite }}>
+      const panel = document.currentScript.parentElement;
+      const tokenInput = panel.querySelector(".add-profile-form__token");
+      const rememberInput = panel.querySelector(".add-profile-form__remember");
+      const submitButton = panel.querySelector(".add-profile-form__submit");
+      const resultEl = panel.querySelector(".add-profile-form__result");
+      const STORAGE_KEY = "profiles_api_token";
+
+      let savedToken = null;
+      try {
+        savedToken = localStorage.getItem(STORAGE_KEY);
+      } catch {
+        /* ignore */
+      }
+      if (savedToken) {
+        tokenInput.value = savedToken;
+        rememberInput.checked = true;
+      }
+
+      const setResult = (ok, message) => {
+        resultEl.hidden = !message;
+        resultEl.dataset.kind = ok ? "success" : "error";
+        resultEl.textContent = "";
+        if (!message) return;
+        resultEl.append(document.createTextNode(`${message} `));
+      };
+
+      submitButton.addEventListener("click", async () => {
+        const token = tokenInput.value.trim();
+
+        if (!token) {
+          setResult(false, "Enter your API token first.");
+          return;
+        }
+
+        let parsed;
+        try {
+          parsed = JSON.parse(jsonData || "{}");
+        } catch (error) {
+          setResult(false, `Invalid JSON in this section's data field: ${error.message}`);
+          return;
+        }
+
+        const isProfileMode = component === "profile";
+        const path = (isProfileMode ? "/profiles" : "/pages") + (overwrite ? "?overwrite=true" : "");
+        const requestBody = isProfileMode
+          ? parsed
+          : { component, title, slug: slug || undefined, data: parsed };
+
+        try {
+          if (rememberInput.checked) localStorage.setItem(STORAGE_KEY, token);
+          else localStorage.removeItem(STORAGE_KEY);
+        } catch {
+          /* ignore */
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Submitting…";
+
+        try {
+          const response = await fetch(workerBaseUrl + path, {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody),
+          });
+          const data = await response.json();
+
+          if (response.ok) {
+            setResult(true, `${data.created ? "Created" : "Updated"} —`);
+            if (data.url) {
+              const link = document.createElement("a");
+              link.href = data.url;
+              link.target = "_blank";
+              link.rel = "noopener";
+              link.textContent = data.url;
+              resultEl.append(link);
+            } else if (data.path) {
+              resultEl.append(document.createTextNode(data.path));
+            }
+          } else {
+            setResult(false, data.error || "Request failed.");
+          }
+        } catch (error) {
+          setResult(false, `Network error: ${error.message}`);
+        } finally {
+          submitButton.disabled = false;
+          submitButton.textContent = "Submit";
+        }
+      });
+    </script>
+  </div>
 </CustomSection>
 
 <style is:global>
@@ -58,27 +168,75 @@ const heightStyle = `--add-profile-form-height: ${Number(height) || 900}px;`;
       font-weight: var(--font-weight-bold);
     }
 
-    .add-profile-form__frame {
-      margin-top: var(--spacing-xl);
-      border: 0;
-      display: block;
-      width: 100%;
-      height: var(--add-profile-form-height, 900px);
-      background: #0f1115;
+    .add-profile-form .text {
+      max-width: 640px;
+      margin-inline: auto;
     }
 
-    .add-profile-form__placeholder {
-      align-items: center;
-      background: var(--color-bg-surface);
-      border: 1px dashed var(--color-border);
-      border-radius: var(--radius-md);
-      color: var(--color-text-muted);
-      display: flex;
-      justify-content: center;
+    .add-profile-form__panel {
       margin-top: var(--spacing-xl);
-      min-height: 220px;
-      padding: var(--spacing-xl);
-      text-align: center;
+      max-width: 480px;
+      margin-inline: auto;
+    }
+
+    .add-profile-form__label {
+      display: block;
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .add-profile-form__token {
+      background: var(--color-bg-surface);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      font-size: var(--font-size-md);
+      padding: var(--spacing-em-sm) var(--spacing-em-md, 0.75rem);
+      width: 100%;
+    }
+
+    .add-profile-form__remember-row {
+      align-items: center;
+      display: flex;
+      font-size: var(--font-size-sm);
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-sm);
+    }
+
+    .add-profile-form__submit {
+      background: var(--color-bg-brand, var(--color-brand));
+      border: 0;
+      border-radius: var(--radius-md);
+      color: var(--color-text-on-brand, #fff);
+      cursor: pointer;
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-em-sm) var(--spacing-lg);
+
+      &:disabled {
+        cursor: default;
+        opacity: 0.6;
+      }
+    }
+
+    .add-profile-form__result {
+      border-radius: var(--radius-md);
+      font-size: var(--font-size-sm);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-em-sm) var(--spacing-em-md, 1rem);
+      word-break: break-word;
+
+      &[data-kind="success"] {
+        background: var(--color-bg-success, #e6f4ea);
+        color: var(--color-success, #1e7e34);
+      }
+
+      &[data-kind="error"] {
+        background: var(--color-bg-error, #fdecea);
+        color: var(--color-error, #c0392b);
+      }
     }
   }
 </style>
