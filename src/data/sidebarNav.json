@@ -58,12 +58,16 @@
         "openInNewTab": false
       },
       {
+        "text": "2026 Winners' Circle",
+        "href": "/awards/IBA-Winners/2026/winners-circle"
+      },
+      {
         "text": "People's Choice Stevie Awards",
         "href": "/awards/peopleschoice/"
       },
       {
-        "text": "2026 Winners' Circle",
-        "href": "/awards/IBA-Winners/2026/winners-circle"
+        "text": "People's Choice Stevie Awards Voting",
+        "href": "/awards/peopleschoicevoting/"
       }
     ]
   },

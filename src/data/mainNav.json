@@ -317,14 +317,20 @@
           "children": []
         },
         {
+          "name": "2026 Winners' Circle",
+          "path": "/awards/IBA-Winners/2026/winners-circle",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
           "name": "People's Choice Stevie Awards for Favorite Companies",
           "path": "/awards/peopleschoice/",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "2026 Winners' Circle",
-          "path": "/awards/IBA-Winners/2026/winners-circle",
+          "name": "People's Choice Stevie Awards for Favorite Companies Voting",
+          "path": "/awards/peopleschoicevoting/",
           "openInNewTab": false,
           "children": []
         }
