@@ -757,7 +757,15 @@ const config = {
           renderRows(rows);
           renderPager();
 
-          const noun = (filters().profile_type || "org") === "person" ? "people" : "profiles";
+          // Name the thing actually being counted. "23,369 profiles" reads as
+          // the whole dataset, so the count looked wrong to anyone who knew
+          // there are also 11,429 people -- the filter defaults to
+          // Organizations and, with the filter panel collapsed, nothing on
+          // screen said so. "organizations" makes the scope self-evident and
+          // "of 34,798 profiles" stays accurate for the combined view.
+          const ptypeNow = filters().profile_type || "org";
+          const noun = ptypeNow === "person" ? "people"
+            : ptypeNow === "org" ? "organizations" : "profiles";
           const from = total ? offset + 1 : 0;
           const to = offset + rows.length;
           statusEl.textContent = total
@@ -854,11 +862,80 @@ const config = {
         return nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
       };
 
-      const openProfile = async (profileType: string, profileKey: string) => {
-        if (!scrimEl || !drawerEl || !drawerNameEl || !drawerBodyEl) return;
+      /* THE overlay problem, and its actual cause.
+         This component is rendered inside CustomSection's
+         `.content` wrapper, which sets BOTH `position: relative; z-index: 10`
+         and `container-type: inline-size`. Either alone establishes a stacking
+         context, so the drawer's own z-index only orders it WITHIN that
+         wrapper -- it can never outrank anything painted above the wrapper
+         itself, whatever number it uses. Confirmed live: with the drawer at
+         z-index 1000, elementFromPoint() over the drawer returned a plain
+         static <p> from the site footer, and earlier the sticky nav won the
+         same way.
+
+         The top layer is the one place that is immune: a shown popover paints
+         above the whole page regardless of ancestor stacking contexts, so it
+         fixes the footer and the nav together and needs no z-index tuning at
+         all. `manual` (not `auto`) because this drawer already implements its
+         own dismissal -- scrim click, Close button, Escape -- and `auto` would
+         add light-dismiss on top of that, closing the panel on interactions
+         inside it that bubble oddly.
+
+         Feature-detected, with the previous hidden-attribute path kept intact
+         as the fallback: on a browser without the API the drawer still opens,
+         just back to competing on z-index, which is why the nav offset below
+         is still applied in that branch. */
+      const topLayerOK = typeof HTMLElement !== "undefined"
+        && typeof HTMLElement.prototype.showPopover === "function";
+      if (topLayerOK && scrimEl && drawerEl) {
+        scrimEl.setAttribute("popover", "manual");
+        drawerEl.setAttribute("popover", "manual");
+        // The popover attribute itself governs visibility from here on; leaving
+        // `hidden` set as well would keep display:none after showPopover().
+        scrimEl.removeAttribute("hidden");
+        drawerEl.removeAttribute("hidden");
+      }
+
+      const isDrawerOpen = () => {
+        if (!drawerEl) return false;
+        return topLayerOK ? drawerEl.matches(":popover-open") : !drawerEl.hidden;
+      };
+
+      const showOverlay = () => {
+        if (!scrimEl || !drawerEl) return;
+        if (topLayerOK) {
+          // Scrim first: top-layer paint order follows the order things were
+          // shown, so this puts the dimming behind the panel.
+          try {
+            if (!scrimEl.matches(":popover-open")) scrimEl.showPopover();
+            if (!drawerEl.matches(":popover-open")) drawerEl.showPopover();
+            return;
+          } catch {
+            /* fall through to the attribute path */
+          }
+        }
         drawerEl.style.setProperty("--spw-nav-offset", `${getNavOffset()}px`);
         scrimEl.hidden = false;
         drawerEl.hidden = false;
+      };
+
+      const hideOverlay = () => {
+        if (topLayerOK) {
+          try {
+            if (drawerEl?.matches(":popover-open")) drawerEl.hidePopover();
+            if (scrimEl?.matches(":popover-open")) scrimEl.hidePopover();
+            return;
+          } catch {
+            /* fall through to the attribute path */
+          }
+        }
+        if (scrimEl) scrimEl.hidden = true;
+        if (drawerEl) drawerEl.hidden = true;
+      };
+
+      const openProfile = async (profileType: string, profileKey: string) => {
+        if (!scrimEl || !drawerEl || !drawerNameEl || !drawerBodyEl) return;
+        showOverlay();
         drawerNameEl.textContent = profileKey;
         if (drawerSubEl) drawerSubEl.textContent = profileType === "person" ? "Person" : "Organization";
         drawerBodyEl.innerHTML = `<p class="spw__drawer-loading">Loading profile…</p>`;
@@ -966,8 +1043,7 @@ const config = {
       };
 
       const closeDrawer = () => {
-        if (scrimEl) scrimEl.hidden = true;
-        if (drawerEl) drawerEl.hidden = true;
+        hideOverlay();
       };
 
       // Delegated: rows are replaced wholesale on every search/page, so a
@@ -983,7 +1059,7 @@ const config = {
       scrimEl?.addEventListener("click", closeDrawer);
       drawerCloseBtn?.addEventListener("click", closeDrawer);
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && drawerEl && !drawerEl.hidden) closeDrawer();
+        if (event.key === "Escape" && isDrawerOpen()) closeDrawer();
       });
 
       form.addEventListener("submit", (event) => {
@@ -1592,6 +1668,57 @@ const config = {
        the attribute selector for the extra specificity. */
     .search-past-winners .spw__drawer[hidden] {
       display: none;
+    }
+
+    /* Same trap as [hidden] above, for the top-layer path: the browser hides a
+       closed popover with its own `[popover]:not(:popover-open){display:none}`
+       rule, but that is a UA rule and loses to the author `display: flex` /
+       `position: fixed` declarations here -- so without these the drawer and
+       scrim would render permanently again, exactly the "vertical line down the
+       whole page" symptom this component already hit once. */
+    .search-past-winners .spw__drawer[popover]:not(:popover-open),
+    .search-past-winners .spw__scrim[popover]:not(:popover-open) {
+      display: none;
+    }
+
+    /* A popover carries UA chrome (border, padding, background, and a width/
+       height that fits content) which has nothing to do with a full-height side
+       panel, so it is reset here rather than fought in each rule below. */
+    .search-past-winners .spw__drawer[popover],
+    .search-past-winners .spw__scrim[popover] {
+      margin: 0;
+      padding: 0;
+      border: 0;
+      max-width: none;
+      max-height: none;
+      overflow: visible;
+      color: inherit;
+    }
+
+    /* The UA popover style is `width: fit-content; height: fit-content`, and the
+       scrim is an empty element -- so it opened at 0x0 and dimmed nothing at
+       all, silently removing the modal backdrop. Sized explicitly against the
+       viewport (its containing block, being position: fixed). */
+    .search-past-winners .spw__scrim[popover] {
+      width: 100%;
+      height: 100%;
+    }
+
+    .search-past-winners .spw__drawer[popover] {
+      /* Reinstated after the reset above, which clears the shorthand versions. */
+      border-left: 1px solid var(--color-border);
+      overflow-y: auto;
+      /* The top layer already outranks the sticky nav, so the drawer no longer
+         needs to be pushed below it and can use the full viewport height. */
+      top: 0;
+      height: 100%;
+      /* `left: auto` is load-bearing: the UA popover style is `inset: 0`, which
+         sets a left edge this component never asked for. With left AND right
+         both resolved plus an explicit width the box is over-constrained, and
+         CSS discards `right` -- which silently flipped the panel from the right
+         edge of the viewport to the left. Measured: left 0 / width 896 in a
+         1440 viewport, i.e. docked to the wrong side. */
+      left: auto;
     }
 
     .search-past-winners .spw__drawer-head {
