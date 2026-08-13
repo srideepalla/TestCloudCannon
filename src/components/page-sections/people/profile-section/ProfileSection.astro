@@ -6,13 +6,19 @@
  * one ProfileLayout.astro uses for standalone /profiles/<slug> pages, just
  * without the breadcrumb/sidebar/full-page shell.
  *
- * Data source: if `apiUrl` is set, it's fetched at build time (this runs
- * during Astro's static generation, once per build) and used as the profile.
- * Otherwise, or if that fetch fails, `data` (pasted JSON) is used instead.
- * Because this runs at build time against a plain GET, `apiUrl` must point
- * to a public, read-only endpoint — never one that requires a secret/bearer
- * token, since that token would end up committed in this page's content.
+ * Three data sources, in priority order, all resolved at build time (once
+ * per Astro static-generation run):
+ *   1. `apiUrl`    — fetched over HTTP. Must be a public, read-only
+ *      endpoint — never one requiring a secret/bearer token, since anything
+ *      entered here is committed in this page's content.
+ *   2. `jsonFile`  — a JSON file uploaded via CloudCannon's file picker,
+ *      read straight off disk (it's already a local file in `public/` by
+ *      build time, so no network round-trip is needed).
+ *   3. `data`      — JSON pasted directly into the field, used if neither
+ *      of the above is set or succeeds.
  */
+import fs from "node:fs";
+import path from "node:path";
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 import Image from "@core-elements/image/Image.astro";
 import SectionRenderer from "@components/profile-directory/SectionRenderer.astro";
@@ -22,8 +28,28 @@ function isPlainObject(value: unknown): value is Record<string, any> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+// `data` is a `type: code` input, so CloudCannon stores whatever's typed
+// into it as a raw string — it isn't parsed into an object automatically.
+// (A profile written directly via the profiles-api Worker may instead embed
+// it as an already-parsed JSON object in the frontmatter, so accept both.)
+function parseProfileData(value: unknown): Record<string, any> | null {
+  if (isPlainObject(value)) return value;
+  if (typeof value === "string" && value.trim()) {
+    try {
+      const parsed = JSON.parse(value);
+
+      if (isPlainObject(parsed)) return parsed;
+      console.warn("ProfileSection: data field's JSON was not an object — ignoring it.");
+    } catch (error) {
+      console.warn(`ProfileSection: data field is not valid JSON: ${(error as Error).message}`);
+    }
+  }
+  return null;
+}
+
 const {
   apiUrl,
+  jsonFile,
   data,
   colorScheme = "light",
   class: className,
@@ -32,24 +58,43 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-let profile: Record<string, any> | null = isPlainObject(data) ? data : null;
+let profile: Record<string, any> | null = parseProfileData(data);
+
+if (typeof jsonFile === "string" && jsonFile.trim()) {
+  try {
+    const filePath = path.join(process.cwd(), "public", jsonFile.replace(/^\/+/, ""));
+    const parsed = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+
+    if (isPlainObject(parsed)) {
+      profile = parsed;
+    } else {
+      console.warn(`ProfileSection: ${jsonFile} did not contain a JSON object — using pasted data instead.`);
+    }
+  } catch (error) {
+    console.warn(
+      `ProfileSection: failed to read/parse ${jsonFile}: ${(error as Error).message} — using pasted data instead.`
+    );
+  }
+}
 
 if (typeof apiUrl === "string" && apiUrl.trim()) {
   try {
     const response = await fetch(apiUrl);
+
     if (response.ok) {
       const fetched = await response.json();
+
       if (isPlainObject(fetched)) {
         profile = fetched;
       } else {
-        console.warn(`ProfileSection: response from ${apiUrl} was not a JSON object — using pasted data instead.`);
+        console.warn(`ProfileSection: response from ${apiUrl} was not a JSON object — using pasted/uploaded data instead.`);
       }
     } else {
-      console.warn(`ProfileSection: fetch failed (${response.status}) for ${apiUrl} — using pasted data instead.`);
+      console.warn(`ProfileSection: fetch failed (${response.status}) for ${apiUrl} — using pasted/uploaded data instead.`);
     }
   } catch (error) {
     console.warn(
-      `ProfileSection: fetch error for ${apiUrl}: ${(error as Error).message} — using pasted data instead.`
+      `ProfileSection: fetch error for ${apiUrl}: ${(error as Error).message} — using pasted/uploaded data instead.`
     );
   }
 }

@@ -2,11 +2,12 @@ label: Profile
 icon: person
 description: >-
   Embed a full profile (bio, badge, stats, Q&A, links, etc.) on this page —
-  either fetched from an API URL at build time, or pasted in as JSON.
+  fetched from an API URL, uploaded as a JSON file, or pasted in as JSON.
 value:
   _component: page-sections/people/profile-section
   apiUrl: ""
-  data: {}
+  jsonFile: ""
+  data: "{}"
   colorScheme: light
 preview:
   text:
@@ -14,6 +15,6 @@ preview:
   icon: person
 picker_preview:
   text: Profile
-  subtext: Fetch a profile from an API, or paste its JSON directly.
+  subtext: Fetch a profile from an API, upload its JSON, or paste it directly.
 _inputs_from_glob:
   - /src/components/page-sections/people/profile-section/profile-section.cloudcannon.inputs.yml
