@@ -1,0 +1,41 @@
+heading:
+  type: text
+  comment: Optional heading shown above the embedded form.
+formUrl:
+  type: url
+  comment: >-
+    URL of the profiles-api Worker's form (its /new route). Defaults to the
+    live Worker. Only point this at a temporary tunnel URL (e.g.
+    https://<random>.trycloudflare.com/new) while testing a local change to
+    the Worker, then switch it back to the live URL — quick tunnels stop
+    working as soon as the local `cloudflared`/`wrangler dev` process is
+    closed.
+height:
+  type: number
+  comment: Height of the embedded form in pixels.
+colorScheme:
+  type: select
+  comment: Color scheme for the section.
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+backgroundColor:
+  type: select
+  comment: Background color of the section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight
