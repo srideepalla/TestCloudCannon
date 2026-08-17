@@ -439,11 +439,23 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     border-radius: 2rem;
   }
 
+  /* Softer than plain currentcolor, which on this dark section reads as a bright
+     yellow outline round the whole pill. */
   .stevie-chatbot__row:focus-within {
-    border-color: currentcolor;
+    border-color: color-mix(in srgb, currentcolor 70%, transparent);
   }
 
-  .stevie-chatbot__input {
+  /* The site's base stylesheet styles every input with a border, a background, a
+     radius and — the one that showed as a second box inside the pill — a 3px
+     box-shadow focus ring:
+
+       input:focus { box-shadow: 0 0 0 3px var(--color-focus-ring); }
+
+     Removing the border and outline was not enough; the ring is a shadow. All of
+     it is neutralised here so the field is just text inside the pill. */
+  .stevie-chatbot__input,
+  .stevie-chatbot__input:focus,
+  .stevie-chatbot__input:focus-visible {
     flex: 1 1 auto;
     min-width: 0;
     padding: 0.7rem 0;
@@ -451,9 +463,8 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     color: inherit;
     background: transparent;
     border: 0;
-  }
-
-  .stevie-chatbot__input:focus {
+    border-radius: 0;
+    box-shadow: none;
     /* The pill shows focus via :focus-within, so a second ring inside it is noise. */
     outline: none;
   }
