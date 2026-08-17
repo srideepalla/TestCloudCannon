@@ -412,9 +412,12 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   }
 
   /* The border lives on the composer alone now, not around the whole panel, so
-     the answers sit on the page rather than inside a box. */
+     the answers sit on the page rather than inside a box.
+     The top padding is generous because the transcript scrolls: without a clear
+     gap, the last line of an answer sits right against the input and reads as
+     part of it. */
   .stevie-chatbot__composer {
-    padding-top: 0.9rem;
+    padding-top: 1.75rem;
   }
 
   /* Available to assistive technology, invisible on screen. clip-path rather than
@@ -539,7 +542,9 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     /* Capped so the composer stays on screen instead of being pushed below the
        fold as the chat grows. No min-height: an empty transcript takes no room. */
     max-height: 60vh;
-    padding: 0.25rem 0 0.5rem;
+    /* Right padding keeps text off the scrollbar; bottom padding stops the last
+       line touching the composer's top edge when scrolled to the end. */
+    padding: 0.25rem 0.75rem 0.75rem 0;
     overflow-y: auto;
     /* A chat reads bottom-up when it overflows; anchoring keeps the newest
        message pinned while earlier ones scroll away above it. */
