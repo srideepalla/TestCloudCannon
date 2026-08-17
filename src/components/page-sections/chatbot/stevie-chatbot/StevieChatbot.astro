@@ -98,19 +98,29 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   useDefaultEditableBinding={useDefaultEditableBinding}
   {...htmlAttributes}
 >
-  <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
-  <Text alignX="center" text={text} data-prop="text" />
+  <!--
+    The heading and tagline are a HERO before the first question and a small
+    title after it, the way Gemini and ChatGPT open. Both are wrapped so the
+    script can collapse them: it adds `has-messages` to the section, and the CSS
+    below shrinks the title and hides the tagline. Wrapping is necessary because
+    Heading and Text are shared components whose internals this file must not
+    reach into.
+  -->
+  <div class="stevie-chatbot__hero">
+    <div class="stevie-chatbot__title">
+      <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
+    </div>
+    <div class="stevie-chatbot__tagline">
+      <Text alignX="center" text={text} data-prop="text" />
+    </div>
+  </div>
 
   <div class="stevie-chatbot__window">
     <!--
       role="log" with aria-live="polite" so a screen reader announces each new
       message as it arrives, rather than the reader having to hunt for it.
     -->
-    <div class="stevie-chatbot__transcript" id="stevie-chatbot-transcript" role="log" aria-live="polite">
-      <p class="stevie-chatbot__empty" id="stevie-chatbot-empty">
-        Ask a question to start. Answers show which source they came from.
-      </p>
-    </div>
+    <div class="stevie-chatbot__transcript" id="stevie-chatbot-transcript" role="log" aria-live="polite"></div>
 
     <!--
       Deliberately a div, not a form. CloudCannon's visual editor renders the page
@@ -163,8 +173,11 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   if (composer) {
     const input = document.getElementById("stevie-chatbot-input");
     const transcript = document.getElementById("stevie-chatbot-transcript");
-    const emptyHint = document.getElementById("stevie-chatbot-empty");
     const submitBtn = composer.querySelector(".stevie-chatbot__submit");
+    // The section element, so the hero can be collapsed once a conversation
+    // starts. closest() rather than a hard-coded id: CustomSection owns the
+    // outer element and this component only knows the class it was given.
+    const root = composer.closest(".stevie-chatbot");
 
     const escapeHtml = (value) =>
       String(value ?? "").replace(/[&<>"']/g, (char) =>
@@ -173,7 +186,9 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
     /** Append a message element and keep the newest in view. */
     function push(el) {
-      if (emptyHint) emptyHint.remove();
+      // First message collapses the hero: title shrinks, tagline goes. Done once
+      // and never undone — a conversation does not go back to being empty.
+      if (root) root.classList.add("has-messages");
       transcript.appendChild(el);
       // scrollTop rather than scrollIntoView: the latter scrolls the whole page
       // when the transcript is taller than the viewport, yanking the reader away
@@ -352,16 +367,25 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 </script>
 
 <style>
-  .stevie-chatbot__window {
-    margin-top: 1.5rem;
-    border: 1px solid color-mix(in srgb, currentcolor 25%, transparent);
-    border-radius: 0.4rem;
-    overflow: hidden;
+  /* Before the first question the heading and tagline sit in the middle of a
+     generous block, like Gemini's opening screen. After it, the block collapses
+     to a small title — see the has-messages rules in the global sheet. */
+  .stevie-chatbot__hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 26vh;
+    transition: min-height 0.25s ease;
   }
 
+  .stevie-chatbot__window {
+    margin-top: 1.25rem;
+  }
+
+  /* The border lives on the composer alone now, not around the whole panel, so
+     the answers sit on the page rather than inside a box. */
   .stevie-chatbot__composer {
-    padding: 0.9rem 1rem 1rem;
-    border-top: 1px solid color-mix(in srgb, currentcolor 25%, transparent);
+    padding-top: 0.9rem;
   }
 
   .stevie-chatbot__label {
@@ -413,26 +437,45 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   .stevie-chatbot__ so nothing leaks into the rest of the site.
 -->
 <style is:global>
+  /* --- the Gemini-style opening, and its collapse ----------------------- */
+  /* Nothing is reserved for the transcript until there is one, so the hero is
+     genuinely centred on an empty page instead of being pushed up by an empty
+     scroll area. */
+  .stevie-chatbot .stevie-chatbot__transcript:empty {
+    display: none;
+  }
+
+  .stevie-chatbot.has-messages .stevie-chatbot__hero {
+    min-height: 0;
+    margin-bottom: 0.25rem;
+  }
+
+  /* The tagline is scene-setting for someone who has not started. Once they
+     have, it is a line of copy between them and their answers. */
+  .stevie-chatbot.has-messages .stevie-chatbot__tagline {
+    display: none;
+  }
+
+  /* Reaching into Heading's markup by tag, because the size is a prop chosen at
+     build time and the collapse happens in the browser. :where() keeps this at
+     zero specificity so the component's own styles still win where they matter. */
+  .stevie-chatbot.has-messages .stevie-chatbot__title :where(h1, h2, h3, h4) {
+    font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+    line-height: 1.25;
+  }
+
   .stevie-chatbot__transcript {
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
-    /* Tall enough to hold a few exchanges, capped so the composer stays on
-       screen instead of being pushed below the fold as the chat grows. */
-    min-height: 12rem;
+    gap: 1.35rem;
+    /* Capped so the composer stays on screen instead of being pushed below the
+       fold as the chat grows. No min-height: an empty transcript takes no room. */
     max-height: 60vh;
-    padding: 1rem;
+    padding: 0.25rem 0 0.5rem;
     overflow-y: auto;
     /* A chat reads bottom-up when it overflows; anchoring keeps the newest
        message pinned while earlier ones scroll away above it. */
     overflow-anchor: auto;
-  }
-
-  .stevie-chatbot__empty {
-    margin: auto 0;
-    font-size: 0.9rem;
-    text-align: center;
-    opacity: 0.55;
   }
 
   .stevie-chatbot__msg {
@@ -461,12 +504,20 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     border-bottom-right-radius: 0.2rem;
   }
 
+  /* No box on an answer. ChatGPT and Gemini bubble the question and leave the
+     reply as plain text, which reads as prose rather than as a card — and these
+     answers are long enough that a border round them looks like a form field. */
   .stevie-chatbot__msg.is-bot .stevie-chatbot__bubble {
-    background: color-mix(in srgb, currentcolor 10%, transparent);
-    border-bottom-left-radius: 0.2rem;
+    max-width: 100%;
+    padding: 0;
+    background: none;
+    border-radius: 0;
   }
 
+  /* An error still needs to look different from an answer, so it keeps a rule
+     down its left edge — the only bot message that gets any decoration. */
   .stevie-chatbot__msg.has-error .stevie-chatbot__bubble {
+    padding-left: 0.85rem;
     border-left: 3px solid #99302b;
   }
 
