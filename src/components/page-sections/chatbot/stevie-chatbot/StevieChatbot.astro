@@ -131,6 +131,12 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       first. A button click and an Enter keypress work in both.
     -->
     <div class="stevie-chatbot__composer" id="stevie-chatbot-composer">
+      <!--
+        The label is present for screen readers and hidden visually: a pill-shaped
+        input with a send icon carries its own meaning, and "YOUR QUESTION" sitting
+        above it belongs to a form, not a chat. Removing the element entirely would
+        leave the field unlabelled.
+      -->
       <label class="stevie-chatbot__label" for="stevie-chatbot-input">Your question</label>
       <div class="stevie-chatbot__row">
         <input
@@ -142,7 +148,30 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           autocomplete="off"
           maxlength="500"
         />
-        <button class="stevie-chatbot__submit" type="button">{buttonLabel}</button>
+        <!--
+          buttonLabel is still the button's name — it moves from visible text to
+          aria-label, so the CloudCannon field keeps working and a screen reader
+          announces "Ask" rather than "button". aria-hidden on the icon stops it
+          being read as a second, meaningless label.
+        -->
+        <button class="stevie-chatbot__submit" type="button" aria-label={buttonLabel}>
+          <svg
+            class="stevie-chatbot__send"
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <line x1="12" y1="19.5" x2="12" y2="5" />
+            <polyline points="5.5 11.5 12 5 18.5 11.5" />
+          </svg>
+        </button>
       </div>
     </div>
   </div>
@@ -388,45 +417,73 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     padding-top: 0.9rem;
   }
 
+  /* Available to assistive technology, invisible on screen. clip-path rather than
+     display:none, which would remove it from the accessibility tree too. */
   .stevie-chatbot__label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    opacity: 0.6;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
+  /* One pill holding the field and the send button, so the border belongs to the
+     pair rather than to the input alone. */
   .stevie-chatbot__row {
     display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.3rem 0.3rem 1.1rem;
+    border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+    border-radius: 2rem;
+  }
+
+  .stevie-chatbot__row:focus-within {
+    border-color: currentcolor;
   }
 
   .stevie-chatbot__input {
-    flex: 1 1 16rem;
-    padding: 0.8rem 0.9rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.7rem 0;
     font: inherit;
     color: inherit;
     background: transparent;
-    border: 1px solid currentcolor;
-    border-radius: 0.25rem;
+    border: 0;
+  }
+
+  .stevie-chatbot__input:focus {
+    /* The pill shows focus via :focus-within, so a second ring inside it is noise. */
+    outline: none;
   }
 
   .stevie-chatbot__submit {
-    padding: 0.8rem 1.6rem;
-    font: inherit;
-    font-weight: 600;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
     color: #fff;
     cursor: pointer;
     background: #0b6e6e;
     border: 0;
-    border-radius: 0.25rem;
+    border-radius: 50%;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .stevie-chatbot__submit:hover:not(:disabled) {
+    background: #0d8484;
   }
 
   .stevie-chatbot__submit:disabled {
     cursor: default;
-    opacity: 0.55;
+    opacity: 0.45;
+  }
+
+  .stevie-chatbot__send {
+    display: block;
   }
 </style>
 
