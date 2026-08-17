@@ -200,9 +200,43 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       return push(el);
     }
 
+    /**
+     * Only web sources are worth showing, and only as links.
+     *
+     * Answers from our own data cite internal references — "site/sales#faq-p6",
+     * "5 scraped winner record(s) for MEXC", "83,574 scraped winner records" —
+     * which mean something to us and nothing to a reader, and cannot be opened.
+     * The badge already says the answer came from our records; a list of our own
+     * filenames underneath adds noise and invites clicks that go nowhere.
+     *
+     * A web answer is the opposite case: the reader should be able to check it,
+     * especially when the badge warns the source is not official.
+     *
+     * The http(s) test doubles as the security filter. Anything else — including
+     * a javascript: or data: URL, however it got into the response — is dropped
+     * rather than turned into an anchor.
+     */
+    const linkableSources = (sources) =>
+      sources.filter((s) => /^https?:\/\//i.test(String(s ?? "")));
+
+    /** "blog.stevieawards.com/…/first-stevie-awards" — readable, not a wall of URL. */
+    function linkLabel(url) {
+      try {
+        const u = new URL(url);
+        const parts = u.pathname.split("/").filter(Boolean);
+        const tail = parts.length ? "/" + parts[parts.length - 1] : "";
+        const trimmed = tail.length > 44 ? tail.slice(0, 44) + "…" : tail;
+        return u.hostname + (parts.length > 1 ? "/…" : "") + trimmed;
+      } catch {
+        return url;
+      }
+    }
+
     function fillAnswer(el, data) {
       const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
-      const sources = showSources && Array.isArray(data.sources) ? data.sources : [];
+      const sources = showSources && Array.isArray(data.sources)
+        ? linkableSources(data.sources)
+        : [];
 
       el.className = "stevie-chatbot__msg is-bot";
       el.innerHTML =
@@ -225,7 +259,15 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           ? `<details class="stevie-chatbot__sources-panel">` +
             `<summary class="stevie-chatbot__sources-summary">Sources (${sources.length})</summary>` +
             `<ul class="stevie-chatbot__sources">${sources
-              .map((source, index) => `<li>[${index + 1}] ${escapeHtml(source)}</li>`)
+              .map(
+                (source, index) =>
+                  `<li>[${index + 1}] <a class="stevie-chatbot__source-link" ` +
+                  // rel="noopener noreferrer" because these are third-party pages
+                  // opened in a new tab; without it the opened page can reach back
+                  // through window.opener.
+                  `href="${escapeHtml(source)}" target="_blank" rel="noopener noreferrer">` +
+                  `${escapeHtml(linkLabel(source))}</a></li>`,
+              )
               .join("")}</ul></details>`
           : "") +
         `</div>`;
@@ -525,5 +567,16 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
   .stevie-chatbot__sources li {
     word-break: break-word;
+  }
+
+  .stevie-chatbot__source-link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .stevie-chatbot__source-link:hover,
+  .stevie-chatbot__source-link:focus-visible {
+    text-decoration-thickness: 2px;
   }
 </style>
