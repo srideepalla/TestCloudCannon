@@ -668,7 +668,8 @@ const config = {
 
       const renderRows = (rows: ProfileRow[]) => {
         if (!rows.length) {
-          resultsEl.innerHTML = "";
+          resultsEl.innerHTML =
+            `<div class="spw__empty" role="status"><p>No records found</p></div>`;
           return;
         }
         const exact = rows.filter((r) => r.match_kind === "exact");
@@ -703,7 +704,17 @@ const config = {
       const renderOverview = (data: Record<string, unknown> | null) => {
         if (!overviewEl) return;
         if (!data || !data.available || !data.total) {
-          setOverviewState("idle");
+          setOverviewState("ready");
+          const answerEl = $("[data-spw-answer]");
+          const detailEl = $("[data-spw-detail]");
+          const sourceEl = $("[data-spw-overview-source]");
+          const levelsEl = $("[data-spw-levels]");
+          const orgsEl = $("[data-spw-orgs]");
+          if (answerEl) answerEl.textContent = "No records found";
+          if (detailEl) detailEl.textContent = "";
+          if (sourceEl) sourceEl.textContent = "Counted from all 0 matches";
+          if (levelsEl) levelsEl.innerHTML = "";
+          if (orgsEl) orgsEl.innerHTML = "";
           return;
         }
         setOverviewState("ready");
@@ -827,7 +838,7 @@ const config = {
           const to = offset + rows.length;
           statusEl.textContent = total
             ? `${num(from)}–${num(to)} of ${num(total)} ${noun}`
-            : `No matching ${noun}.`;
+            : "No records found";
         } catch (err) {
           if (mine !== seq) return;
           // "Failed to fetch" / TypeError with no HTTP status is the classic
@@ -1465,6 +1476,20 @@ const config = {
 
     .search-past-winners .spw__status[data-kind="error"] {
       color: var(--color-error, #b3261e);
+    }
+
+    .search-past-winners .spw__empty {
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-xl) var(--spacing-lg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      text-align: center;
+      color: var(--color-text-muted);
+    }
+
+    .search-past-winners .spw__empty p {
+      margin: 0;
+      font-size: var(--font-size-md);
     }
 
     .search-past-winners .spw__overview {
