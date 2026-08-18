@@ -172,8 +172,10 @@ const config = {
                 class="spw__select"
                 data-spw-filter="profile_type"
               >
-                <option value="all">All</option>
-                <option value="org" selected>
+                <option value="all" selected>
+                  All
+                </option>
+                <option value="org">
                   Organizations
                 </option>
                 <option value="person">People</option>
@@ -259,31 +261,50 @@ const config = {
         <section
           class="spw__overview"
           data-spw-overview
+          data-state="idle"
           hidden
         >
-          <div class="spw__overview-head">
-            <span class="spw__overview-title">Overview</span>
-            <span
-              class="spw__overview-source"
-              data-spw-overview-source
+          <div
+            class="spw__overview-loading"
+            data-spw-overview-loading
+            hidden
+          >
+            <span class="spw__spinner" aria-hidden="true" />
+            <div>
+              <p class="spw__overview-loading-title">Preparing overview</p>
+              <p class="spw__overview-loading-copy">
+                Counting every matching award and writing the summary…
+              </p>
+            </div>
+          </div>
+          <div
+            class="spw__overview-ready"
+            data-spw-overview-ready
+          >
+            <div class="spw__overview-head">
+              <span class="spw__overview-title">Overview</span>
+              <span
+                class="spw__overview-source"
+                data-spw-overview-source
+              />
+            </div>
+            <p
+              class="spw__answer"
+              data-spw-answer
+            />
+            <p
+              class="spw__detail"
+              data-spw-detail
+            />
+            <div
+              class="spw__chips"
+              data-spw-levels
+            />
+            <div
+              class="spw__orgs"
+              data-spw-orgs
             />
           </div>
-          <p
-            class="spw__answer"
-            data-spw-answer
-          />
-          <p
-            class="spw__detail"
-            data-spw-detail
-          />
-          <div
-            class="spw__chips"
-            data-spw-levels
-          />
-          <div
-            class="spw__orgs"
-            data-spw-orgs
-          />
         </section>
       )
     }
@@ -328,10 +349,9 @@ const config = {
       >
     </nav>
 
-    <!-- Profile detail overlay. Hidden until a row is clicked; closed by the
-         close button, the scrim, or Escape. Built once in markup rather than
-         injected on demand, so there is a stable element for the script to
-         attach listeners to regardless of how many times results re-render. -->
+    <!-- Profile detail: centered floating window. Hidden until a row is
+         clicked; closed by the close button, the scrim, or Escape. Markup
+         is stable so listeners survive result re-renders. -->
     <div
       class="spw__scrim"
       data-spw-scrim
@@ -401,6 +421,7 @@ const config = {
     first_year?: string;
     last_year?: string;
     programs?: string;
+    match_kind?: "exact" | "related";
   };
 
   type AwardRow = {
@@ -571,13 +592,9 @@ const config = {
         return { text: extra > 0 ? `${head} +${extra}` : head, title: parts.join(", ") };
       };
 
-      const renderRows = (rows: ProfileRow[]) => {
-        if (!rows.length) {
-          resultsEl.innerHTML = "";
-          return;
-        }
-        const showType = (filters().profile_type || "org") === "all";
-        resultsEl.innerHTML = `
+      const renderTable = (rows: ProfileRow[]) => {
+        const showType = (filters().profile_type || "all") === "all";
+        return `
           <table class="spw__table">
             <thead>
               <tr>
@@ -611,9 +628,9 @@ const config = {
                   // fourth medal tier the data actually distinguishes.
                   const other = Math.max(0, (r.award_count || 0) - (r.gold || 0) - (r.silver || 0) - (r.bronze || 0));
                   const medals = [
-                    r.gold ? `<span class="spw__medal spw__medal--gold">${num(r.gold)}G</span>` : "",
-                    r.silver ? `<span class="spw__medal spw__medal--silver">${num(r.silver)}S</span>` : "",
-                    r.bronze ? `<span class="spw__medal spw__medal--bronze">${num(r.bronze)}B</span>` : "",
+                    r.gold ? `<span class="spw__medal spw__medal--gold"><i></i>${num(r.gold)} Gold</span>` : "",
+                    r.silver ? `<span class="spw__medal spw__medal--silver"><i></i>${num(r.silver)} Silver</span>` : "",
+                    r.bronze ? `<span class="spw__medal spw__medal--bronze"><i></i>${num(r.bronze)} Bronze</span>` : "",
                     other
                       ? `<span class="spw__medal spw__medal--other" title="Awards at a level other than Gold/Silver/Bronze -- Finalist, People's Choice, Grand Stevie, or Distinguished Honoree">+${num(other)} other</span>`
                       : "",
@@ -627,7 +644,7 @@ const config = {
                   // the browser broke words -- and worse, NUMBERS -- mid
                   // character: an award count of 772 rendered as "77" above a
                   // lone "2", which reads as a different figure entirely.
-                  return `<tr>
+                  return `<tr class="spw__hit" data-profile-type="${esc(ptype)}" data-profile-key="${esc(key)}">
                     <td class="spw__cell-org">
                       <button
                         type="button"
@@ -649,6 +666,22 @@ const config = {
           </table>`;
       };
 
+      const renderRows = (rows: ProfileRow[]) => {
+        if (!rows.length) {
+          resultsEl.innerHTML = "";
+          return;
+        }
+        const exact = rows.filter((r) => r.match_kind === "exact");
+        const related = rows.filter((r) => r.match_kind === "related");
+        if (exact.length && related.length) {
+          resultsEl.innerHTML =
+            `<p class="spw__group-label">Exact matches</p>${renderTable(exact)}` +
+            `<p class="spw__group-label">Related</p>${renderTable(related)}`;
+          return;
+        }
+        resultsEl.innerHTML = renderTable(rows);
+      };
+
       const renderPager = () => {
         if (!pagerEl || !pageInfoEl || !prevBtn || !nextBtn) return;
         const pages = Math.max(1, Math.ceil(total / perPage));
@@ -659,13 +692,21 @@ const config = {
         nextBtn.disabled = offset + perPage >= total;
       };
 
+      const setOverviewState = (state: "idle" | "loading" | "ready") => {
+        if (!overviewEl) return;
+        overviewEl.dataset.state = state;
+        overviewEl.hidden = state === "idle";
+        const loadingEl = $("[data-spw-overview-loading]");
+        if (loadingEl) loadingEl.hidden = state !== "loading";
+      };
+
       const renderOverview = (data: Record<string, unknown> | null) => {
         if (!overviewEl) return;
         if (!data || !data.available || !data.total) {
-          overviewEl.hidden = true;
+          setOverviewState("idle");
           return;
         }
-        overviewEl.hidden = false;
+        setOverviewState("ready");
 
         const answerEl = $("[data-spw-answer]");
         const detailEl = $("[data-spw-detail]");
@@ -688,14 +729,12 @@ const config = {
         if (levelsEl) {
           const levels = (data.levels as { level: string; count: number }[]) || [];
           levelsEl.innerHTML = levels
-            .map(
-              (l) =>
-                `<span class="spw__chip spw__level--${esc(
-                  String(l.level)
-                    .toLowerCase()
-                    .replace(/[^a-z]+/g, "-")
-                )}">${esc(l.level)} <b>${num(l.count)}</b></span>`
-            )
+            .map((l) => {
+              const slug = String(l.level)
+                .toLowerCase()
+                .replace(/[^a-z]+/g, "-");
+              return `<span class="spw__chip spw__level--${esc(slug)}"><i></i>${esc(l.level)} <b>${num(l.count)}</b></span>`;
+            })
             .join("");
         }
         if (orgsEl) {
@@ -707,36 +746,43 @@ const config = {
             bronze?: number;
             first_year?: string;
             last_year?: string;
+            profile_type?: string;
           };
           const orgs = ((data.top_orgs as TopOrg[]) || []).slice(0, 10);
           // Proportional to the LEADER within this visible list, not to some
           // fixed scale -- the same convention the main dashboard's search
           // page uses, so a bar reads the same way everywhere in the project.
           const max = orgs.reduce((m, o) => Math.max(m, o.awards || 0), 0);
+          const extra = Math.max(0, orgs.length - 3);
           orgsEl.innerHTML = orgs.length
-            ? `<span class="spw__orgs-label">Top organizations</span>${orgs
-                .map((o) => {
+            ? `<span class="spw__orgs-label">Top results</span><div class="spw__orgs-list"${extra ? " data-collapsed" : ""}>${orgs
+                .map((o, i) => {
                   const pct = max ? Math.round(((o.awards || 0) / max) * 100) : 0;
                   const span = spanOf(o.first_year, o.last_year);
-                  const mix = [
-                    o.gold ? `${num(o.gold)}G` : "",
-                    o.silver ? `${num(o.silver)}S` : "",
-                    o.bronze ? `${num(o.bronze)}B` : "",
-                  ]
-                    .filter(Boolean)
-                    .join(" · ");
-                  return `<div class="spw__org-row">
+                  const slot = (tone: string, n: number | undefined) =>
+                    n
+                      ? `<span class="spw__medal spw__medal--${tone}"><i></i>${num(n)}</span>`
+                      : `<span class="spw__medal spw__medal--${tone} is-empty" aria-hidden="true"></span>`;
+                  return `<div class="spw__org-row" style="--spw-i:${i}">
                     <div class="spw__org-head">
+                      <span class="spw__org-rank">${i + 1}</span>
                       <span class="spw__org-name">${esc(o.name)}</span>
                       <span class="spw__org-count">${num(o.awards)}</span>
                     </div>
                     <div class="spw__org-meta">
                       <span class="spw__org-bar"><i style="width:${pct}%"></i></span>
-                      <span class="spw__org-sub">${esc(mix)}${span ? ` · ${esc(span)}` : ""}</span>
+                      ${slot("gold", o.gold)}
+                      ${slot("silver", o.silver)}
+                      ${slot("bronze", o.bronze)}
+                      <span class="spw__org-span">${esc(span) || "—"}</span>
                     </div>
                   </div>`;
                 })
-                .join("")}`
+                .join("")}</div>${
+                  extra
+                    ? `<button type="button" class="spw__chip-more" data-spw-top-more data-extra="${extra}" aria-expanded="false">+${extra} more</button>`
+                    : ""
+                }`
             : "";
         }
       };
@@ -747,9 +793,11 @@ const config = {
         const q = qInput.value.trim();
         const params = { q, limit: perPage, offset, ...filters() };
 
-        statusEl.textContent = "Searching…";
+        statusEl.innerHTML = `<span class="spw__inline-spin" aria-hidden="true"></span> Searching…`;
         statusEl.dataset.kind = "";
         if (submitBtn) submitBtn.disabled = true;
+        resultsEl.innerHTML = `<div class="spw__skel" aria-hidden="true">${"<div class='spw__skel-row'></div>".repeat(6)}</div>`;
+        if (showOverview && overviewEl) setOverviewState("loading");
 
         // One results table: PROFILES (one row per organization/person), not
         // one row per award. `q` runs through the same natural-language parser
@@ -779,7 +827,7 @@ const config = {
           // Organizations and, with the filter panel collapsed, nothing on
           // screen said so. "organizations" makes the scope self-evident and
           // "of 34,798 profiles" stays accurate for the combined view.
-          const ptypeNow = filters().profile_type || "org";
+          const ptypeNow = data.profile_type || filters().profile_type || "all";
           const noun = ptypeNow === "person" ? "people"
             : ptypeNow === "org" ? "organizations" : "profiles";
           const from = total ? offset + 1 : 0;
@@ -811,6 +859,7 @@ const config = {
         }
 
         if (!showOverview || !overviewEl) return;
+        setOverviewState("loading");
         const overviewUrl = url("/v1/overview", { q, ...filters() });
         log(`fetching overview: ${overviewUrl}`);
         try {
@@ -825,7 +874,7 @@ const config = {
           // like a failed search.
           const detail = err instanceof Error ? err.message : String(err);
           log(`overview unavailable (non-fatal): ${detail}`);
-          overviewEl.hidden = true;
+          setOverviewState("idle");
         }
       };
 
@@ -919,6 +968,7 @@ const config = {
 
       const showOverlay = () => {
         if (!scrimEl || !drawerEl) return;
+        document.documentElement.classList.add("spw-modal-open");
         if (topLayerOK) {
           // Scrim first: top-layer paint order follows the order things were
           // shown, so this puts the dimming behind the panel.
@@ -936,6 +986,7 @@ const config = {
       };
 
       const hideOverlay = () => {
+        document.documentElement.classList.remove("spw-modal-open");
         if (topLayerOK) {
           try {
             if (drawerEl?.matches(":popover-open")) drawerEl.hidePopover();
@@ -954,7 +1005,7 @@ const config = {
         showOverlay();
         drawerNameEl.textContent = profileKey;
         if (drawerSubEl) drawerSubEl.textContent = profileType === "person" ? "Person" : "Organization";
-        drawerBodyEl.innerHTML = `<p class="spw__drawer-loading">Loading profile…</p>`;
+        drawerBodyEl.innerHTML = `<div class="spw__drawer-loading"><span class="spw__spinner" aria-hidden="true"></span><p>Loading this profile…</p></div>`;
 
         const detailUrl = `${endpoint}/v1/profile/${encodeURIComponent(profileType)}/${encodeURIComponent(profileKey)}`;
         log(`fetching profile detail: ${detailUrl}`);
@@ -977,30 +1028,43 @@ const config = {
           const otherAwards = Math.max(0, (Number(data.award_count) || 0)
             - (Number(p.gold) || 0) - (Number(p.silver) || 0) - (Number(p.bronze) || 0));
           const tiles = [
-            ["Total awards", num(data.award_count)],
-            ["Gold", num(p.gold)],
-            ["Silver", num(p.silver)],
-            ["Bronze", num(p.bronze)],
-            ["Other", num(otherAwards)],
-            ["Active", spanOf(p.first_year, p.last_year)],
+            ["Total awards", num(data.award_count), ""],
+            ["Gold", num(p.gold), "gold"],
+            ["Silver", num(p.silver), "silver"],
+            ["Bronze", num(p.bronze), "bronze"],
+            ["Other", num(otherAwards), "other"],
+            ["Active", spanOf(p.first_year, p.last_year), ""],
           ]
             .filter(([, v]) => v && v !== "0")
-            .map(([label, value]) => `<div class="spw__tile"><b>${esc(value)}</b><span>${esc(label)}</span></div>`)
+            .map(
+              ([label, value, tone]) =>
+                `<div class="spw__tile${tone ? ` spw__tile--${tone}` : ""}"><b>${esc(value)}</b><span>${esc(label)}</span></div>`
+            )
             .join("");
 
           // Multi-value fields are stored pipe-separated ("Brazil | Germany |
           // India"); render each as its own chip rather than one long string.
+          // Extra chips stay in the DOM so "+N more" can reveal them without
+          // another fetch.
           const chipRow = (label: string, raw: unknown, limit = 8) => {
             const items = String(raw ?? "")
               .split("|")
               .map((s) => s.trim())
               .filter(Boolean);
             if (!items.length) return "";
-            const shown = items.slice(0, limit);
-            const more = items.length > limit ? ` +${items.length - limit}` : "";
-            return `<div class="spw__fact-row">
+            const extra = Math.max(0, items.length - limit);
+            const chips = items
+              .map(
+                (v, i) =>
+                  `<span class="spw__chip${i >= limit ? " is-extra" : ""}">${esc(v)}</span>`
+              )
+              .join("");
+            const more = extra
+              ? `<button type="button" class="spw__chip-more" data-spw-more data-extra="${extra}" aria-expanded="false">+${extra} more</button>`
+              : "";
+            return `<div class="spw__fact-row"${extra ? " data-collapsed" : ""}>
               <span class="spw__fact-label">${esc(label)}</span>
-              <span class="spw__fact-chips">${shown.map((v) => `<span class="spw__chip">${esc(v)}</span>`).join("")}${more ? `<span class="spw__chip">${esc(more.trim())}</span>` : ""}</span>
+              <span class="spw__fact-chips">${chips}${more}</span>
             </div>`;
           };
 
@@ -1024,18 +1088,35 @@ const config = {
             ? `<p class="spw__drawer-note">${companyBits.join(" · ")} <em>(unverified, from an earlier research pass)</em></p>`
             : "";
 
-          const historyRows = awards
-            .slice(0, 200)
+          const historySlice = awards.slice(0, 200);
+          const historyRows = historySlice
             .map((a) => {
               const level = levelOf(a.award);
               const place = [a.city, a.country].filter(Boolean).join(", ");
+              const slug = level.toLowerCase().replace(/[^a-z]+/g, "-");
               return `<tr>
                 <td>${esc(a.year)}</td>
-                <td>${level ? `<span class="spw__level spw__level--${esc(level.toLowerCase().replace(/[^a-z]+/g, "-"))}">${esc(level)}</span>` : ""}</td>
+                <td>${level ? `<span class="spw__level spw__level--${esc(slug)}">${esc(level)}</span>` : ""}</td>
                 <td class="spw__cell-muted">${esc(a.category || a.category_group)}</td>
                 <td>${esc(a.nomination_title)}</td>
                 <td class="spw__cell-muted">${esc(place)}</td>
               </tr>`;
+            })
+            .join("");
+          const historyCards = historySlice
+            .map((a) => {
+              const level = levelOf(a.award);
+              const place = [a.city, a.country].filter(Boolean).join(", ");
+              const slug = level.toLowerCase().replace(/[^a-z]+/g, "-");
+              return `<li class="spw__history-card">
+                <div class="spw__history-card-top">
+                  <span class="spw__history-year">${esc(a.year)}</span>
+                  ${level ? `<span class="spw__level spw__level--${esc(slug)}">${esc(level)}</span>` : ""}
+                </div>
+                <p class="spw__history-cat">${esc(a.category || a.category_group || "")}</p>
+                <p class="spw__history-nom">${esc(a.nomination_title || "")}</p>
+                ${place ? `<p class="spw__history-place">${esc(place)}</p>` : ""}
+              </li>`;
             })
             .join("");
 
@@ -1046,17 +1127,13 @@ const config = {
             <h4 class="spw__drawer-heading">Award history</h4>
             ${
               awards.length
-                // Scrolls sideways in its own box rather than restyling into
-                // cards like the results table does: this is five columns of
-                // short, comparable values read down a column (which year, what
-                // level), and 200 rows x 5 stacked labels would be a far longer
-                // and less scannable page than a table you can nudge sideways.
                 ? `<div class="spw__table-scroll">
                     <table class="spw__table spw__table--history">
                       <thead><tr><th>Year</th><th>Level</th><th>Category</th><th>Nomination</th><th>Location</th></tr></thead>
                       <tbody>${historyRows}</tbody>
                     </table>
                   </div>
+                  <ol class="spw__history-cards">${historyCards}</ol>
                   ${awards.length > 200 ? `<p class="spw__drawer-note">Showing the first 200 of ${num(awards.length)} awards.</p>` : ""}`
                 : `<p class="spw__drawer-note">No award history on file for this profile.</p>`
             }`;
@@ -1080,6 +1157,40 @@ const config = {
         const key = btn.dataset.profileKey;
         const type = btn.dataset.profileType || "org";
         if (key) openProfile(type, key);
+      });
+      overviewEl?.addEventListener("click", (event) => {
+        const btn = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-spw-top-more]");
+        if (!btn || !overviewEl) return;
+        const list = overviewEl.querySelector(".spw__orgs-list");
+        if (!list) return;
+        const extra = btn.dataset.extra || "0";
+        const open = list.hasAttribute("data-collapsed");
+        if (open) {
+          list.removeAttribute("data-collapsed");
+          btn.setAttribute("aria-expanded", "true");
+          btn.textContent = "Show less";
+        } else {
+          list.setAttribute("data-collapsed", "");
+          btn.setAttribute("aria-expanded", "false");
+          btn.textContent = `+${extra} more`;
+        }
+      });
+      drawerBodyEl.addEventListener("click", (event) => {
+        const btn = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-spw-more]");
+        if (!btn) return;
+        const row = btn.closest(".spw__fact-row");
+        if (!row) return;
+        const extra = btn.dataset.extra || "0";
+        const open = row.hasAttribute("data-collapsed");
+        if (open) {
+          row.removeAttribute("data-collapsed");
+          btn.setAttribute("aria-expanded", "true");
+          btn.textContent = "Show less";
+        } else {
+          row.setAttribute("data-collapsed", "");
+          btn.setAttribute("aria-expanded", "false");
+          btn.textContent = `+${extra} more`;
+        }
       });
       scrimEl?.addEventListener("click", closeDrawer);
       drawerCloseBtn?.addEventListener("click", closeDrawer);
@@ -1132,6 +1243,45 @@ const config = {
 
 <style is:global>
   @layer page-sections {
+    .search-past-winners {
+      --spw-gold: #dfba19;
+      --spw-gold-soft: rgba(223, 186, 25, 0.16);
+      --spw-silver: #c5ccd6;
+      --spw-silver-soft: rgba(197, 204, 214, 0.16);
+      --spw-bronze: #c67b3e;
+      --spw-bronze-soft: rgba(198, 123, 62, 0.18);
+      --spw-teal: #2d7272;
+    }
+
+    @keyframes spw-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes spw-shimmer {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    @keyframes spw-fade-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    @keyframes spw-pop {
+      from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @keyframes spw-scrim-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    html.spw-modal-open,
+    html.spw-modal-open body {
+      overflow: hidden;
+    }
+
     .search-past-winners .spw__form {
       margin-top: var(--spacing-lg);
     }
@@ -1319,6 +1469,74 @@ const config = {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       background-color: var(--color-bg-surface, var(--color-bg-muted));
+      animation: spw-fade-up var(--animation-normal) ease;
+    }
+
+    .search-past-winners .spw__overview-loading {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      min-height: 5.5rem;
+    }
+
+    .search-past-winners .spw__overview[data-state="loading"] .spw__overview-ready {
+      display: none;
+    }
+
+    .search-past-winners .spw__overview[data-state="ready"] .spw__overview-loading,
+    .search-past-winners .spw__overview-loading[hidden] {
+      display: none;
+    }
+
+    .search-past-winners .spw__overview-loading-title {
+      margin: 0;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-strong);
+    }
+
+    .search-past-winners .spw__overview-loading-copy {
+      margin: 0.2rem 0 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .search-past-winners .spw__spinner,
+    .search-past-winners .spw__inline-spin {
+      display: inline-block;
+      width: 1.6rem;
+      height: 1.6rem;
+      border: 2px solid var(--color-border);
+      border-top-color: var(--spw-gold);
+      border-radius: 50%;
+      animation: spw-spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__inline-spin {
+      width: 0.9rem;
+      height: 0.9rem;
+      border-width: 2px;
+      vertical-align: -0.1em;
+      margin-right: 0.4em;
+    }
+
+    .search-past-winners .spw__skel {
+      display: grid;
+      gap: 0.6rem;
+      margin-top: var(--spacing-lg);
+    }
+
+    .search-past-winners .spw__skel-row {
+      height: 3rem;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(
+        90deg,
+        var(--color-bg-muted) 0%,
+        var(--color-bg-surface) 45%,
+        var(--color-bg-muted) 100%
+      );
+      background-size: 200% 100%;
+      animation: spw-shimmer 1.2s ease-in-out infinite;
     }
 
     .search-past-winners .spw__overview-head {
@@ -1398,10 +1616,49 @@ const config = {
     }
 
     .search-past-winners .spw__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
       padding: var(--spacing-xs) var(--spacing-sm);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-full);
       background-color: var(--color-bg);
+    }
+
+    .search-past-winners .spw__chip i,
+    .search-past-winners .spw__medal i {
+      display: inline-block;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .search-past-winners .spw__level--gold,
+    .search-past-winners .spw__chip.spw__level--gold {
+      color: var(--spw-gold);
+      border-color: var(--spw-gold);
+      background: var(--spw-gold-soft);
+    }
+
+    .search-past-winners .spw__level--silver,
+    .search-past-winners .spw__chip.spw__level--silver {
+      color: var(--spw-silver);
+      border-color: var(--spw-silver);
+      background: var(--spw-silver-soft);
+    }
+
+    .search-past-winners .spw__level--bronze,
+    .search-past-winners .spw__chip.spw__level--bronze {
+      color: var(--spw-bronze);
+      border-color: var(--spw-bronze);
+      background: var(--spw-bronze-soft);
+    }
+
+    .search-past-winners .spw__level--grand-stevie,
+    .search-past-winners .spw__chip.spw__level--grand-stevie {
+      color: var(--spw-gold);
+      border-color: var(--spw-gold);
     }
 
     /* One organization's bar, same convention as the main dashboard's search
@@ -1412,10 +1669,39 @@ const config = {
       border-top: 1px solid var(--color-border-subtle, var(--color-border));
     }
 
+    .search-past-winners .spw__org-row {
+      animation: spw-fade-up var(--animation-normal) ease both;
+      animation-delay: calc(var(--spw-i, 0) * 40ms);
+    }
+
+    .search-past-winners .spw__orgs-list[data-collapsed] .spw__org-row:nth-child(n + 4) {
+      display: none;
+    }
+
+    .search-past-winners .spw__orgs .spw__chip-more {
+      margin-top: var(--spacing-sm);
+    }
+
+    .search-past-winners .spw__group-label {
+      margin: var(--spacing-lg) 0 var(--spacing-sm);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
     .search-past-winners .spw__org-head {
       display: flex;
       align-items: baseline;
       gap: var(--spacing-sm);
+    }
+
+    .search-past-winners .spw__org-rank {
+      flex: 0 0 1.4rem;
+      color: var(--color-text-muted);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--font-size-xs);
     }
 
     .search-past-winners .spw__org-name {
@@ -1436,19 +1722,20 @@ const config = {
     }
 
     .search-past-winners .spw__org-meta {
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 3.4rem 3.4rem 3.4rem 5.6rem;
       align-items: center;
-      gap: var(--spacing-sm);
-      margin-top: 2px;
+      column-gap: 0.45rem;
+      margin-top: 4px;
     }
 
     .search-past-winners .spw__org-bar {
-      flex: 1;
       display: block;
       height: 4px;
       border-radius: var(--radius-full);
       background-color: var(--color-bg-muted);
       overflow: hidden;
+      min-width: 0;
     }
 
     .search-past-winners .spw__org-bar i {
@@ -1458,11 +1745,22 @@ const config = {
       background-color: var(--color-brand);
     }
 
-    .search-past-winners .spw__org-sub {
-      flex-shrink: 0;
-      font-size: var(--font-size-xs);
+    .search-past-winners .spw__org-meta > .spw__medal {
+      justify-content: center;
+      min-width: 0;
+      padding: 0.12em 0.2em;
+    }
+
+    .search-past-winners .spw__org-span {
       color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-align: right;
       white-space: nowrap;
+    }
+
+    .search-past-winners .spw__medal.is-empty {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .search-past-winners .spw__chip b {
@@ -1533,10 +1831,10 @@ const config = {
        sitting together beside their label. Grouping them keeps the cell at
        exactly two items whatever it contains. */
     .search-past-winners .spw__medal-group {
-      display: inline-flex;
-      flex-wrap: wrap;
-      gap: 0 var(--spacing-xs);
-      min-width: 0;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(6.2rem, 1fr));
+      gap: 0.35rem 0.4rem;
+      min-width: 13rem;
     }
 
     /* Wide tabular data (the drawer's award history) scrolls inside its own box
@@ -1544,6 +1842,10 @@ const config = {
     .search-past-winners .spw__table-scroll {
       max-width: 100%;
       overflow-x: auto;
+    }
+
+    .search-past-winners .spw__history-cards {
+      display: none;
     }
 
     .search-past-winners .spw__cell-org {
@@ -1564,8 +1866,30 @@ const config = {
     }
 
     .search-past-winners .spw__level--gold {
-      border-color: var(--color-brand);
-      color: var(--color-brand);
+      border-color: var(--spw-gold);
+      color: var(--spw-gold);
+      background: var(--spw-gold-soft);
+    }
+
+    .search-past-winners .spw__level--silver {
+      border-color: var(--spw-silver);
+      color: var(--spw-silver);
+      background: var(--spw-silver-soft);
+    }
+
+    .search-past-winners .spw__level--bronze {
+      border-color: var(--spw-bronze);
+      color: var(--spw-bronze);
+      background: var(--spw-bronze-soft);
+    }
+
+    .search-past-winners .spw__hit {
+      cursor: pointer;
+      transition: background-color var(--animation-fast) ease;
+    }
+
+    .search-past-winners .spw__hit:hover td {
+      background-color: var(--color-state-hover, rgba(223, 186, 25, 0.06));
     }
 
     .search-past-winners .spw__pager {
@@ -1612,22 +1936,31 @@ const config = {
     }
 
     .search-past-winners .spw__medal {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.3em;
+      padding: 0.18em 0.55em;
+      border-radius: var(--radius-full);
       font-size: var(--font-size-xs);
       font-weight: var(--font-weight-semibold);
-      margin-right: 2px;
+      white-space: nowrap;
+      line-height: 1.2;
     }
 
     .search-past-winners .spw__medal--gold {
-      color: var(--color-brand);
+      color: var(--spw-gold);
+      background: var(--spw-gold-soft);
     }
 
     .search-past-winners .spw__medal--silver {
-      color: var(--color-text-muted);
+      color: var(--spw-silver);
+      background: var(--spw-silver-soft);
     }
 
     .search-past-winners .spw__medal--bronze {
-      color: #b06a3a;
+      color: var(--spw-bronze);
+      background: var(--spw-bronze-soft);
     }
 
     /* Deliberately NOT medal-colored: it's a reconciling remainder, not a
@@ -1662,31 +1995,21 @@ const config = {
 
     .search-past-winners .spw__drawer {
       position: fixed;
-      /* --layer-8 still isn't enough on its own: the site's sticky main nav
-         (position: sticky, --layer-2) visually paints over a position:fixed
-         descendant regardless of the fixed element's own (much higher)
-         z-index -- confirmed live via elementFromPoint(), which kept
-         returning the nav's own .outer-content instead of this drawer's
-         close button. Stacking-context rules don't guarantee a numeric
-         z-index win across that fixed-vs-sticky boundary, so this is a
-         geometric fix instead: start the drawer below the nav's actual
-         rendered height (set as --spw-nav-offset by the script on open),
-         so the close button never spatially overlaps the nav at all. */
-      top: var(--spw-nav-offset, 0px);
-      right: 0;
-      bottom: 0;
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
       z-index: var(--layer-8, 1000);
       display: flex;
       flex-direction: column;
-      /* Wide enough that the award-history table (Year/Level/Category/
-         Nomination/Location) has real room -- at the previous 32rem cap the
-         Year column had so little space the browser wrapped "Year" one
-         letter per line rather than shrink further. */
-      width: min(56rem, 92vw);
+      width: min(56rem, calc(100vw - 2rem));
+      max-height: min(88vh, 56rem);
       background-color: var(--color-bg);
-      border-left: 1px solid var(--color-border);
-      box-shadow: -8px 0 24px rgba(0, 0, 0, 0.15);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
       overflow-y: auto;
+      transform: translate(-50%, -50%);
     }
 
     /* The `hidden` attribute is what the script actually toggles, but this
@@ -1739,20 +2062,24 @@ const config = {
     }
 
     .search-past-winners .spw__drawer[popover] {
-      /* Reinstated after the reset above, which clears the shorthand versions. */
-      border-left: 1px solid var(--color-border);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
       overflow-y: auto;
-      /* The top layer already outranks the sticky nav, so the drawer no longer
-         needs to be pushed below it and can use the full viewport height. */
-      top: 0;
-      height: 100%;
-      /* `left: auto` is load-bearing: the UA popover style is `inset: 0`, which
-         sets a left edge this component never asked for. With left AND right
-         both resolved plus an explicit width the box is over-constrained, and
-         CSS discards `right` -- which silently flipped the panel from the right
-         edge of the viewport to the left. Measured: left 0 / width 896 in a
-         1440 viewport, i.e. docked to the wrong side. */
-      left: auto;
+      top: 50%;
+      left: 50%;
+      right: auto;
+      bottom: auto;
+      height: auto;
+      max-height: min(88vh, 56rem);
+      transform: translate(-50%, -50%);
+    }
+
+    .search-past-winners .spw__drawer[popover]:popover-open {
+      animation: spw-pop var(--animation-normal) ease;
+    }
+
+    .search-past-winners .spw__scrim[popover]:popover-open {
+      animation: spw-scrim-in var(--animation-fast) ease;
     }
 
     .search-past-winners .spw__drawer-head {
@@ -1828,6 +2155,34 @@ const config = {
       font-variant-numeric: tabular-nums;
     }
 
+    .search-past-winners .spw__tile--gold {
+      color: var(--spw-gold);
+      border-color: var(--spw-gold);
+      background: var(--spw-gold-soft);
+    }
+
+    .search-past-winners .spw__tile--silver {
+      color: var(--spw-silver);
+      border-color: var(--spw-silver);
+      background: var(--spw-silver-soft);
+    }
+
+    .search-past-winners .spw__tile--bronze {
+      color: var(--spw-bronze);
+      border-color: var(--spw-bronze);
+      background: var(--spw-bronze-soft);
+    }
+
+    .search-past-winners .spw__drawer-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--spacing-md);
+      min-height: 10rem;
+      color: var(--color-text-muted);
+    }
+
     .search-past-winners .spw__tile span {
       font-size: var(--font-size-xs);
       color: var(--color-text-muted);
@@ -1856,35 +2211,62 @@ const config = {
     }
 
     .search-past-winners .spw__facts {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
+      display: grid;
+      gap: var(--spacing-md);
       margin-bottom: var(--spacing-lg);
       padding-bottom: var(--spacing-lg);
       border-bottom: 1px solid var(--color-border);
     }
 
     .search-past-winners .spw__fact-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-xs) var(--spacing-sm);
-      align-items: baseline;
+      display: grid;
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+      gap: var(--spacing-xs) var(--spacing-md);
+      align-items: start;
     }
 
     .search-past-winners .spw__fact-label {
-      flex: 0 0 6rem;
+      padding-top: 0.4em;
       color: var(--color-text-muted);
       font-size: var(--font-size-xs);
       text-transform: uppercase;
       letter-spacing: 0.06em;
+      line-height: 1.3;
     }
 
     .search-past-winners .spw__fact-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-xs);
-      flex: 1;
+      gap: 0.4rem;
       min-width: 0;
+    }
+
+    .search-past-winners .spw__fact-chips .spw__chip {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      line-height: 1.35;
+    }
+
+    .search-past-winners .spw__fact-row[data-collapsed] .spw__chip.is-extra {
+      display: none;
+    }
+
+    .search-past-winners .spw__chip-more {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2em 0.7em;
+      border: 1px dashed var(--color-brand);
+      border-radius: var(--radius-full);
+      background: transparent;
+      color: var(--color-brand);
+      font: inherit;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+    }
+
+    .search-past-winners .spw__chip-more:hover {
+      background: var(--color-bg-highlight, rgba(223, 186, 25, 0.12));
     }
 
     .search-past-winners .spw__drawer-heading {
@@ -1901,8 +2283,116 @@ const config = {
         flex: 1 1 6rem;
       }
 
-      .search-past-winners .spw__drawer {
-        width: 100vw;
+      .search-past-winners .spw__drawer,
+      .search-past-winners .spw__drawer[popover] {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100dvh;
+        transform: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .search-past-winners .spw__drawer[popover]:popover-open {
+        animation: spw-fade-up var(--animation-normal) ease;
+      }
+
+      .search-past-winners .spw__drawer-head {
+        padding: var(--spacing-md);
+      }
+
+      .search-past-winners .spw__drawer-body {
+        padding: var(--spacing-md);
+      }
+
+      .search-past-winners .spw__tiles {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--spacing-sm);
+      }
+
+      .search-past-winners .spw__fact-row {
+        grid-template-columns: 1fr;
+        gap: 0.4rem;
+      }
+
+      .search-past-winners .spw__fact-label {
+        padding-top: 0;
+      }
+
+      .search-past-winners .spw__fact-chips {
+        gap: 0.35rem;
+      }
+
+      .search-past-winners .spw__fact-chips .spw__chip {
+        font-size: var(--font-size-xs);
+        padding: 0.25em 0.65em;
+      }
+
+      .search-past-winners .spw__org-meta {
+        grid-template-columns: minmax(0, 1fr) 2.6rem 2.6rem 2.6rem 4.8rem;
+        column-gap: 0.3rem;
+      }
+
+      .search-past-winners .spw__table-scroll {
+        display: none;
+      }
+
+      .search-past-winners .spw__history-cards {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .search-past-winners .spw__history-card {
+        padding: var(--spacing-sm) var(--spacing-md);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        background-color: var(--color-bg-surface, var(--color-bg-muted));
+      }
+
+      .search-past-winners .spw__history-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-sm);
+        margin-bottom: 0.35rem;
+      }
+
+      .search-past-winners .spw__history-year {
+        font-weight: var(--font-weight-semibold);
+        font-variant-numeric: tabular-nums;
+      }
+
+      .search-past-winners .spw__history-cat,
+      .search-past-winners .spw__history-nom,
+      .search-past-winners .spw__history-place {
+        margin: 0.15rem 0 0;
+        overflow-wrap: anywhere;
+      }
+
+      .search-past-winners .spw__history-cat,
+      .search-past-winners .spw__history-place {
+        color: var(--color-text-muted);
+        font-size: var(--font-size-xs);
+      }
+
+      .search-past-winners .spw__history-nom {
+        font-size: var(--font-size-sm);
+      }
+
+      .search-past-winners .spw__medal-group {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-width: 0;
+        width: 100%;
       }
 
       /* ---- results table -> one card per profile -------------------------
@@ -2027,6 +2517,18 @@ const config = {
       .search-past-winners .spw__table--history th:nth-child(5),
       .search-past-winners .spw__table--history td:nth-child(5) {
         min-width: 7rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .search-past-winners .spw__overview,
+      .search-past-winners .spw__org-row,
+      .search-past-winners .spw__drawer[popover]:popover-open,
+      .search-past-winners .spw__scrim[popover]:popover-open,
+      .search-past-winners .spw__skel-row,
+      .search-past-winners .spw__spinner,
+      .search-past-winners .spw__inline-spin {
+        animation: none;
       }
     }
   }

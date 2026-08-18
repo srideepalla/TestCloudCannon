@@ -6,7 +6,7 @@ pageSections:
   - _component: page-sections/features/search-past-winners
     heading: Search Past Stevie Award Winners
     description: Search every past winner by company, person, category, country or year.
-    apiEndpoint: para-lite-cigarettes-acknowledged.trycloudflare.com
+    apiEndpoint: https://approval-priority-liz-reflection.trycloudflare.com
     pageSize: 24
     showFilters: true
     showOverview: true
