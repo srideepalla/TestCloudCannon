@@ -597,10 +597,26 @@ const config = {
                   const ptype = r.profile_type === "person" ? "person" : "org";
                   const cat = pipes(r.category, 2);
                   const ctry = pipes(r.country, 2);
+                  // Gold+Silver+Bronze do not have to sum to Awards, and for
+                  // roughly 3 in 10 organizations they genuinely don't: the
+                  // raw data also carries Finalist (9,796 records), People's
+                  // Choice, Grand Stevie and Distinguished Honoree awards --
+                  // real wins, just not medal tiers, and the source rollup
+                  // never kept a count for them beyond the lifetime total.
+                  // Reported live: "5G 5S 9B" beside an Awards value of 20
+                  // reads as a counting error (14+5=19, not 20) when it's
+                  // really an omission -- the 20th award exists, it simply
+                  // isn't Gold, Silver or Bronze. This chip is the reconciling
+                  // remainder (award_count minus the three shown tiers), not a
+                  // fourth medal tier the data actually distinguishes.
+                  const other = Math.max(0, (r.award_count || 0) - (r.gold || 0) - (r.silver || 0) - (r.bronze || 0));
                   const medals = [
                     r.gold ? `<span class="spw__medal spw__medal--gold">${num(r.gold)}G</span>` : "",
                     r.silver ? `<span class="spw__medal spw__medal--silver">${num(r.silver)}S</span>` : "",
                     r.bronze ? `<span class="spw__medal spw__medal--bronze">${num(r.bronze)}B</span>` : "",
+                    other
+                      ? `<span class="spw__medal spw__medal--other" title="Awards at a level other than Gold/Silver/Bronze -- Finalist, People's Choice, Grand Stevie, or Distinguished Honoree">+${num(other)} other</span>`
+                      : "",
                   ]
                     .filter(Boolean)
                     .join(" ");
@@ -952,11 +968,20 @@ const config = {
           drawerNameEl.textContent = data.display_name || profileKey;
           const p = data.profile || {};
           const awards: AwardRow[] = data.awards || [];
+          // Same reconciling remainder as the results table's Medals column
+          // (see renderRows): Gold+Silver+Bronze do not have to sum to Total
+          // awards -- Finalist/People's Choice/Grand Stevie/Distinguished
+          // Honoree wins are real awards with no medal-tier count of their
+          // own. Shown as "Other" rather than omitted so the tiles always add
+          // up to Total awards instead of looking like an undercount.
+          const otherAwards = Math.max(0, (Number(data.award_count) || 0)
+            - (Number(p.gold) || 0) - (Number(p.silver) || 0) - (Number(p.bronze) || 0));
           const tiles = [
             ["Total awards", num(data.award_count)],
             ["Gold", num(p.gold)],
             ["Silver", num(p.silver)],
             ["Bronze", num(p.bronze)],
+            ["Other", num(otherAwards)],
             ["Active", spanOf(p.first_year, p.last_year)],
           ]
             .filter(([, v]) => v && v !== "0")
@@ -1603,6 +1628,15 @@ const config = {
 
     .search-past-winners .spw__medal--bronze {
       color: #b06a3a;
+    }
+
+    /* Deliberately NOT medal-colored: it's a reconciling remainder, not a
+       fourth medal tier this data distinguishes (see renderRows). Muted and
+       unbolded so it doesn't compete with the three that are real tiers, but
+       still legible enough that the row total visibly checks out. */
+    .search-past-winners .spw__medal--other {
+      color: var(--color-text-muted);
+      font-weight: var(--font-weight-regular, 400);
     }
 
     /* Detail overlay: a scrim plus a fixed side panel, matching the pattern
