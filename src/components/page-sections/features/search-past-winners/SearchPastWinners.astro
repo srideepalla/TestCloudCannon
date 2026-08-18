@@ -717,14 +717,7 @@ const config = {
         if (answerEl) answerEl.textContent = String(data.answer ?? "");
         if (detailEl) detailEl.textContent = String(data.headline ?? "");
         if (sourceEl) {
-          // Says plainly whether a model wrote the sentence. The NUMBERS are
-          // SQL-counted either way; claiming "not generated" unconditionally
-          // would be false as soon as generated_by is "ai".
-          const byAi = data.generated_by === "ai";
-          const provider = String(data.ai_provider || "ai").toUpperCase();
-          sourceEl.textContent = byAi
-            ? `Counted from all ${num(data.total)} matches · sentence by ${provider}`
-            : `Counted from all ${num(data.total)} matches`;
+          sourceEl.textContent = `Counted from all ${num(data.total)} matches`;
         }
         if (levelsEl) {
           const levels = (data.levels as { level: string; count: number }[]) || [];
