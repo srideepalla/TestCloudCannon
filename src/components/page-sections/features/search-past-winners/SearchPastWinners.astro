@@ -717,14 +717,7 @@ const config = {
         if (answerEl) answerEl.textContent = String(data.answer ?? "");
         if (detailEl) detailEl.textContent = String(data.headline ?? "");
         if (sourceEl) {
-          // Says plainly whether a model wrote the sentence. The NUMBERS are
-          // SQL-counted either way; claiming "not generated" unconditionally
-          // would be false as soon as generated_by is "ai".
-          const byAi = data.generated_by === "ai";
-          const provider = String(data.ai_provider || "ai").toUpperCase();
-          sourceEl.textContent = byAi
-            ? `Counted from all ${num(data.total)} matches · sentence by ${provider}`
-            : `Counted from all ${num(data.total)} matches`;
+          sourceEl.textContent = `Counted from all ${num(data.total)} matches`;
         }
         if (levelsEl) {
           const levels = (data.levels as { level: string; count: number }[]) || [];
@@ -1007,7 +1000,18 @@ const config = {
         if (drawerSubEl) drawerSubEl.textContent = profileType === "person" ? "Person" : "Organization";
         drawerBodyEl.innerHTML = `<div class="spw__drawer-loading"><span class="spw__spinner" aria-hidden="true"></span><p>Loading this profile…</p></div>`;
 
-        const detailUrl = `${endpoint}/v1/profile/${encodeURIComponent(profileType)}/${encodeURIComponent(profileKey)}`;
+        // Query parameters, not path segments. AWS API Gateway URL-decodes the PATH before
+        // forwarding to the origin, so a profile key containing a space -- "DHL Express",
+        // "IBM Corporation", "Tata Consultancy Services", most organisation names -- reached the
+        // server as a literal space in the HTTP request line. That is malformed, so it was
+        // rejected with 400 "Invalid HTTP request received" and every such profile opened as
+        // "Could not load this profile right now." Single-word keys like "Ooredoo" worked, which
+        // is why it looked intermittent. Query strings are not rewritten that way, and the API
+        // serves the identical payload from /v1/profile_lookup.
+        const detailUrl = url("/v1/profile_lookup", {
+          profile_type: profileType,
+          profile_key: profileKey,
+        });
         log(`fetching profile detail: ${detailUrl}`);
         try {
           const res = await fetch(detailUrl);
