@@ -1,0 +1,17 @@
+kicker: { type: text, comment: Small label above the headline. }
+headline: { type: text, comment: The article's main headline (also the on-page H1). }
+dek: { type: text, comment: One-sentence subhead under the headline. }
+tags:
+  type: array
+  comment: Short topic tags shown under the article.
+  options:
+    subtype: text
+factCheckStatus:
+  type: select
+  comment: Set by the Blog Generator's fact-check gate -- leave blank to hide the badge.
+  options:
+    values: [{ id: "", name: "(none)" }, { id: passed, name: Passed }, { id: flagged, name: Flagged }]
+factCheckScore:
+  type: number
+  comment: 0-1 grounding score shown as a percentage in the badge.
+  options: { min: 0, max: 1, step: 0.01 }

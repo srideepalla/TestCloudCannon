@@ -1,0 +1,22 @@
+label: Article Header
+icon: edit
+description: Headline, dek, tags and fact-check badge for a Blog Generator article. Normally written by the publish step, not hand-picked.
+value:
+  _component: page-sections/features/article-header
+  kicker: "Stevie Award Winner Profile"
+  headline: ""
+  dek: ""
+  tags: []
+  factCheckStatus: ""
+  factCheckScore: null
+preview:
+  text:
+    - Article Header
+  subtext:
+    - key: headline
+  icon: edit
+picker_preview:
+  text: Article Header
+  subtext: Headline, dek, tags and fact-check badge for a Blog Generator article.
+_inputs_from_glob:
+  - /src/components/page-sections/features/article-header/article-header.cloudcannon.inputs.yml

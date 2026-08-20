@@ -1,0 +1,153 @@
+---
+/**
+ * ArticleHeader -- the visible headline/dek/tags banner for a published Blog
+ * Generator article (see StevieIntel/blog_publish.py, which writes this as
+ * the sole pageSections entry for every page it publishes).
+ *
+ * WHY NO CLIENT SCRIPT
+ * Everything here is plain data already decided at publish time -- the
+ * headline, dek, tags and fact-check verdict are fixed the moment the file
+ * was committed. There is nothing left to fetch or react to in the browser,
+ * unlike BlogGenerator.astro (the picker/draft tool this page's content came
+ * from), which is a live tool and genuinely needs one.
+ *
+ * WHY THE FACT-CHECK BADGE STAYS ON THE PUBLISHED PAGE
+ * The article was AI-drafted from the Stevie Awards database and passed
+ * through grounding_check.py before anyone approved it. Readers seeing that
+ * plainly, rather than the page pretending to be regular staff-written copy,
+ * is the same transparency principle behind the tool's own "Draft — for
+ * review" banner -- it does not stop being relevant once something is
+ * published, so a small badge (not a big warning banner, since it did pass)
+ * carries it forward.
+ *
+ * `title` in this page's frontmatter feeds only the <title> tag (see
+ * Page.astro) -- nothing else on the page prints a visible heading, so this
+ * component is also where the real, on-page H1 comes from.
+ */
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const {
+  kicker = "Stevie Award Winner Profile",
+  headline = "",
+  dek = "",
+  tags = [],
+  factCheckStatus = "",
+  factCheckScore,
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const passed = factCheckStatus === "passed";
+const pct = typeof factCheckScore === "number" ? Math.round(factCheckScore * 100) : null;
+---
+
+<CustomSection
+  class:list={["article-header", className]}
+  maxContentWidth="lg"
+  paddingHorizontal="lg"
+  paddingVertical="2xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <p class="ah__kicker" data-prop="kicker">{kicker}</p>
+  <h1 class="ah__headline" data-prop="headline">{headline}</h1>
+  {dek && <p class="ah__dek" data-prop="dek">{dek}</p>}
+  {
+    (tags?.length > 0 || factCheckStatus) && (
+      <div class="ah__meta">
+        {factCheckStatus && (
+          <span class="ah__badge" data-kind={passed ? "pass" : "flag"}>
+            {passed ? "AI-drafted, fact-checked" : "AI-drafted -- some claims flagged"}
+            {pct !== null && ` (${pct}%)`}
+          </span>
+        )}
+        {tags?.length > 0 && (
+          <div class="ah__tags">
+            {tags.map((t: string) => <span class="ah__tag">{t}</span>)}
+          </div>
+        )}
+      </div>
+    )
+  }
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .article-header .ah__kicker {
+      margin: 0 0 var(--spacing-sm);
+      color: var(--color-brand);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .article-header .ah__headline {
+      margin: 0 0 var(--spacing-md);
+      font-family: var(--font-headings, var(--font-body));
+      font-size: var(--font-size-3xl);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.15;
+      color: var(--color-text-strong, var(--color-text));
+    }
+
+    .article-header .ah__dek {
+      margin: 0 0 var(--spacing-lg);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-lg, var(--font-size-md));
+      line-height: 1.5;
+    }
+
+    .article-header .ah__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-border);
+    }
+
+    .article-header .ah__badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25em 0.75em;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--color-border);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-muted);
+    }
+
+    .article-header .ah__badge[data-kind="pass"] {
+      border-color: #2d7272;
+      color: #2d7272;
+    }
+
+    .article-header .ah__badge[data-kind="flag"] {
+      border-color: #b3261e;
+      color: #b3261e;
+    }
+
+    .article-header .ah__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+    }
+
+    .article-header .ah__tag {
+      padding: 0.2em 0.7em;
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg-muted);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+</style>

@@ -228,6 +228,20 @@ const config = {
         class="bg__meta"
         data-bg-meta
       ></dl>
+      <div class="bg__publish-row">
+        <button
+          type="button"
+          class="bg__submit"
+          data-bg-publish
+          >Approve &amp; publish</button
+        >
+        <span
+          class="bg__status"
+          data-bg-publish-status
+          role="status"
+          aria-live="polite"
+        ></span>
+      </div>
     </article>
 
     <section class="bg__drafts-section">
@@ -263,6 +277,8 @@ const config = {
     angle?: string;
     fact_check_status?: string;
     grounding_score?: number;
+    status?: string;
+    cloudcannon_id?: string;
     updated_at?: string;
   };
 
@@ -357,7 +373,15 @@ const config = {
       const tagsEl = $("[data-bg-tags]");
       const metaEl = $("[data-bg-meta]");
       const draftsEl = $("[data-bg-drafts]");
+      const publishBtn = $<HTMLButtonElement>("[data-bg-publish]");
+      const publishStatusEl = $("[data-bg-publish-status]");
       if (!form || !ptypeSel || !qInput || !profileSel || !statusEl || !draftEl) return;
+
+      // Whichever draft is currently shown in the panel -- set by both
+      // generate() and openDraft(), since Approve & publish has to work on a
+      // freshly generated draft AND on a previously saved one reopened from
+      // the table below.
+      let currentSlug = "";
 
       const url = (path: string, params: Record<string, string | number> = {}) => {
         const qs = new URLSearchParams();
@@ -451,6 +475,8 @@ const config = {
         flagged_claims?: string[];
       }) => {
         if (!headlineEl || !dekEl || !bodyEl || !tagsEl || !metaEl || !draftEl) return;
+        currentSlug = d.slug || "";
+        if (publishStatusEl) publishStatusEl.textContent = "";
         headlineEl.textContent = d.headline || "";
         dekEl.textContent = d.dek || "";
         // Render the annotated text when the gate flagged something, so the
@@ -489,7 +515,7 @@ const config = {
             <div class="bg__table-scroll">
               <table class="bg__table">
                 <thead>
-                  <tr><th>Headline</th><th>Subject</th><th>Angle</th><th>Fact-check</th><th>Updated</th></tr>
+                  <tr><th>Headline</th><th>Subject</th><th>Angle</th><th>Fact-check</th><th>Status</th><th>Updated</th></tr>
                 </thead>
                 <tbody>
                   ${rows
@@ -499,6 +525,11 @@ const config = {
                         <td class="bg__cell-muted">${esc(r.org_name || "—")}</td>
                         <td class="bg__cell-muted">${esc(r.angle || "—")}</td>
                         <td><span class="bg__pill bg__pill--${esc(r.fact_check_status || "")}">${esc(r.fact_check_status || "—")}</span></td>
+                        <td>${
+                          r.status === "published" && r.cloudcannon_id
+                            ? `<a href="${esc(r.cloudcannon_id)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Published ↗</a>`
+                            : `<span class="bg__cell-muted">${esc(r.status || "draft")}</span>`
+                        }</td>
                         <td class="bg__cell-muted">${esc(r.updated_at || "")}</td>
                       </tr>`
                     )
@@ -591,10 +622,46 @@ const config = {
         }
       };
 
+      const publishCurrent = async () => {
+        if (!currentSlug) {
+          if (publishStatusEl) publishStatusEl.textContent = "Generate or open a draft first.";
+          return;
+        }
+        if (publishBtn) publishBtn.disabled = true;
+        if (publishStatusEl) {
+          publishStatusEl.removeAttribute("data-kind");
+          publishStatusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Committing to TestCloudCannon…`;
+        }
+        const publishUrl = url(`/api/blog-writer/publish/${encodeURIComponent(currentSlug)}`);
+        log(`publishing: ${publishUrl}`);
+        try {
+          const res = await fetch(publishUrl, { method: "POST" });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+          log(`published OK: branch="${d.branch}" url_path="${d.url_path}"`);
+          if (publishStatusEl) {
+            publishStatusEl.innerHTML =
+              `Published to branch <strong>${esc(d.branch)}</strong> at ` +
+              `<a href="${esc(d.url_path)}" target="_blank" rel="noopener noreferrer">${esc(d.url_path)}</a>`;
+          }
+          void loadDrafts();
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`PUBLISH FAILED: ${detail}`);
+          if (publishStatusEl) {
+            publishStatusEl.setAttribute("data-kind", "error");
+            publishStatusEl.textContent = "Could not publish: " + detail;
+          }
+        } finally {
+          if (publishBtn) publishBtn.disabled = false;
+        }
+      };
+
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         void generate();
       });
+      publishBtn?.addEventListener("click", () => void publishCurrent());
       refreshBtn?.addEventListener("click", () => void loadDrafts());
       ptypeSel.addEventListener("change", () => {
         profileSel.innerHTML = `<option value="">Search above to choose a profile…</option>`;
@@ -923,6 +990,16 @@ const config = {
       margin: 0;
       font-size: var(--font-size-sm);
       color: var(--color-text);
+    }
+
+    .blog-generator .bg__publish-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-lg);
+      border-top: 1px solid var(--color-border);
     }
 
     .blog-generator .bg__drafts-section {
