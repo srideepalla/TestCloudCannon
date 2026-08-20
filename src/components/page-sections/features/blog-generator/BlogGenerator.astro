@@ -1,0 +1,1009 @@
+---
+/**
+ * BlogGenerator — draft one Stevie Award winner's profile article on demand.
+ *
+ * Same shape as SearchPastWinners.astro, and deliberately so: this is that
+ * component's sibling feature, built the same way for the same reasons.
+ *
+ * WHY THE FETCH IS CLIENT-SIDE
+ * This site builds static (no `output: "server"`, no active adapter), so
+ * frontmatter runs once at build time. Drafting is inherently a per-click,
+ * per-visitor action, so it has to run in the browser against the blog
+ * writer API, the same way SearchPastWinners talks to the winners API.
+ *
+ * WHY THE ENDPOINT IS A `PUBLIC_` ENV VAR
+ * It is baked into the client bundle and therefore visible to anyone. The
+ * generate endpoint calls the Gemini API using a key that lives only on the
+ * server (blog_writer.py / benchmark/gemini_client.py) — the browser never
+ * sees it, it only ever talks to our own FastAPI server. Never put a token
+ * here; there is nowhere private to hide one in a static build.
+ *
+ * WHY EVERY DRAFT SHOWS ITS FACT-CHECK VERDICT
+ * The backend runs every draft through grounding_check.py before it is ever
+ * returned, and the requirements doc is explicit that AI-written copy must
+ * never present unverified claims as fact. Hiding that verdict here would
+ * silently drop the one signal an editor needs before publishing anything.
+ * This component always renders the pass/flag banner; it never shows body
+ * copy without it.
+ *
+ * CSS-FIRST, PER THE COMPONENT SKILL
+ * The picker is a real <form> with real inputs/select/button, so it is
+ * legible and focusable with JavaScript disabled; the draft panel simply
+ * stays in its empty state. JS is the enhancement that fills it in.
+ */
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const BLOG_API_ENDPOINT = "http://127.0.0.1:8002";
+
+const {
+  heading = "Generate a Winner Profile",
+  description = "Pick a Stevie Award winner, optionally say what the piece should be about, and draft a fact-checked article in the Stevie blog's own style.",
+  // Overridable in CloudCannon so an editor can repoint the component at a
+  // tunnel URL without a code change, and by env for per-environment builds.
+  apiEndpoint = "",
+  defaultProfileType = "org",
+  emptyStateText = "Choose a profile above, then generate a draft.",
+  // Prints every step (config read, each fetch, each error) into a visible
+  // on-page panel, not just the browser console — see SearchPastWinners for
+  // why this matters inside a CMS preview iframe. Default true while new.
+  debug = true,
+
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const endpoint = (
+  apiEndpoint ||
+  import.meta.env.PUBLIC_BLOG_API_ENDPOINT ||
+  BLOG_API_ENDPOINT
+).replace(/\/+$/, "");
+
+const config = {
+  endpoint,
+  defaultProfileType: defaultProfileType === "person" ? "person" : "org",
+  debug: !!debug,
+};
+---
+
+<CustomSection
+  class:list={["blog-generator", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div
+    class="bg"
+    data-bg
+    data-config={JSON.stringify(config)}
+  >
+    <Heading
+      level="h2"
+      size="lg"
+      text={heading}
+      data-prop="heading"
+    />
+    <Text
+      text={description}
+      data-prop="description"
+    />
+
+    <form
+      class="bg__form"
+      data-bg-form
+      novalidate
+    >
+      <div class="bg__row">
+        <label class="bg__field bg__field--narrow">
+          <span class="bg__label">Profile type</span>
+          <select
+            name="profile_type"
+            class="bg__select"
+            data-bg-ptype
+          >
+            <option value="org">Organizations</option>
+            <option value="person">People</option>
+          </select>
+        </label>
+        <label class="bg__field bg__field--grow">
+          <span class="bg__label">Find a winner</span>
+          <input
+            type="search"
+            name="q"
+            class="bg__input"
+            data-bg-q
+            placeholder="Start typing a name, e.g. IBM"
+            autocomplete="off"
+          />
+        </label>
+        <label class="bg__field bg__field--grow">
+          <span class="bg__label">Profile</span>
+          <select
+            name="profile_key"
+            class="bg__select"
+            data-bg-profile
+          >
+            <option value="">Search above to choose a profile…</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="bg__field">
+        <span class="bg__label">Editorial angle (optional)</span>
+        <textarea
+          name="angle"
+          class="bg__textarea"
+          data-bg-angle
+          rows="2"
+          placeholder="e.g. how their customer service team scaled across the region"
+        ></textarea>
+      </label>
+      <p class="bg__hint">
+        This steers the <em>topic</em>, matching how the Stevie blog's own
+        profile posts read. It is <strong>not</strong> treated as fact:
+        anything here the award record can't support is either attributed
+        ("the organization describes…") or left out, and the article will
+        never claim the award <em>caused</em> a later outcome. If the record
+        has nothing at all on the angle, the draft says so plainly instead of
+        quietly writing about something else.
+      </p>
+
+      <div class="bg__row">
+        <button
+          type="submit"
+          class="bg__submit"
+          data-bg-generate
+          >Generate draft</button
+        >
+        <button
+          type="button"
+          class="bg__reset"
+          data-bg-refresh
+          >Refresh drafts</button
+        >
+      </div>
+    </form>
+
+    <p
+      class="bg__status"
+      data-bg-status
+      role="status"
+      aria-live="polite"
+    >
+      {emptyStateText}
+    </p>
+
+    {
+      debug && (
+        <pre class="bg__debug" data-bg-debug>
+          {"Debug: waiting for the client script to start…\n" +
+            "(if this line never changes, the <script> below never ran " +
+            "in this preview — that is itself the finding)"}
+        </pre>
+      )
+    }
+
+    <!-- Draft panel: styled like a real Stevie blog post (kicker, headline,
+         dek, tags) so an editor previews it the way a reader would see it,
+         with the fact-check verdict pinned above the copy rather than
+         alongside it, since that verdict gates whether anything below it
+         should be trusted yet. -->
+    <article
+      class="bg__draft"
+      data-bg-draft
+      hidden
+    >
+      <p class="bg__kicker">Draft — for review</p>
+      <div
+        class="bg__verdict"
+        data-bg-verdict
+      ></div>
+      <h1
+        class="bg__headline"
+        data-bg-headline
+      ></h1>
+      <p
+        class="bg__dek"
+        data-bg-dek
+      ></p>
+      <div
+        class="bg__body"
+        data-bg-body
+      ></div>
+      <div
+        class="bg__tags"
+        data-bg-tags
+      ></div>
+      <dl
+        class="bg__meta"
+        data-bg-meta
+      ></dl>
+    </article>
+
+    <section class="bg__drafts-section">
+      <h3 class="bg__drafts-heading">Saved drafts</h3>
+      <div
+        class="bg__drafts"
+        data-bg-drafts
+      >
+        <p class="bg__status">Loading…</p>
+      </div>
+    </section>
+  </div>
+</CustomSection>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  const NS = "[blog-generator]";
+
+  type ProfileOption = {
+    profile_key?: string;
+    display_name?: string;
+    profile_type?: "org" | "person";
+    award_count?: number;
+    first_year?: string;
+    last_year?: string;
+  };
+
+  type DraftRow = {
+    slug?: string;
+    headline?: string;
+    org_name?: string;
+    angle?: string;
+    fact_check_status?: string;
+    grounding_score?: number;
+    updated_at?: string;
+  };
+
+  const esc = (value: unknown): string =>
+    String(value ?? "").replace(
+      /[&<>"']/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c
+    );
+
+  const num = (value: unknown): string => Number(value ?? 0).toLocaleString("en-US");
+
+  /** Minimal markdown -> HTML. Escapes text BEFORE any tag is introduced, so
+   *  model-written prose can never inject markup — the same rule blog_writer's
+   *  own static/blog_writer.html preview follows. Not a full parser: just the
+   *  handful of constructs the article prompt actually asks the model for
+   *  (paragraphs, ##/### headings, **bold**, *italic*). */
+  const mdToHtml = (md: string): string => {
+    const lines = String(md || "").split(/\r?\n/);
+    const blocks: string[] = [];
+    let para: string[] = [];
+    const flush = () => {
+      if (!para.length) return;
+      const text = esc(para.join(" "))
+        .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+        .replace(/\[VERIFY\]/g, '<mark class="bg__verify">VERIFY</mark>');
+      blocks.push(`<p>${text}</p>`);
+      para = [];
+    };
+    for (const raw of lines) {
+      const line = raw.trim();
+      if (!line) { flush(); continue; }
+      const h3 = line.match(/^###\s+(.*)/);
+      const h2 = line.match(/^##\s+(.*)/);
+      if (h3) { flush(); blocks.push(`<h3>${esc(h3[1])}</h3>`); continue; }
+      if (h2) { flush(); blocks.push(`<h2>${esc(h2[1])}</h2>`); continue; }
+      para.push(line);
+    }
+    flush();
+    return blocks.join("");
+  };
+
+  const initBlogGenerator = () => {
+    const roots = document.querySelectorAll<HTMLElement>("[data-bg]");
+    if (!roots.length) return;
+
+    roots.forEach((root) => {
+      // Astro re-runs module scripts on view transitions; without this a
+      // second set of listeners would fire one request per past navigation.
+      if (root.dataset.bgReady === "true") return;
+      root.dataset.bgReady = "true";
+
+      const debugEl = root.querySelector<HTMLElement>("[data-bg-debug]");
+      const log = (msg: string, ...rest: unknown[]) => {
+        const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        console.log(NS, msg, ...rest);
+        if (debugEl) {
+          debugEl.textContent += "\n" + line + (rest.length ? " " + JSON.stringify(rest[0]) : "");
+        }
+      };
+
+      log("component script started");
+
+      let config: { endpoint: string; defaultProfileType: "org" | "person"; debug: boolean };
+      try {
+        config = JSON.parse(root.dataset.config || "{}");
+      } catch (err) {
+        log("FAILED to parse config JSON", String(err));
+        return;
+      }
+      const { endpoint } = config;
+      log(`config parsed: endpoint="${endpoint}"`);
+      if (!endpoint) {
+        log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
+        return;
+      }
+
+      const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
+      const form = $<HTMLFormElement>("[data-bg-form]");
+      const ptypeSel = $<HTMLSelectElement>("[data-bg-ptype]");
+      const qInput = $<HTMLInputElement>("[data-bg-q]");
+      const profileSel = $<HTMLSelectElement>("[data-bg-profile]");
+      const angleInput = $<HTMLTextAreaElement>("[data-bg-angle]");
+      const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
+      const refreshBtn = $<HTMLButtonElement>("[data-bg-refresh]");
+      const statusEl = $("[data-bg-status]");
+      const draftEl = $<HTMLElement>("[data-bg-draft]");
+      const verdictEl = $("[data-bg-verdict]");
+      const headlineEl = $("[data-bg-headline]");
+      const dekEl = $("[data-bg-dek]");
+      const bodyEl = $("[data-bg-body]");
+      const tagsEl = $("[data-bg-tags]");
+      const metaEl = $("[data-bg-meta]");
+      const draftsEl = $("[data-bg-drafts]");
+      if (!form || !ptypeSel || !qInput || !profileSel || !statusEl || !draftEl) return;
+
+      const url = (path: string, params: Record<string, string | number> = {}) => {
+        const qs = new URLSearchParams();
+        Object.entries(params).forEach(([k, v]) => {
+          if (v !== "" && v !== undefined && v !== null) qs.set(k, String(v));
+        });
+        const suffix = qs.toString();
+        return `${endpoint}${path}${suffix ? `?${suffix}` : ""}`;
+      };
+
+      // Debounced search-as-you-type, same convention as the Explorer/Search
+      // Past Winners profile pickers — a fetch per keystroke would otherwise
+      // spam the API and race itself.
+      let profileSeq = 0;
+      let profileTimer: ReturnType<typeof setTimeout> | undefined;
+
+      const loadProfiles = async () => {
+        const mine = ++profileSeq;
+        const ptype = ptypeSel.value || "org";
+        const q = qInput.value.trim();
+        const profilesUrl = url("/api/blog-writer/profiles", { q, profile_type: ptype, limit: 50 });
+        log(`fetching profiles: ${profilesUrl}`);
+        try {
+          const res = await fetch(profilesUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== profileSeq) return; // superseded by a newer keystroke
+          const rows: ProfileOption[] = data.results || [];
+          const prevValue = profileSel.value;
+          profileSel.innerHTML = rows.length
+            ? rows
+                .map((r) => {
+                  const key = r.profile_key || r.display_name || "";
+                  const span = r.first_year && r.last_year
+                    ? (r.first_year === r.last_year ? r.first_year : `${r.first_year}–${r.last_year}`)
+                    : "";
+                  const label = `${r.display_name || key} — ${num(r.award_count)} awards${span ? ` (${span})` : ""}`;
+                  return `<option value="${esc(key)}">${esc(label)}</option>`;
+                })
+                .join("")
+            : `<option value="">No matches</option>`;
+          if (rows.some((r) => (r.profile_key || r.display_name) === prevValue)) {
+            profileSel.value = prevValue;
+          }
+          log(`profiles loaded: ${rows.length}`);
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`profiles FAILED: ${detail}`);
+          profileSel.innerHTML = `<option value="">Could not load profiles</option>`;
+        }
+      };
+
+      const renderVerdict = (d: {
+        fact_check_status?: string;
+        grounding_score?: number;
+        fact_check_reason?: string;
+        flagged_claims?: string[];
+      }) => {
+        if (!verdictEl) return;
+        const passed = d.fact_check_status === "passed";
+        const pct = Math.round((d.grounding_score || 0) * 100);
+        const claims = (d.flagged_claims || [])
+          .map((c) => `<li>${esc(c)}</li>`)
+          .join("");
+        verdictEl.innerHTML = `
+          <div class="bg__verdict-banner" data-kind="${passed ? "pass" : "flag"}">
+            <span class="bg__verdict-pct">${pct}%</span>
+            <div>
+              <p class="bg__verdict-title">${passed ? "Fact-check passed" : "Fact-check flagged claims"}</p>
+              <p class="bg__verdict-reason">${esc(d.fact_check_reason || "")}</p>
+              ${claims ? `<ul class="bg__verdict-claims">${claims}</ul>` : ""}
+            </div>
+          </div>`;
+      };
+
+      const renderDraft = (d: {
+        headline?: string;
+        dek?: string;
+        body_md?: string;
+        annotated_text?: string;
+        fact_check_status?: string;
+        tags?: string[];
+        title_tag?: string;
+        meta_description?: string;
+        slug?: string;
+        verified_claims?: number;
+        total_claims?: number;
+        word_count?: number;
+        fact_check_reason?: string;
+        grounding_score?: number;
+        flagged_claims?: string[];
+      }) => {
+        if (!headlineEl || !dekEl || !bodyEl || !tagsEl || !metaEl || !draftEl) return;
+        headlineEl.textContent = d.headline || "";
+        dekEl.textContent = d.dek || "";
+        // Render the annotated text when the gate flagged something, so the
+        // [VERIFY] markers land in the copy a reviewer actually reads.
+        bodyEl.innerHTML = mdToHtml(
+          d.fact_check_status === "passed" ? d.body_md || "" : d.annotated_text || d.body_md || ""
+        );
+        tagsEl.innerHTML = (d.tags || []).map((t) => `<span class="bg__tag">${esc(t)}</span>`).join("");
+        renderVerdict(d);
+        metaEl.innerHTML = [
+          ["Claims verified", `<span class="bg__num">${num(d.verified_claims)} / ${num(d.total_claims)}</span>`],
+          ["Words", `<span class="bg__num">${num(d.word_count)}</span>`],
+          ["SEO title", esc(d.title_tag || "")],
+          ["Meta description", esc(d.meta_description || "")],
+          ["Slug", esc(d.slug || "")],
+        ]
+          .map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`)
+          .join("");
+        draftEl.hidden = false;
+      };
+
+      const loadDrafts = async () => {
+        if (!draftsEl) return;
+        const draftsUrl = url("/api/blog-writer/drafts", { limit: 50 });
+        log(`fetching drafts: ${draftsUrl}`);
+        try {
+          const res = await fetch(draftsUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const rows: DraftRow[] = data.rows || [];
+          if (!rows.length) {
+            draftsEl.innerHTML = `<p class="bg__status">No drafts yet.</p>`;
+            return;
+          }
+          draftsEl.innerHTML = `
+            <div class="bg__table-scroll">
+              <table class="bg__table">
+                <thead>
+                  <tr><th>Headline</th><th>Subject</th><th>Angle</th><th>Fact-check</th><th>Updated</th></tr>
+                </thead>
+                <tbody>
+                  ${rows
+                    .map(
+                      (r) => `<tr class="bg__draft-row" data-slug="${esc(r.slug)}" tabindex="0">
+                        <td>${esc(r.headline || "—")}</td>
+                        <td class="bg__cell-muted">${esc(r.org_name || "—")}</td>
+                        <td class="bg__cell-muted">${esc(r.angle || "—")}</td>
+                        <td><span class="bg__pill bg__pill--${esc(r.fact_check_status || "")}">${esc(r.fact_check_status || "—")}</span></td>
+                        <td class="bg__cell-muted">${esc(r.updated_at || "")}</td>
+                      </tr>`
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>`;
+          log(`drafts loaded: ${rows.length}`);
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`drafts FAILED: ${detail}`);
+          draftsEl.innerHTML = `<p class="bg__status" data-kind="error">Could not load drafts.</p>`;
+        }
+      };
+
+      const openDraft = async (slug: string) => {
+        const draftUrl = url(`/api/blog-writer/draft/${encodeURIComponent(slug)}`);
+        log(`fetching draft: ${draftUrl}`);
+        try {
+          const res = await fetch(draftUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const d = await res.json();
+          if (d.error) throw new Error(d.error);
+          renderDraft({
+            headline: d.headline,
+            dek: d.dek,
+            body_md: d.draft_text,
+            annotated_text: d.annotated_text,
+            fact_check_status: d.fact_check_status,
+            tags: Array.isArray(d.tags) ? d.tags : JSON.parse(d.tags || "[]"),
+            title_tag: d.title_tag,
+            meta_description: d.meta_description,
+            slug: d.slug,
+            word_count: d.word_count,
+            fact_check_reason: d.reason,
+            grounding_score: d.grounding_score,
+            flagged_claims: d.flagged_claims,
+          });
+          draftEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`open draft FAILED: ${detail}`);
+          statusEl.textContent = "Could not load that draft.";
+          statusEl.dataset.kind = "error";
+        }
+      };
+
+      const generate = async () => {
+        const key = profileSel.value.trim();
+        if (!key) {
+          statusEl.textContent = "Pick a profile first.";
+          statusEl.dataset.kind = "error";
+          return;
+        }
+        statusEl.removeAttribute("data-kind");
+        statusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Writing and fact-checking…`;
+        if (generateBtn) generateBtn.disabled = true;
+
+        const genUrl = url("/api/blog-writer/generate");
+        log(`generating: ${genUrl} profile_key="${key}"`);
+        try {
+          const res = await fetch(genUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              profile_type: ptypeSel.value || "org",
+              profile_key: key,
+              angle: angleInput?.value || "",
+            }),
+          });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+          log(`draft generated OK: slug="${d.slug}" fact_check_status="${d.fact_check_status}"`);
+          renderDraft(d);
+          statusEl.textContent = "";
+          void loadDrafts();
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          const looksLikeCorsOrNetwork = err instanceof TypeError;
+          log(
+            `GENERATE FAILED: ${detail}` +
+              (looksLikeCorsOrNetwork
+                ? " -- likely CORS blocked, tunnel down, or wrong URL (no HTTP status reached)"
+                : "")
+          );
+          statusEl.textContent = "Could not generate: " + detail;
+          statusEl.dataset.kind = "error";
+        } finally {
+          if (generateBtn) generateBtn.disabled = false;
+        }
+      };
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        void generate();
+      });
+      refreshBtn?.addEventListener("click", () => void loadDrafts());
+      ptypeSel.addEventListener("change", () => {
+        profileSel.innerHTML = `<option value="">Search above to choose a profile…</option>`;
+        void loadProfiles();
+      });
+      qInput.addEventListener("input", () => {
+        if (profileTimer) clearTimeout(profileTimer);
+        profileTimer = setTimeout(() => void loadProfiles(), 220);
+      });
+      draftsEl?.addEventListener("click", (event) => {
+        const row = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
+        if (row?.dataset.slug) void openDraft(row.dataset.slug);
+      });
+      draftsEl?.addEventListener("keydown", (event) => {
+        if (event.key !== "Enter" && event.key !== " ") return;
+        const row = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
+        if (row?.dataset.slug) {
+          event.preventDefault();
+          void openDraft(row.dataset.slug);
+        }
+      });
+
+      ptypeSel.value = config.defaultProfileType || "org";
+      void loadProfiles();
+      void loadDrafts();
+    });
+  };
+
+  onPageLoad(initBlogGenerator);
+</script>
+
+<style is:global>
+  @layer page-sections {
+    .blog-generator {
+      --bg-gold: #dfba19;
+      --bg-gold-soft: rgba(223, 186, 25, 0.16);
+      --bg-pass: #2d7272;
+      --bg-pass-soft: rgba(45, 114, 114, 0.14);
+      --bg-flag: #b3261e;
+      --bg-flag-soft: rgba(179, 38, 30, 0.12);
+    }
+
+    @keyframes bg-spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes bg-fade-up {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .blog-generator .bg__form {
+      margin-top: var(--spacing-lg);
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-md);
+    }
+
+    .blog-generator .bg__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+      align-items: flex-end;
+    }
+
+    .blog-generator .bg__field {
+      display: flex;
+      flex: 1 1 12rem;
+      flex-direction: column;
+      gap: var(--spacing-xs);
+      min-width: 0;
+    }
+
+    .blog-generator .bg__field--grow {
+      flex: 4 1 20rem;
+    }
+
+    .blog-generator .bg__field--narrow {
+      flex: 0 1 12rem;
+    }
+
+    .blog-generator .bg__label {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .blog-generator .bg__input,
+    .blog-generator .bg__select,
+    .blog-generator .bg__textarea {
+      width: 100%;
+      padding: var(--spacing-sm);
+      border: 1px solid var(--color-border-inputs, var(--color-border));
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+    }
+
+    .blog-generator .bg__textarea {
+      resize: vertical;
+      min-height: 3.2rem;
+    }
+
+    .blog-generator .bg__input:focus-visible,
+    .blog-generator .bg__select:focus-visible,
+    .blog-generator .bg__textarea:focus-visible {
+      outline: 2px solid var(--color-focus-ring, var(--color-brand));
+      outline-offset: 2px;
+    }
+
+    .blog-generator .bg__hint {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      line-height: 1.5;
+    }
+
+    .blog-generator .bg__submit,
+    .blog-generator .bg__reset {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--color-brand);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg-brand, var(--color-brand));
+      color: var(--color-text-on-brand, var(--color-text-strong));
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: background-color var(--animation-fast) ease, color var(--animation-fast) ease,
+        border-color var(--animation-fast) ease;
+    }
+
+    .blog-generator .bg__reset {
+      border-color: var(--color-border);
+      background-color: transparent;
+      color: var(--color-text);
+    }
+
+    .blog-generator .bg__submit:hover:not(:disabled) {
+      background-color: transparent;
+      border-color: var(--color-border-strong, var(--color-border));
+      color: var(--color-text-strong, var(--color-text));
+    }
+
+    .blog-generator .bg__reset:hover {
+      background-color: var(--color-state-hover, var(--color-bg-muted));
+    }
+
+    .blog-generator .bg__submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .blog-generator .bg__status {
+      margin-top: var(--spacing-md);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .blog-generator .bg__status[data-kind="error"] {
+      color: var(--bg-flag);
+    }
+
+    .blog-generator .bg__inline-spin {
+      display: inline-block;
+      width: 0.9rem;
+      height: 0.9rem;
+      border: 2px solid var(--color-border);
+      border-top-color: var(--bg-gold);
+      border-radius: 50%;
+      animation: bg-spin 0.7s linear infinite;
+      vertical-align: -0.1em;
+      margin-right: 0.4em;
+    }
+
+    .blog-generator .bg__debug {
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      max-height: 10rem;
+      overflow: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg-muted);
+      color: var(--color-text-muted);
+      font-family: monospace;
+      font-size: var(--font-size-xs);
+      white-space: pre-wrap;
+    }
+
+    /* Draft panel — reads like the real Stevie blog's own profile posts:
+       kicker, oversized headline, dek, then body copy. The verdict banner
+       sits ABOVE the headline on purpose, so nobody scrolls past it into
+       body copy before knowing whether it is trustworthy yet. */
+    .blog-generator .bg__draft {
+      margin-top: var(--spacing-xl);
+      padding: var(--spacing-xl);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg-surface, var(--color-bg-muted));
+      animation: bg-fade-up var(--animation-normal) ease;
+    }
+
+    .blog-generator .bg__kicker {
+      margin: 0 0 var(--spacing-sm);
+      color: var(--bg-gold);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .blog-generator .bg__headline {
+      margin: var(--spacing-md) 0 var(--spacing-sm);
+      font-family: var(--font-heading, var(--font-body));
+      font-size: var(--font-size-2xl, 1.9rem);
+      font-weight: var(--font-weight-bold);
+      line-height: 1.2;
+      color: var(--color-text-strong);
+    }
+
+    .blog-generator .bg__dek {
+      margin: 0 0 var(--spacing-lg);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-md);
+      line-height: 1.5;
+    }
+
+    .blog-generator .bg__verdict-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md);
+      border: 1px solid var(--bg-pass);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-pass-soft);
+    }
+
+    .blog-generator .bg__verdict-banner[data-kind="flag"] {
+      border-color: var(--bg-flag);
+      background-color: var(--bg-flag-soft);
+    }
+
+    .blog-generator .bg__verdict-pct {
+      font-size: var(--font-size-xl, 1.5rem);
+      font-weight: var(--font-weight-bold);
+      color: var(--bg-pass);
+    }
+
+    .blog-generator .bg__verdict-banner[data-kind="flag"] .bg__verdict-pct {
+      color: var(--bg-flag);
+    }
+
+    .blog-generator .bg__verdict-title {
+      margin: 0;
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-strong);
+    }
+
+    .blog-generator .bg__verdict-reason,
+    .blog-generator .bg__verdict-claims {
+      margin: 0.2rem 0 0;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    .blog-generator .bg__verdict-claims {
+      padding-left: 1.2em;
+    }
+
+    .blog-generator .bg__body {
+      margin-top: var(--spacing-lg);
+      color: var(--color-text);
+      font-size: var(--font-size-md);
+      line-height: 1.7;
+    }
+
+    .blog-generator .bg__body p {
+      margin: 0 0 1em;
+    }
+
+    .blog-generator .bg__body mark.bg__verify {
+      background-color: var(--bg-gold-soft);
+      color: var(--color-text-strong);
+      border-radius: 3px;
+      padding: 0 0.2em;
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .blog-generator .bg__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+      margin-top: var(--spacing-md);
+    }
+
+    .blog-generator .bg__tag {
+      padding: 0.2em 0.7em;
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg-muted);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .blog-generator .bg__meta {
+      margin: var(--spacing-lg) 0 0;
+      padding-top: var(--spacing-md);
+      border-top: 1px solid var(--color-border);
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      gap: 0.35em var(--spacing-md);
+    }
+
+    .blog-generator .bg__meta dt {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .blog-generator .bg__meta dd {
+      margin: 0;
+      font-size: var(--font-size-sm);
+      color: var(--color-text);
+    }
+
+    .blog-generator .bg__drafts-section {
+      margin-top: var(--spacing-xl);
+    }
+
+    .blog-generator .bg__drafts-heading {
+      font-size: var(--font-size-md);
+      font-weight: var(--font-weight-semibold);
+      margin: 0 0 var(--spacing-md);
+    }
+
+    .blog-generator .bg__table-scroll {
+      overflow-x: auto;
+    }
+
+    .blog-generator .bg__table {
+      width: 100%;
+      min-width: 640px;
+      border-collapse: collapse;
+      font-size: var(--font-size-sm);
+    }
+
+    .blog-generator .bg__table th {
+      text-align: left;
+      padding: var(--spacing-sm);
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .blog-generator .bg__table td {
+      padding: var(--spacing-sm);
+      border-bottom: 1px solid var(--color-border-subtle, var(--color-border));
+    }
+
+    .blog-generator .bg__draft-row {
+      cursor: pointer;
+    }
+
+    .blog-generator .bg__draft-row:hover,
+    .blog-generator .bg__draft-row:focus-visible {
+      background-color: var(--color-state-hover, var(--color-bg-muted));
+    }
+
+    .blog-generator .bg__cell-muted {
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__pill {
+      display: inline-block;
+      padding: 0.15em 0.6em;
+      border-radius: var(--radius-full);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      text-transform: capitalize;
+      background-color: var(--color-bg-muted);
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__pill--passed {
+      background-color: var(--bg-pass-soft);
+      color: var(--bg-pass);
+    }
+
+    .blog-generator .bg__pill--flagged {
+      background-color: var(--bg-flag-soft);
+      color: var(--bg-flag);
+    }
+
+    /* Stack the drafts table on narrow screens instead of letting six columns
+       squeeze words (and numbers) mid-character — the same overflow fix
+       applied to the standalone blog_writer.html preview and to
+       SearchPastWinners' own results table. */
+    @media (max-width: 640px) {
+      .blog-generator .bg__drafts {
+        max-width: 100%;
+        overflow-x: auto;
+      }
+    }
+  }
+</style>

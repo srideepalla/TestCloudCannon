@@ -1,0 +1,66 @@
+heading:
+  type: text
+  comment: Section heading shown above the profile picker.
+
+description:
+  type: text
+  comment: Short line of copy explaining what this generates.
+
+apiEndpoint:
+  type: url
+  comment: >-
+    Base URL of the Blog Generator API, with no trailing slash (e.g.
+    https://your-tunnel.trycloudflare.com). Leave blank to use the site's
+    PUBLIC_BLOG_API_ENDPOINT build setting. A quick-tunnel URL changes every
+    time the tunnel restarts, so expect to update this when testing. This is
+    the StevieIntel server (blog_writer.py), the same one static/blog_writer.html
+    talks to locally — not the Search Past Winners API.
+
+defaultProfileType:
+  type: select
+  comment: Which profile type the picker opens on.
+  options:
+    values:
+      - id: org
+        name: Organizations
+      - id: person
+        name: People
+
+emptyStateText:
+  type: text
+  comment: Message shown before a profile has been picked.
+
+debug:
+  type: checkbox
+  comment: >-
+    Show a live log panel under the form — every fetch it makes and every
+    error, in plain text, right on the page. Turn this on when generation
+    isn't working and you need to see why without opening browser devtools.
+    Turn it off once things are working; it is not meant to ship visible to
+    visitors.
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

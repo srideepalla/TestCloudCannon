@@ -1,0 +1,36 @@
+# Lets an editor drop <BlogGenerator /> straight into MDX body content, same
+# reasoning as search_past_winners' own snippet: a generator tool is more
+# likely to be wanted mid-page than as a top-level page section. MDX
+# components are auto-registered by filename in src/pages/[...slug].astro, so
+# no import is needed in the page.
+blog_generator:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Blog Generator
+    subtext:
+      - key: heading
+      - Draft a fact-checked winner profile article on demand
+    icon: edit
+  definitions:
+    component_name: BlogGenerator
+    named_args:
+      - editor_key: heading
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: description
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: apiEndpoint
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: defaultProfileType
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/page-sections/features/blog-generator/blog-generator.cloudcannon.inputs.yml
