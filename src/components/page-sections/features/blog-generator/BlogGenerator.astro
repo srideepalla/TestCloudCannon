@@ -251,6 +251,12 @@ const config = {
           data-bg-publish
           >Approve &amp; publish</button
         >
+        <button
+          type="button"
+          class="bg__delete"
+          data-bg-delete
+          >Delete</button
+        >
         <span
           class="bg__status"
           data-bg-publish-status
@@ -378,6 +384,7 @@ const config = {
       const metaEl = $("[data-bg-meta]");
       const draftsEl = $("[data-bg-drafts]");
       const publishBtn = $<HTMLButtonElement>("[data-bg-publish]");
+      const deleteBtn = $<HTMLButtonElement>("[data-bg-delete]");
       const publishStatusEl = $("[data-bg-publish-status]");
       if (!form || !statusEl || !draftEl) return;
 
@@ -474,30 +481,26 @@ const config = {
             return;
           }
           draftsEl.innerHTML = `
-            <div class="bg__table-scroll">
-              <table class="bg__table">
-                <thead>
-                  <tr><th>Headline</th><th>Subject</th><th>Angle</th><th>Fact-check</th><th>Status</th><th>Updated</th></tr>
-                </thead>
-                <tbody>
-                  ${rows
-                    .map(
-                      (r) => `<tr class="bg__draft-row" data-slug="${esc(r.slug)}" tabindex="0">
-                        <td>${esc(r.headline || "—")}</td>
-                        <td class="bg__cell-muted">${esc(r.org_name || "—")}</td>
-                        <td class="bg__cell-muted">${esc(r.angle || "—")}</td>
-                        <td><span class="bg__pill bg__pill--${esc(r.fact_check_status || "")}">${esc(r.fact_check_status || "—")}</span></td>
-                        <td>${
-                          r.status === "published" && r.cloudcannon_id
-                            ? `<a href="${esc(r.cloudcannon_id)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Published ↗</a>`
-                            : `<span class="bg__cell-muted">${esc(r.status || "draft")}</span>`
-                        }</td>
-                        <td class="bg__cell-muted">${esc(r.updated_at || "")}</td>
-                      </tr>`
-                    )
-                    .join("")}
-                </tbody>
-              </table>
+            <div class="bg__cards">
+              ${rows
+                .map((r) => {
+                  const published = r.status === "published" && r.cloudcannon_id;
+                  return `<button
+                    type="button"
+                    class="bg__card"
+                    data-slug="${esc(r.slug)}"
+                  >
+                    <span class="bg__card-top">
+                      <span class="bg__pill bg__pill--${esc(r.fact_check_status || "")}">${esc(r.fact_check_status || "—")}</span>
+                      <span class="bg__card-status" data-kind="${published ? "published" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
+                    </span>
+                    <span class="bg__card-headline">${esc(r.headline || "Untitled")}</span>
+                    <span class="bg__card-subject">${esc(r.org_name || "—")}</span>
+                    ${r.angle ? `<span class="bg__card-angle">${esc(r.angle)}</span>` : ""}
+                    <span class="bg__card-updated">${esc(r.updated_at || "")}</span>
+                  </button>`;
+                })
+                .join("")}
             </div>`;
           log(`drafts loaded: ${rows.length}`);
         } catch (err) {
@@ -619,23 +622,54 @@ const config = {
         }
       };
 
+      const deleteCurrent = async () => {
+        if (!currentSlug) {
+          if (publishStatusEl) publishStatusEl.textContent = "Generate or open a draft first.";
+          return;
+        }
+        const confirmed = window.confirm(
+          "Delete this draft? If it was already published, its live page is removed too. This cannot be undone."
+        );
+        if (!confirmed) return;
+
+        if (deleteBtn) deleteBtn.disabled = true;
+        if (publishStatusEl) {
+          publishStatusEl.removeAttribute("data-kind");
+          publishStatusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Deleting…`;
+        }
+        const deleteUrl = url(`/api/blog-writer/draft/${encodeURIComponent(currentSlug)}`);
+        log(`deleting: ${deleteUrl}`);
+        try {
+          const res = await fetch(deleteUrl, { method: "DELETE" });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+          log(`deleted OK: slug="${currentSlug}" unpublished=${JSON.stringify(d.unpublished)}`);
+          currentSlug = "";
+          draftEl.hidden = true;
+          if (publishStatusEl) publishStatusEl.textContent = "";
+          void loadDrafts();
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`DELETE FAILED: ${detail}`);
+          if (publishStatusEl) {
+            publishStatusEl.setAttribute("data-kind", "error");
+            publishStatusEl.textContent = "Could not delete: " + detail;
+          }
+        } finally {
+          if (deleteBtn) deleteBtn.disabled = false;
+        }
+      };
+
       form.addEventListener("submit", (event) => {
         event.preventDefault();
         void generate();
       });
       publishBtn?.addEventListener("click", () => void publishCurrent());
+      deleteBtn?.addEventListener("click", () => void deleteCurrent());
       refreshBtn?.addEventListener("click", () => void loadDrafts());
       draftsEl?.addEventListener("click", (event) => {
-        const row = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
-        if (row?.dataset.slug) void openDraft(row.dataset.slug);
-      });
-      draftsEl?.addEventListener("keydown", (event) => {
-        if (event.key !== "Enter" && event.key !== " ") return;
-        const row = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
-        if (row?.dataset.slug) {
-          event.preventDefault();
-          void openDraft(row.dataset.slug);
-        }
+        const card = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
+        if (card?.dataset.slug) void openDraft(card.dataset.slug);
       });
 
       void loadDrafts();
@@ -1002,43 +1036,97 @@ const config = {
       margin: 0 0 var(--spacing-md);
     }
 
-    .blog-generator .bg__table-scroll {
-      overflow-x: auto;
+    .blog-generator .bg__cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+      gap: var(--spacing-md);
     }
 
-    .blog-generator .bg__table {
-      width: 100%;
-      min-width: 640px;
-      border-collapse: collapse;
-      font-size: var(--font-size-sm);
-    }
-
-    .blog-generator .bg__table th {
+    .blog-generator .bg__card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.4em;
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background-color: var(--color-bg-muted);
+      color: var(--color-text);
+      font-family: var(--font-body);
       text-align: left;
-      padding: var(--spacing-sm);
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-bottom: 1px solid var(--color-border);
-    }
-
-    .blog-generator .bg__table td {
-      padding: var(--spacing-sm);
-      border-bottom: 1px solid var(--color-border-subtle, var(--color-border));
-    }
-
-    .blog-generator .bg__draft-row {
       cursor: pointer;
+      transition: border-color var(--animation-fast) ease, background-color var(--animation-fast) ease;
     }
 
-    .blog-generator .bg__draft-row:hover,
-    .blog-generator .bg__draft-row:focus-visible {
+    .blog-generator .bg__card:hover,
+    .blog-generator .bg__card:focus-visible {
+      border-color: var(--color-brand);
       background-color: var(--color-state-hover, var(--color-bg-muted));
     }
 
-    .blog-generator .bg__cell-muted {
+    .blog-generator .bg__card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: var(--spacing-sm);
+    }
+
+    .blog-generator .bg__card-status {
+      font-size: var(--font-size-xs);
       color: var(--color-text-muted);
+      text-transform: capitalize;
+    }
+
+    .blog-generator .bg__card-status[data-kind="published"] {
+      color: var(--bg-pass);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    .blog-generator .bg__card-headline {
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-strong, var(--color-text));
+      line-height: 1.3;
+    }
+
+    .blog-generator .bg__card-subject {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__card-angle {
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    .blog-generator .bg__card-updated {
+      margin-top: auto;
+      padding-top: 0.4em;
+      font-size: var(--font-size-xs);
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__delete {
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border: 1px solid var(--bg-flag);
+      border-radius: var(--radius-sm);
+      background-color: transparent;
+      color: var(--bg-flag);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+      transition: background-color var(--animation-fast) ease;
+    }
+
+    .blog-generator .bg__delete:hover:not(:disabled) {
+      background-color: var(--bg-flag-soft);
+    }
+
+    .blog-generator .bg__delete:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
     }
 
     .blog-generator .bg__pill {
@@ -1062,15 +1150,5 @@ const config = {
       color: var(--bg-flag);
     }
 
-    /* Stack the drafts table on narrow screens instead of letting six columns
-       squeeze words (and numbers) mid-character — the same overflow fix
-       applied to the standalone blog_writer.html preview and to
-       SearchPastWinners' own results table. */
-    @media (max-width: 640px) {
-      .blog-generator .bg__drafts {
-        max-width: 100%;
-        overflow-x: auto;
-      }
-    }
   }
 </style>
