@@ -138,7 +138,7 @@ const config = {
       data-prop="description"
     />
 
-    <div class="bg__form" data-bg-form>
+    <div class="bg__form" data-bg-form data-bg-list-view>
       <div class="bg__selected" data-selected-empty={selectedProfileLabel ? undefined : "true"}>
         <span class="bg__label">Selected profile</span>
         {
@@ -202,6 +202,12 @@ const config = {
       data-bg-draft
       hidden
     >
+      <button
+        type="button"
+        class="bg__back"
+        data-bg-back
+        >&larr; Back to drafts</button
+      >
       <p class="bg__kicker">Draft — for review</p>
       <div
         class="bg__verdict"
@@ -249,7 +255,7 @@ const config = {
       </div>
     </article>
 
-    <section class="bg__drafts-section">
+    <section class="bg__drafts-section" data-bg-list-view>
       <h3 class="bg__drafts-heading">Saved drafts</h3>
       <div
         class="bg__drafts"
@@ -366,8 +372,35 @@ const config = {
       const draftsEl = $("[data-bg-drafts]");
       const publishBtn = $<HTMLButtonElement>("[data-bg-publish]");
       const deleteBtn = $<HTMLButtonElement>("[data-bg-delete]");
+      const backBtn = $<HTMLButtonElement>("[data-bg-back]");
       const publishStatusEl = $("[data-bg-publish-status]");
+      const listViewEls = Array.from(root.querySelectorAll<HTMLElement>("[data-bg-list-view]"));
       if (!form || !statusEl || !draftEl) return;
+
+      // Each draft gets its own URL (?draft=<slug>) via the History API rather
+      // than a real Astro route: this site builds fully static, and drafts
+      // live in StevieIntel's own database, created long after the build --
+      // there is no slug list to hand getStaticPaths() at build time. This
+      // gives the same "feels like its own page" result (bookmarkable,
+      // shareable, back-button-friendly) without needing server rendering.
+      const draftParam = (slug: string) => {
+        const u = new URL(window.location.href);
+        u.searchParams.set("draft", slug);
+        return u.toString();
+      };
+      const listUrl = () => {
+        const u = new URL(window.location.href);
+        u.searchParams.delete("draft");
+        return u.toString();
+      };
+      const showListView = () => {
+        listViewEls.forEach((el) => { el.hidden = false; });
+        draftEl.hidden = true;
+      };
+      const showDraftView = () => {
+        listViewEls.forEach((el) => { el.hidden = true; });
+        draftEl.hidden = false;
+      };
 
       // Whichever draft is currently shown in the panel -- set by both
       // generate() and openDraft(), since Approve & publish has to work on a
@@ -491,7 +524,7 @@ const config = {
         }
       };
 
-      const openDraft = async (slug: string) => {
+      const openDraft = async (slug: string, pushUrl = true) => {
         const draftUrl = url(`/api/blog-writer/draft/${encodeURIComponent(slug)}`);
         log(`fetching draft: ${draftUrl}`);
         try {
@@ -514,7 +547,9 @@ const config = {
             grounding_score: d.grounding_score,
             flagged_claims: Array.isArray(d.flagged_claims) ? d.flagged_claims : JSON.parse(d.flagged_claims || "[]"),
           });
-          draftEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+          showDraftView();
+          if (pushUrl) history.pushState({ slug }, "", draftParam(slug));
+          draftEl.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`open draft FAILED: ${detail}`);
@@ -581,7 +616,8 @@ const config = {
           if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
           log(`deleted OK: slug="${currentSlug}" unpublished=${JSON.stringify(d.unpublished)}`);
           currentSlug = "";
-          draftEl.hidden = true;
+          showListView();
+          history.pushState(null, "", listUrl());
           if (publishStatusEl) publishStatusEl.textContent = "";
           void loadDrafts();
         } catch (err) {
@@ -603,8 +639,26 @@ const config = {
         const card = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
         if (card?.dataset.slug) void openDraft(card.dataset.slug);
       });
+      backBtn?.addEventListener("click", () => {
+        showListView();
+        history.pushState(null, "", listUrl());
+      });
+      // Browser back/forward: re-read the URL rather than trusting popstate's
+      // own state object, so a reload while on a draft's URL (handled below)
+      // and a back-button press land on the same logic path.
+      window.addEventListener("popstate", () => {
+        const slug = new URL(window.location.href).searchParams.get("draft");
+        if (slug) void openDraft(slug, false);
+        else showListView();
+      });
 
       void loadDrafts();
+
+      // Deep link: reloading or sharing a draft's URL (?draft=<slug>) opens
+      // straight into it instead of the list, the same way any other page's
+      // URL would.
+      const initialSlug = new URL(window.location.href).searchParams.get("draft");
+      if (initialSlug) void openDraft(initialSlug, false);
     });
   };
 
@@ -821,6 +875,24 @@ const config = {
       border-radius: var(--radius-md);
       background-color: var(--color-bg-surface, var(--color-bg-muted));
       animation: bg-fade-up var(--animation-normal) ease;
+    }
+
+    .blog-generator .bg__back {
+      display: inline-flex;
+      align-items: center;
+      margin: 0 0 var(--spacing-md);
+      padding: 0;
+      border: none;
+      background: none;
+      color: var(--color-text-muted);
+      font-family: var(--font-body);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
+    }
+
+    .blog-generator .bg__back:hover {
+      color: var(--color-brand);
     }
 
     .blog-generator .bg__kicker {
