@@ -512,7 +512,7 @@ const config = {
             word_count: d.word_count,
             fact_check_reason: d.reason,
             grounding_score: d.grounding_score,
-            flagged_claims: d.flagged_claims,
+            flagged_claims: Array.isArray(d.flagged_claims) ? d.flagged_claims : JSON.parse(d.flagged_claims || "[]"),
           });
           draftEl?.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (err) {
