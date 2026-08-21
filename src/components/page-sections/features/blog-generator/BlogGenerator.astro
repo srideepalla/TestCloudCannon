@@ -26,10 +26,27 @@
  * This component always renders the pass/flag banner; it never shows body
  * copy without it.
  *
+ * WHY THE PROFILE IS PICKED IN THE CLOUDCANNON SIDEBAR, NOT ON THE PAGE
+ * This used to be a live search box (type a name, results fetched as you
+ * type) -- the same pattern SearchPastWinners still uses. The team wants
+ * picking the winner to happen in CloudCannon's own field editor instead, the
+ * same place `heading` or `colorScheme` get set, not as an interactive
+ * control on the rendered page. CloudCannon's structured inputs can do real
+ * dropdowns backed by a real data list (see `_select_data.blogOrgProfiles` /
+ * `blogPersonProfiles` in cloudcannon.config.yml, generated from the same
+ * database), so `profileType` + `organizationProfile`/`personProfile` are
+ * now plain component props an editor sets in the sidebar, exactly like
+ * `defaultProfileType` used to be a sidebar-only default. One limit does not
+ * go away no matter how this is built: CloudCannon's sidebar can only SET
+ * field values, never run an action -- so Generate itself still has to be a
+ * button on the page. It's placed at the very top for that reason, reading
+ * as "one click after the sidebar picks the winner" rather than a separate
+ * step.
+ *
  * CSS-FIRST, PER THE COMPONENT SKILL
- * The picker is a real <form> with real inputs/select/button, so it is
- * legible and focusable with JavaScript disabled; the draft panel simply
- * stays in its empty state. JS is the enhancement that fills it in.
+ * The angle field and Generate button are still a real <form>/<button>, so
+ * they are legible and focusable with JavaScript disabled; the draft panel
+ * simply stays in its empty state. JS is the enhancement that fills it in.
  */
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
@@ -43,7 +60,12 @@ const {
   // Overridable in CloudCannon so an editor can repoint the component at a
   // tunnel URL without a code change, and by env for per-environment builds.
   apiEndpoint = "",
-  defaultProfileType = "org",
+  // Set from the sidebar (see cloudcannon.config.yml's blogOrgProfiles /
+  // blogPersonProfiles _select_data lists). Whichever of the two profile
+  // fields matches profileType is the one actually used.
+  profileType = "org",
+  organizationProfile = "",
+  personProfile = "",
   emptyStateText = "Choose a profile above, then generate a draft.",
   // Prints every step (config read, each fetch, each error) into a visible
   // on-page panel, not just the browser console — see SearchPastWinners for
@@ -65,9 +87,22 @@ const endpoint = (
   BLOG_API_ENDPOINT
 ).replace(/\/+$/, "");
 
+const resolvedProfileType = profileType === "person" ? "person" : "org";
+const resolvedProfileKey = resolvedProfileType === "person" ? personProfile : organizationProfile;
+// Person keys are stored lowercase ("jean henri lhuillier"); organizations
+// are already display-cased. Title-casing only the person case is enough to
+// show something readable here -- the real display name comes back from the
+// API's own response once a draft is generated.
+const selectedProfileLabel = resolvedProfileKey
+  ? (resolvedProfileType === "person"
+      ? resolvedProfileKey.replace(/\b\w/g, (c) => c.toUpperCase())
+      : resolvedProfileKey)
+  : "";
+
 const config = {
   endpoint,
-  defaultProfileType: defaultProfileType === "person" ? "person" : "org",
+  profileType: resolvedProfileType,
+  profileKey: resolvedProfileKey,
   debug: !!debug,
 };
 ---
@@ -103,39 +138,20 @@ const config = {
       data-bg-form
       novalidate
     >
-      <div class="bg__row">
-        <label class="bg__field bg__field--narrow">
-          <span class="bg__label">Profile type</span>
-          <select
-            name="profile_type"
-            class="bg__select"
-            data-bg-ptype
-          >
-            <option value="org">Organizations</option>
-            <option value="person">People</option>
-          </select>
-        </label>
-        <label class="bg__field bg__field--grow">
-          <span class="bg__label">Find a winner</span>
-          <input
-            type="search"
-            name="q"
-            class="bg__input"
-            data-bg-q
-            placeholder="Start typing a name, e.g. IBM"
-            autocomplete="off"
-          />
-        </label>
-        <label class="bg__field bg__field--grow">
-          <span class="bg__label">Profile</span>
-          <select
-            name="profile_key"
-            class="bg__select"
-            data-bg-profile
-          >
-            <option value="">Search above to choose a profile…</option>
-          </select>
-        </label>
+      <div class="bg__selected" data-selected-empty={selectedProfileLabel ? undefined : "true"}>
+        <span class="bg__label">Selected profile</span>
+        {
+          selectedProfileLabel ? (
+            <p class="bg__selected-name">
+              {selectedProfileLabel}
+              <span class="bg__type-badge">{resolvedProfileType === "person" ? "Person" : "Organization"}</span>
+            </p>
+          ) : (
+            <p class="bg__selected-name bg__selected-name--empty">
+              No profile chosen yet — pick one in the editor sidebar (Profile Type, then Organization or Person).
+            </p>
+          )
+        }
       </div>
 
       <label class="bg__field">
@@ -261,15 +277,6 @@ const config = {
 
   const NS = "[blog-generator]";
 
-  type ProfileOption = {
-    profile_key?: string;
-    display_name?: string;
-    profile_type?: "org" | "person";
-    award_count?: number;
-    first_year?: string;
-    last_year?: string;
-  };
-
   type DraftRow = {
     slug?: string;
     headline?: string;
@@ -342,15 +349,15 @@ const config = {
 
       log("component script started");
 
-      let config: { endpoint: string; defaultProfileType: "org" | "person"; debug: boolean };
+      let config: { endpoint: string; profileType: "org" | "person"; profileKey: string; debug: boolean };
       try {
         config = JSON.parse(root.dataset.config || "{}");
       } catch (err) {
         log("FAILED to parse config JSON", String(err));
         return;
       }
-      const { endpoint } = config;
-      log(`config parsed: endpoint="${endpoint}"`);
+      const { endpoint, profileType, profileKey } = config;
+      log(`config parsed: endpoint="${endpoint}" profileType="${profileType}" profileKey="${profileKey}"`);
       if (!endpoint) {
         log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
         return;
@@ -358,9 +365,6 @@ const config = {
 
       const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
       const form = $<HTMLFormElement>("[data-bg-form]");
-      const ptypeSel = $<HTMLSelectElement>("[data-bg-ptype]");
-      const qInput = $<HTMLInputElement>("[data-bg-q]");
-      const profileSel = $<HTMLSelectElement>("[data-bg-profile]");
       const angleInput = $<HTMLTextAreaElement>("[data-bg-angle]");
       const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
       const refreshBtn = $<HTMLButtonElement>("[data-bg-refresh]");
@@ -375,7 +379,7 @@ const config = {
       const draftsEl = $("[data-bg-drafts]");
       const publishBtn = $<HTMLButtonElement>("[data-bg-publish]");
       const publishStatusEl = $("[data-bg-publish-status]");
-      if (!form || !ptypeSel || !qInput || !profileSel || !statusEl || !draftEl) return;
+      if (!form || !statusEl || !draftEl) return;
 
       // Whichever draft is currently shown in the panel -- set by both
       // generate() and openDraft(), since Approve & publish has to work on a
@@ -390,48 +394,6 @@ const config = {
         });
         const suffix = qs.toString();
         return `${endpoint}${path}${suffix ? `?${suffix}` : ""}`;
-      };
-
-      // Debounced search-as-you-type, same convention as the Explorer/Search
-      // Past Winners profile pickers — a fetch per keystroke would otherwise
-      // spam the API and race itself.
-      let profileSeq = 0;
-      let profileTimer: ReturnType<typeof setTimeout> | undefined;
-
-      const loadProfiles = async () => {
-        const mine = ++profileSeq;
-        const ptype = ptypeSel.value || "org";
-        const q = qInput.value.trim();
-        const profilesUrl = url("/api/blog-writer/profiles", { q, profile_type: ptype, limit: 50 });
-        log(`fetching profiles: ${profilesUrl}`);
-        try {
-          const res = await fetch(profilesUrl);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          if (mine !== profileSeq) return; // superseded by a newer keystroke
-          const rows: ProfileOption[] = data.results || [];
-          const prevValue = profileSel.value;
-          profileSel.innerHTML = rows.length
-            ? rows
-                .map((r) => {
-                  const key = r.profile_key || r.display_name || "";
-                  const span = r.first_year && r.last_year
-                    ? (r.first_year === r.last_year ? r.first_year : `${r.first_year}–${r.last_year}`)
-                    : "";
-                  const label = `${r.display_name || key} — ${num(r.award_count)} awards${span ? ` (${span})` : ""}`;
-                  return `<option value="${esc(key)}">${esc(label)}</option>`;
-                })
-                .join("")
-            : `<option value="">No matches</option>`;
-          if (rows.some((r) => (r.profile_key || r.display_name) === prevValue)) {
-            profileSel.value = prevValue;
-          }
-          log(`profiles loaded: ${rows.length}`);
-        } catch (err) {
-          const detail = err instanceof Error ? err.message : String(err);
-          log(`profiles FAILED: ${detail}`);
-          profileSel.innerHTML = `<option value="">Could not load profiles</option>`;
-        }
       };
 
       const renderVerdict = (d: {
@@ -578,9 +540,9 @@ const config = {
       };
 
       const generate = async () => {
-        const key = profileSel.value.trim();
+        const key = (profileKey || "").trim();
         if (!key) {
-          statusEl.textContent = "Pick a profile first.";
+          statusEl.textContent = "No profile chosen -- pick one in the editor sidebar first.";
           statusEl.dataset.kind = "error";
           return;
         }
@@ -589,13 +551,13 @@ const config = {
         if (generateBtn) generateBtn.disabled = true;
 
         const genUrl = url("/api/blog-writer/generate");
-        log(`generating: ${genUrl} profile_key="${key}"`);
+        log(`generating: ${genUrl} profile_type="${profileType}" profile_key="${key}"`);
         try {
           const res = await fetch(genUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              profile_type: ptypeSel.value || "org",
+              profile_type: profileType,
               profile_key: key,
               angle: angleInput?.value || "",
             }),
@@ -663,14 +625,6 @@ const config = {
       });
       publishBtn?.addEventListener("click", () => void publishCurrent());
       refreshBtn?.addEventListener("click", () => void loadDrafts());
-      ptypeSel.addEventListener("change", () => {
-        profileSel.innerHTML = `<option value="">Search above to choose a profile…</option>`;
-        void loadProfiles();
-      });
-      qInput.addEventListener("input", () => {
-        if (profileTimer) clearTimeout(profileTimer);
-        profileTimer = setTimeout(() => void loadProfiles(), 220);
-      });
       draftsEl?.addEventListener("click", (event) => {
         const row = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
         if (row?.dataset.slug) void openDraft(row.dataset.slug);
@@ -684,8 +638,6 @@ const config = {
         }
       });
 
-      ptypeSel.value = config.defaultProfileType || "org";
-      void loadProfiles();
       void loadDrafts();
     });
   };
@@ -748,6 +700,44 @@ const config = {
       color: var(--color-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
+    }
+
+    .blog-generator .bg__selected {
+      padding: var(--spacing-md);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-bg-muted);
+    }
+
+    .blog-generator .bg__selected[data-selected-empty] {
+      border-style: dashed;
+    }
+
+    .blog-generator .bg__selected-name {
+      margin: 0.3em 0 0;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: var(--font-size-lg, var(--font-size-md));
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-strong, var(--color-text));
+    }
+
+    .blog-generator .bg__selected-name--empty {
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-normal, normal);
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__type-badge {
+      padding: 0.15em 0.6em;
+      border-radius: var(--radius-full);
+      background-color: var(--bg-gold-soft);
+      color: var(--color-text-strong, var(--color-text));
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .blog-generator .bg__input,

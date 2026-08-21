@@ -28,7 +28,15 @@ blog_generator:
         type: string
         optional: true
         remove_empty: true
-      - editor_key: defaultProfileType
+      - editor_key: profileType
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: organizationProfile
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: personProfile
         type: string
         optional: true
         remove_empty: true

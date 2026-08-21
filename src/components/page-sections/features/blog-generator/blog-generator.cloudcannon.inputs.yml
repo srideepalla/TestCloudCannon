@@ -16,15 +16,34 @@ apiEndpoint:
     the StevieIntel server (blog_writer.py), the same one static/blog_writer.html
     talks to locally — not the Search Past Winners API.
 
-defaultProfileType:
+profileType:
   type: select
-  comment: Which profile type the picker opens on.
+  comment: >-
+    Which winner to draft about. Pick the actual winner below in the matching
+    field (Organization or Person) -- whichever this is set to is the one that
+    is actually used.
   options:
     values:
       - id: org
-        name: Organizations
+        name: Organization
       - id: person
-        name: People
+        name: Person
+
+organizationProfile:
+  type: select
+  comment: >-
+    The organization to draft about, used when Profile Type above is set to
+    Organization. Sorted by award count, most-awarded first.
+  options:
+    values: _select_data.blogOrgProfiles
+
+personProfile:
+  type: select
+  comment: >-
+    The person to draft about, used when Profile Type above is set to Person.
+    Sorted by award count, most-awarded first.
+  options:
+    values: _select_data.blogPersonProfiles
 
 emptyStateText:
   type: text
