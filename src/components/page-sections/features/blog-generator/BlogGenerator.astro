@@ -36,17 +36,22 @@
  * `blogPersonProfiles` in cloudcannon.config.yml, generated from the same
  * database), so `profileType` + `organizationProfile`/`personProfile` are
  * now plain component props an editor sets in the sidebar, exactly like
- * `defaultProfileType` used to be a sidebar-only default. One limit does not
- * go away no matter how this is built: CloudCannon's sidebar can only SET
- * field values, never run an action -- so Generate itself still has to be a
- * button on the page. It's placed at the very top for that reason, reading
- * as "one click after the sidebar picks the winner" rather than a separate
- * step.
+ * `defaultProfileType` used to be a sidebar-only default.
+ *
+ * WHY THERE IS NO "GENERATE" BUTTON ON THIS PAGE ANY MORE
+ * StevieIntel's own blog_autogen.py polls the repo (no GitHub webhook access
+ * was available to react to a save instantly) and drafts whatever profile a
+ * picker page's saved frontmatter currently names, the moment that changes --
+ * so saving the sidebar's pick IS the trigger, with nothing left to click
+ * here. This page now only shows which profile is selected and the resulting
+ * drafts. Approve & publish still has to be a button ON a page, for the
+ * reason CloudCannon's sidebar can never remove: it can only SET field
+ * values, never run an action.
  *
  * CSS-FIRST, PER THE COMPONENT SKILL
- * The angle field and Generate button are still a real <form>/<button>, so
- * they are legible and focusable with JavaScript disabled; the draft panel
- * simply stays in its empty state. JS is the enhancement that fills it in.
+ * "Refresh drafts" is still a real, focusable <button>. JS is the
+ * enhancement that fills the drafts list and the draft panel in; without it
+ * the page still legibly says what it's for.
  */
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
@@ -66,7 +71,7 @@ const {
   profileType = "org",
   organizationProfile = "",
   personProfile = "",
-  emptyStateText = "Choose a profile above, then generate a draft.",
+  emptyStateText = "Waiting for the first saved pick to be drafted.",
   // Prints every step (config read, each fetch, each error) into a visible
   // on-page panel, not just the browser console — see SearchPastWinners for
   // why this matters inside a CMS preview iframe. Default true while new.
@@ -133,11 +138,7 @@ const config = {
       data-prop="description"
     />
 
-    <form
-      class="bg__form"
-      data-bg-form
-      novalidate
-    >
+    <div class="bg__form" data-bg-form>
       <div class="bg__selected" data-selected-empty={selectedProfileLabel ? undefined : "true"}>
         <span class="bg__label">Selected profile</span>
         {
@@ -153,34 +154,16 @@ const config = {
           )
         }
       </div>
-
-      <label class="bg__field">
-        <span class="bg__label">Editorial angle (optional)</span>
-        <textarea
-          name="angle"
-          class="bg__textarea"
-          data-bg-angle
-          rows="2"
-          placeholder="e.g. how their customer service team scaled across the region"
-        ></textarea>
-      </label>
       <p class="bg__hint">
-        This steers the <em>topic</em>, matching how the Stevie blog's own
-        profile posts read. It is <strong>not</strong> treated as fact:
-        anything here the award record can't support is either attributed
-        ("the organization describes…") or left out, and the article will
-        never claim the award <em>caused</em> a later outcome. If the record
-        has nothing at all on the angle, the draft says so plainly instead of
-        quietly writing about something else.
+        Saving the sidebar's pick drafts this profile automatically, in the
+        Stevie blog's own style — no separate step here. It can take up to
+        about 20 seconds after Save to show up below. The draft is checked
+        against the award record before anything else happens to it; open a
+        card to see its fact-check result and to Approve &amp; publish or
+        Delete it.
       </p>
 
       <div class="bg__row">
-        <button
-          type="submit"
-          class="bg__submit"
-          data-bg-generate
-          >Generate draft</button
-        >
         <button
           type="button"
           class="bg__reset"
@@ -188,7 +171,7 @@ const config = {
           >Refresh drafts</button
         >
       </div>
-    </form>
+    </div>
 
     <p
       class="bg__status"
@@ -370,9 +353,7 @@ const config = {
       }
 
       const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
-      const form = $<HTMLFormElement>("[data-bg-form]");
-      const angleInput = $<HTMLTextAreaElement>("[data-bg-angle]");
-      const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
+      const form = $<HTMLElement>("[data-bg-form]");
       const refreshBtn = $<HTMLButtonElement>("[data-bg-refresh]");
       const statusEl = $("[data-bg-status]");
       const draftEl = $<HTMLElement>("[data-bg-draft]");
@@ -542,51 +523,6 @@ const config = {
         }
       };
 
-      const generate = async () => {
-        const key = (profileKey || "").trim();
-        if (!key) {
-          statusEl.textContent = "No profile chosen -- pick one in the editor sidebar first.";
-          statusEl.dataset.kind = "error";
-          return;
-        }
-        statusEl.removeAttribute("data-kind");
-        statusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Writing and fact-checking…`;
-        if (generateBtn) generateBtn.disabled = true;
-
-        const genUrl = url("/api/blog-writer/generate");
-        log(`generating: ${genUrl} profile_type="${profileType}" profile_key="${key}"`);
-        try {
-          const res = await fetch(genUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              profile_type: profileType,
-              profile_key: key,
-              angle: angleInput?.value || "",
-            }),
-          });
-          const d = await res.json();
-          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
-          log(`draft generated OK: slug="${d.slug}" fact_check_status="${d.fact_check_status}"`);
-          renderDraft(d);
-          statusEl.textContent = "";
-          void loadDrafts();
-        } catch (err) {
-          const detail = err instanceof Error ? err.message : String(err);
-          const looksLikeCorsOrNetwork = err instanceof TypeError;
-          log(
-            `GENERATE FAILED: ${detail}` +
-              (looksLikeCorsOrNetwork
-                ? " -- likely CORS blocked, tunnel down, or wrong URL (no HTTP status reached)"
-                : "")
-          );
-          statusEl.textContent = "Could not generate: " + detail;
-          statusEl.dataset.kind = "error";
-        } finally {
-          if (generateBtn) generateBtn.disabled = false;
-        }
-      };
-
       const publishCurrent = async () => {
         if (!currentSlug) {
           if (publishStatusEl) publishStatusEl.textContent = "Generate or open a draft first.";
@@ -660,10 +596,6 @@ const config = {
         }
       };
 
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        void generate();
-      });
       publishBtn?.addEventListener("click", () => void publishCurrent());
       deleteBtn?.addEventListener("click", () => void deleteCurrent());
       refreshBtn?.addEventListener("click", () => void loadDrafts());

@@ -11,7 +11,7 @@ value:
   profileType: org
   organizationProfile: "IBM Corporation"
   personProfile: ""
-  emptyStateText: "Choose a profile above, then generate a draft."
+  emptyStateText: "Waiting for the first saved pick to be drafted."
   debug: true
   colorScheme: inherit
   backgroundColor: base
