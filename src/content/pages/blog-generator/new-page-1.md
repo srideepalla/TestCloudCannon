@@ -10,7 +10,7 @@ pageSections:
       and draft a fact-checked article in the Stevie blog's own style.
     apiEndpoint: https://conversation-comparison-sleeping-sleep.trycloudflare.com
     profileType: org
-    organizationProfile: Cisco Systems
+    organizationProfile: Quality Systems, Inc.
     personProfile: ''
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
