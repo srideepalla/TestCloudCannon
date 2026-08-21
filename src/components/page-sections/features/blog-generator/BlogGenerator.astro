@@ -393,13 +393,23 @@ const config = {
         u.searchParams.delete("draft");
         return u.toString();
       };
+      // A real page load always starts scrolled to the top; client-side view
+      // switching on the same physical page does not do that on its own --
+      // scrollIntoView on the newly-shown element was tried first and was
+      // unreliable, since it measures position mid-layout-shift (right as
+      // the other view's elements collapse via `hidden`). Scrolling the
+      // window itself, after that shift, is what an actual navigation does.
+      const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
       const showListView = () => {
         listViewEls.forEach((el) => { el.hidden = false; });
         draftEl.hidden = true;
+        scrollToTop();
       };
       const showDraftView = () => {
         listViewEls.forEach((el) => { el.hidden = true; });
         draftEl.hidden = false;
+        scrollToTop();
       };
 
       // Whichever draft is currently shown in the panel -- set by both
@@ -549,7 +559,6 @@ const config = {
           });
           showDraftView();
           if (pushUrl) history.pushState({ slug }, "", draftParam(slug));
-          draftEl.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`open draft FAILED: ${detail}`);
