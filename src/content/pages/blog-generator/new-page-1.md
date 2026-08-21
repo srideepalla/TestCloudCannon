@@ -8,8 +8,8 @@ pageSections:
     description: >-
       Pick a Stevie Award winner, optionally say what the piece should be about,
       and draft a fact-checked article in the Stevie blog's own style.
-    apiEndpoint: https://scored-bacterial-government-winston.trycloudflare.com
-    defaultProfileType: org
+    apiEndpoint: https://conversation-comparison-sleeping-sleep.trycloudflare.com
+    defaultProfileType: person
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
     colorScheme: inherit
