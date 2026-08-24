@@ -26,6 +26,12 @@ apiEndpoint:
     PUBLIC_STEVIE_API_URL build setting. A quick-tunnel URL changes every time
     the tunnel restarts, so expect to update this when testing.
 
+apiKey:
+  type: text
+  comment: >-
+    API key sent as X-API-Key. Leave blank to use the site's
+    PUBLIC_STEVIE_API_KEY build setting.
+
 showSources:
   type: checkbox
   comment: >-

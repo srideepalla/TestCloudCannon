@@ -67,6 +67,7 @@ const {
   placeholder = "What is the late entry fee?",
   buttonLabel = "Ask",
   apiEndpoint = "",
+  apiKey: apiKeyProp = "",
   showSources = true,
 
   colorScheme = "inherit",
@@ -85,7 +86,11 @@ const {
 const apiUrl = (apiEndpoint || import.meta.env.PUBLIC_STEVIE_API_URL || "http://localhost:8003")
   .toString()
   .replace(/\/+$/, "");
-const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
+// Same pattern as apiEndpoint above: editable per-page in CloudCannon, takes
+// precedence over the build-time env var. Lets a demo page work without a
+// CloudCannon-dashboard environment variable — this key is bundled into the
+// public JS either way (PUBLIC_ prefix), so it was never a real secret.
+const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 ---
 
 <CustomSection
