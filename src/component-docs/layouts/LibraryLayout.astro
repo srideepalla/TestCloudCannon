@@ -60,7 +60,6 @@ function generateGlobalThemeCSS(): string {
 
 const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
 const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
-const rootThemeCSS = generateThemeCSS(themeData.light, 'html[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 ---
 
@@ -89,7 +88,7 @@ const globalThemeCSS = generateGlobalThemeCSS();
     </style>
     <style
       is:inline
-      set:html={`${globalThemeCSS}${rootThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
+      set:html={`${globalThemeCSS}${lightThemeCSS}${darkThemeCSS}`}
     />
     <SiteFonts />
     {
