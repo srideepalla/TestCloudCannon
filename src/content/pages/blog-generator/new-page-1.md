@@ -10,9 +10,12 @@ pageSections:
       and draft a fact-checked article in the Stevie blog's own style.
     apiEndpoint: https://cage-ability-members-mpeg.trycloudflare.com
     winnerProfiles:
-      - org::Verizon
+      - org::Tata Consultancy Services
+      - org::Ooredoo
+      - org::Americas' SAP Users' Group
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
     colorScheme: inherit
     backgroundColor: base
+    winnerProfile: org::Jeunesse Global
 ---
