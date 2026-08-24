@@ -13,6 +13,6 @@ pageSections:
     initialQuery: ''
     emptyStateText: Enter a search above, or browse every record.
     debug: false
-    colorScheme: inherit
+    colorScheme: light
     backgroundColor: base
 ---
