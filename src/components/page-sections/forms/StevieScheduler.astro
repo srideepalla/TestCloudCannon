@@ -1,0 +1,309 @@
+---
+/**
+ * StevieScheduler — schedule timezone-aware entry-deadline reminders.
+ *
+ * Client-side form that talks to the AWS scheduling API (API Gateway + Lambda):
+ *   GET  /config    -> programs, reminder stages, WhatsApp templates
+ *   POST /preview   -> audience count + timezone split (writes nothing)
+ *   POST /schedule  -> create the per-timezone jobs (the scheduler Lambda fires them)
+ *
+ * The audience comes from the subscriber list (by program + reminder stage) plus
+ * any numbers typed under "Additional recipients". US numbers get SMS, international
+ * get WhatsApp; each timezone group is sent at the chosen local time.
+ *
+ * Base URL: PUBLIC_STEVIE_API env override -> STEVIE_API default (see utils).
+ *
+ * ⚠ ADMIN TOOL: this can broadcast to real subscribers and the API is currently
+ * open. Gate this behind auth / an admin-only route before exposing it publicly.
+ */
+import { STEVIE_API, FALLBACK_PROGRAMS } from "@utils/stevie-scheduler";
+
+// colorScheme drives the section theme; default "light" for a readable form.
+const { class: className, colorScheme = "light" } = Astro.props;
+const themeAttr = colorScheme && colorScheme !== "inherit" ? colorScheme : undefined;
+const apiBase = STEVIE_API;
+---
+
+<section
+  class:list={["scheduler", className]}
+  data-theme={themeAttr}
+>
+  <div class="scheduler-shell">
+    <header class="scheduler-intro">
+      <p class="scheduler-brand">Stevie Awards</p>
+      <h1>Schedule a Notification</h1>
+      <p>
+        Sends to subscribers by program + reminder stage at the chosen local time in each
+        recipient&rsquo;s timezone. US numbers get SMS; international get WhatsApp.
+      </p>
+    </header>
+
+    <!-- FORM -->
+    <div id="formScreen">
+      <label class="field-label" for="sc-body">SMS message *</label>
+      <textarea id="sc-body" maxlength="640" rows="4"
+        placeholder="SMS text. Use {name}, {program}, {link} to personalize."></textarea>
+      <p class="field-hint">Used for SMS recipients. WhatsApp recipients get the approved template. An opt-out line is added automatically.</p>
+
+      <label class="field-label" for="sc-template">WhatsApp template *</label>
+      <select id="sc-template"></select>
+
+      <label class="field-label">Programs <span class="muted">(who receives it)</span></label>
+      <div class="sc-box" id="sc-topics">Loading…</div>
+      <input type="text" id="sc-custom" class="sc-input" placeholder="+ Add another program (optional)" />
+      <p class="field-hint">Type a program that isn&rsquo;t listed above (optional).</p>
+
+      <label class="field-label" for="sc-reminder">Reminder stage *</label>
+      <select id="sc-reminder"></select>
+
+      <label class="field-label">Additional recipients</label>
+      <div id="sc-extraRows"></div>
+      <button type="button" class="sc-btn-secondary" id="sc-addRow">+ Add number</button>
+      <p class="field-hint">Add specific people by name + phone (e.g. +91 96421 38134). US&nbsp;&rarr;&nbsp;SMS, international&nbsp;&rarr;&nbsp;WhatsApp. Leave Programs unchecked to message <b>only</b> these.</p>
+
+      <div class="field-two">
+        <div>
+          <label class="field-label" for="sc-date">Send date *</label>
+          <input type="date" id="sc-date" class="sc-input" />
+        </div>
+        <div>
+          <label class="field-label" for="sc-time">Local send time</label>
+          <input type="time" id="sc-time" class="sc-input" value="10:00" />
+        </div>
+      </div>
+      <p class="field-hint">Each timezone group is sent at this <b>local time</b> on this date.</p>
+
+      <label class="field-label">Include unverified numbers *</label>
+      <label class="sc-radio"><input type="radio" name="sc-inc" value="no" checked /> No — verified / consented only (recommended)</label>
+      <label class="sc-radio"><input type="radio" name="sc-inc" value="yes" /> Yes</label>
+
+      <button class="sc-btn" id="sc-previewBtn">Preview audience</button>
+      <p id="sc-err" class="sc-err" hidden></p>
+    </div>
+
+    <!-- PREVIEW -->
+    <div id="sc-result" hidden>
+      <a class="sc-back" id="sc-backToForm">&larr; Edit</a>
+      <div id="sc-stats" class="sc-stats"></div>
+      <h3 class="sc-subhead">Timezone split</h3>
+      <table id="sc-split"><thead><tr><th>Timezone</th><th>Recipients</th></tr></thead><tbody></tbody></table>
+      <button class="sc-btn" id="sc-scheduleBtn">Schedule campaign</button>
+      <p class="sc-note">One scheduled send per timezone. Nothing sends now — each fires at its local time on the chosen date.</p>
+    </div>
+
+    <!-- DONE -->
+    <div id="sc-doneScreen" hidden>
+      <a class="sc-back" id="sc-backToStart">&larr; Schedule another</a>
+      <div id="sc-doneMsg" class="sc-ok"></div>
+      <table id="sc-jobs"><thead><tr><th>Timezone</th><th>Fires at (UTC)</th><th>Recipients</th></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ apiBase, fallbackPrograms: FALLBACK_PROGRAMS }}>
+  const $ = (id) => document.getElementById(id);
+  const selectedTopics = () =>
+    [...document.querySelectorAll('#sc-topics input:checked')].map((i) => i.value);
+
+  function extraRecipientsText() {
+    return [...document.querySelectorAll('#sc-extraRows .sc-extra-row')].map((row) => {
+      const name = row.querySelector('.ex-name').value.trim();
+      const phone = row.querySelector('.ex-phone').value.trim();
+      if (!phone) return null;
+      return name ? `${name}, ${phone}` : phone;
+    }).filter(Boolean).join("\n");
+  }
+  function addExtraRow() {
+    const row = document.createElement('div');
+    row.className = 'sc-extra-row';
+    row.innerHTML =
+      '<input class="ex-name sc-input" placeholder="Name (optional)" />' +
+      '<input class="ex-phone sc-input" placeholder="+91 96421 38134" />' +
+      '<button type="button" class="ex-del" title="Remove">&times;</button>';
+    row.querySelector('.ex-del').onclick = () => row.remove();
+    $("sc-extraRows").appendChild(row);
+    row.querySelector('.ex-phone').focus();
+  }
+  $("sc-addRow").onclick = addExtraRow;
+
+  function campaign() {
+    return {
+      body: $("sc-body").value,
+      template: $("sc-template").value,
+      topics: selectedTopics(),
+      custom_program: $("sc-custom").value.trim(),
+      extra: extraRecipientsText(),
+      reminder_type: $("sc-reminder").value,
+      include_unverified: document.querySelector('input[name=sc-inc]:checked').value === "yes",
+      date: $("sc-date").value,
+      send_time: $("sc-time").value || "10:00",
+    };
+  }
+
+  const showErr = (m) => { const e = $("sc-err"); e.textContent = m; e.hidden = false; };
+  const clearErr = () => { $("sc-err").hidden = true; };
+  const show = (id) => {
+    ["formScreen", "sc-result", "sc-doneScreen"].forEach((s) => { $(s).hidden = s !== id; });
+    window.scrollTo({ top: 0 });
+  };
+
+  // Load config (programs, reminders, templates). Falls back to bundled programs.
+  fetch(apiBase + "/config").then((r) => r.json()).then((cfg) => {
+    $("sc-topics").innerHTML = (cfg.topics || []).map((t) =>
+      `<label class="sc-opt"><input type="checkbox" value="${t.code}"> ${t.label}</label>`).join("");
+    $("sc-reminder").innerHTML = (cfg.reminders || []).map((r) => `<option>${r}</option>`).join("");
+    $("sc-template").innerHTML = (cfg.templates || []).map((t) =>
+      `<option value="${t.name}">${t.label}</option>`).join("");
+  }).catch(() => {
+    $("sc-topics").innerHTML = fallbackPrograms.map((t) =>
+      `<label class="sc-opt"><input type="checkbox" value="${t.code}"> ${t.label}</label>`).join("");
+  });
+
+  $("sc-previewBtn").onclick = async () => {
+    clearErr();
+    const c = campaign();
+    if (!c.topics.length && !c.custom_program && !c.extra.trim())
+      return showErr("Select a program or add at least one phone number.");
+    if (!c.date) return showErr("Please pick a send date.");
+    $("sc-previewBtn").disabled = true; $("sc-previewBtn").textContent = "Loading…";
+    try {
+      const res = await fetch(apiBase + "/preview", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(c),
+      }).then((r) => r.json());
+      if (res.error) return showErr(res.error);
+      $("sc-stats").innerHTML =
+        `<span class="sc-stat"><b>${res.matched}</b> recipients</span>` +
+        (res.added ? `<span class="sc-stat">typed-in: <b>${res.added}</b></span>` : "") +
+        `<span class="sc-stat"><b>${res.timezones}</b> timezones</span>` +
+        (res.unresolved ? `<span class="sc-stat">unresolved: <b>${res.unresolved}</b></span>` : "");
+      document.querySelector("#sc-split tbody").innerHTML = (res.split || []).length
+        ? res.split.map(([tz, n]) => `<tr><td>${tz}</td><td>${n}</td></tr>`).join("")
+        : `<tr><td colspan="2">No recipients matched.</td></tr>`;
+      show("sc-result");
+    } catch (e) { showErr("Request failed: " + e.message); }
+    finally { $("sc-previewBtn").disabled = false; $("sc-previewBtn").textContent = "Preview audience"; }
+  };
+
+  $("sc-scheduleBtn").onclick = async () => {
+    const c = campaign();
+    $("sc-scheduleBtn").disabled = true; $("sc-scheduleBtn").textContent = "Scheduling…";
+    try {
+      const res = await fetch(apiBase + "/schedule", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(c),
+      }).then((r) => r.json());
+      if (res.error) { $("sc-scheduleBtn").disabled = false; $("sc-scheduleBtn").textContent = "Schedule campaign"; return showErr(res.error); }
+      $("sc-doneMsg").innerHTML =
+        `<b>Campaign ${res.campaign_id} scheduled</b> — ${res.jobs.length} timezone job(s) for ${c.date}, ` +
+        `each firing at ${c.send_time} local time.` +
+        (res.unresolved ? ` (${res.unresolved} had no resolvable timezone and were skipped.)` : "");
+      document.querySelector("#sc-jobs tbody").innerHTML = (res.jobs || []).length
+        ? res.jobs.map((j) => `<tr><td>${j.timezone}</td><td>${(j.send_at_utc || '').slice(11, 16)} UTC</td><td>${j.recipients}</td></tr>`).join("")
+        : `<tr><td colspan="3">No jobs created.</td></tr>`;
+      show("sc-doneScreen");
+    } catch (e) { showErr("Schedule failed: " + e.message); }
+    finally { $("sc-scheduleBtn").disabled = false; $("sc-scheduleBtn").textContent = "Schedule campaign"; }
+  };
+
+  $("sc-backToForm").onclick = () => show("formScreen");
+  $("sc-backToStart").onclick = () => show("formScreen");
+</script>
+
+<style>
+  @layer components {
+    .scheduler {
+      background-color: var(--color-bg, #eceef1);
+      color: var(--color-text, #23303e);
+      padding-block: var(--spacing-2xl, 3rem);
+      width: 100%;
+    }
+    .scheduler-shell {
+      margin-inline: auto;
+      max-width: 44rem;
+      padding-inline: var(--spacing-md, 1rem);
+      width: 100%;
+    }
+    .scheduler-brand {
+      color: var(--color-brand, #3f5b7a);
+      font-size: var(--font-size-sm, 0.78rem);
+      font-weight: var(--font-weight-semibold, 600);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin: 0 0 0.25rem;
+    }
+    .scheduler-intro {
+      margin-bottom: var(--spacing-lg, 1.5rem);
+      p { color: var(--color-text-muted, #5a6b7b); margin-top: var(--spacing-xs, 0.4rem); }
+      h1 { margin: 0; }
+    }
+    .field-label {
+      display: block;
+      font-weight: var(--font-weight-semibold, 600);
+      margin: var(--spacing-md, 1rem) 0 var(--spacing-xs, 0.4rem);
+    }
+    .muted { color: var(--color-text-muted, #5a6b7b); font-weight: 400; }
+    .field-hint { color: var(--color-text-muted, #5a6b7b); font-size: var(--font-size-sm, 0.8rem); margin-top: 0.35rem; }
+    .sc-input, textarea, select {
+      width: 100%;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid var(--color-border, #d7dde3);
+      border-radius: var(--radius-xs, 0.5rem);
+      background: var(--color-bg-input, #fbfcfd);
+      color: var(--color-text, #23303e);
+      font: inherit;
+    }
+    textarea { resize: vertical; }
+    .sc-input:focus, textarea:focus, select:focus { border-color: var(--color-brand, #3f5b7a); outline: none; }
+    .sc-box {
+      border: 1px solid var(--color-border, #d7dde3);
+      border-radius: var(--radius-xs, 0.5rem);
+      background: var(--color-bg-input, #fbfcfd);
+      padding: 0.6rem 0.75rem; max-height: 12rem; overflow: auto;
+    }
+    .sc-opt { display: flex; align-items: center; gap: 0.55rem; padding: 0.3rem 0; cursor: pointer; }
+    .sc-opt input { width: auto; }
+    .sc-custom, .sc-input#sc-custom { margin-top: 0.5rem; }
+    .field-two { display: flex; gap: 1rem; }
+    .field-two > div { flex: 1; }
+    .sc-radio { display: flex; align-items: center; gap: 0.55rem; padding: 0.3rem 0; }
+    .sc-extra-row { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 0.5rem; }
+    .sc-extra-row .ex-name { flex: 1; } .sc-extra-row .ex-phone { flex: 1.3; }
+    .ex-del {
+      min-width: 2.2rem; height: 2.35rem; border: 1px solid var(--color-border, #d7dde3);
+      background: #fff; color: var(--color-text-muted, #5a6b7b);
+      border-radius: var(--radius-xs, 0.5rem); cursor: pointer; font-size: 1.1rem;
+    }
+    .ex-del:hover { background: #f3e6e6; color: var(--color-error, #9a3434); }
+    .sc-btn {
+      background-color: var(--color-bg-brand, var(--color-brand, #3f5b7a));
+      color: var(--color-text-on-brand, #fff);
+      border: 0; border-radius: var(--radius-xs, 0.5rem);
+      cursor: pointer; font: inherit; font-weight: var(--font-weight-semibold, 600);
+      padding: 0.7rem 1.35rem; margin-top: var(--spacing-lg, 1.5rem);
+    }
+    .sc-btn:hover { opacity: 0.9; }
+    .sc-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .sc-btn-secondary {
+      background: #fff; color: var(--color-text, #23303e);
+      border: 1px solid var(--color-border, #d7dde3); border-radius: var(--radius-xs, 0.5rem);
+      cursor: pointer; font: inherit; padding: 0.55rem 1rem;
+    }
+    .sc-stat, .sc-stats span {
+      display: inline-block; background: var(--color-bg-muted, #eef2f6);
+      border: 1px solid var(--color-border, #d7dde3); border-radius: var(--radius-xs, 0.5rem);
+      padding: 0.55rem 0.9rem; margin: 0.4rem 0.55rem 0 0;
+    }
+    .sc-subhead { font-size: var(--font-size-md, 1rem); margin: 1.3rem 0 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: var(--font-size-sm, 0.85rem); }
+    th, td { border: 1px solid var(--color-border, #d7dde3); padding: 0.5rem 0.55rem; text-align: left; }
+    th { background: var(--color-bg-muted, #eef2f6); }
+    .sc-note { background: #f4f0e6; border: 1px solid #e4dcc4; color: #5c5330; padding: 0.75rem 0.9rem; border-radius: var(--radius-xs, 0.5rem); margin-top: 1.2rem; }
+    .sc-ok { background: var(--color-bg-success, #e7f2ea); border: 1px solid #bcdcbc; color: var(--color-success, #2f5d3a); padding: 0.75rem 0.9rem; border-radius: var(--radius-xs, 0.5rem); margin-bottom: 0.75rem; }
+    .sc-err { color: var(--color-error, #9a3434); margin-top: 0.9rem; }
+    .sc-err[hidden] { display: none; }
+    .sc-back { color: var(--color-brand, #3f5b7a); font-weight: var(--font-weight-semibold, 600); cursor: pointer; text-decoration: none; }
+    .sc-back:hover { text-decoration: underline; }
+    [hidden] { display: none; }
+  }
+</style>
