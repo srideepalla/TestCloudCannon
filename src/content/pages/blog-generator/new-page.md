@@ -7,9 +7,7 @@ pageSections:
     heading: Generate a Winner Profile
     description: Pick a Stevie Award winner, optionally say what the piece should be about, and draft a fact-checked article in the Stevie blog's own style.
     apiEndpoint: ''
-    profileType: org
-    organizationProfile: Accenture
-    personProfile: ''
+    winnerProfile: 'org::Microsoft Corporation'
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
     colorScheme: inherit

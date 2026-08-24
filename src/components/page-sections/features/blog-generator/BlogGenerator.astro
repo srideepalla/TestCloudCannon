@@ -32,11 +32,21 @@
  * picking the winner to happen in CloudCannon's own field editor instead, the
  * same place `heading` or `colorScheme` get set, not as an interactive
  * control on the rendered page. CloudCannon's structured inputs can do real
- * dropdowns backed by a real data list (see `_select_data.blogOrgProfiles` /
- * `blogPersonProfiles` in cloudcannon.config.yml, generated from the same
- * database), so `profileType` + `organizationProfile`/`personProfile` are
- * now plain component props an editor sets in the sidebar, exactly like
- * `defaultProfileType` used to be a sidebar-only default.
+ * dropdowns backed by a real data list (see `_select_data.blogWinnerProfiles`
+ * in cloudcannon.config.yml, generated from the same database), so
+ * `winnerProfile` is a plain component prop an editor sets in the sidebar.
+ *
+ * ONE COMBINED DROPDOWN, NOT A TYPE SELECT PLUS TWO LISTS
+ * This started as three fields -- a Profile Type select plus a separate
+ * Organization list and Person list, whichever one matched Profile Type
+ * being the one that counted. The team asked for one list instead: every
+ * organization and person together, sorted by award count, each option
+ * tagged "· Organization" or "· Person" so the two are still easy to tell
+ * apart while picking. `winnerProfile`'s value encodes both pieces in one
+ * string ("org::IBM Corporation" / "person::jean henri lhuillier") --
+ * `::` was checked against every real name in the database first (a plain
+ * `|` was tried initially and rejected: five real organization names
+ * contain a literal pipe character).
  *
  * WHY THERE IS NO "GENERATE" BUTTON ON THIS PAGE ANY MORE
  * StevieIntel's own blog_autogen.py polls the repo (no GitHub webhook access
@@ -65,12 +75,11 @@ const {
   // Overridable in CloudCannon so an editor can repoint the component at a
   // tunnel URL without a code change, and by env for per-environment builds.
   apiEndpoint = "",
-  // Set from the sidebar (see cloudcannon.config.yml's blogOrgProfiles /
-  // blogPersonProfiles _select_data lists). Whichever of the two profile
-  // fields matches profileType is the one actually used.
-  profileType = "org",
-  organizationProfile = "",
-  personProfile = "",
+  // Set from the sidebar's single combined dropdown (see cloudcannon.config.yml's
+  // blogWinnerProfiles _select_data list) -- one list for both organizations
+  // and people, each option's id prefixed "org::" or "person::" so this can
+  // tell which is which without a separate Profile Type field.
+  winnerProfile = "",
   emptyStateText = "Waiting for the first saved pick to be drafted.",
   // Prints every step (config read, each fetch, each error) into a visible
   // on-page panel, not just the browser console — see SearchPastWinners for
@@ -92,8 +101,9 @@ const endpoint = (
   BLOG_API_ENDPOINT
 ).replace(/\/+$/, "");
 
-const resolvedProfileType = profileType === "person" ? "person" : "org";
-const resolvedProfileKey = resolvedProfileType === "person" ? personProfile : organizationProfile;
+const [winnerType, winnerKey] = (winnerProfile || "").split("::");
+const resolvedProfileType = winnerType === "person" ? "person" : "org";
+const resolvedProfileKey = (winnerKey || "").trim();
 // Person keys are stored lowercase ("jean henri lhuillier"); organizations
 // are already display-cased. Title-casing only the person case is enough to
 // show something readable here -- the real display name comes back from the
