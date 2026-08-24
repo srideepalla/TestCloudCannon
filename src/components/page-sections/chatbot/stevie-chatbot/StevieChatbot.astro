@@ -106,6 +106,7 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     Heading and Text are shared components whose internals this file must not
     reach into.
   -->
+  <div class="stevie-chatbot__panel">
   <div class="stevie-chatbot__hero">
     <div class="stevie-chatbot__title">
       <Heading level="h2" size="2xl" alignX="center" text={heading} data-prop="heading" />
@@ -120,7 +121,21 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       role="log" with aria-live="polite" so a screen reader announces each new
       message as it arrives, rather than the reader having to hunt for it.
     -->
-    <div class="stevie-chatbot__transcript" id="stevie-chatbot-transcript" role="log" aria-live="polite"></div>
+    <div class="stevie-chatbot__transcript" id="stevie-chatbot-transcript" role="log" aria-live="polite">
+      <!--
+        First-run affordance: chips that ask a question for a cold visitor.
+        Hidden by pure CSS the moment a conversation exists (has-messages), so
+        no script is needed to remove them — only to make them clickable.
+      -->
+      <div class="stevie-chatbot__hints">
+        <p class="stevie-chatbot__hints-label">Try asking</p>
+        <div class="stevie-chatbot__hints-row">
+          <button type="button" class="stevie-chatbot__hint">What is the late entry fee?</button>
+          <button type="button" class="stevie-chatbot__hint">How are the Stevie Awards judged?</button>
+          <button type="button" class="stevie-chatbot__hint">Tell me about a past winner</button>
+        </div>
+      </div>
+    </div>
 
     <!--
       Deliberately a div, not a form. CloudCannon's visual editor renders the page
@@ -175,19 +190,22 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       </div>
     </div>
   </div>
+  </div>
 </CustomSection>
 
 <script define:vars={{ apiUrl, apiKey, showSources }}>
   // The API returns a `tier` naming where the answer came from. Showing it is
-  // the point: a reader can tell "from our own verified records" apart from
-  // "found on the open web", which is otherwise invisible and matters a lot for
-  // a question about fees or deadlines.
+  // the point: a reader can tell an official answer apart from "found on the
+  // open web", which matters a lot for a question about fees or deadlines.
+  // The wording follows the assistant's voice: it simply knows, so the badges
+  // never say "knowledge base", "records" or "found live" (kept in sync with
+  // LABELS in StevieIntel tier2/router.py).
   const TIERS = {
-    profile: ["is-records", "From our winner records"],
-    totals: ["is-records", "Counted from our winner records"],
-    tier1: ["is-verified", "From our verified knowledge base"],
-    tier2a: ["is-live", "Found live on stevieawards.com"],
-    tier2b: ["is-web", "Found on the web — not an official source"],
+    profile: ["is-records", "Winner profile"],
+    totals: ["is-records", "Stevie Awards"],
+    tier1: ["is-verified", "Stevie Awards"],
+    tier2a: ["is-live", "Official Stevie Awards site"],
+    tier2b: ["is-web", "From the web — not an official Stevie source"],
   };
 
   // The conversation so far, sent with each question so the API can turn a
@@ -334,6 +352,16 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       }
     });
 
+    // First-run chips ask the question for the visitor, so a cold reader can
+    // see what the assistant does without composing anything. They are removed
+    // from view by CSS (has-messages), not by script.
+    for (const hint of transcript.querySelectorAll(".stevie-chatbot__hint")) {
+      hint.addEventListener("click", () => {
+        input.value = hint.textContent.trim();
+        ask();
+      });
+    }
+
     async function ask() {
       const question = input.value.trim();
       if (!question || submitBtn.disabled) return;
@@ -396,28 +424,60 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 </script>
 
 <style>
-  /* Before the first question the heading and tagline sit in the middle of a
-     generous block, like Gemini's opening screen. After it, the block collapses
+  /*
+    The whole component is one white panel — title, transcript, composer — that
+    sits on whatever section background the page gives it (charcoal on this
+    site, white elsewhere), the way an app window sits on a desktop. Border and
+    shadow are tuned to read on dark AND light surroundings, which is how it
+    adapts to the website it lives in without knowing anything about it.
+  */
+  .stevie-chatbot__panel {
+    display: flex;
+    flex-direction: column;
+    max-width: 820px;
+    margin-inline: auto;
+    padding: clamp(1.1rem, 3vw, 2rem);
+    color: #243238;
+    background: #ffffff;
+    border: 1px solid rgba(20, 40, 46, 0.10);
+    border-radius: 1.4rem;
+    box-shadow: 0 30px 70px -30px rgba(0, 0, 0, 0.55);
+    overflow: hidden;
+  }
+
+  /* Before the first question the heading and tagline sit in the middle of the
+     panel's top, like Gemini's opening screen. After it, the block collapses
      to a small title — see the has-messages rules in the global sheet. */
   .stevie-chatbot__hero {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    min-height: 26vh;
+    min-height: clamp(96px, 16vh, 200px);
     transition: min-height 0.25s ease;
   }
 
   .stevie-chatbot__window {
     margin-top: 1.25rem;
+    /* Fixed-size chat area: the height follows the SCREEN, not the number of
+       messages — one reply or fifty, the box is the same size and new messages
+       scroll inside it instead of stretching the page. clamp() keeps a usable
+       floor on small screens and stops the box from swallowing the viewport on
+       tall ones. dvh (declared second, wins where supported) tracks the mobile
+       browser chrome, so the box behaves on a phone with the URL bar shown
+       and hidden. */
+    display: flex;
+    flex-direction: column;
+    height: clamp(320px, 46vh, 520px);
+    height: clamp(320px, 46dvh, 520px);
   }
 
-  /* The border lives on the composer alone now, not around the whole panel, so
-     the answers sit on the page rather than inside a box.
-     The top padding is generous because the transcript scrolls: without a clear
-     gap, the last line of an answer sits right against the input and reads as
+  /* A hairline separates the input from the answers above it — without a clear
+     break, the last line of an answer sits right against the pill and reads as
      part of it. */
   .stevie-chatbot__composer {
-    padding-top: 1.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e8edee;
   }
 
   /* Available to assistive technology, invisible on screen. clip-path rather than
@@ -438,14 +498,18 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     align-items: center;
     gap: 0.5rem;
     padding: 0.3rem 0.3rem 0.3rem 1.1rem;
-    border: 1px solid color-mix(in srgb, currentcolor 40%, transparent);
+    background: #f3f6f6;
+    border: 1px solid #d8e1e1;
     border-radius: 2rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
 
-  /* Softer than plain currentcolor, which on this dark section reads as a bright
-     yellow outline round the whole pill. */
+  /* Focus state on the white panel: teal border plus a soft ring, in the site's
+     teal rather than the site's dark-theme focus colour. */
   .stevie-chatbot__row:focus-within {
-    border-color: color-mix(in srgb, currentcolor 70%, transparent);
+    background: #ffffff;
+    border-color: #0b6e6e;
+    box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.12);
   }
 
   /* The site's base stylesheet styles every input with a border, a background, a
@@ -461,9 +525,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   .stevie-chatbot__input:focus-visible {
     flex: 1 1 auto;
     min-width: 0;
+    min-height: 2.75rem;
     padding: 0.7rem 0;
+    /* 16px floor: iOS Safari zooms the page on focus for inputs under 16px,
+       which would yank the whole chat out of scale on a phone. */
+    font-size: 1rem;
     font: inherit;
-    color: inherit;
+    color: #243238;
     background: transparent;
     border: 0;
     border-radius: 0;
@@ -472,12 +540,13 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     outline: none;
   }
 
+  /* 2.75rem (44px) is the touch-target floor for a thumb on a phone. */
   .stevie-chatbot__submit {
     display: grid;
     place-items: center;
     flex: 0 0 auto;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     padding: 0;
     color: #fff;
     cursor: pointer;
@@ -499,6 +568,90 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
   .stevie-chatbot__send {
     display: block;
   }
+
+  /* First-run chips: centred in the (empty) transcript via flex, and gone the
+     moment a conversation exists — has-messages is added to the section root,
+     so this is pure CSS, no script. */
+  .stevie-chatbot__hints {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Anchored just above the input field, where the eye goes next — floating
+       them in the middle of the empty area left a dead gap between the chips
+       and the only thing a cold visitor can actually touch. */
+    justify-content: flex-end;
+    padding-bottom: 1.25rem;
+    gap: 0.9rem;
+    text-align: center;
+  }
+
+  .stevie-chatbot.has-messages .stevie-chatbot__hints {
+    display: none;
+  }
+
+  .stevie-chatbot__hints-label {
+    margin: 0;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8a9aa0;
+  }
+
+  .stevie-chatbot__hints-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+
+  .stevie-chatbot__hint {
+    padding: 0.55rem 1rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: #0b6e6e;
+    background: #ffffff;
+    border: 1px solid #cfdede;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .stevie-chatbot__hint:hover,
+  .stevie-chatbot__hint:focus-visible {
+    background: #eaf4f3;
+    border-color: #0b6e6e;
+    outline: none;
+  }
+
+  /*
+    Mobile: the card stops floating and BECOMES the screen. The section's own
+    gutters are zeroed (in the global sheet, since .content belongs to
+    CustomSection), the panel runs edge-to-edge with no border, radius or
+    shadow — a floating card inside dark gaps was wasting the phone's width.
+  */
+  @media (max-width: 600px) {
+    .stevie-chatbot__panel {
+      max-width: 100%;
+      padding: 1.1rem 1rem 1rem;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .stevie-chatbot__hero {
+      min-height: clamp(64px, 12vh, 130px);
+    }
+
+    .stevie-chatbot__window {
+      height: clamp(340px, 50dvh, 540px);
+    }
+
+    .stevie-chatbot__hint {
+      font-size: 0.95rem;
+      padding: 0.6rem 1.05rem;
+    }
+  }
 </style>
 
 <!--
@@ -509,11 +662,21 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 -->
 <style is:global>
   /* --- the Gemini-style opening, and its collapse ----------------------- */
-  /* Nothing is reserved for the transcript until there is one, so the hero is
-     genuinely centred on an empty page instead of being pushed up by an empty
-     scroll area. */
-  .stevie-chatbot .stevie-chatbot__transcript:empty {
-    display: none;
+  /* The window keeps its fixed height even before the first message, so the
+     layout does not jump when the conversation starts — an empty transcript is
+     simply quiet space above the composer. (Previously an empty transcript was
+     display:none, which is exactly what made the box grow with the chat.) */
+
+  /* The panel is white, so the site's dark-theme text colours (white on dark)
+     must be overridden here or the title and tagline would be invisible on the
+     card. :where() keeps the heading rule at low specificity so the size rules
+     around it are unaffected. */
+  .stevie-chatbot .stevie-chatbot__title :where(h1, h2, h3, h4) {
+    color: #14343c;
+  }
+
+  .stevie-chatbot .stevie-chatbot__tagline :where(p) {
+    color: #5c6f74;
   }
 
   .stevie-chatbot.has-messages .stevie-chatbot__hero {
@@ -539,9 +702,12 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     display: flex;
     flex-direction: column;
     gap: 1.35rem;
-    /* Capped so the composer stays on screen instead of being pushed below the
-       fold as the chat grows. No min-height: an empty transcript takes no room. */
-    max-height: 60vh;
+    /* Fills the fixed-height window and scrolls internally. min-height: 0 is
+       what lets a flex child shrink below its content, which is what makes
+       overflow-y: auto kick in — without it the transcript would push the
+       composer out of the box instead of scrolling. */
+    flex: 1 1 auto;
+    min-height: 0;
     /* Right padding keeps text off the scrollbar; bottom padding stops the last
        line touching the composer's top edge when scrolled to the end. */
     padding: 0.25rem 0.75rem 0.75rem 0;
@@ -573,8 +739,9 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
   .stevie-chatbot__msg.is-user .stevie-chatbot__bubble {
     color: #fff;
-    background: #0b6e6e;
+    background: linear-gradient(135deg, #0e8282, #0b6e6e);
     border-bottom-right-radius: 0.2rem;
+    box-shadow: 0 3px 12px -6px rgba(11, 110, 110, 0.55);
   }
 
   /* No box on an answer. ChatGPT and Gemini bubble the question and leave the
@@ -594,21 +761,23 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     border-left: 3px solid #99302b;
   }
 
+  /* Soft pills on the white panel — a filled tint reads far better on white
+     than the old outline-only badge, which only worked on a dark background. */
   .stevie-chatbot__badge {
     display: inline-block;
     margin-bottom: 0.5rem;
-    padding: 0.15rem 0.45rem;
+    padding: 0.2rem 0.6rem;
     font-size: 0.65rem;
+    font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    border: 1px solid currentcolor;
-    border-radius: 0.15rem;
+    border-radius: 999px;
   }
 
-  .stevie-chatbot__badge.is-records { color: #2e9e6b; }
-  .stevie-chatbot__badge.is-verified { color: #35b0b0; }
-  .stevie-chatbot__badge.is-live { color: #d3922a; }
-  .stevie-chatbot__badge.is-web { color: #d9645e; }
+  .stevie-chatbot__badge.is-records { color: #1e7a4f; background: #e4f3ec; }
+  .stevie-chatbot__badge.is-verified { color: #0b6e6e; background: #e3f2f1; }
+  .stevie-chatbot__badge.is-live { color: #9a6b1f; background: #faf1de; }
+  .stevie-chatbot__badge.is-web { color: #b04a44; background: #f9e9e7; }
 
   .stevie-chatbot__rewritten {
     margin: 0 0 0.5rem;
@@ -619,6 +788,47 @@ const apiKey = import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
   .stevie-chatbot__text {
     white-space: pre-wrap;
+    color: #243238;
+  }
+
+  /* Thin, quiet scrollbar inside the fixed chat area — a default scrollbar on
+     a white panel looks like a UI bug. */
+  .stevie-chatbot__transcript {
+    scrollbar-width: thin;
+    scrollbar-color: #c3cfcf transparent;
+  }
+
+  .stevie-chatbot__transcript::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .stevie-chatbot__transcript::-webkit-scrollbar-thumb {
+    background: #c3cfcf;
+    border-radius: 999px;
+  }
+
+  .stevie-chatbot__transcript::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* On a phone the bubble width that suits a desktop would leave the message
+     floating in the middle of a narrow column. */
+  @media (max-width: 600px) {
+    /* Zero the section's gutters so the white panel can run edge-to-edge —
+       the paired rule that removes the panel's own border/shadow/radius lives
+       in the scoped sheet. .content is CustomSection's wrapper, hence global. */
+    .stevie-chatbot .content {
+      padding: 0;
+    }
+
+    .stevie-chatbot__msg.is-user .stevie-chatbot__bubble {
+      max-width: 88%;
+    }
+
+    .stevie-chatbot__text {
+      font-size: 1rem;
+      line-height: 1.55;
+    }
   }
 
   /* Three dots while a question is in flight. A question can take five seconds,

@@ -85,6 +85,24 @@ export default defineConfig({
   vite: {
     plugins: [
       {
+        // Dev only: stop the browser from ever caching transformed modules, so
+        // a mid-edit page state can't stick in the browser cache and keep
+        // rendering a stale version (this caused the chatbot panel to show an
+        // old cached layout on repeated reloads).
+        name: "dev-no-cache",
+        configureServer(server) {
+          server.middlewares.use((req, res, next) => {
+            res.setHeader(
+              "Cache-Control",
+              "no-store, no-cache, must-revalidate, max-age=0, s-maxage=0",
+            );
+            res.setHeader("Pragma", "no-cache");
+            res.setHeader("Expires", "0");
+            next();
+          });
+        },
+      },
+      {
         name: "fix-mdx-html",
         enforce: "pre",
         transform(code, id) {
