@@ -9,7 +9,8 @@ pageSections:
       Pick a Stevie Award winner, optionally say what the piece should be about,
       and draft a fact-checked article in the Stevie blog's own style.
     apiEndpoint: https://cage-ability-members-mpeg.trycloudflare.com
-    winnerProfile: org::Verizon
+    winnerProfiles:
+      - org::Verizon
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
     colorScheme: inherit

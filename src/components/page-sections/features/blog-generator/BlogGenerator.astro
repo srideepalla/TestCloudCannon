@@ -32,21 +32,26 @@
  * picking the winner to happen in CloudCannon's own field editor instead, the
  * same place `heading` or `colorScheme` get set, not as an interactive
  * control on the rendered page. CloudCannon's structured inputs can do real
- * dropdowns backed by a real data list (see `_select_data.blogWinnerProfiles`
- * in cloudcannon.config.yml, generated from the same database), so
- * `winnerProfile` is a plain component prop an editor sets in the sidebar.
+ * dropdowns backed by a real data list (see src/data/blogWinnerProfiles.json,
+ * referenced via cloudcannon.config.yml's data_config, generated from the
+ * same database), so `winnerProfiles` is a plain component prop an editor
+ * sets in the sidebar.
  *
- * ONE COMBINED DROPDOWN, NOT A TYPE SELECT PLUS TWO LISTS
+ * ONE COMBINED MULTI-SELECT, NOT A TYPE SELECT PLUS TWO LISTS
  * This started as three fields -- a Profile Type select plus a separate
  * Organization list and Person list, whichever one matched Profile Type
- * being the one that counted. The team asked for one list instead: every
- * organization and person together, sorted by award count, each option
- * tagged "· Organization" or "· Person" so the two are still easy to tell
- * apart while picking. `winnerProfile`'s value encodes both pieces in one
- * string ("org::IBM Corporation" / "person::jean henri lhuillier") --
+ * being the one that counted -- then became one combined single-select. The
+ * team then asked to pick several winners in one go, so this is a
+ * multiselect: every organization and person together, sorted by award
+ * count, each option tagged "· Organization" or "· Person" so the two are
+ * still easy to tell apart while picking. Each entry encodes both pieces in
+ * one string ("org::IBM Corporation" / "person::jean henri lhuillier") --
  * `::` was checked against every real name in the database first (a plain
  * `|` was tried initially and rejected: five real organization names
- * contain a literal pipe character).
+ * contain a literal pipe character). StevieIntel's blog_autogen.py drafts
+ * every entry here not already drafted from this specific page, so a saved
+ * list of five winners drafts all five, and adding a sixth later only
+ * drafts that one.
  *
  * WHY THERE IS NO "GENERATE" BUTTON ON THIS PAGE ANY MORE
  * StevieIntel's own blog_autogen.py polls the repo (no GitHub webhook access
@@ -75,11 +80,16 @@ const {
   // Overridable in CloudCannon so an editor can repoint the component at a
   // tunnel URL without a code change, and by env for per-environment builds.
   apiEndpoint = "",
-  // Set from the sidebar's single combined dropdown (see cloudcannon.config.yml's
-  // blogWinnerProfiles _select_data list) -- one list for both organizations
-  // and people, each option's id prefixed "org::" or "person::" so this can
-  // tell which is which without a separate Profile Type field.
-  winnerProfile = "",
+  // Set from the sidebar's multi-select (see src/data/blogWinnerProfiles.json,
+  // referenced via cloudcannon.config.yml's data_config) -- one list for both
+  // organizations and people, each option's id prefixed "org::" or "person::"
+  // so this can tell which is which without a separate Profile Type field.
+  // A multiselect, not a single select: the team wants several winners
+  // pickable in one go, each drafted automatically on save -- see
+  // StevieIntel's blog_autogen.py, which drafts every entry here not already
+  // drafted from this page, so adding a winner to an existing list only
+  // drafts the new one.
+  winnerProfiles = [],
   emptyStateText = "Waiting for the first saved pick to be drafted.",
   // Prints every step (config read, each fetch, each error) into a visible
   // on-page panel, not just the browser console — see SearchPastWinners for
@@ -101,23 +111,25 @@ const endpoint = (
   BLOG_API_ENDPOINT
 ).replace(/\/+$/, "");
 
-const [winnerType, winnerKey] = (winnerProfile || "").split("::");
-const resolvedProfileType = winnerType === "person" ? "person" : "org";
-const resolvedProfileKey = (winnerKey || "").trim();
 // Person keys are stored lowercase ("jean henri lhuillier"); organizations
 // are already display-cased. Title-casing only the person case is enough to
 // show something readable here -- the real display name comes back from the
-// API's own response once a draft is generated.
-const selectedProfileLabel = resolvedProfileKey
-  ? (resolvedProfileType === "person"
-      ? resolvedProfileKey.replace(/\b\w/g, (c) => c.toUpperCase())
-      : resolvedProfileKey)
-  : "";
+// API's own response once that profile's draft actually exists.
+const selectedProfiles = (Array.isArray(winnerProfiles) ? winnerProfiles : [])
+  .map((raw) => {
+    const [type, key] = String(raw || "").split("::");
+    const profileType = type === "person" ? "person" : "org";
+    const profileKey = (key || "").trim();
+    if (!profileKey) return null;
+    const label = profileType === "person"
+      ? profileKey.replace(/\b\w/g, (c) => c.toUpperCase())
+      : profileKey;
+    return { profileType, profileKey, label };
+  })
+  .filter((p) => p !== null);
 
 const config = {
   endpoint,
-  profileType: resolvedProfileType,
-  profileKey: resolvedProfileKey,
   debug: !!debug,
 };
 ---
@@ -149,17 +161,23 @@ const config = {
     />
 
     <div class="bg__form" data-bg-form data-bg-list-view>
-      <div class="bg__selected" data-selected-empty={selectedProfileLabel ? undefined : "true"}>
-        <span class="bg__label">Selected profile</span>
+      <div class="bg__selected" data-selected-empty={selectedProfiles.length ? undefined : "true"}>
+        <span class="bg__label">
+          {selectedProfiles.length > 1 ? "Selected profiles" : "Selected profile"}
+        </span>
         {
-          selectedProfileLabel ? (
-            <p class="bg__selected-name">
-              {selectedProfileLabel}
-              <span class="bg__type-badge">{resolvedProfileType === "person" ? "Person" : "Organization"}</span>
-            </p>
+          selectedProfiles.length ? (
+            <div class="bg__selected-list">
+              {selectedProfiles.map((p) => (
+                <span class="bg__selected-chip">
+                  {p.label}
+                  <span class="bg__type-badge">{p.profileType === "person" ? "Person" : "Organization"}</span>
+                </span>
+              ))}
+            </div>
           ) : (
             <p class="bg__selected-name bg__selected-name--empty">
-              No profile chosen yet — pick one in the editor sidebar (Profile Type, then Organization or Person).
+              No profiles chosen yet — pick one or more in the editor sidebar.
             </p>
           )
         }
@@ -354,15 +372,15 @@ const config = {
 
       log("component script started");
 
-      let config: { endpoint: string; profileType: "org" | "person"; profileKey: string; debug: boolean };
+      let config: { endpoint: string; debug: boolean };
       try {
         config = JSON.parse(root.dataset.config || "{}");
       } catch (err) {
         log("FAILED to parse config JSON", String(err));
         return;
       }
-      const { endpoint, profileType, profileKey } = config;
-      log(`config parsed: endpoint="${endpoint}" profileType="${profileType}" profileKey="${profileKey}"`);
+      const { endpoint } = config;
+      log(`config parsed: endpoint="${endpoint}"`);
       if (!endpoint) {
         log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
         return;
@@ -766,6 +784,26 @@ const config = {
       font-size: var(--font-size-sm);
       font-weight: var(--font-weight-normal, normal);
       color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__selected-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+      margin-top: 0.4em;
+    }
+
+    .blog-generator .bg__selected-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+      padding: 0.3em 0.7em;
+      border-radius: var(--radius-full);
+      background-color: var(--color-bg);
+      border: 1px solid var(--color-border);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text-strong, var(--color-text));
     }
 
     .blog-generator .bg__type-badge {

@@ -16,16 +16,19 @@ apiEndpoint:
     the StevieIntel server (blog_writer.py), the same one static/blog_writer.html
     talks to locally — not the Search Past Winners API.
 
-winnerProfile:
-  type: select
+winnerProfiles:
+  type: multiselect
   comment: >-
-    The winner to draft about -- organizations and people in one list,
-    sorted by award count, most-awarded first. Each option is tagged
-    "· Organization" or "· Person" so the two are easy to tell apart while
-    picking. Sourced from src/data/blogWinnerProfiles.json (see data_config
-    in cloudcannon.config.yml) rather than an inline _select_data list --
-    1,449 entries inlined there bloated that file past the point where
-    CloudCannon's git sync kept working for any page.
+    The winners to draft about -- pick as many as you like in one go.
+    Organizations and people are in one list, sorted by award count,
+    most-awarded first, each tagged "· Organization" or "· Person" so the
+    two are easy to tell apart while picking. Saving drafts every profile
+    here that hasn't already been drafted from this page; adding more later
+    and saving again only drafts the new ones. Sourced from
+    src/data/blogWinnerProfiles.json (see data_config in cloudcannon.config.yml)
+    rather than an inline _select_data list -- 1,449 entries inlined there
+    bloated that file past the point where CloudCannon's git sync kept
+    working for any page.
   options:
     values: data.blogWinnerProfiles
 
