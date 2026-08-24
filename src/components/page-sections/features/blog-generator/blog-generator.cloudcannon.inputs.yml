@@ -22,9 +22,12 @@ winnerProfile:
     The winner to draft about -- organizations and people in one list,
     sorted by award count, most-awarded first. Each option is tagged
     "· Organization" or "· Person" so the two are easy to tell apart while
-    picking.
+    picking. Sourced from src/data/blogWinnerProfiles.json (see data_config
+    in cloudcannon.config.yml) rather than an inline _select_data list --
+    1,449 entries inlined there bloated that file past the point where
+    CloudCannon's git sync kept working for any page.
   options:
-    values: _select_data.blogWinnerProfiles
+    values: data.blogWinnerProfiles
 
 emptyStateText:
   type: text
