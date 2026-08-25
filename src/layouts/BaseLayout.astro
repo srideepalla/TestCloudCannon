@@ -79,7 +79,17 @@ function generateGlobalThemeCSS(): string {
 
 const lightThemeCSS = generateThemeCSS(themeData.light, '[data-theme="light"]');
 const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
-const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
+// Selector deliberately matches [data-theme="light"]/[data-theme="dark"]'s
+// specificity (one attribute selector, no type selector) rather than
+// "html[data-theme]" -- that extra type selector made this fallback rule
+// MORE specific than the theme-specific rules below it, so it always won
+// regardless of which theme was actually set: data-theme="light" still
+// rendered every dark-theme color, because this rule's dark values beat
+// [data-theme="light"]'s light values on specificity, not just source
+// order. Equal specificity lets normal cascade order decide instead, and
+// this is emitted first (see the concatenation below) so the theme-specific
+// rules correctly override it for the tokens they define.
+const rootThemeCSS = generateThemeCSS(themeData.dark, '[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 
 const siteOrigin = "https://women.stevieawards.com";
@@ -138,7 +148,7 @@ const ogLocaleAlternate = [DEFAULT_LOCALE.ogLocale, ...Object.values(LOCALES).ma
 <!doctype html>
 <html
   lang={htmlLang}
-  data-theme="dark"
+  data-theme="light"
 >
   <head>
     <meta charset="UTF-8" />

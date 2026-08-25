@@ -13,6 +13,6 @@ pageSections:
       - 'person::jean henri lhuillier'
     emptyStateText: Choose a profile above, then generate a draft.
     debug: true
-    colorScheme: inherit
+    colorScheme: light
     backgroundColor: base
 ---

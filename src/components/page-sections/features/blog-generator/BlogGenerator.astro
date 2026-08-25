@@ -96,8 +96,12 @@ const {
   // why this matters inside a CMS preview iframe. Default true while new.
   debug = true,
 
-  colorScheme = "inherit",
-  backgroundColor,
+  // Light by default rather than inheriting the site's own default theme --
+  // the team wants this tool to always read as a light, editorial workspace
+  // regardless of what theme the rest of the site happens to default to.
+  // Still overridable per-page from the sidebar if that's ever wanted.
+  colorScheme = "light",
+  backgroundColor = "base",
   paddingVertical = "4xl",
   class: className,
   useDefaultEditableBinding = false,
@@ -149,76 +153,82 @@ const config = {
     data-bg
     data-config={JSON.stringify(config)}
   >
-    <Heading
-      level="h2"
-      size="lg"
-      text={heading}
-      data-prop="heading"
-    />
-    <Text
-      text={description}
-      data-prop="description"
-    />
+    <!-- Everything in here is the picker/tool chrome, not the article --
+         hidden the moment a draft is open (showDraftView()) so opening one
+         reads as "now I'm looking at a blog," not "now I'm looking at a tool
+         with a blog stapled underneath it". -->
+    <div data-bg-list-view>
+      <Heading
+        level="h2"
+        size="lg"
+        text={heading}
+        data-prop="heading"
+      />
+      <Text
+        text={description}
+        data-prop="description"
+      />
 
-    <div class="bg__form" data-bg-form data-bg-list-view>
-      <div class="bg__selected" data-selected-empty={selectedProfiles.length ? undefined : "true"}>
-        <span class="bg__label">
-          {selectedProfiles.length > 1 ? "Selected profiles" : "Selected profile"}
-        </span>
-        {
-          selectedProfiles.length ? (
-            <div class="bg__selected-list">
-              {selectedProfiles.map((p) => (
-                <span class="bg__selected-chip">
-                  {p.label}
-                  <span class="bg__type-badge">{p.profileType === "person" ? "Person" : "Organization"}</span>
-                </span>
-              ))}
-            </div>
-          ) : (
-            <p class="bg__selected-name bg__selected-name--empty">
-              No profiles chosen yet — pick one or more in the editor sidebar.
-            </p>
-          )
-        }
+      <div class="bg__form" data-bg-form>
+        <div class="bg__selected" data-selected-empty={selectedProfiles.length ? undefined : "true"}>
+          <span class="bg__label">
+            {selectedProfiles.length > 1 ? "Selected profiles" : "Selected profile"}
+          </span>
+          {
+            selectedProfiles.length ? (
+              <div class="bg__selected-list">
+                {selectedProfiles.map((p) => (
+                  <span class="bg__selected-chip">
+                    {p.label}
+                    <span class="bg__type-badge">{p.profileType === "person" ? "Person" : "Organization"}</span>
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p class="bg__selected-name bg__selected-name--empty">
+                No profiles chosen yet — pick one or more in the editor sidebar.
+              </p>
+            )
+          }
+        </div>
+        <p class="bg__hint">
+          Saving the sidebar's pick drafts this profile automatically, in the
+          Stevie blog's own style — no separate step here. It can take up to
+          about 20 seconds after Save to show up below. The draft is checked
+          against the award record before anything else happens to it; open a
+          card to see its fact-check result and to Approve &amp; publish or
+          Delete it.
+        </p>
+
+        <div class="bg__row">
+          <button
+            type="button"
+            class="bg__reset"
+            data-bg-refresh
+            >Refresh drafts</button
+          >
+        </div>
       </div>
-      <p class="bg__hint">
-        Saving the sidebar's pick drafts this profile automatically, in the
-        Stevie blog's own style — no separate step here. It can take up to
-        about 20 seconds after Save to show up below. The draft is checked
-        against the award record before anything else happens to it; open a
-        card to see its fact-check result and to Approve &amp; publish or
-        Delete it.
+
+      <p
+        class="bg__status"
+        data-bg-status
+        role="status"
+        aria-live="polite"
+      >
+        {emptyStateText}
       </p>
 
-      <div class="bg__row">
-        <button
-          type="button"
-          class="bg__reset"
-          data-bg-refresh
-          >Refresh drafts</button
-        >
-      </div>
+      {
+        debug && (
+          <pre class="bg__debug" data-bg-debug>
+            {"Debug: waiting for the client script to start…\n" +
+              "(if this line never changes, the <script> below never ran " +
+              "in this preview — that is itself the finding)"}
+          </pre>
+        )
+      }
     </div>
-
-    <p
-      class="bg__status"
-      data-bg-status
-      role="status"
-      aria-live="polite"
-    >
-      {emptyStateText}
-    </p>
-
-    {
-      debug && (
-        <pre class="bg__debug" data-bg-debug>
-          {"Debug: waiting for the client script to start…\n" +
-            "(if this line never changes, the <script> below never ran " +
-            "in this preview — that is itself the finding)"}
-        </pre>
-      )
-    }
 
     <!-- Draft panel: styled like a real Stevie blog post (kicker, headline,
          dek, tags) so an editor previews it the way a reader would see it,
@@ -954,7 +964,7 @@ const config = {
 
     .blog-generator .bg__kicker {
       margin: 0 0 var(--spacing-sm);
-      color: var(--bg-gold);
+      color: var(--color-brand);
       font-size: var(--font-size-xs);
       font-weight: var(--font-weight-bold);
       text-transform: uppercase;

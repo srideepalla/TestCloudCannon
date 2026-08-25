@@ -12,7 +12,7 @@ value:
     - "org::IBM Corporation"
   emptyStateText: "Waiting for the first saved pick to be drafted."
   debug: true
-  colorScheme: inherit
+  colorScheme: light
   backgroundColor: base
 preview:
   text:
