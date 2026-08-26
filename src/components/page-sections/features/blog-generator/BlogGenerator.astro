@@ -1,108 +1,70 @@
 ---
 /**
- * BlogGenerator — draft one Stevie Award winner's profile article on demand.
+ * BlogGenerator — search a Stevie Award winner, generate their profile
+ * article, review it, publish it.
  *
- * Same shape as SearchPastWinners.astro, and deliberately so: this is that
- * component's sibling feature, built the same way for the same reasons.
+ * WHY EVERYTHING HAPPENS ON THE PAGE, NOT IN THE CLOUDCANNON SIDEBAR
+ * This went through three shapes before this one, and the history is worth
+ * keeping because each step was a real constraint, not a preference:
+ *   1. sidebar Profile Type select + one Organization list + one Person list;
+ *   2. one combined sidebar dropdown, then a multi-select of the same;
+ *   3. (this) no winner field in the sidebar at all -- search, select and
+ *      Generate all live on the rendered page.
+ * The deciding factor for (3) is scale as much as taste: the serving release
+ * carries 22,958 organizations and 11,537 named people, which is a live query
+ * against the API, not a list that can be inlined as sidebar options. An
+ * earlier attempt at inlining ~1,449 of them into cloudcannon.config.yml
+ * pushed that file past 200KB and broke CloudCannon's git sync for every page
+ * on the site, not just this one.
  *
  * WHY THE FETCH IS CLIENT-SIDE
  * This site builds static (no `output: "server"`, no active adapter), so
- * frontmatter runs once at build time. Drafting is inherently a per-click,
- * per-visitor action, so it has to run in the browser against the blog
- * writer API, the same way SearchPastWinners talks to the winners API.
+ * frontmatter runs once at build time. Searching and drafting are per-click,
+ * per-visitor actions, so they run in the browser against the blog writer
+ * API -- the same way SearchPastWinners talks to the winners API.
  *
  * WHY THE ENDPOINT IS A `PUBLIC_` ENV VAR
  * It is baked into the client bundle and therefore visible to anyone. The
  * generate endpoint calls the Gemini API using a key that lives only on the
- * server (blog_writer.py / benchmark/gemini_client.py) — the browser never
- * sees it, it only ever talks to our own FastAPI server. Never put a token
- * here; there is nowhere private to hide one in a static build.
+ * server (blog_writer.py) -- the browser never sees it, it only ever talks to
+ * our own FastAPI server. Never put a token here; there is nowhere private to
+ * hide one in a static build.
  *
  * WHY EVERY DRAFT SHOWS ITS FACT-CHECK VERDICT
  * The backend runs every draft through grounding_check.py before it is ever
  * returned, and the requirements doc is explicit that AI-written copy must
- * never present unverified claims as fact. Hiding that verdict here would
- * silently drop the one signal an editor needs before publishing anything.
- * This component always renders the pass/flag banner; it never shows body
- * copy without it.
+ * never present unverified claims as fact. This component always renders the
+ * pass/flag verdict; it never shows body copy without it.
  *
- * WHY THE PROFILE IS PICKED IN THE CLOUDCANNON SIDEBAR, NOT ON THE PAGE
- * This used to be a live search box (type a name, results fetched as you
- * type) -- the same pattern SearchPastWinners still uses. The team wants
- * picking the winner to happen in CloudCannon's own field editor instead, the
- * same place `heading` or `colorScheme` get set, not as an interactive
- * control on the rendered page. CloudCannon's structured inputs can do real
- * dropdowns backed by a real data list (see src/data/blogWinnerProfiles.json,
- * referenced via cloudcannon.config.yml's data_config, generated from the
- * same database), so `winnerProfiles` is a plain component prop an editor
- * sets in the sidebar.
- *
- * ONE COMBINED MULTI-SELECT, NOT A TYPE SELECT PLUS TWO LISTS
- * This started as three fields -- a Profile Type select plus a separate
- * Organization list and Person list, whichever one matched Profile Type
- * being the one that counted -- then became one combined single-select. The
- * team then asked to pick several winners in one go, so this is a
- * multiselect: every organization and person together, sorted by award
- * count, each option tagged "· Organization" or "· Person" so the two are
- * still easy to tell apart while picking. Each entry encodes both pieces in
- * one string ("org::IBM Corporation" / "person::jean henri lhuillier") --
- * `::` was checked against every real name in the database first (a plain
- * `|` was tried initially and rejected: five real organization names
- * contain a literal pipe character). StevieIntel's blog_autogen.py drafts
- * every entry here not already drafted from this specific page, so a saved
- * list of five winners drafts all five, and adding a sixth later only
- * drafts that one.
- *
- * WHY THERE IS NO "GENERATE" BUTTON ON THIS PAGE ANY MORE
- * StevieIntel's own blog_autogen.py polls the repo (no GitHub webhook access
- * was available to react to a save instantly) and drafts whatever profile a
- * picker page's saved frontmatter currently names, the moment that changes --
- * so saving the sidebar's pick IS the trigger, with nothing left to click
- * here. This page now only shows which profile is selected and the resulting
- * drafts. Approve & publish still has to be a button ON a page, for the
- * reason CloudCannon's sidebar can never remove: it can only SET field
- * values, never run an action.
- *
- * CSS-FIRST, PER THE COMPONENT SKILL
- * "Refresh drafts" is still a real, focusable <button>. JS is the
- * enhancement that fills the drafts list and the draft panel in; without it
- * the page still legibly says what it's for.
+ * THE ARTICLE IS ITS OWN VIEW
+ * Generating (or opening a saved draft) hides the entire picker and shows only
+ * the article, at its own ?draft=<slug> URL. There is no server route to give
+ * it -- the site builds fully static and drafts are created long after build
+ * time, so getStaticPaths() has no slug list -- so this is History-API routing
+ * on the same physical page. Bookmarkable, reloadable, back-button correct.
  */
-import Heading from "@core-elements/heading/Heading.astro";
-import Text from "@core-elements/text/Text.astro";
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 
 const BLOG_API_ENDPOINT = "http://127.0.0.1:8002";
 
 const {
   heading = "Generate a Winner Profile",
-  description = "Pick a Stevie Award winner, optionally say what the piece should be about, and draft a fact-checked article in the Stevie blog's own style.",
+  description = "Search a Stevie Award winner, then generate a fact-checked article in the Stevie blog's own style.",
   // Overridable in CloudCannon so an editor can repoint the component at a
   // tunnel URL without a code change, and by env for per-environment builds.
   apiEndpoint = "",
-  // Set from the sidebar's multi-select (see src/data/blogWinnerProfiles.json,
-  // referenced via cloudcannon.config.yml's data_config) -- one list for both
-  // organizations and people, each option's id prefixed "org::" or "person::"
-  // so this can tell which is which without a separate Profile Type field.
-  // A multiselect, not a single select: the team wants several winners
-  // pickable in one go, each drafted automatically on save -- see
-  // StevieIntel's blog_autogen.py, which drafts every entry here not already
-  // drafted from this page, so adding a winner to an existing list only
-  // drafts the new one.
-  winnerProfiles = [],
-  emptyStateText = "Waiting for the first saved pick to be drafted.",
-  // Prints every step (config read, each fetch, each error) into a visible
-  // on-page panel, not just the browser console — see SearchPastWinners for
-  // why this matters inside a CMS preview iframe. Default true while new.
-  debug = true,
+  showAngle = true,
+  pageSize = 12,
+  emptyStateText = "Start typing to find a winner, or browse the most-awarded below.",
+  // Prints every fetch and every error into a visible on-page panel, not just
+  // the console -- a CMS preview iframe is awkward to open devtools against.
+  debug = false,
 
-  // Light by default rather than inheriting the site's own default theme --
-  // the team wants this tool to always read as a light, editorial workspace
-  // regardless of what theme the rest of the site happens to default to.
-  // Still overridable per-page from the sidebar if that's ever wanted.
+  // Light by default: the team wants this tool to read as a light, editorial
+  // workspace. Still overridable per-page from the sidebar.
   colorScheme = "light",
   backgroundColor = "base",
-  paddingVertical = "4xl",
+  paddingVertical = "3xl",
   class: className,
   useDefaultEditableBinding = false,
   _component,
@@ -115,25 +77,9 @@ const endpoint = (
   BLOG_API_ENDPOINT
 ).replace(/\/+$/, "");
 
-// Person keys are stored lowercase ("jean henri lhuillier"); organizations
-// are already display-cased. Title-casing only the person case is enough to
-// show something readable here -- the real display name comes back from the
-// API's own response once that profile's draft actually exists.
-const selectedProfiles = (Array.isArray(winnerProfiles) ? winnerProfiles : [])
-  .map((raw) => {
-    const [type, key] = String(raw || "").split("::");
-    const profileType = type === "person" ? "person" : "org";
-    const profileKey = (key || "").trim();
-    if (!profileKey) return null;
-    const label = profileType === "person"
-      ? profileKey.replace(/\b\w/g, (c) => c.toUpperCase())
-      : profileKey;
-    return { profileType, profileKey, label };
-  })
-  .filter((p) => p !== null);
-
 const config = {
   endpoint,
+  pageSize: Math.max(6, Math.min(Number(pageSize) || 12, 60)),
   debug: !!debug,
 };
 ---
@@ -153,90 +99,141 @@ const config = {
     data-bg
     data-config={JSON.stringify(config)}
   >
-    <!-- Everything in here is the picker/tool chrome, not the article --
-         hidden the moment a draft is open (showDraftView()) so opening one
-         reads as "now I'm looking at a blog," not "now I'm looking at a tool
-         with a blog stapled underneath it". -->
+    <!-- ============ PICKER VIEW ============ -->
     <div data-bg-list-view>
-      <Heading
-        level="h2"
-        size="lg"
-        text={heading}
-        data-prop="heading"
-      />
-      <Text
-        text={description}
-        data-prop="description"
-      />
+      <header class="bg__head">
+        <p class="bg__eyebrow">Blog Generator</p>
+        <h2
+          class="bg__title"
+          data-prop="heading"
+        >{heading}</h2>
+        <p
+          class="bg__sub"
+          data-prop="description"
+        >{description}</p>
+      </header>
 
-      <div class="bg__form" data-bg-form>
-        <div class="bg__selected" data-selected-empty={selectedProfiles.length ? undefined : "true"}>
-          <span class="bg__label">
-            {selectedProfiles.length > 1 ? "Selected profiles" : "Selected profile"}
-          </span>
+      <div class="bg__panel">
+        <div class="bg__searchbar">
+          <svg
+            class="bg__search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+          </svg>
+          <input
+            type="search"
+            class="bg__search"
+            data-bg-q
+            placeholder="Search a company or person — e.g. IBM, Cisco, Jean Henri Lhuillier"
+            autocomplete="off"
+            aria-label="Search Stevie Award winners"
+          />
+          <span
+            class="bg__spinner"
+            data-bg-search-spin
+            hidden
+            aria-hidden="true"
+          ></span>
+        </div>
+
+        <div
+          class="bg__filters"
+          role="group"
+          aria-label="Filter by winner type"
+        >
+          <button type="button" class="bg__pill is-active" data-bg-filter="all">All</button>
+          <button type="button" class="bg__pill" data-bg-filter="org">Organizations</button>
+          <button type="button" class="bg__pill" data-bg-filter="person">People</button>
+          <span class="bg__count" data-bg-count></span>
+        </div>
+
+        <p
+          class="bg__status"
+          data-bg-status
+          role="status"
+          aria-live="polite"
+        >{emptyStateText}</p>
+
+        <div
+          class="bg__results"
+          data-bg-results
+          role="listbox"
+          aria-label="Search results"
+        ></div>
+
+        <!-- Sticky action bar: appears only once something is selected, so the
+             page never shows a Generate button with nothing to generate. -->
+        <div
+          class="bg__actionbar"
+          data-bg-actionbar
+          hidden
+        >
+          <div class="bg__chosen">
+            <span class="bg__chosen-label">Selected</span>
+            <strong class="bg__chosen-name" data-bg-chosen-name></strong>
+          </div>
+
           {
-            selectedProfiles.length ? (
-              <div class="bg__selected-list">
-                {selectedProfiles.map((p) => (
-                  <span class="bg__selected-chip">
-                    {p.label}
-                    <span class="bg__type-badge">{p.profileType === "person" ? "Person" : "Organization"}</span>
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <p class="bg__selected-name bg__selected-name--empty">
-                No profiles chosen yet — pick one or more in the editor sidebar.
-              </p>
+            showAngle && (
+              <label class="bg__angle-wrap">
+                <span class="bg__angle-label">Editorial angle <em>(optional)</em></span>
+                <input
+                  type="text"
+                  class="bg__angle"
+                  data-bg-angle
+                  placeholder="e.g. how their customer service team scaled across the region"
+                />
+              </label>
             )
           }
-        </div>
-        <p class="bg__hint">
-          Saving the sidebar's pick drafts this profile automatically, in the
-          Stevie blog's own style — no separate step here. It can take up to
-          about 20 seconds after Save to show up below. The draft is checked
-          against the award record before anything else happens to it; open a
-          card to see its fact-check result and to Approve &amp; publish or
-          Delete it.
-        </p>
 
-        <div class="bg__row">
           <button
             type="button"
-            class="bg__reset"
-            data-bg-refresh
-            >Refresh drafts</button
+            class="bg__generate"
+            data-bg-generate
           >
+            <span data-bg-generate-label>Generate article</span>
+          </button>
         </div>
       </div>
-
-      <p
-        class="bg__status"
-        data-bg-status
-        role="status"
-        aria-live="polite"
-      >
-        {emptyStateText}
-      </p>
 
       {
         debug && (
           <pre class="bg__debug" data-bg-debug>
-            {"Debug: waiting for the client script to start…\n" +
-              "(if this line never changes, the <script> below never ran " +
-              "in this preview — that is itself the finding)"}
+            {"Debug: waiting for the client script to start…"}
           </pre>
         )
       }
+
+      <section class="bg__drafts-section">
+        <div class="bg__drafts-head">
+          <h3 class="bg__drafts-title">Saved drafts</h3>
+          <button
+            type="button"
+            class="bg__ghost"
+            data-bg-refresh
+            >Refresh</button
+          >
+        </div>
+        <div
+          class="bg__drafts"
+          data-bg-drafts
+        >
+          <p class="bg__status">Loading…</p>
+        </div>
+      </section>
     </div>
 
-    <!-- Draft panel: styled like a real Stevie blog post (kicker, headline,
-         dek, tags) so an editor previews it the way a reader would see it,
-         with the fact-check verdict pinned above the copy rather than
-         alongside it, since that verdict gates whether anything below it
-         should be trusted yet. -->
+    <!-- ============ ARTICLE VIEW ============ -->
     <article
-      class="bg__draft"
+      class="bg__article"
       data-bg-draft
       hidden
     >
@@ -244,13 +241,21 @@ const config = {
         type="button"
         class="bg__back"
         data-bg-back
-        >&larr; Back to drafts</button
       >
-      <p class="bg__kicker">Draft — for review</p>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" aria-hidden="true">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to drafts
+      </button>
+
       <div
         class="bg__verdict"
         data-bg-verdict
       ></div>
+
+      <p class="bg__kicker">Draft — for review</p>
       <h1
         class="bg__headline"
         data-bg-headline
@@ -271,16 +276,17 @@ const config = {
         class="bg__meta"
         data-bg-meta
       ></dl>
+
       <div class="bg__publish-row">
         <button
           type="button"
-          class="bg__submit"
+          class="bg__generate"
           data-bg-publish
           >Approve &amp; publish</button
         >
         <button
           type="button"
-          class="bg__delete"
+          class="bg__danger"
           data-bg-delete
           >Delete</button
         >
@@ -292,16 +298,6 @@ const config = {
         ></span>
       </div>
     </article>
-
-    <section class="bg__drafts-section" data-bg-list-view>
-      <h3 class="bg__drafts-heading">Saved drafts</h3>
-      <div
-        class="bg__drafts"
-        data-bg-drafts
-      >
-        <p class="bg__status">Loading…</p>
-      </div>
-    </section>
   </div>
 </CustomSection>
 
@@ -309,6 +305,19 @@ const config = {
   import { onPageLoad } from "@component-utils/onPageLoad";
 
   const NS = "[blog-generator]";
+
+  type ProfileRow = {
+    profile_key?: string;
+    display_name?: string;
+    profile_type?: "org" | "person";
+    award_count?: number;
+    gold?: number;
+    silver?: number;
+    bronze?: number;
+    first_year?: string;
+    last_year?: string;
+    detail?: string;
+  };
 
   type DraftRow = {
     slug?: string;
@@ -331,10 +340,8 @@ const config = {
   const num = (value: unknown): string => Number(value ?? 0).toLocaleString("en-US");
 
   /** Minimal markdown -> HTML. Escapes text BEFORE any tag is introduced, so
-   *  model-written prose can never inject markup — the same rule blog_writer's
-   *  own static/blog_writer.html preview follows. Not a full parser: just the
-   *  handful of constructs the article prompt actually asks the model for
-   *  (paragraphs, ##/### headings, **bold**, *italic*). */
+   *  model-written prose can never inject markup. Not a full parser: just the
+   *  constructs the article prompt actually asks for. */
   const mdToHtml = (md: string): string => {
     const lines = String(md || "").split(/\r?\n/);
     const blocks: string[] = [];
@@ -361,6 +368,9 @@ const config = {
     return blocks.join("");
   };
 
+  const span = (a?: string, b?: string): string =>
+    a && b ? (a === b ? a : `${a}–${b}`) : a || b || "";
+
   const initBlogGenerator = () => {
     const roots = document.querySelectorAll<HTMLElement>("[data-bg]");
     if (!roots.length) return;
@@ -373,23 +383,24 @@ const config = {
 
       const debugEl = root.querySelector<HTMLElement>("[data-bg-debug]");
       const log = (msg: string, ...rest: unknown[]) => {
-        const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
         console.log(NS, msg, ...rest);
         if (debugEl) {
-          debugEl.textContent += "\n" + line + (rest.length ? " " + JSON.stringify(rest[0]) : "");
+          debugEl.textContent +=
+            `\n[${new Date().toLocaleTimeString()}] ${msg}` +
+            (rest.length ? " " + JSON.stringify(rest[0]) : "");
         }
       };
 
       log("component script started");
 
-      let config: { endpoint: string; debug: boolean };
+      let config: { endpoint: string; pageSize: number; debug: boolean };
       try {
         config = JSON.parse(root.dataset.config || "{}");
       } catch (err) {
         log("FAILED to parse config JSON", String(err));
         return;
       }
-      const { endpoint } = config;
+      const { endpoint, pageSize } = config;
       log(`config parsed: endpoint="${endpoint}"`);
       if (!endpoint) {
         log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
@@ -397,9 +408,16 @@ const config = {
       }
 
       const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
-      const form = $<HTMLElement>("[data-bg-form]");
-      const refreshBtn = $<HTMLButtonElement>("[data-bg-refresh]");
+      const qInput = $<HTMLInputElement>("[data-bg-q]");
+      const searchSpin = $("[data-bg-search-spin]");
+      const resultsEl = $("[data-bg-results]");
       const statusEl = $("[data-bg-status]");
+      const countEl = $("[data-bg-count]");
+      const actionbar = $<HTMLElement>("[data-bg-actionbar]");
+      const chosenNameEl = $("[data-bg-chosen-name]");
+      const angleInput = $<HTMLInputElement>("[data-bg-angle]");
+      const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
+      const generateLabel = $("[data-bg-generate-label]");
       const draftEl = $<HTMLElement>("[data-bg-draft]");
       const verdictEl = $("[data-bg-verdict]");
       const headlineEl = $("[data-bg-headline]");
@@ -412,49 +430,13 @@ const config = {
       const deleteBtn = $<HTMLButtonElement>("[data-bg-delete]");
       const backBtn = $<HTMLButtonElement>("[data-bg-back]");
       const publishStatusEl = $("[data-bg-publish-status]");
+      const filterBtns = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-bg-filter]"));
       const listViewEls = Array.from(root.querySelectorAll<HTMLElement>("[data-bg-list-view]"));
-      if (!form || !statusEl || !draftEl) return;
+      if (!qInput || !resultsEl || !statusEl || !draftEl) return;
 
-      // Each draft gets its own URL (?draft=<slug>) via the History API rather
-      // than a real Astro route: this site builds fully static, and drafts
-      // live in StevieIntel's own database, created long after the build --
-      // there is no slug list to hand getStaticPaths() at build time. This
-      // gives the same "feels like its own page" result (bookmarkable,
-      // shareable, back-button-friendly) without needing server rendering.
-      const draftParam = (slug: string) => {
-        const u = new URL(window.location.href);
-        u.searchParams.set("draft", slug);
-        return u.toString();
-      };
-      const listUrl = () => {
-        const u = new URL(window.location.href);
-        u.searchParams.delete("draft");
-        return u.toString();
-      };
-      // A real page load always starts scrolled to the top; client-side view
-      // switching on the same physical page does not do that on its own --
-      // scrollIntoView on the newly-shown element was tried first and was
-      // unreliable, since it measures position mid-layout-shift (right as
-      // the other view's elements collapse via `hidden`). Scrolling the
-      // window itself, after that shift, is what an actual navigation does.
-      const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-      const showListView = () => {
-        listViewEls.forEach((el) => { el.hidden = false; });
-        draftEl.hidden = true;
-        scrollToTop();
-      };
-      const showDraftView = () => {
-        listViewEls.forEach((el) => { el.hidden = true; });
-        draftEl.hidden = false;
-        scrollToTop();
-      };
-
-      // Whichever draft is currently shown in the panel -- set by both
-      // generate() and openDraft(), since Approve & publish has to work on a
-      // freshly generated draft AND on a previously saved one reopened from
-      // the table below.
       let currentSlug = "";
+      let selected: ProfileRow | null = null;
+      let ptype = "all";
 
       const url = (path: string, params: Record<string, string | number> = {}) => {
         const qs = new URLSearchParams();
@@ -465,22 +447,149 @@ const config = {
         return `${endpoint}${path}${suffix ? `?${suffix}` : ""}`;
       };
 
+      // ---------- view switching ----------
+      const draftParam = (slug: string) => {
+        const u = new URL(window.location.href);
+        u.searchParams.set("draft", slug);
+        return u.toString();
+      };
+      const listUrl = () => {
+        const u = new URL(window.location.href);
+        u.searchParams.delete("draft");
+        return u.toString();
+      };
+      // A real page load starts at the top; client-side view switching does
+      // not. scrollIntoView on the shown element was tried first and measured
+      // mid-layout-shift (as the other view collapses via `hidden`), landing
+      // somewhere arbitrary -- scrolling the window is what navigation does.
+      const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+      const showListView = () => {
+        listViewEls.forEach((el) => { el.hidden = false; });
+        draftEl.hidden = true;
+        scrollTop();
+      };
+      const showDraftView = () => {
+        listViewEls.forEach((el) => { el.hidden = true; });
+        draftEl.hidden = false;
+        scrollTop();
+      };
+
+      // ---------- search ----------
+      let seq = 0;
+      let timer: ReturnType<typeof setTimeout> | undefined;
+
+      const medals = (r: ProfileRow) => {
+        const parts = [
+          r.gold ? `<span class="bg__medal g" title="${num(r.gold)} Gold">${num(r.gold)}</span>` : "",
+          r.silver ? `<span class="bg__medal s" title="${num(r.silver)} Silver">${num(r.silver)}</span>` : "",
+          r.bronze ? `<span class="bg__medal b" title="${num(r.bronze)} Bronze">${num(r.bronze)}</span>` : "",
+        ].filter(Boolean).join("");
+        return parts ? `<span class="bg__medals">${parts}</span>` : "";
+      };
+
+      const renderResults = (rows: ProfileRow[]) => {
+        if (!rows.length) {
+          resultsEl.innerHTML =
+            `<div class="bg__empty"><p>No winners match that search.</p></div>`;
+          return;
+        }
+        resultsEl.innerHTML = rows.map((r) => {
+          const key = r.profile_key || r.display_name || "";
+          const isPerson = r.profile_type === "person";
+          const yrs = span(r.first_year, r.last_year);
+          const chosen = selected
+            && selected.profile_key === key
+            && selected.profile_type === r.profile_type;
+          return `<button
+            type="button"
+            class="bg__card${chosen ? " is-chosen" : ""}"
+            role="option"
+            aria-selected="${chosen ? "true" : "false"}"
+            data-key="${esc(key)}"
+            data-type="${isPerson ? "person" : "org"}"
+            data-name="${esc(r.display_name || key)}"
+          >
+            <span class="bg__card-top">
+              <span class="bg__type ${isPerson ? "p" : "o"}">${isPerson ? "Person" : "Organization"}</span>
+              <span class="bg__check" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                     stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </span>
+            </span>
+            <span class="bg__card-name">${esc(r.display_name || key)}</span>
+            ${r.detail ? `<span class="bg__card-detail">${esc(String(r.detail).split("|")[0].trim())}</span>` : ""}
+            <span class="bg__card-foot">
+              <span class="bg__awards"><b>${num(r.award_count)}</b> awards</span>
+              ${medals(r)}
+              ${yrs ? `<span class="bg__years">${esc(yrs)}</span>` : ""}
+            </span>
+          </button>`;
+        }).join("");
+      };
+
+      const skeleton = (n = 6) =>
+        `<div class="bg__skel-grid">${'<div class="bg__skel"></div>'.repeat(n)}</div>`;
+
+      const search = async () => {
+        const mine = ++seq;
+        const q = qInput.value.trim();
+        if (searchSpin) searchSpin.hidden = false;
+        if (!resultsEl.querySelector(".bg__card")) resultsEl.innerHTML = skeleton();
+        const searchUrl = url("/api/blog-writer/profiles",
+          { q, profile_type: ptype, limit: pageSize });
+        log(`searching: ${searchUrl}`);
+        try {
+          const res = await fetch(searchUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return; // superseded by a newer keystroke
+          const rows: ProfileRow[] = data.results || [];
+          renderResults(rows);
+          statusEl.textContent = q
+            ? `${num(rows.length)} match${rows.length === 1 ? "" : "es"} for “${q}”`
+            : "Most-awarded winners — search above to narrow it down.";
+          statusEl.removeAttribute("data-kind");
+          if (countEl) countEl.textContent = rows.length ? `${num(rows.length)} shown` : "";
+          log(`search ok: ${rows.length} rows`);
+        } catch (err) {
+          if (mine !== seq) return;
+          const detail = err instanceof Error ? err.message : String(err);
+          const network = err instanceof TypeError;
+          log(`SEARCH FAILED: ${detail}` +
+            (network ? " -- likely CORS blocked, tunnel down, or wrong URL" : ""));
+          resultsEl.innerHTML = "";
+          statusEl.textContent = "Search is unavailable right now. Check the API endpoint.";
+          statusEl.dataset.kind = "error";
+        } finally {
+          if (mine === seq && searchSpin) searchSpin.hidden = true;
+        }
+      };
+
+      const choose = (row: ProfileRow) => {
+        selected = row;
+        if (chosenNameEl) chosenNameEl.textContent = row.display_name || row.profile_key || "";
+        if (actionbar) actionbar.hidden = false;
+        // Re-render so the chosen card shows its selected state.
+        resultsEl.querySelectorAll<HTMLElement>(".bg__card").forEach((el) => {
+          const on = el.dataset.key === row.profile_key && el.dataset.type === row.profile_type;
+          el.classList.toggle("is-chosen", on);
+          el.setAttribute("aria-selected", on ? "true" : "false");
+        });
+      };
+
+      // ---------- draft rendering ----------
       const renderVerdict = (d: {
-        fact_check_status?: string;
-        grounding_score?: number;
-        fact_check_reason?: string;
-        flagged_claims?: string[];
+        fact_check_status?: string; grounding_score?: number;
+        fact_check_reason?: string; flagged_claims?: string[];
       }) => {
         if (!verdictEl) return;
         const passed = d.fact_check_status === "passed";
         const pct = Math.round((d.grounding_score || 0) * 100);
-        const claims = (d.flagged_claims || [])
-          .map((c) => `<li>${esc(c)}</li>`)
-          .join("");
+        const claims = (d.flagged_claims || []).map((c) => `<li>${esc(c)}</li>`).join("");
         verdictEl.innerHTML = `
-          <div class="bg__verdict-banner" data-kind="${passed ? "pass" : "flag"}">
+          <div class="bg__verdict-box" data-kind="${passed ? "pass" : "flag"}">
             <span class="bg__verdict-pct">${pct}%</span>
-            <div>
+            <div class="bg__verdict-text">
               <p class="bg__verdict-title">${passed ? "Fact-check passed" : "Fact-check flagged claims"}</p>
               <p class="bg__verdict-reason">${esc(d.fact_check_reason || "")}</p>
               ${claims ? `<ul class="bg__verdict-claims">${claims}</ul>` : ""}
@@ -488,24 +597,8 @@ const config = {
           </div>`;
       };
 
-      const renderDraft = (d: {
-        headline?: string;
-        dek?: string;
-        body_md?: string;
-        annotated_text?: string;
-        fact_check_status?: string;
-        tags?: string[];
-        title_tag?: string;
-        meta_description?: string;
-        slug?: string;
-        verified_claims?: number;
-        total_claims?: number;
-        word_count?: number;
-        fact_check_reason?: string;
-        grounding_score?: number;
-        flagged_claims?: string[];
-      }) => {
-        if (!headlineEl || !dekEl || !bodyEl || !tagsEl || !metaEl || !draftEl) return;
+      const renderDraft = (d: any) => {
+        if (!headlineEl || !dekEl || !bodyEl || !tagsEl || !metaEl) return;
         currentSlug = d.slug || "";
         if (publishStatusEl) publishStatusEl.textContent = "";
         headlineEl.textContent = d.headline || "";
@@ -515,56 +608,80 @@ const config = {
         bodyEl.innerHTML = mdToHtml(
           d.fact_check_status === "passed" ? d.body_md || "" : d.annotated_text || d.body_md || ""
         );
-        tagsEl.innerHTML = (d.tags || []).map((t) => `<span class="bg__tag">${esc(t)}</span>`).join("");
+        tagsEl.innerHTML = (d.tags || []).map((t: string) => `<span class="bg__tag">${esc(t)}</span>`).join("");
         renderVerdict(d);
         metaEl.innerHTML = [
-          ["Claims verified", `<span class="bg__num">${num(d.verified_claims)} / ${num(d.total_claims)}</span>`],
-          ["Words", `<span class="bg__num">${num(d.word_count)}</span>`],
+          ["Claims verified", `<b>${num(d.verified_claims)} / ${num(d.total_claims)}</b>`],
+          ["Words", `<b>${num(d.word_count)}</b>`],
           ["SEO title", esc(d.title_tag || "")],
           ["Meta description", esc(d.meta_description || "")],
-          ["Slug", esc(d.slug || "")],
-        ]
-          .map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`)
-          .join("");
-        draftEl.hidden = false;
+          ["Slug", `<code>${esc(d.slug || "")}</code>`],
+        ].map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join("");
+        showDraftView();
       };
 
+      const generate = async () => {
+        if (!selected) return;
+        if (generateBtn) generateBtn.disabled = true;
+        if (generateLabel) {
+          generateLabel.innerHTML =
+            `<span class="bg__spinner sm" aria-hidden="true"></span> Writing and fact-checking…`;
+        }
+        const genUrl = url("/api/blog-writer/generate");
+        log(`generating: ${selected.profile_type}/${selected.profile_key}`);
+        try {
+          const res = await fetch(genUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              profile_type: selected.profile_type || "org",
+              profile_key: selected.profile_key,
+              angle: angleInput?.value || "",
+            }),
+          });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+          log(`draft generated: ${d.slug} (${d.fact_check_status})`);
+          renderDraft(d);
+          history.pushState({ slug: d.slug }, "", draftParam(d.slug));
+          void loadDrafts();
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`GENERATE FAILED: ${detail}`);
+          statusEl.textContent = "Could not generate: " + detail;
+          statusEl.dataset.kind = "error";
+        } finally {
+          if (generateBtn) generateBtn.disabled = false;
+          if (generateLabel) generateLabel.textContent = "Generate article";
+        }
+      };
+
+      // ---------- saved drafts ----------
       const loadDrafts = async () => {
         if (!draftsEl) return;
-        const draftsUrl = url("/api/blog-writer/drafts", { limit: 50 });
-        log(`fetching drafts: ${draftsUrl}`);
         try {
-          const res = await fetch(draftsUrl);
+          const res = await fetch(url("/api/blog-writer/drafts", { limit: 24 }));
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           const rows: DraftRow[] = data.rows || [];
           if (!rows.length) {
-            draftsEl.innerHTML = `<p class="bg__status">No drafts yet.</p>`;
+            draftsEl.innerHTML = `<p class="bg__status">No drafts yet — generate one above.</p>`;
             return;
           }
-          draftsEl.innerHTML = `
-            <div class="bg__cards">
-              ${rows
-                .map((r) => {
-                  const published = r.status === "published" && r.cloudcannon_id;
-                  return `<button
-                    type="button"
-                    class="bg__card"
-                    data-slug="${esc(r.slug)}"
-                  >
-                    <span class="bg__card-top">
-                      <span class="bg__pill bg__pill--${esc(r.fact_check_status || "")}">${esc(r.fact_check_status || "—")}</span>
-                      <span class="bg__card-status" data-kind="${published ? "published" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
-                    </span>
-                    <span class="bg__card-headline">${esc(r.headline || "Untitled")}</span>
-                    <span class="bg__card-subject">${esc(r.org_name || "—")}</span>
-                    ${r.angle ? `<span class="bg__card-angle">${esc(r.angle)}</span>` : ""}
-                    <span class="bg__card-updated">${esc(r.updated_at || "")}</span>
-                  </button>`;
-                })
-                .join("")}
-            </div>`;
-          log(`drafts loaded: ${rows.length}`);
+          draftsEl.innerHTML = `<div class="bg__draft-grid">${rows.map((r) => {
+            const published = r.status === "published" && r.cloudcannon_id;
+            const passed = r.fact_check_status === "passed";
+            return `<button type="button" class="bg__draft-card" data-slug="${esc(r.slug)}">
+              <span class="bg__card-top">
+                <span class="bg__pill-sm ${passed ? "ok" : "warn"}">${passed ? "Passed" : "Flagged"}</span>
+                <span class="bg__draft-state${published ? " is-live" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
+              </span>
+              <span class="bg__draft-headline">${esc(r.headline || "Untitled")}</span>
+              <span class="bg__draft-subject">${esc(r.org_name || "")}</span>
+              ${r.angle ? `<span class="bg__draft-angle">${esc(r.angle)}</span>` : ""}
+              <span class="bg__draft-when">${esc(r.updated_at || "")}</span>
+            </button>`;
+          }).join("")}</div>`;
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`drafts FAILED: ${detail}`);
@@ -573,29 +690,26 @@ const config = {
       };
 
       const openDraft = async (slug: string, pushUrl = true) => {
-        const draftUrl = url(`/api/blog-writer/draft/${encodeURIComponent(slug)}`);
-        log(`fetching draft: ${draftUrl}`);
+        log(`opening draft: ${slug}`);
         try {
-          const res = await fetch(draftUrl);
+          const res = await fetch(url(`/api/blog-writer/draft/${encodeURIComponent(slug)}`));
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const d = await res.json();
           if (d.error) throw new Error(d.error);
+          const parse = (v: unknown) =>
+            Array.isArray(v) ? v : JSON.parse((v as string) || "[]");
           renderDraft({
-            headline: d.headline,
-            dek: d.dek,
-            body_md: d.draft_text,
-            annotated_text: d.annotated_text,
-            fact_check_status: d.fact_check_status,
-            tags: Array.isArray(d.tags) ? d.tags : JSON.parse(d.tags || "[]"),
-            title_tag: d.title_tag,
-            meta_description: d.meta_description,
-            slug: d.slug,
-            word_count: d.word_count,
-            fact_check_reason: d.reason,
+            headline: d.headline, dek: d.dek, body_md: d.draft_text,
+            annotated_text: d.annotated_text, fact_check_status: d.fact_check_status,
+            tags: parse(d.tags), title_tag: d.title_tag,
+            meta_description: d.meta_description, slug: d.slug,
+            word_count: d.word_count, fact_check_reason: d.reason,
             grounding_score: d.grounding_score,
-            flagged_claims: Array.isArray(d.flagged_claims) ? d.flagged_claims : JSON.parse(d.flagged_claims || "[]"),
+            // Stored as a JSON string in blog_store, same as tags -- passing it
+            // through unparsed made renderVerdict's .map() throw on any draft
+            // that actually had flagged claims.
+            flagged_claims: parse(d.flagged_claims),
           });
-          showDraftView();
           if (pushUrl) history.pushState({ slug }, "", draftParam(slug));
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
@@ -606,25 +720,22 @@ const config = {
       };
 
       const publishCurrent = async () => {
-        if (!currentSlug) {
-          if (publishStatusEl) publishStatusEl.textContent = "Generate or open a draft first.";
-          return;
-        }
+        if (!currentSlug) return;
         if (publishBtn) publishBtn.disabled = true;
         if (publishStatusEl) {
           publishStatusEl.removeAttribute("data-kind");
-          publishStatusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Committing to TestCloudCannon…`;
+          publishStatusEl.innerHTML =
+            `<span class="bg__spinner sm" aria-hidden="true"></span> Committing…`;
         }
-        const publishUrl = url(`/api/blog-writer/publish/${encodeURIComponent(currentSlug)}`);
-        log(`publishing: ${publishUrl}`);
         try {
-          const res = await fetch(publishUrl, { method: "POST" });
+          const res = await fetch(
+            url(`/api/blog-writer/publish/${encodeURIComponent(currentSlug)}`),
+            { method: "POST" });
           const d = await res.json();
           if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
-          log(`published OK: branch="${d.branch}" url_path="${d.url_path}"`);
           if (publishStatusEl) {
             publishStatusEl.innerHTML =
-              `Published to branch <strong>${esc(d.branch)}</strong> at ` +
+              `Published to <strong>${esc(d.branch)}</strong> — ` +
               `<a href="${esc(d.url_path)}" target="_blank" rel="noopener noreferrer">${esc(d.url_path)}</a>`;
           }
           void loadDrafts();
@@ -641,31 +752,20 @@ const config = {
       };
 
       const deleteCurrent = async () => {
-        if (!currentSlug) {
-          if (publishStatusEl) publishStatusEl.textContent = "Generate or open a draft first.";
-          return;
-        }
-        const confirmed = window.confirm(
+        if (!currentSlug) return;
+        if (!window.confirm(
           "Delete this draft? If it was already published, its live page is removed too. This cannot be undone."
-        );
-        if (!confirmed) return;
-
+        )) return;
         if (deleteBtn) deleteBtn.disabled = true;
-        if (publishStatusEl) {
-          publishStatusEl.removeAttribute("data-kind");
-          publishStatusEl.innerHTML = `<span class="bg__inline-spin" aria-hidden="true"></span> Deleting…`;
-        }
-        const deleteUrl = url(`/api/blog-writer/draft/${encodeURIComponent(currentSlug)}`);
-        log(`deleting: ${deleteUrl}`);
         try {
-          const res = await fetch(deleteUrl, { method: "DELETE" });
+          const res = await fetch(
+            url(`/api/blog-writer/draft/${encodeURIComponent(currentSlug)}`),
+            { method: "DELETE" });
           const d = await res.json();
           if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
-          log(`deleted OK: slug="${currentSlug}" unpublished=${JSON.stringify(d.unpublished)}`);
           currentSlug = "";
           showListView();
           history.pushState(null, "", listUrl());
-          if (publishStatusEl) publishStatusEl.textContent = "";
           void loadDrafts();
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
@@ -679,33 +779,51 @@ const config = {
         }
       };
 
+      // ---------- wiring ----------
+      qInput.addEventListener("input", () => {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => void search(), 220);
+      });
+      filterBtns.forEach((btn) => btn.addEventListener("click", () => {
+        ptype = btn.dataset.bgFilter || "all";
+        filterBtns.forEach((b) => b.classList.toggle("is-active", b === btn));
+        void search();
+      }));
+      resultsEl.addEventListener("click", (event) => {
+        const card = (event.target as HTMLElement)?.closest<HTMLElement>(".bg__card");
+        if (!card) return;
+        choose({
+          profile_key: card.dataset.key,
+          profile_type: (card.dataset.type as "org" | "person") || "org",
+          display_name: card.dataset.name,
+        });
+      });
+      generateBtn?.addEventListener("click", () => void generate());
       publishBtn?.addEventListener("click", () => void publishCurrent());
       deleteBtn?.addEventListener("click", () => void deleteCurrent());
-      refreshBtn?.addEventListener("click", () => void loadDrafts());
-      draftsEl?.addEventListener("click", (event) => {
-        const card = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
-        if (card?.dataset.slug) void openDraft(card.dataset.slug);
-      });
       backBtn?.addEventListener("click", () => {
         showListView();
         history.pushState(null, "", listUrl());
       });
-      // Browser back/forward: re-read the URL rather than trusting popstate's
-      // own state object, so a reload while on a draft's URL (handled below)
-      // and a back-button press land on the same logic path.
+      root.querySelector("[data-bg-refresh]")?.addEventListener("click", () => void loadDrafts());
+      draftsEl?.addEventListener("click", (event) => {
+        const card = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
+        if (card?.dataset.slug) void openDraft(card.dataset.slug);
+      });
+      // Re-read the URL rather than trusting popstate's state object, so back
+      // and a reload on a draft URL take the same path.
       window.addEventListener("popstate", () => {
         const slug = new URL(window.location.href).searchParams.get("draft");
         if (slug) void openDraft(slug, false);
         else showListView();
       });
 
+      void search();
       void loadDrafts();
 
-      // Deep link: reloading or sharing a draft's URL (?draft=<slug>) opens
-      // straight into it instead of the list, the same way any other page's
-      // URL would.
-      const initialSlug = new URL(window.location.href).searchParams.get("draft");
-      if (initialSlug) void openDraft(initialSlug, false);
+      // Deep link: reloading or sharing ?draft=<slug> opens straight into it.
+      const initial = new URL(window.location.href).searchParams.get("draft");
+      if (initial) void openDraft(initial, false);
     });
   };
 
@@ -715,511 +833,474 @@ const config = {
 <style is:global>
   @layer page-sections {
     .blog-generator {
-      --bg-gold: #dfba19;
-      --bg-gold-soft: rgba(223, 186, 25, 0.16);
-      --bg-pass: #2d7272;
-      --bg-pass-soft: rgba(45, 114, 114, 0.14);
-      --bg-flag: #b3261e;
-      --bg-flag-soft: rgba(179, 38, 30, 0.12);
+      --bgx-gold: #b8941a;
+      --bgx-pass: #1f6f5c;
+      --bgx-pass-bg: rgba(31, 111, 92, 0.08);
+      --bgx-flag: #b3261e;
+      --bgx-flag-bg: rgba(179, 38, 30, 0.07);
+      --bgx-line: var(--color-border, rgba(0, 0, 0, 0.12));
+      --bgx-radius: 14px;
     }
 
-    @keyframes bg-spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes bgx-spin { to { transform: rotate(360deg); } }
+    @keyframes bgx-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    @keyframes bgx-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-    @keyframes bg-fade-up {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: none; }
-    }
+    /* ---------- header ---------- */
+    .blog-generator .bg__head { max-width: 44rem; }
 
-    .blog-generator .bg__form {
-      margin-top: var(--spacing-lg);
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-md);
-    }
-
-    .blog-generator .bg__row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-md);
-      align-items: flex-end;
-    }
-
-    .blog-generator .bg__field {
-      display: flex;
-      flex: 1 1 12rem;
-      flex-direction: column;
-      gap: var(--spacing-xs);
-      min-width: 0;
-    }
-
-    .blog-generator .bg__field--grow {
-      flex: 4 1 20rem;
-    }
-
-    .blog-generator .bg__field--narrow {
-      flex: 0 1 12rem;
-    }
-
-    .blog-generator .bg__label {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
+    .blog-generator .bg__eyebrow {
+      margin: 0 0 0.5rem;
+      color: var(--bgx-gold);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
     }
 
-    .blog-generator .bg__selected {
-      padding: var(--spacing-md);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg-muted);
-    }
-
-    .blog-generator .bg__selected[data-selected-empty] {
-      border-style: dashed;
-    }
-
-    .blog-generator .bg__selected-name {
-      margin: 0.3em 0 0;
-      display: flex;
-      align-items: center;
-      gap: var(--spacing-sm);
-      font-size: var(--font-size-lg, var(--font-size-md));
-      font-weight: var(--font-weight-semibold);
+    .blog-generator .bg__title {
+      margin: 0 0 0.6rem;
+      font-family: var(--font-headings, var(--font-body));
+      font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.1;
       color: var(--color-text-strong, var(--color-text));
     }
 
-    .blog-generator .bg__selected-name--empty {
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-normal, normal);
-      color: var(--color-text-muted);
-    }
-
-    .blog-generator .bg__selected-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-sm);
-      margin-top: 0.4em;
-    }
-
-    .blog-generator .bg__selected-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--spacing-xs);
-      padding: 0.3em 0.7em;
-      border-radius: var(--radius-full);
-      background-color: var(--color-bg);
-      border: 1px solid var(--color-border);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-strong, var(--color-text));
-    }
-
-    .blog-generator .bg__type-badge {
-      padding: 0.15em 0.6em;
-      border-radius: var(--radius-full);
-      background-color: var(--bg-gold-soft);
-      color: var(--color-text-strong, var(--color-text));
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .blog-generator .bg__input,
-    .blog-generator .bg__select,
-    .blog-generator .bg__textarea {
-      width: 100%;
-      padding: var(--spacing-sm);
-      border: 1px solid var(--color-border-inputs, var(--color-border));
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg);
-      color: var(--color-text);
-      font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-    }
-
-    .blog-generator .bg__textarea {
-      resize: vertical;
-      min-height: 3.2rem;
-    }
-
-    .blog-generator .bg__input:focus-visible,
-    .blog-generator .bg__select:focus-visible,
-    .blog-generator .bg__textarea:focus-visible {
-      outline: 2px solid var(--color-focus-ring, var(--color-brand));
-      outline-offset: 2px;
-    }
-
-    .blog-generator .bg__hint {
+    .blog-generator .bg__sub {
       margin: 0;
       color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      line-height: 1.5;
+      font-size: 1.02rem;
+      line-height: 1.55;
     }
 
-    .blog-generator .bg__submit,
-    .blog-generator .bg__reset {
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border: 1px solid var(--color-brand);
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg-brand, var(--color-brand));
-      color: var(--color-text-on-brand, var(--color-text-strong));
-      font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      cursor: pointer;
-      transition: background-color var(--animation-fast) ease, color var(--animation-fast) ease,
-        border-color var(--animation-fast) ease;
+    /* ---------- picker panel ---------- */
+    .blog-generator .bg__panel {
+      margin-top: 1.75rem;
+      padding: 1.25rem;
+      border: 1px solid var(--bgx-line);
+      border-radius: var(--bgx-radius);
+      background-color: var(--color-bg-surface, var(--color-bg));
     }
 
-    .blog-generator .bg__reset {
-      border-color: var(--color-border);
-      background-color: transparent;
-      color: var(--color-text);
-    }
-
-    .blog-generator .bg__submit:hover:not(:disabled) {
-      background-color: transparent;
-      border-color: var(--color-border-strong, var(--color-border));
-      color: var(--color-text-strong, var(--color-text));
-    }
-
-    .blog-generator .bg__reset:hover {
-      background-color: var(--color-state-hover, var(--color-bg-muted));
-    }
-
-    .blog-generator .bg__submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .blog-generator .bg__status {
-      margin-top: var(--spacing-md);
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
-    }
-
-    .blog-generator .bg__status[data-kind="error"] {
-      color: var(--bg-flag);
-    }
-
-    .blog-generator .bg__inline-spin {
-      display: inline-block;
-      width: 0.9rem;
-      height: 0.9rem;
-      border: 2px solid var(--color-border);
-      border-top-color: var(--bg-gold);
-      border-radius: 50%;
-      animation: bg-spin 0.7s linear infinite;
-      vertical-align: -0.1em;
-      margin-right: 0.4em;
-    }
-
-    .blog-generator .bg__debug {
-      margin-top: var(--spacing-md);
-      padding: var(--spacing-sm);
-      max-height: 10rem;
-      overflow: auto;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg-muted);
-      color: var(--color-text-muted);
-      font-family: monospace;
-      font-size: var(--font-size-xs);
-      white-space: pre-wrap;
-    }
-
-    /* Draft panel — reads like the real Stevie blog's own profile posts:
-       kicker, oversized headline, dek, then body copy. The verdict banner
-       sits ABOVE the headline on purpose, so nobody scrolls past it into
-       body copy before knowing whether it is trustworthy yet. */
-    .blog-generator .bg__draft {
-      margin-top: var(--spacing-xl);
-      padding: var(--spacing-xl);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background-color: var(--color-bg-surface, var(--color-bg-muted));
-      animation: bg-fade-up var(--animation-normal) ease;
-    }
-
-    .blog-generator .bg__back {
-      display: inline-flex;
+    .blog-generator .bg__searchbar {
+      display: flex;
       align-items: center;
-      margin: 0 0 var(--spacing-md);
-      padding: 0;
-      border: none;
+      gap: 0.6rem;
+      padding: 0 0.9rem;
+      border: 1px solid var(--bgx-line);
+      border-radius: 10px;
+      background-color: var(--color-bg);
+      transition: border-color 140ms ease, box-shadow 140ms ease;
+    }
+
+    .blog-generator .bg__searchbar:focus-within {
+      border-color: var(--bgx-gold);
+      box-shadow: 0 0 0 3px rgba(184, 148, 26, 0.15);
+    }
+
+    .blog-generator .bg__search-icon {
+      width: 1.1rem; height: 1.1rem; flex: none;
+      color: var(--color-text-muted);
+    }
+
+    .blog-generator .bg__search {
+      flex: 1; min-width: 0;
+      padding: 0.85rem 0;
+      border: none; outline: none; background: none;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 1rem;
+    }
+
+    .blog-generator .bg__search::-webkit-search-cancel-button { cursor: pointer; }
+
+    .blog-generator .bg__spinner {
+      width: 1rem; height: 1rem; flex: none;
+      border: 2px solid var(--bgx-line);
+      border-top-color: var(--bgx-gold);
+      border-radius: 50%;
+      animation: bgx-spin 0.7s linear infinite;
+    }
+    .blog-generator .bg__spinner.sm {
+      width: 0.85rem; height: 0.85rem;
+      display: inline-block; vertical-align: -0.1em; margin-right: 0.35em;
+    }
+
+    /* ---------- filters ---------- */
+    .blog-generator .bg__filters {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+
+    .blog-generator .bg__pill {
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--bgx-line);
+      border-radius: 999px;
       background: none;
       color: var(--color-text-muted);
       font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
+      font-size: 0.85rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 140ms ease;
     }
 
-    .blog-generator .bg__back:hover {
-      color: var(--color-brand);
+    .blog-generator .bg__pill:hover { color: var(--color-text); border-color: var(--color-text-muted); }
+
+    .blog-generator .bg__pill.is-active {
+      background-color: var(--color-text-strong, var(--color-text));
+      border-color: var(--color-text-strong, var(--color-text));
+      color: var(--color-bg);
     }
 
-    .blog-generator .bg__kicker {
-      margin: 0 0 var(--spacing-sm);
-      color: var(--color-brand);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-bold);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .blog-generator .bg__headline {
-      margin: var(--spacing-md) 0 var(--spacing-sm);
-      font-family: var(--font-heading, var(--font-body));
-      font-size: var(--font-size-2xl, 1.9rem);
-      font-weight: var(--font-weight-bold);
-      line-height: 1.2;
-      color: var(--color-text-strong);
-    }
-
-    .blog-generator .bg__dek {
-      margin: 0 0 var(--spacing-lg);
+    .blog-generator .bg__count {
+      margin-left: auto;
       color: var(--color-text-muted);
-      font-size: var(--font-size-md);
-      line-height: 1.5;
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
     }
 
-    .blog-generator .bg__verdict-banner {
-      display: flex;
-      align-items: flex-start;
-      gap: var(--spacing-md);
-      padding: var(--spacing-md);
-      border: 1px solid var(--bg-pass);
-      border-radius: var(--radius-sm);
-      background-color: var(--bg-pass-soft);
-    }
-
-    .blog-generator .bg__verdict-banner[data-kind="flag"] {
-      border-color: var(--bg-flag);
-      background-color: var(--bg-flag-soft);
-    }
-
-    .blog-generator .bg__verdict-pct {
-      font-size: var(--font-size-xl, 1.5rem);
-      font-weight: var(--font-weight-bold);
-      color: var(--bg-pass);
-    }
-
-    .blog-generator .bg__verdict-banner[data-kind="flag"] .bg__verdict-pct {
-      color: var(--bg-flag);
-    }
-
-    .blog-generator .bg__verdict-title {
-      margin: 0;
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-strong);
-    }
-
-    .blog-generator .bg__verdict-reason,
-    .blog-generator .bg__verdict-claims {
-      margin: 0.2rem 0 0;
+    .blog-generator .bg__status {
+      margin: 0.85rem 0 0;
       color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
+      font-size: 0.88rem;
     }
+    .blog-generator .bg__status[data-kind="error"] { color: var(--bgx-flag); }
 
-    .blog-generator .bg__verdict-claims {
-      padding-left: 1.2em;
-    }
-
-    .blog-generator .bg__body {
-      margin-top: var(--spacing-lg);
-      color: var(--color-text);
-      font-size: var(--font-size-md);
-      line-height: 1.7;
-    }
-
-    .blog-generator .bg__body p {
-      margin: 0 0 1em;
-    }
-
-    .blog-generator .bg__body mark.bg__verify {
-      background-color: var(--bg-gold-soft);
-      color: var(--color-text-strong);
-      border-radius: 3px;
-      padding: 0 0.2em;
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .blog-generator .bg__tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-xs);
-      margin-top: var(--spacing-md);
-    }
-
-    .blog-generator .bg__tag {
-      padding: 0.2em 0.7em;
-      border-radius: var(--radius-full);
-      background-color: var(--color-bg-muted);
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .blog-generator .bg__meta {
-      margin: var(--spacing-lg) 0 0;
-      padding-top: var(--spacing-md);
-      border-top: 1px solid var(--color-border);
+    /* ---------- result cards ---------- */
+    .blog-generator .bg__results,
+    .blog-generator .bg__skel-grid,
+    .blog-generator .bg__draft-grid {
       display: grid;
-      grid-template-columns: max-content 1fr;
-      gap: 0.35em var(--spacing-md);
-    }
-
-    .blog-generator .bg__meta dt {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .blog-generator .bg__meta dd {
-      margin: 0;
-      font-size: var(--font-size-sm);
-      color: var(--color-text);
-    }
-
-    .blog-generator .bg__publish-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: var(--spacing-md);
-      margin-top: var(--spacing-lg);
-      padding-top: var(--spacing-lg);
-      border-top: 1px solid var(--color-border);
-    }
-
-    .blog-generator .bg__drafts-section {
-      margin-top: var(--spacing-xl);
-    }
-
-    .blog-generator .bg__drafts-heading {
-      font-size: var(--font-size-md);
-      font-weight: var(--font-weight-semibold);
-      margin: 0 0 var(--spacing-md);
-    }
-
-    .blog-generator .bg__cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-      gap: var(--spacing-md);
+      grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+      gap: 0.75rem;
+      margin-top: 0.85rem;
     }
 
     .blog-generator .bg__card {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.4em;
-      padding: var(--spacing-md);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background-color: var(--color-bg-muted);
+      position: relative;
+      display: flex; flex-direction: column; gap: 0.4rem;
+      padding: 0.9rem;
+      border: 1px solid var(--bgx-line);
+      border-radius: 12px;
+      background-color: var(--color-bg);
       color: var(--color-text);
       font-family: var(--font-body);
       text-align: left;
       cursor: pointer;
-      transition: border-color var(--animation-fast) ease, background-color var(--animation-fast) ease;
+      animation: bgx-in 200ms ease both;
+      transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
     }
 
-    .blog-generator .bg__card:hover,
+    .blog-generator .bg__card:hover {
+      border-color: var(--color-text-muted);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+
     .blog-generator .bg__card:focus-visible {
-      border-color: var(--color-brand);
-      background-color: var(--color-state-hover, var(--color-bg-muted));
+      outline: 2px solid var(--bgx-gold);
+      outline-offset: 2px;
+    }
+
+    .blog-generator .bg__card.is-chosen {
+      border-color: var(--bgx-gold);
+      box-shadow: 0 0 0 2px rgba(184, 148, 26, 0.25);
     }
 
     .blog-generator .bg__card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      gap: var(--spacing-sm);
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.5rem; width: 100%;
     }
 
-    .blog-generator .bg__card-status {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
-      text-transform: capitalize;
+    .blog-generator .bg__type {
+      padding: 0.12em 0.5em;
+      border-radius: 999px;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
+    .blog-generator .bg__type.o { background: rgba(45, 114, 114, 0.12); color: #2d7272; }
+    .blog-generator .bg__type.p { background: rgba(184, 148, 26, 0.16); color: #8a6f14; }
 
-    .blog-generator .bg__card-status[data-kind="published"] {
-      color: var(--bg-pass);
-      font-weight: var(--font-weight-semibold);
+    .blog-generator .bg__check {
+      display: grid; place-items: center;
+      width: 1.15rem; height: 1.15rem; flex: none;
+      border-radius: 50%;
+      background-color: var(--bgx-gold);
+      color: #fff;
+      opacity: 0; transform: scale(0.6);
+      transition: all 140ms ease;
     }
+    .blog-generator .bg__check svg { width: 0.7rem; height: 0.7rem; }
+    .blog-generator .bg__card.is-chosen .bg__check { opacity: 1; transform: none; }
 
-    .blog-generator .bg__card-headline {
-      font-weight: var(--font-weight-semibold);
+    .blog-generator .bg__card-name {
+      font-size: 0.97rem; font-weight: 650; line-height: 1.3;
       color: var(--color-text-strong, var(--color-text));
-      line-height: 1.3;
     }
 
-    .blog-generator .bg__card-subject {
-      font-size: var(--font-size-sm);
+    .blog-generator .bg__card-detail {
+      font-size: 0.8rem; color: var(--color-text-muted);
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .blog-generator .bg__card-foot {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem;
+      margin-top: auto; padding-top: 0.35rem;
+      font-size: 0.78rem; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__awards b { color: var(--color-text-strong, var(--color-text)); }
+
+    .blog-generator .bg__medals { display: inline-flex; gap: 0.2rem; }
+    .blog-generator .bg__medal {
+      min-width: 1.35rem; padding: 0.05em 0.3em;
+      border-radius: 4px; text-align: center;
+      font-size: 0.7rem; font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .blog-generator .bg__medal.g { background: rgba(184, 148, 26, 0.18); color: #7d6412; }
+    .blog-generator .bg__medal.s { background: rgba(120, 128, 140, 0.18); color: #5b6270; }
+    .blog-generator .bg__medal.b { background: rgba(176, 108, 58, 0.18); color: #8a5325; }
+
+    .blog-generator .bg__years { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+    .blog-generator .bg__empty {
+      grid-column: 1 / -1;
+      padding: 2rem 1rem; text-align: center;
+      border: 1px dashed var(--bgx-line); border-radius: 12px;
       color: var(--color-text-muted);
     }
+    .blog-generator .bg__empty p { margin: 0; }
 
-    .blog-generator .bg__card-angle {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
-      font-style: italic;
+    .blog-generator .bg__skel {
+      height: 7.5rem; border-radius: 12px;
+      background: linear-gradient(90deg,
+        var(--color-bg-muted) 25%, var(--bgx-line) 37%, var(--color-bg-muted) 63%);
+      background-size: 200% 100%;
+      animation: bgx-shimmer 1.3s ease-in-out infinite;
     }
 
-    .blog-generator .bg__card-updated {
-      margin-top: auto;
-      padding-top: 0.4em;
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
+    /* ---------- action bar ---------- */
+    .blog-generator .bg__actionbar {
+      position: sticky; bottom: 0.75rem;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+      margin-top: 1rem; padding: 0.85rem;
+      border: 1px solid var(--bgx-gold);
+      border-radius: 12px;
+      background-color: var(--color-bg);
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.09);
+      animation: bgx-in 200ms ease both;
     }
 
-    .blog-generator .bg__delete {
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border: 1px solid var(--bg-flag);
-      border-radius: var(--radius-sm);
-      background-color: transparent;
-      color: var(--bg-flag);
-      font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
+    .blog-generator .bg__chosen { display: flex; flex-direction: column; min-width: 0; }
+    .blog-generator .bg__chosen-label {
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__chosen-name {
+      font-size: 0.98rem; color: var(--color-text-strong, var(--color-text));
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    .blog-generator .bg__angle-wrap { display: flex; flex: 1 1 16rem; flex-direction: column; min-width: 0; }
+    .blog-generator .bg__angle-label {
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__angle-label em { font-weight: 500; text-transform: none; letter-spacing: 0; }
+    .blog-generator .bg__angle {
+      width: 100%; padding: 0.4rem 0;
+      border: none; border-bottom: 1px solid var(--bgx-line);
+      background: none; color: var(--color-text);
+      font-family: var(--font-body); font-size: 0.9rem;
+    }
+    .blog-generator .bg__angle:focus { outline: none; border-bottom-color: var(--bgx-gold); }
+
+    .blog-generator .bg__generate {
+      padding: 0.7rem 1.4rem;
+      border: 1px solid var(--bgx-gold); border-radius: 9px;
+      background-color: var(--bgx-gold); color: #fff;
+      font-family: var(--font-body); font-size: 0.92rem; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+      transition: filter 140ms ease;
+    }
+    .blog-generator .bg__generate:hover:not(:disabled) { filter: brightness(1.08); }
+    .blog-generator .bg__generate:disabled { opacity: 0.6; cursor: progress; }
+
+    .blog-generator .bg__ghost,
+    .blog-generator .bg__danger {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--bgx-line); border-radius: 9px;
+      background: none; color: var(--color-text);
+      font-family: var(--font-body); font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 140ms ease;
+    }
+    .blog-generator .bg__ghost:hover { border-color: var(--color-text-muted); }
+    .blog-generator .bg__danger { border-color: var(--bgx-flag); color: var(--bgx-flag); }
+    .blog-generator .bg__danger:hover:not(:disabled) { background-color: var(--bgx-flag-bg); }
+    .blog-generator .bg__danger:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ---------- saved drafts ---------- */
+    .blog-generator .bg__drafts-section { margin-top: 2.25rem; }
+    .blog-generator .bg__drafts-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding-bottom: 0.6rem; border-bottom: 1px solid var(--bgx-line);
+    }
+    .blog-generator .bg__drafts-title {
+      margin: 0; font-size: 1.05rem; font-weight: 700;
+      color: var(--color-text-strong, var(--color-text));
+    }
+
+    .blog-generator .bg__draft-card {
+      display: flex; flex-direction: column; gap: 0.35rem;
+      padding: 0.9rem;
+      border: 1px solid var(--bgx-line); border-radius: 12px;
+      background-color: var(--color-bg); color: var(--color-text);
+      font-family: var(--font-body); text-align: left; cursor: pointer;
+      transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+    }
+    .blog-generator .bg__draft-card:hover {
+      border-color: var(--color-text-muted); transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+    }
+    .blog-generator .bg__draft-card:focus-visible { outline: 2px solid var(--bgx-gold); outline-offset: 2px; }
+
+    .blog-generator .bg__pill-sm {
+      padding: 0.12em 0.55em; border-radius: 999px;
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .blog-generator .bg__pill-sm.ok { background: var(--bgx-pass-bg); color: var(--bgx-pass); }
+    .blog-generator .bg__pill-sm.warn { background: var(--bgx-flag-bg); color: var(--bgx-flag); }
+
+    .blog-generator .bg__draft-state { font-size: 0.72rem; color: var(--color-text-muted); text-transform: capitalize; }
+    .blog-generator .bg__draft-state.is-live { color: var(--bgx-pass); font-weight: 700; }
+    .blog-generator .bg__draft-headline {
+      font-size: 0.95rem; font-weight: 650; line-height: 1.32;
+      color: var(--color-text-strong, var(--color-text));
+    }
+    .blog-generator .bg__draft-subject { font-size: 0.8rem; color: var(--color-text-muted); }
+    .blog-generator .bg__draft-angle { font-size: 0.75rem; color: var(--color-text-muted); font-style: italic; }
+    .blog-generator .bg__draft-when {
+      margin-top: auto; padding-top: 0.3rem;
+      font-size: 0.72rem; color: var(--color-text-muted); font-variant-numeric: tabular-nums;
+    }
+
+    /* ---------- article view ---------- */
+    .blog-generator .bg__article {
+      max-width: 46rem; margin: 0 auto;
+      animation: bgx-in 240ms ease both;
+    }
+
+    .blog-generator .bg__back {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-bottom: 1.5rem; padding: 0;
+      border: none; background: none;
+      color: var(--color-text-muted);
+      font-family: var(--font-body); font-size: 0.88rem; font-weight: 600;
       cursor: pointer;
-      transition: background-color var(--animation-fast) ease;
+    }
+    .blog-generator .bg__back svg { width: 1rem; height: 1rem; }
+    .blog-generator .bg__back:hover { color: var(--bgx-gold); }
+
+    .blog-generator .bg__verdict-box {
+      display: flex; align-items: flex-start; gap: 0.9rem;
+      padding: 0.9rem 1rem; margin-bottom: 1.5rem;
+      border: 1px solid var(--bgx-pass); border-radius: 10px;
+      background-color: var(--bgx-pass-bg);
+    }
+    .blog-generator .bg__verdict-box[data-kind="flag"] {
+      border-color: var(--bgx-flag); background-color: var(--bgx-flag-bg);
+    }
+    .blog-generator .bg__verdict-pct {
+      font-size: 1.5rem; font-weight: 800; line-height: 1;
+      color: var(--bgx-pass); font-variant-numeric: tabular-nums;
+    }
+    .blog-generator .bg__verdict-box[data-kind="flag"] .bg__verdict-pct { color: var(--bgx-flag); }
+    .blog-generator .bg__verdict-title {
+      margin: 0; font-weight: 700; color: var(--color-text-strong, var(--color-text));
+    }
+    .blog-generator .bg__verdict-reason,
+    .blog-generator .bg__verdict-claims {
+      margin: 0.2rem 0 0; font-size: 0.85rem; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__verdict-claims { padding-left: 1.1em; }
+    .blog-generator .bg__verdict-claims li { margin-top: 0.2em; }
+
+    .blog-generator .bg__kicker {
+      margin: 0 0 0.5rem;
+      color: var(--bgx-gold); font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
     }
 
-    .blog-generator .bg__delete:hover:not(:disabled) {
-      background-color: var(--bg-flag-soft);
+    .blog-generator .bg__headline {
+      margin: 0 0 0.7rem;
+      font-family: var(--font-headings, var(--font-body));
+      font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 700; line-height: 1.14;
+      color: var(--color-text-strong, var(--color-text));
     }
 
-    .blog-generator .bg__delete:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .blog-generator .bg__dek {
+      margin: 0 0 1.75rem; padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--bgx-line);
+      font-size: 1.12rem; line-height: 1.5; color: var(--color-text-muted);
     }
 
-    .blog-generator .bg__pill {
-      display: inline-block;
-      padding: 0.15em 0.6em;
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      text-transform: capitalize;
-      background-color: var(--color-bg-muted);
-      color: var(--color-text-muted);
+    .blog-generator .bg__body {
+      font-size: 1.06rem; line-height: 1.75; color: var(--color-text);
+    }
+    .blog-generator .bg__body p { margin: 0 0 1.15em; }
+    .blog-generator .bg__body h2,
+    .blog-generator .bg__body h3 {
+      margin: 1.8em 0 0.6em; font-family: var(--font-headings, var(--font-body));
+      color: var(--color-text-strong, var(--color-text));
+    }
+    .blog-generator .bg__body mark.bg__verify {
+      padding: 0 0.3em; border-radius: 3px;
+      background-color: rgba(184, 148, 26, 0.22);
+      color: var(--color-text-strong, var(--color-text));
+      font-size: 0.72em; font-weight: 700; letter-spacing: 0.04em; vertical-align: 0.1em;
     }
 
-    .blog-generator .bg__pill--passed {
-      background-color: var(--bg-pass-soft);
-      color: var(--bg-pass);
+    .blog-generator .bg__tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 1.75rem; }
+    .blog-generator .bg__tag {
+      padding: 0.25em 0.7em; border-radius: 999px;
+      background-color: var(--color-bg-muted); color: var(--color-text-muted);
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;
     }
 
-    .blog-generator .bg__pill--flagged {
-      background-color: var(--bg-flag-soft);
-      color: var(--bg-flag);
+    .blog-generator .bg__meta {
+      display: grid; grid-template-columns: max-content 1fr; gap: 0.4em 1rem;
+      margin: 1.75rem 0 0; padding-top: 1.25rem;
+      border-top: 1px solid var(--bgx-line);
+    }
+    .blog-generator .bg__meta dt {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__meta dd { margin: 0; font-size: 0.88rem; }
+    .blog-generator .bg__meta code { font-size: 0.82rem; word-break: break-all; }
+
+    .blog-generator .bg__publish-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+      margin-top: 1.75rem; padding-top: 1.5rem;
+      border-top: 1px solid var(--bgx-line);
+    }
+    .blog-generator .bg__publish-row .bg__status { margin: 0; }
+
+    .blog-generator .bg__debug {
+      margin-top: 1rem; padding: 0.75rem; max-height: 10rem; overflow: auto;
+      border: 1px solid var(--bgx-line); border-radius: 8px;
+      background-color: var(--color-bg-muted); color: var(--color-text-muted);
+      font-family: ui-monospace, monospace; font-size: 0.72rem; white-space: pre-wrap;
     }
 
+    @media (max-width: 640px) {
+      .blog-generator .bg__panel { padding: 0.9rem; }
+      .blog-generator .bg__actionbar { position: static; }
+      .blog-generator .bg__generate { width: 100%; }
+    }
   }
 </style>

@@ -28,9 +28,5 @@ blog_generator:
         type: string
         optional: true
         remove_empty: true
-      - editor_key: winnerProfiles
-        type: array
-        optional: true
-        remove_empty: true
   _inputs_from_glob:
     - /src/components/page-sections/features/blog-generator/blog-generator.cloudcannon.inputs.yml

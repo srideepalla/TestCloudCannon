@@ -1,6 +1,6 @@
 heading:
   type: text
-  comment: Section heading shown above the profile picker.
+  comment: Section heading shown above the winner search.
 
 description:
   type: text
@@ -12,29 +12,31 @@ apiEndpoint:
     Base URL of the Blog Generator API, with no trailing slash (e.g.
     https://your-tunnel.trycloudflare.com). Leave blank to use the site's
     PUBLIC_BLOG_API_ENDPOINT build setting. A quick-tunnel URL changes every
-    time the tunnel restarts, so expect to update this when testing. This is
-    the StevieIntel server (blog_writer.py), the same one static/blog_writer.html
-    talks to locally — not the Search Past Winners API.
+    time the tunnel restarts, so expect to update this when testing.
 
-winnerProfiles:
-  type: multiselect
+# There is deliberately NO winner-picking field here any more. Choosing the
+# winner happens on the page itself -- search, select, Generate -- because that
+# is where the team wants an editor working, and because 22,958 organizations
+# plus 11,537 people is a live search against the API rather than anything that
+# can sensibly live in a sidebar dropdown.
+
+showAngle:
+  type: checkbox
   comment: >-
-    The winners to draft about -- pick as many as you like in one go.
-    Organizations and people are in one list, sorted by award count,
-    most-awarded first, each tagged "· Organization" or "· Person" so the
-    two are easy to tell apart while picking. Saving drafts every profile
-    here that hasn't already been drafted from this page; adding more later
-    and saving again only drafts the new ones. Sourced from
-    src/data/blogWinnerProfiles.json (see data_config in cloudcannon.config.yml)
-    rather than an inline _select_data list -- 1,449 entries inlined there
-    bloated that file past the point where CloudCannon's git sync kept
-    working for any page.
+    Show the optional "editorial angle" box, which steers what the article is
+    about. Turn it off for a strictly one-click flow.
+
+pageSize:
+  type: number
+  comment: How many winners the search shows at a time.
   options:
-    values: data.blogWinnerProfiles
+    min: 6
+    max: 60
+    step: 6
 
 emptyStateText:
   type: text
-  comment: Message shown before a profile has been picked.
+  comment: Message shown before a search has been run.
 
 debug:
   type: checkbox
@@ -49,12 +51,12 @@ colorScheme:
   type: select
   options:
     values:
-      - id: inherit
-        name: Inherit
-      - id: dark
-        name: Dark
       - id: light
         name: Light
+      - id: dark
+        name: Dark
+      - id: inherit
+        name: Inherit
 
 backgroundColor:
   type: select

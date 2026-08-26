@@ -1474,12 +1474,3 @@ _structures_from_glob:
   - /.cloudcannon/structures/*.cloudcannon.structures.yml
 _snippets_from_glob:
   - /**/*.cloudcannon.snippets.yml
-data_config:
-  # The Blog Generator's combined org/person picker (1,449 entries) lives in
-  # its own file rather than inline under _select_data: a list this size
-  # bloated this config file to 200KB+ and syncing every save through
-  # CloudCannon's git provider started failing outright, on pages that had
-  # nothing to do with this list. Kept in src/data alongside this project's
-  # other data files (mainNav.json, footer.json, etc.).
-  blogWinnerProfiles:
-    path: src/data/blogWinnerProfiles.json

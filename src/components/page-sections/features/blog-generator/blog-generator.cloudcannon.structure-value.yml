@@ -1,17 +1,17 @@
 label: Blog Generator
 icon: edit
-description: Draft a fact-checked winner profile article on demand, in the Stevie blog's own style.
+description: Search a Stevie Award winner and generate a fact-checked profile article.
 value:
   # Must match the kebab path under src/components/ — renderBlock.astro resolves
   # the component by this exact key.
   _component: page-sections/features/blog-generator
   heading: "Generate a Winner Profile"
-  description: "Pick a Stevie Award winner, optionally say what the piece should be about, and draft a fact-checked article in the Stevie blog's own style."
+  description: "Search a Stevie Award winner, then generate a fact-checked article in the Stevie blog's own style."
   apiEndpoint: ""
-  winnerProfiles:
-    - "org::IBM Corporation"
-  emptyStateText: "Waiting for the first saved pick to be drafted."
-  debug: true
+  emptyStateText: "Start typing to find a winner, or browse the most-awarded below."
+  showAngle: true
+  pageSize: 12
+  debug: false
   colorScheme: light
   backgroundColor: base
 preview:
@@ -22,6 +22,6 @@ preview:
   icon: edit
 picker_preview:
   text: Blog Generator
-  subtext: Draft a fact-checked winner profile article on demand, in the Stevie blog's own style.
+  subtext: Search a Stevie Award winner and generate a fact-checked profile article.
 _inputs_from_glob:
   - /src/components/page-sections/features/blog-generator/blog-generator.cloudcannon.inputs.yml

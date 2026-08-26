@@ -6,12 +6,10 @@ pageSections:
   - _component: page-sections/features/blog-generator
     heading: Generate a Winner Profile
     description: Pick a Stevie Award winner, optionally say what the piece should be about, and draft a fact-checked article in the Stevie blog's own style.
-    apiEndpoint: ''
-    winnerProfiles:
-      - 'org::Microsoft Corporation'
-      - 'org::Salesforce'
-      - 'person::jean henri lhuillier'
-    emptyStateText: Choose a profile above, then generate a draft.
+    apiEndpoint: https://menu-sole-wav-bangkok.trycloudflare.com
+    emptyStateText: Start typing to find a winner, or browse the most-awarded below.
+    showAngle: true
+    pageSize: 12
     debug: true
     colorScheme: light
     backgroundColor: base
