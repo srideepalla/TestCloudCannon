@@ -168,6 +168,15 @@ const config = {
           aria-label="Search results"
         ></div>
 
+        <div class="bg__more-wrap">
+          <button
+            type="button"
+            class="bg__more"
+            data-bg-more
+            hidden
+          >Show more</button>
+        </div>
+
         <!-- Sticky action bar: appears only once something is selected, so the
              page never shows a Generate button with nothing to generate. -->
         <div
@@ -413,6 +422,7 @@ const config = {
       const resultsEl = $("[data-bg-results]");
       const statusEl = $("[data-bg-status]");
       const countEl = $("[data-bg-count]");
+      const moreBtn = $<HTMLButtonElement>("[data-bg-more]");
       const actionbar = $<HTMLElement>("[data-bg-actionbar]");
       const chosenNameEl = $("[data-bg-chosen-name]");
       const angleInput = $<HTMLInputElement>("[data-bg-angle]");
@@ -437,6 +447,13 @@ const config = {
       let currentSlug = "";
       let selected: ProfileRow | null = null;
       let ptype = "all";
+      // How many rows the "Show more" button has already pulled in for the
+      // current search+filter, and whether the server says there are more
+      // beyond that. Reset on every fresh search() call, since a new query or
+      // filter pill invalidates the previous page position entirely.
+      let resultOffset = 0;
+      let resultTotal = 0;
+      let hasMoreResults = false;
 
       const url = (path: string, params: Record<string, string | number> = {}) => {
         const qs = new URLSearchParams();
@@ -487,56 +504,76 @@ const config = {
         return parts ? `<span class="bg__medals">${parts}</span>` : "";
       };
 
+      const cardHtml = (r: ProfileRow) => {
+        const key = r.profile_key || r.display_name || "";
+        const isPerson = r.profile_type === "person";
+        const yrs = span(r.first_year, r.last_year);
+        const chosen = selected
+          && selected.profile_key === key
+          && selected.profile_type === r.profile_type;
+        return `<button
+          type="button"
+          class="bg__card${chosen ? " is-chosen" : ""}"
+          role="option"
+          aria-selected="${chosen ? "true" : "false"}"
+          data-key="${esc(key)}"
+          data-type="${isPerson ? "person" : "org"}"
+          data-name="${esc(r.display_name || key)}"
+        >
+          <span class="bg__card-top">
+            <span class="bg__type ${isPerson ? "p" : "o"}">${isPerson ? "Person" : "Organization"}</span>
+            <span class="bg__check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                   stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          </span>
+          <span class="bg__card-name">${esc(r.display_name || key)}</span>
+          ${r.detail ? `<span class="bg__card-detail">${esc(String(r.detail).split("|")[0].trim())}</span>` : ""}
+          <span class="bg__card-foot">
+            <span class="bg__awards"><b>${num(r.award_count)}</b> awards</span>
+            ${medals(r)}
+            ${yrs ? `<span class="bg__years">${esc(yrs)}</span>` : ""}
+          </span>
+        </button>`;
+      };
+
       const renderResults = (rows: ProfileRow[]) => {
         if (!rows.length) {
           resultsEl.innerHTML =
             `<div class="bg__empty"><p>No winners match that search.</p></div>`;
           return;
         }
-        resultsEl.innerHTML = rows.map((r) => {
-          const key = r.profile_key || r.display_name || "";
-          const isPerson = r.profile_type === "person";
-          const yrs = span(r.first_year, r.last_year);
-          const chosen = selected
-            && selected.profile_key === key
-            && selected.profile_type === r.profile_type;
-          return `<button
-            type="button"
-            class="bg__card${chosen ? " is-chosen" : ""}"
-            role="option"
-            aria-selected="${chosen ? "true" : "false"}"
-            data-key="${esc(key)}"
-            data-type="${isPerson ? "person" : "org"}"
-            data-name="${esc(r.display_name || key)}"
-          >
-            <span class="bg__card-top">
-              <span class="bg__type ${isPerson ? "p" : "o"}">${isPerson ? "Person" : "Organization"}</span>
-              <span class="bg__check" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
-                     stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </span>
-            </span>
-            <span class="bg__card-name">${esc(r.display_name || key)}</span>
-            ${r.detail ? `<span class="bg__card-detail">${esc(String(r.detail).split("|")[0].trim())}</span>` : ""}
-            <span class="bg__card-foot">
-              <span class="bg__awards"><b>${num(r.award_count)}</b> awards</span>
-              ${medals(r)}
-              ${yrs ? `<span class="bg__years">${esc(yrs)}</span>` : ""}
-            </span>
-          </button>`;
-        }).join("");
+        resultsEl.innerHTML = rows.map(cardHtml).join("");
+      };
+
+      const appendResults = (rows: ProfileRow[]) => {
+        resultsEl.insertAdjacentHTML("beforeend", rows.map(cardHtml).join(""));
       };
 
       const skeleton = (n = 6) =>
         `<div class="bg__skel-grid">${'<div class="bg__skel"></div>'.repeat(n)}</div>`;
+
+      const countLabel = (shown: number, total: number) =>
+        total > shown ? `${num(shown)} of ${num(total)} shown` : `${num(shown)} shown`;
+
+      const updateMoreButton = () => {
+        if (!moreBtn) return;
+        moreBtn.hidden = !hasMoreResults;
+        moreBtn.disabled = false;
+        moreBtn.textContent = "Show more";
+      };
 
       const search = async () => {
         const mine = ++seq;
         const q = qInput.value.trim();
         if (searchSpin) searchSpin.hidden = false;
         if (!resultsEl.querySelector(".bg__card")) resultsEl.innerHTML = skeleton();
+        if (moreBtn) moreBtn.hidden = true;
+        // A fresh query or filter pill invalidates any prior "Show more"
+        // position -- always restart at offset 0, never append onto results
+        // from a different search.
         const searchUrl = url("/api/blog-writer/profiles",
-          { q, profile_type: ptype, limit: pageSize });
+          { q, profile_type: ptype, limit: pageSize, offset: 0 });
         log(`searching: ${searchUrl}`);
         try {
           const res = await fetch(searchUrl);
@@ -549,8 +586,12 @@ const config = {
             ? `${num(rows.length)} match${rows.length === 1 ? "" : "es"} for “${q}”`
             : "Most-awarded winners — search above to narrow it down.";
           statusEl.removeAttribute("data-kind");
-          if (countEl) countEl.textContent = rows.length ? `${num(rows.length)} shown` : "";
-          log(`search ok: ${rows.length} rows`);
+          resultOffset = rows.length;
+          resultTotal = typeof data.total === "number" ? data.total : rows.length;
+          hasMoreResults = !!data.has_more;
+          if (countEl) countEl.textContent = rows.length ? countLabel(rows.length, resultTotal) : "";
+          updateMoreButton();
+          log(`search ok: ${rows.length} rows (${resultTotal} total, more: ${hasMoreResults})`);
         } catch (err) {
           if (mine !== seq) return;
           const detail = err instanceof Error ? err.message : String(err);
@@ -560,8 +601,41 @@ const config = {
           resultsEl.innerHTML = "";
           statusEl.textContent = "Search is unavailable right now. Check the API endpoint.";
           statusEl.dataset.kind = "error";
+          hasMoreResults = false;
+          if (moreBtn) moreBtn.hidden = true;
         } finally {
           if (mine === seq && searchSpin) searchSpin.hidden = true;
+        }
+      };
+
+      const loadMore = async () => {
+        if (!moreBtn || !hasMoreResults) return;
+        const mine = seq; // "Show more" belongs to the search currently on screen
+        const q = qInput.value.trim();
+        moreBtn.disabled = true;
+        moreBtn.textContent = "Loading…";
+        const moreUrl = url("/api/blog-writer/profiles",
+          { q, profile_type: ptype, limit: pageSize, offset: resultOffset });
+        log(`loading more: ${moreUrl}`);
+        try {
+          const res = await fetch(moreUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return; // the query changed while this was in flight
+          const rows: ProfileRow[] = data.results || [];
+          appendResults(rows);
+          resultOffset += rows.length;
+          resultTotal = typeof data.total === "number" ? data.total : resultOffset;
+          hasMoreResults = !!data.has_more;
+          if (countEl) countEl.textContent = countLabel(resultOffset, resultTotal);
+          updateMoreButton();
+          log(`loaded ${rows.length} more (${resultOffset}/${resultTotal})`);
+        } catch (err) {
+          if (mine !== seq) return;
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`LOAD MORE FAILED: ${detail}`);
+          moreBtn.disabled = false;
+          moreBtn.textContent = "Show more (retry)";
         }
       };
 
@@ -798,6 +872,7 @@ const config = {
           display_name: card.dataset.name,
         });
       });
+      moreBtn?.addEventListener("click", () => void loadMore());
       generateBtn?.addEventListener("click", () => void generate());
       publishBtn?.addEventListener("click", () => void publishCurrent());
       deleteBtn?.addEventListener("click", () => void deleteCurrent());
@@ -1085,6 +1160,28 @@ const config = {
       color: var(--color-text-muted);
     }
     .blog-generator .bg__empty p { margin: 0; }
+
+    .blog-generator .bg__more-wrap {
+      display: flex; justify-content: center;
+      margin-top: 1.1rem;
+    }
+    .blog-generator .bg__more {
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--bgx-line);
+      border-radius: 999px;
+      background: none;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 140ms ease;
+    }
+    .blog-generator .bg__more:hover:not(:disabled) {
+      border-color: var(--bgx-gold);
+      color: var(--bgx-gold);
+    }
+    .blog-generator .bg__more:disabled { cursor: default; opacity: 0.6; }
 
     .blog-generator .bg__skel {
       height: 7.5rem; border-radius: 12px;
