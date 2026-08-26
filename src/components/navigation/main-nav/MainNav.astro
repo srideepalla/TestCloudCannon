@@ -114,12 +114,33 @@ const mobileNavData = [
 
       .desktop-main-nav.bar .nav-item-content a:not(:hover),
       .desktop-main-nav.bar .nav-item-content .nav-item-group-heading:not(:hover) {
-        color: var(--gray-12) !important;
+        /* Bar.astro renders this dropdown panel on --color-bg-inverse (dark),
+           so the text needs the matching inverse token, not --gray-12 -- black
+           on the dark panel made every dropdown item unreadable. */
+        color: var(--color-text-inverse) !important;
       }
 
       .desktop-main-nav.bar .nav-item-content a:hover,
       .desktop-main-nav.bar .nav-item-content .nav-item-group-heading:hover {
         color: var(--color-brand) !important;
+      }
+
+      /* The language switcher's own "EN" trigger and the Log in button sit
+         directly on the teal bar too, but they're outside .desktop-main-nav
+         (siblings in .desktop-button-group), so the white-on-teal rule above
+         never reached them -- both rendered in a default dark foreground,
+         unreadable against the teal background. border-color included: the
+         ghost button variant draws its outline from the same `color`. */
+      .desktop-button-group .lang-switcher > .lang-switcher-list > .nav-item > .nav-item-trigger:not(:hover),
+      .desktop-button-group .button-inner.variant-ghost:not(:hover) {
+        color: var(--gray-0) !important;
+        border-color: var(--gray-0) !important;
+      }
+
+      .desktop-button-group .lang-switcher > .lang-switcher-list > .nav-item > .nav-item-trigger:hover,
+      .desktop-button-group .button-inner.variant-ghost:hover {
+        color: var(--color-brand) !important;
+        border-color: var(--color-brand) !important;
       }
 
       @media (min-width: 1025px) {
