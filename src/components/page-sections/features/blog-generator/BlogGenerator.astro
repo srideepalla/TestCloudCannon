@@ -987,10 +987,23 @@ const config = {
       font-family: var(--font-body);
       font-size: 1rem;
       /* type="search" keeps its own native rounded field chrome (border +
-         background) in Chrome/Safari/Edge unless appearance is reset, so it
-         was showing as a second border nested inside .bg__searchbar's own. */
+         background, and its OWN native focus ring on click) in Chrome/Safari/
+         Edge unless appearance is reset -- both showed as a second border
+         nested inside .bg__searchbar's own. `appearance: none` alone doesn't
+         reliably strip this on the search element itself in WebKit/Blink;
+         `-webkit-appearance: textfield` is the documented pairing that does
+         (standard `none` still covers Firefox/other engines). */
       appearance: none;
-      -webkit-appearance: none;
+      -webkit-appearance: textfield;
+    }
+
+    /* Belt and braces against that native focus ring specifically -- the
+       wrapper's own :focus-within rule below is the only highlight this
+       input should ever show. */
+    .blog-generator .bg__search:focus,
+    .blog-generator .bg__search:focus-visible {
+      outline: none;
+      box-shadow: none;
     }
 
     .blog-generator .bg__search::-webkit-search-cancel-button { cursor: pointer; }

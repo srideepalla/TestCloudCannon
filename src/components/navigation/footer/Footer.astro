@@ -36,8 +36,19 @@ const quickLinksHeading = localizeText("Quick Links", getCurrentLocale(pathname)
     maxContentWidth="2xl"
     paddingHorizontal="md"
     paddingVertical="2xl"
+    colorScheme="dark"
+    backgroundColor="base"
     useDefaultEditableBinding={false}
   >
+    <!-- Deliberately pinned to dark, not "inherit" (the default): the footer
+         never had its own background -- it only ever looked dark because the
+         WHOLE SITE defaulted to dark theme. Now that the site defaults to
+         light, "inherit" left the footer with no background at all, showing
+         the page's white body straight through it, and logoSource
+         (sawib-hc-w.png -- the white-on-dark variant) became unreadable on
+         its own bg. Pinning colorScheme here keeps the footer's own look
+         independent of whatever the site-wide default is, in either
+         direction. -->
     <Split
       distributionMode="quarter-three-quarters"
       verticalAlignment="start"
