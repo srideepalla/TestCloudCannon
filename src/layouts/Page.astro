@@ -50,6 +50,21 @@ const sections = frontmatter?.pageSections ?? [];
 const locale = getCurrentLocale(Astro.url.pathname);
 const localizedNav = localizeData(mainNav, locale);
 const localizedFooter = localizeData(footer, locale);
+
+// Render the slot once here rather than checking Astro.slots.has("default")
+// and outputting <slot /> separately: has() reports true for a page whose
+// markdown body is just trailing whitespace after the frontmatter's closing
+// `---` (every pageSections-only page has at least that), which is exactly
+// what a plain pageSections page like blog-generator's own content file has
+// -- confirmed live, it produced a real, empty, padded 64px gap above the
+// footer on a page with no body content at all. Checking the RENDERED,
+// trimmed HTML is the only way to tell "a slot exists" from "a slot has
+// anything in it". render() itself throws on a slot that was never passed at
+// all (as opposed to one passed empty) -- has() first avoids that.
+const slotHtml = Astro.slots.has("default")
+  ? await Astro.slots.render("default")
+  : "";
+const hasSlotContent = slotHtml.trim().length > 0;
 ---
 
 <Layout
@@ -73,7 +88,24 @@ const localizedFooter = localizeData(footer, locale);
         </div>
       )
     }
-    <slot />
+    {
+      /* Markdown body below a page's frontmatter (privacy.mdx, refund-policy.mdx,
+         and every published Blog Generator profile -- see blog_publish.py's
+         build_page_markdown) rendered here completely unwrapped: no max-width,
+         no horizontal padding, full viewport bleed edge to edge. pageSections
+         above gets this for free from CustomSection; raw slotted content never
+         did. hasSlotContent gates the wrapper so a page with no real body
+         (most of them) doesn't get an empty, padded div. Width/padding match
+         ArticleHeader's own CustomSection (maxContentWidth="lg",
+         paddingHorizontal="lg") exactly, via the same tokens, so a profile
+         page's body lines up under its own header instead of merely also
+         being constrained. Only bottom padding is added, not top -- the
+         header already carries paddingVertical="2xl" on its own bottom edge,
+         and adding another top gap here would double it. */
+      hasSlotContent && (
+        <div class="page-slot-content" set:html={slotHtml} />
+      )
+    }
   </main>
   <Footer {...localizedFooter} />
 </Layout>
@@ -81,5 +113,18 @@ const localizedFooter = localizeData(footer, locale);
 <style is:global>
   :root {
     --nav-height: 3.5rem;
+  }
+
+  .page-slot-content {
+    max-width: var(--content-width-lg);
+    margin-inline: auto;
+    padding-inline: var(--spacing-lg);
+    padding-block-end: var(--spacing-3xl);
+  }
+
+  @media (width < 640px) {
+    .page-slot-content {
+      padding-inline: var(--spacing-md);
+    }
   }
 </style>
