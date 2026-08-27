@@ -278,6 +278,21 @@ const config = {
             </div>
           </div>
           <div
+            class="spw__overview-error"
+            data-spw-overview-error
+            hidden
+          >
+            <div>
+              <p class="spw__overview-loading-title">Search results are ready</p>
+              <p class="spw__overview-loading-copy">
+                Gemini is taking longer than expected to prepare the overview. You can use the complete results below or retry the overview.
+              </p>
+            </div>
+            <button type="button" class="spw__overview-retry" data-spw-overview-retry>
+              Retry overview
+            </button>
+          </div>
+          <div
             class="spw__overview-ready"
             data-spw-overview-ready
           >
@@ -550,6 +565,8 @@ const config = {
       // can land after a newer one and repaint the grid with stale rows — the
       // exact fault this project already hit on its internal search page.
       let seq = 0;
+      let activeProfileController: AbortController | null = null;
+      let activeOverviewController: AbortController | null = null;
 
       const filters = (): Record<string, string> => {
         const out: Record<string, string> = {};
@@ -693,28 +710,22 @@ const config = {
         nextBtn.disabled = offset + perPage >= total;
       };
 
-      const setOverviewState = (state: "idle" | "loading" | "ready") => {
+      const setOverviewState = (state: "idle" | "loading" | "ready" | "error") => {
         if (!overviewEl) return;
         overviewEl.dataset.state = state;
         overviewEl.hidden = state === "idle";
         const loadingEl = $("[data-spw-overview-loading]");
+        const errorEl = $("[data-spw-overview-error]");
+        const readyEl = $("[data-spw-overview-ready]");
         if (loadingEl) loadingEl.hidden = state !== "loading";
+        if (errorEl) errorEl.hidden = state !== "error";
+        if (readyEl) readyEl.hidden = state !== "ready";
       };
 
       const renderOverview = (data: Record<string, unknown> | null) => {
         if (!overviewEl) return;
-        if (!data || !data.available || !data.total) {
-          setOverviewState("ready");
-          const answerEl = $("[data-spw-answer]");
-          const detailEl = $("[data-spw-detail]");
-          const sourceEl = $("[data-spw-overview-source]");
-          const levelsEl = $("[data-spw-levels]");
-          const orgsEl = $("[data-spw-orgs]");
-          if (answerEl) answerEl.textContent = "No records found";
-          if (detailEl) detailEl.textContent = "";
-          if (sourceEl) sourceEl.textContent = "Counted from all 0 matches";
-          if (levelsEl) levelsEl.innerHTML = "";
-          if (orgsEl) orgsEl.innerHTML = "";
+        if (!data || !data.available) {
+          setOverviewState("error");
           return;
         }
         setOverviewState("ready");
@@ -725,10 +736,12 @@ const config = {
         const levelsEl = $("[data-spw-levels]");
         const orgsEl = $("[data-spw-orgs]");
 
-        if (answerEl) answerEl.textContent = String(data.answer ?? "");
+        if (answerEl) answerEl.textContent = String(data.answer ?? "No records found");
         if (detailEl) detailEl.textContent = String(data.headline ?? "");
         if (sourceEl) {
-          sourceEl.textContent = `Counted from all ${num(data.total)} matches`;
+          sourceEl.textContent = data.generated_by === "scope"
+            ? "Past-winner search only"
+            : `Counted from all ${num(data.total || 0)} matches`;
         }
         if (levelsEl) {
           const levels = (data.levels as { level: string; count: number }[]) || [];
@@ -791,17 +804,83 @@ const config = {
         }
       };
 
+      const loadOverview = async (
+        mine: number,
+        q: string,
+        selectedFilters: Record<string, string>,
+      ) => {
+        if (!showOverview || !overviewEl) return;
+        activeOverviewController?.abort();
+        const controller = new AbortController();
+        activeOverviewController = controller;
+        setOverviewState("loading");
+        const overviewUrl = url("/v1/overview", { q, ...selectedFilters });
+        log(`fetching overview: ${overviewUrl}`);
+        // Gemini is intentionally allowed more time than the profile query.
+        // Its work is independent, so this timer can never hold the table or
+        // Search button hostage.
+        const timer = window.setTimeout(() => controller.abort(), 45000);
+        try {
+          const res = await fetch(overviewUrl, { signal: controller.signal });
+          log(`overview response: HTTP ${res.status}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return;
+          renderOverview(data);
+        } catch (err) {
+          if (mine !== seq) return;
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`overview unavailable (non-fatal): ${detail}`);
+          setOverviewState("error");
+        } finally {
+          window.clearTimeout(timer);
+          if (activeOverviewController === controller) activeOverviewController = null;
+        }
+      };
+
+      const fetchProfiles = async (searchUrl: string, mine: number) => {
+        activeProfileController?.abort();
+        let lastError: unknown = new Error("Profile search failed");
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          const controller = new AbortController();
+          activeProfileController = controller;
+          const timer = window.setTimeout(() => controller.abort(), attempt ? 18000 : 12000);
+          try {
+            const res = await fetch(searchUrl, { signal: controller.signal });
+            log(`profiles response: HTTP ${res.status} (attempt ${attempt + 1})`);
+            if (!res.ok) {
+              const error = new Error(`HTTP ${res.status}`);
+              if (res.status < 500 || attempt === 1) throw error;
+              lastError = error;
+              continue;
+            }
+            return await res.json();
+          } catch (err) {
+            lastError = err;
+            if (mine !== seq) throw err;
+            if (attempt === 1) throw err;
+          } finally {
+            window.clearTimeout(timer);
+            if (activeProfileController === controller) activeProfileController = null;
+          }
+        }
+        throw lastError;
+      };
+
       const run = async (nextOffset = 0) => {
         const mine = ++seq;
         offset = nextOffset;
         const q = qInput.value.trim();
-        const params = { q, limit: perPage, offset, ...filters() };
+        const selectedFilters = filters();
+        const params = { q, limit: perPage, offset, ...selectedFilters };
 
         statusEl.innerHTML = `<span class="spw__inline-spin" aria-hidden="true"></span> Searching…`;
         statusEl.dataset.kind = "";
         if (submitBtn) submitBtn.disabled = true;
         resultsEl.innerHTML = `<div class="spw__skel" aria-hidden="true">${"<div class='spw__skel-row'></div>".repeat(6)}</div>`;
-        if (showOverview && overviewEl) setOverviewState("loading");
+        // Start Gemini immediately, but do not await it. Results and controls
+        // have their own fast request and remain usable while it reasons.
+        if (showOverview && overviewEl) void loadOverview(mine, q, selectedFilters);
 
         // One results table: PROFILES (one row per organization/person), not
         // one row per award. `q` runs through the same natural-language parser
@@ -812,10 +891,7 @@ const config = {
         log(`fetching profiles: ${searchUrl}`);
 
         try {
-          const res = await fetch(searchUrl);
-          log(`profiles response: HTTP ${res.status}`);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
+          const data = await fetchProfiles(searchUrl, mine);
           if (data.error) throw new Error(data.error);
           log(`profiles parsed OK: total=${data.total} rows=${(data.results || []).length}`);
           if (mine !== seq) return; // superseded by a newer search
@@ -862,24 +938,6 @@ const config = {
           if (mine === seq && submitBtn) submitBtn.disabled = false;
         }
 
-        if (!showOverview || !overviewEl) return;
-        setOverviewState("loading");
-        const overviewUrl = url("/v1/overview", { q, ...filters() });
-        log(`fetching overview: ${overviewUrl}`);
-        try {
-          const res = await fetch(overviewUrl);
-          log(`overview response: HTTP ${res.status}`);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
-          if (mine !== seq) return;
-          renderOverview(data);
-        } catch (err) {
-          // The results grid is the product; a failed summary must never look
-          // like a failed search.
-          const detail = err instanceof Error ? err.message : String(err);
-          log(`overview unavailable (non-fatal): ${detail}`);
-          setOverviewState("idle");
-        }
       };
 
       /** Populate the dropdowns from the real data, so a re-scrape that adds a
@@ -1174,6 +1232,11 @@ const config = {
         if (key) openProfile(type, key);
       });
       overviewEl?.addEventListener("click", (event) => {
+        const retry = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-spw-overview-retry]");
+        if (retry) {
+          void loadOverview(seq, qInput.value.trim(), filters());
+          return;
+        }
         const btn = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-spw-top-more]");
         if (!btn || !overviewEl) return;
         const list = overviewEl.querySelector(".spw__orgs-list");
@@ -1502,20 +1565,34 @@ const config = {
       animation: spw-fade-up var(--animation-normal) ease;
     }
 
-    .search-past-winners .spw__overview-loading {
+    .search-past-winners .spw__overview-loading,
+    .search-past-winners .spw__overview-error {
       display: flex;
       align-items: center;
       gap: var(--spacing-md);
       min-height: 5.5rem;
     }
 
-    .search-past-winners .spw__overview[data-state="loading"] .spw__overview-ready {
+    .search-past-winners .spw__overview-error {
+      justify-content: space-between;
+    }
+
+    .search-past-winners .spw__overview-loading[hidden],
+    .search-past-winners .spw__overview-error[hidden],
+    .search-past-winners .spw__overview-ready[hidden] {
       display: none;
     }
 
-    .search-past-winners .spw__overview[data-state="ready"] .spw__overview-loading,
-    .search-past-winners .spw__overview-loading[hidden] {
-      display: none;
+    .search-past-winners .spw__overview-retry {
+      flex: 0 0 auto;
+      min-height: 2.6rem;
+      padding: 0.55rem 0.9rem;
+      border: 1px solid var(--spw-gold);
+      border-radius: var(--radius-sm);
+      background: var(--color-bg-surface);
+      color: var(--color-text-strong);
+      font-weight: var(--font-weight-semibold);
+      cursor: pointer;
     }
 
     .search-past-winners .spw__overview-loading-title {
