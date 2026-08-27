@@ -237,6 +237,14 @@ pageSections:
       _component: building-blocks/wrappers/article-link-list
       stories:
         - image:
+            source: /src/assets/images/grand-winners-announced-featured-stories.png
+            alt: >-
+              2026 International Business Awards® Grand Stevie® Winners
+              Announced
+          title: 2026 International Business Awards® Grand Stevie® Winners Announced
+          link: >-
+            https://blog.stevieawards.com/blog/2026-international-business-awards-grand-stevie-winners-announced
+        - image:
             source: /src/assets/images/iba-winners.png
             alt: IBA26 Winner Announcement
           title: >-
