@@ -8,7 +8,7 @@ pageSections:
     description: >-
       Pick a Stevie Award winner, optionally say what the piece should be about,
       and draft a fact-checked article in the Stevie blog's own style.
-    apiEndpoint: https://drilling-those-cocktail-addressing.trycloudflare.com
+    apiEndpoint: https://basement-populations-implied-calculation.trycloudflare.com
     emptyStateText: Start typing to find a winner, or browse the most-awarded below.
     showAngle: true
     pageSize: 12
