@@ -1,0 +1,44 @@
+heading:
+  type: text
+  comment: Page heading shown above the list of published profiles.
+description:
+  type: textarea
+  comment: Optional intro line under the heading.
+emptyStateText:
+  type: text
+  comment: >-
+    Shown when no profiles have been published yet. The list itself is built
+    automatically from every page under src/content/pages/profiles/ -- there is
+    nothing to pick here, and publishing from the Blog Generator adds to it on
+    the next build.
+showFactCheck:
+  type: checkbox
+  comment: >-
+    Show the "Fact-checked" badge and score on cards whose article passed the
+    grounding gate.
+colorScheme:
+  type: select
+  comment: Color scheme for this section.
+  options:
+    values:
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+      - id: inherit
+        name: Inherit
+backgroundColor:
+  type: select
+  comment: Background color for this section.
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

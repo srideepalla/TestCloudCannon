@@ -183,15 +183,23 @@ const config = {
         </nav>
 
         <!-- Sticky action bar: appears only once something is selected, so the
-             page never shows a Generate button with nothing to generate. -->
+             page never shows a Generate button with nothing to generate.
+             Selection is multi: cards toggle, and one angle applies to the
+             whole batch (see the client script's generate()). -->
         <div
           class="bg__actionbar"
           data-bg-actionbar
           hidden
         >
           <div class="bg__chosen">
-            <span class="bg__chosen-label">Selected</span>
+            <span class="bg__chosen-label" data-bg-chosen-label>Selected</span>
             <strong class="bg__chosen-name" data-bg-chosen-name></strong>
+            <button
+              type="button"
+              class="bg__clear"
+              data-bg-clear
+              hidden
+            >Clear</button>
           </div>
 
           {
@@ -232,10 +240,49 @@ const config = {
           <button
             type="button"
             class="bg__ghost"
+            data-bg-select-all
+            >Select all</button
+          >
+          <button
+            type="button"
+            class="bg__ghost"
             data-bg-refresh
             >Refresh</button
           >
         </div>
+
+        <!-- Batch publish bar: hidden until at least one draft is ticked, so
+             the section never shows a Publish button with nothing selected.
+             The whole batch goes out as ONE commit -- see the publish-batch
+             endpoint and blog_publish.publish_drafts. -->
+        <div
+          class="bg__batchbar"
+          data-bg-batchbar
+          hidden
+        >
+          <span class="bg__batch-count" data-bg-batch-count></span>
+          <button
+            type="button"
+            class="bg__generate bg__batch-publish"
+            data-bg-batch-publish
+          >
+            <span data-bg-batch-publish-label>Approve &amp; publish selected</span>
+          </button>
+          <button
+            type="button"
+            class="bg__ghost"
+            data-bg-batch-clear
+            >Clear</button
+          >
+        </div>
+        <p
+          class="bg__batch-status"
+          data-bg-batch-status
+          role="status"
+          aria-live="polite"
+          hidden
+        ></p>
+
         <div
           class="bg__drafts"
           data-bg-drafts
@@ -432,6 +479,15 @@ const config = {
       const nextBtn = $<HTMLButtonElement>("[data-bg-next]");
       const actionbar = $<HTMLElement>("[data-bg-actionbar]");
       const chosenNameEl = $("[data-bg-chosen-name]");
+      const chosenLabelEl = $("[data-bg-chosen-label]");
+      const clearBtn = $<HTMLButtonElement>("[data-bg-clear]");
+      const batchbar = $<HTMLElement>("[data-bg-batchbar]");
+      const batchCountEl = $("[data-bg-batch-count]");
+      const batchPublishBtn = $<HTMLButtonElement>("[data-bg-batch-publish]");
+      const batchPublishLabel = $("[data-bg-batch-publish-label]");
+      const batchClearBtn = $<HTMLButtonElement>("[data-bg-batch-clear]");
+      const batchStatusEl = $<HTMLElement>("[data-bg-batch-status]");
+      const selectAllBtn = $<HTMLButtonElement>("[data-bg-select-all]");
       const angleInput = $<HTMLInputElement>("[data-bg-angle]");
       const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
       const generateLabel = $("[data-bg-generate-label]");
@@ -452,7 +508,18 @@ const config = {
       if (!qInput || !resultsEl || !statusEl || !draftEl) return;
 
       let currentSlug = "";
-      let selected: ProfileRow | null = null;
+      // Multi-select, keyed "type::key". A Map (not an array) because cards
+      // are re-rendered on every search and page change, so membership has to
+      // be answerable from the key alone -- the ProfileRow object identity
+      // from the previous render is long gone by then. Insertion order is
+      // preserved, so the batch generates in the order they were picked.
+      const selectedMap = new Map<string, ProfileRow>();
+      const selKey = (t: string | undefined, k: string | undefined) =>
+        `${t || "org"}::${k || ""}`;
+      // Slugs ticked in the saved-drafts list, for batch publish. Separate
+      // from selectedMap: these are drafts that already exist, not profiles
+      // waiting to be drafted.
+      const selectedDrafts = new Set<string>();
       let ptype = "all";
       // The current page's offset and the true match count, used to render
       // the Prev/Next pager. Reset to 0 on every fresh search() call, since a
@@ -513,9 +580,10 @@ const config = {
         const key = r.profile_key || r.display_name || "";
         const isPerson = r.profile_type === "person";
         const yrs = span(r.first_year, r.last_year);
-        const chosen = selected
-          && selected.profile_key === key
-          && selected.profile_type === r.profile_type;
+        // Re-read from selectedMap rather than trusting a flag on the row:
+        // a card can be re-rendered by a search or a page change while its
+        // profile is still selected, and must come back still ticked.
+        const chosen = selectedMap.has(selKey(r.profile_type, key));
         return `<button
           type="button"
           class="bg__card${chosen ? " is-chosen" : ""}"
@@ -607,16 +675,82 @@ const config = {
         }
       };
 
-      const choose = (row: ProfileRow) => {
-        selected = row;
-        if (chosenNameEl) chosenNameEl.textContent = row.display_name || row.profile_key || "";
-        if (actionbar) actionbar.hidden = false;
-        // Re-render so the chosen card shows its selected state.
+      // Repaint tick state on the cards currently in the DOM. Cheaper and
+      // less disruptive than re-rendering the grid: a full re-render would
+      // also rebuild every card's markup mid-click.
+      const paintCards = () => {
         resultsEl.querySelectorAll<HTMLElement>(".bg__card").forEach((el) => {
-          const on = el.dataset.key === row.profile_key && el.dataset.type === row.profile_type;
+          const on = selectedMap.has(selKey(el.dataset.type, el.dataset.key));
           el.classList.toggle("is-chosen", on);
           el.setAttribute("aria-selected", on ? "true" : "false");
         });
+      };
+
+      const renderActionbar = () => {
+        const n = selectedMap.size;
+        if (actionbar) actionbar.hidden = n === 0;
+        if (clearBtn) clearBtn.hidden = n < 2;
+        if (chosenLabelEl) {
+          chosenLabelEl.textContent = n > 1 ? `${num(n)} selected` : "Selected";
+        }
+        if (chosenNameEl) {
+          const names = [...selectedMap.values()]
+            .map((r) => r.display_name || r.profile_key || "");
+          // One name reads better than "1 selected"; a long list would
+          // overflow the bar, so past three it summarises.
+          chosenNameEl.textContent =
+            n === 0 ? ""
+              : n <= 3 ? names.join(", ")
+                : `${names.slice(0, 2).join(", ")} +${num(n - 2)} more`;
+        }
+        if (generateLabel) {
+          generateLabel.textContent =
+            n > 1 ? `Generate ${num(n)} articles` : "Generate article";
+        }
+      };
+
+      const toggleProfile = (row: ProfileRow) => {
+        const k = selKey(row.profile_type, row.profile_key);
+        if (selectedMap.has(k)) selectedMap.delete(k);
+        else selectedMap.set(k, row);
+        paintCards();
+        renderActionbar();
+      };
+
+      const clearProfiles = () => {
+        selectedMap.clear();
+        paintCards();
+        renderActionbar();
+      };
+
+      // ---------- saved-draft selection (batch publish) ----------
+      const renderBatchbar = () => {
+        const n = selectedDrafts.size;
+        if (batchbar) batchbar.hidden = n === 0;
+        if (batchCountEl) {
+          batchCountEl.textContent =
+            n === 1 ? "1 draft selected" : `${num(n)} drafts selected`;
+        }
+        if (batchPublishLabel) {
+          batchPublishLabel.textContent =
+            n > 1 ? `Approve & publish ${num(n)} drafts` : "Approve & publish selected";
+        }
+      };
+
+      const paintDraftChecks = () => {
+        draftsEl?.querySelectorAll<HTMLElement>("[data-slug]").forEach((el) => {
+          const on = selectedDrafts.has(el.dataset.slug || "");
+          el.classList.toggle("is-picked", on);
+          const box = el.querySelector<HTMLInputElement>("[data-bg-draft-check]");
+          if (box) box.checked = on;
+        });
+      };
+
+      const toggleDraft = (slug: string) => {
+        if (selectedDrafts.has(slug)) selectedDrafts.delete(slug);
+        else selectedDrafts.add(slug);
+        paintDraftChecks();
+        renderBatchbar();
       };
 
       // ---------- draft rendering ----------
@@ -663,29 +797,70 @@ const config = {
       };
 
       const generate = async () => {
-        if (!selected) return;
+        const picks = [...selectedMap.values()];
+        if (!picks.length) return;
+        const many = picks.length > 1;
         if (generateBtn) generateBtn.disabled = true;
         if (generateLabel) {
           generateLabel.innerHTML =
-            `<span class="bg__spinner sm" aria-hidden="true"></span> Writing and fact-checking…`;
+            `<span class="bg__spinner sm" aria-hidden="true"></span> ` +
+            (many
+              ? `Writing ${num(picks.length)} articles… (about ${num(picks.length * 30)}s)`
+              : "Writing and fact-checking…");
         }
-        const genUrl = url("/api/blog-writer/generate");
-        log(`generating: ${selected.profile_type}/${selected.profile_key}`);
+        const angle = angleInput?.value || "";
         try {
-          const res = await fetch(genUrl, {
+          if (!many) {
+            // Single pick keeps the original behaviour: open straight into the
+            // finished article. With several there is no single article to
+            // open, so the batch path reports a summary instead.
+            const p = picks[0];
+            log(`generating: ${p.profile_type}/${p.profile_key}`);
+            const res = await fetch(url("/api/blog-writer/generate"), {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                profile_type: p.profile_type || "org",
+                profile_key: p.profile_key,
+                angle,
+              }),
+            });
+            const d = await res.json();
+            if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+            log(`draft generated: ${d.slug} (${d.fact_check_status})`);
+            clearProfiles();
+            renderDraft(d);
+            history.pushState({ slug: d.slug }, "", draftParam(d.slug));
+            void loadDrafts();
+            return;
+          }
+
+          log(`generating ${picks.length} drafts in one batch`);
+          const res = await fetch(url("/api/blog-writer/generate-batch"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              profile_type: selected.profile_type || "org",
-              profile_key: selected.profile_key,
-              angle: angleInput?.value || "",
+              profiles: picks.map((p) => ({
+                profile_type: p.profile_type || "org",
+                profile_key: p.profile_key,
+              })),
+              angle,
             }),
           });
           const d = await res.json();
           if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
-          log(`draft generated: ${d.slug} (${d.fact_check_status})`);
-          renderDraft(d);
-          history.pushState({ slug: d.slug }, "", draftParam(d.slug));
+          // Partial success is normal (one profile with no facts must not sink
+          // the rest), so report both halves rather than a bare "done".
+          const failed = (d.results || []).filter((r: any) => !r.ok);
+          statusEl.textContent =
+            `Generated ${num(d.generated)} of ${num(d.requested)} drafts.` +
+            (failed.length
+              ? ` Failed: ${failed.map((r: any) => r.profile_key).join(", ")}.`
+              : " They are in Saved drafts below.");
+          statusEl.dataset.kind = failed.length ? "error" : "";
+          if (!failed.length) statusEl.removeAttribute("data-kind");
+          log(`batch done: ${d.generated}/${d.requested} generated`);
+          clearProfiles();
           void loadDrafts();
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
@@ -694,7 +869,58 @@ const config = {
           statusEl.dataset.kind = "error";
         } finally {
           if (generateBtn) generateBtn.disabled = false;
-          if (generateLabel) generateLabel.textContent = "Generate article";
+          renderActionbar();
+        }
+      };
+
+      const publishSelectedDrafts = async () => {
+        const slugs = [...selectedDrafts];
+        if (!slugs.length) return;
+        if (!window.confirm(
+          slugs.length === 1
+            ? "Publish this draft to the live site?"
+            : `Publish these ${slugs.length} drafts to the live site?`)) return;
+        if (batchPublishBtn) batchPublishBtn.disabled = true;
+        if (batchPublishLabel) {
+          batchPublishLabel.innerHTML =
+            `<span class="bg__spinner sm" aria-hidden="true"></span> Publishing…`;
+        }
+        if (batchStatusEl) {
+          batchStatusEl.hidden = false;
+          batchStatusEl.removeAttribute("data-kind");
+          batchStatusEl.textContent =
+            "Committing and pushing to the site repository…";
+        }
+        try {
+          const res = await fetch(url("/api/blog-writer/publish-batch"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ slugs }),
+          });
+          const d = await res.json();
+          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+          log(`batch published ${d.published}/${d.requested} on ${d.branch}`);
+          if (batchStatusEl) {
+            batchStatusEl.textContent =
+              `Published ${num(d.published)} page${d.published === 1 ? "" : "s"}` +
+              ` to ${esc(d.branch || "the site branch")}.` +
+              (d.missing?.length ? ` Not found: ${d.missing.join(", ")}.` : "") +
+              " They appear on the site once it rebuilds.";
+          }
+          selectedDrafts.clear();
+          renderBatchbar();
+          void loadDrafts();
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`BATCH PUBLISH FAILED: ${detail}`);
+          if (batchStatusEl) {
+            batchStatusEl.hidden = false;
+            batchStatusEl.dataset.kind = "error";
+            batchStatusEl.textContent = "Could not publish: " + detail;
+          }
+        } finally {
+          if (batchPublishBtn) batchPublishBtn.disabled = false;
+          renderBatchbar();
         }
       };
 
@@ -708,22 +934,45 @@ const config = {
           const rows: DraftRow[] = data.rows || [];
           if (!rows.length) {
             draftsEl.innerHTML = `<p class="bg__status">No drafts yet — generate one above.</p>`;
+            // Slugs ticked before a refresh that returned nothing are gone.
+            selectedDrafts.clear();
+            renderBatchbar();
             return;
           }
+          // Drop ticks for drafts that no longer exist (deleted elsewhere, or
+          // pushed off the end of the list) -- otherwise a stale slug would
+          // travel into a batch publish and 404 there.
+          const live = new Set(rows.map((r) => r.slug));
+          [...selectedDrafts].forEach((s) => { if (!live.has(s)) selectedDrafts.delete(s); });
+
+          // The card is a <div>, not a <button>: it holds BOTH a checkbox and
+          // an open-button, and interactive elements cannot legally nest
+          // inside a button. The open-button carries the card's content and
+          // fills the card, so clicking the body still opens the draft.
           draftsEl.innerHTML = `<div class="bg__draft-grid">${rows.map((r) => {
             const published = r.status === "published" && r.cloudcannon_id;
             const passed = r.fact_check_status === "passed";
-            return `<button type="button" class="bg__draft-card" data-slug="${esc(r.slug)}">
-              <span class="bg__card-top">
-                <span class="bg__pill-sm ${passed ? "ok" : "warn"}">${passed ? "Passed" : "Flagged"}</span>
-                <span class="bg__draft-state${published ? " is-live" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
-              </span>
-              <span class="bg__draft-headline">${esc(r.headline || "Untitled")}</span>
-              <span class="bg__draft-subject">${esc(r.org_name || "")}</span>
-              ${r.angle ? `<span class="bg__draft-angle">${esc(r.angle)}</span>` : ""}
-              <span class="bg__draft-when">${esc(r.updated_at || "")}</span>
-            </button>`;
+            const picked = selectedDrafts.has(r.slug);
+            const headline = r.headline || "Untitled";
+            return `<div class="bg__draft-card${picked ? " is-picked" : ""}" data-slug="${esc(r.slug)}">
+              <label class="bg__draft-pick">
+                <input type="checkbox" data-bg-draft-check ${picked ? "checked" : ""}
+                       aria-label="Select ${esc(headline)} for publishing">
+                <span class="bg__draft-pick-text">Select</span>
+              </label>
+              <button type="button" class="bg__draft-open" data-bg-draft-open>
+                <span class="bg__card-top">
+                  <span class="bg__pill-sm ${passed ? "ok" : "warn"}">${passed ? "Passed" : "Flagged"}</span>
+                  <span class="bg__draft-state${published ? " is-live" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
+                </span>
+                <span class="bg__draft-headline">${esc(headline)}</span>
+                <span class="bg__draft-subject">${esc(r.org_name || "")}</span>
+                ${r.angle ? `<span class="bg__draft-angle">${esc(r.angle)}</span>` : ""}
+                <span class="bg__draft-when">${esc(r.updated_at || "")}</span>
+              </button>
+            </div>`;
           }).join("")}</div>`;
+          renderBatchbar();
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`drafts FAILED: ${detail}`);
@@ -838,12 +1087,13 @@ const config = {
       resultsEl.addEventListener("click", (event) => {
         const card = (event.target as HTMLElement)?.closest<HTMLElement>(".bg__card");
         if (!card) return;
-        choose({
+        toggleProfile({
           profile_key: card.dataset.key,
           profile_type: (card.dataset.type as "org" | "person") || "org",
           display_name: card.dataset.name,
         });
       });
+      clearBtn?.addEventListener("click", clearProfiles);
       generateBtn?.addEventListener("click", () => void generate());
       publishBtn?.addEventListener("click", () => void publishCurrent());
       deleteBtn?.addEventListener("click", () => void deleteCurrent());
@@ -853,8 +1103,39 @@ const config = {
       });
       root.querySelector("[data-bg-refresh]")?.addEventListener("click", () => void loadDrafts());
       draftsEl?.addEventListener("click", (event) => {
-        const card = (event.target as HTMLElement)?.closest<HTMLElement>("[data-slug]");
-        if (card?.dataset.slug) void openDraft(card.dataset.slug);
+        const target = event.target as HTMLElement;
+        const card = target?.closest<HTMLElement>("[data-slug]");
+        const slug = card?.dataset.slug;
+        if (!slug) return;
+        // The checkbox and its <label> toggle selection; anywhere else on the
+        // card opens the draft. Checked via closest() rather than the click
+        // target itself because a click on the label's text still has to
+        // reach the box, and the browser then re-fires it on the input.
+        if (target.closest(".bg__draft-pick")) {
+          if (target instanceof HTMLInputElement) toggleDraft(slug);
+          return;
+        }
+        void openDraft(slug);
+      });
+      batchPublishBtn?.addEventListener("click", () => void publishSelectedDrafts());
+      batchClearBtn?.addEventListener("click", () => {
+        selectedDrafts.clear();
+        paintDraftChecks();
+        renderBatchbar();
+        if (batchStatusEl) batchStatusEl.hidden = true;
+      });
+      selectAllBtn?.addEventListener("click", () => {
+        const cards = Array.from(
+          draftsEl?.querySelectorAll<HTMLElement>("[data-slug]") || []);
+        // Toggle: a second click clears, so this one button covers both.
+        const allOn = cards.length > 0 && cards.every(
+          (el) => selectedDrafts.has(el.dataset.slug || ""));
+        selectedDrafts.clear();
+        if (!allOn) cards.forEach((el) => {
+          if (el.dataset.slug) selectedDrafts.add(el.dataset.slug);
+        });
+        paintDraftChecks();
+        renderBatchbar();
       });
       // Re-read the URL rather than trusting popstate's state object, so back
       // and a reload on a draft URL take the same path.
@@ -1246,19 +1527,67 @@ const config = {
       color: var(--color-text-strong, var(--color-text));
     }
 
+    /* The card is now a container holding a checkbox plus an open-button
+       (interactive elements cannot nest inside a button), so the visual card
+       styling lives on the wrapper and the button inside it is transparent. */
     .blog-generator .bg__draft-card {
-      display: flex; flex-direction: column; gap: 0.35rem;
-      padding: 0.9rem;
+      position: relative;
+      display: flex; flex-direction: column;
       border: 1px solid var(--bgx-line); border-radius: 12px;
       background-color: var(--color-bg); color: var(--color-text);
-      font-family: var(--font-body); text-align: left; cursor: pointer;
       transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
     }
     .blog-generator .bg__draft-card:hover {
       border-color: var(--color-text-muted); transform: translateY(-1px);
       box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
     }
-    .blog-generator .bg__draft-card:focus-visible { outline: 2px solid var(--bgx-gold); outline-offset: 2px; }
+    .blog-generator .bg__draft-card.is-picked {
+      border-color: var(--bgx-gold);
+      box-shadow: 0 0 0 2px rgba(184, 148, 26, 0.18);
+    }
+    .blog-generator .bg__draft-open {
+      display: flex; flex-direction: column; gap: 0.35rem;
+      padding: 0.9rem; padding-top: 2.1rem;   /* room for the pick row above */
+      border: 0; border-radius: 12px; background: none; color: inherit;
+      font-family: var(--font-body); font-size: inherit;
+      text-align: left; cursor: pointer;
+    }
+    .blog-generator .bg__draft-open:focus-visible {
+      outline: 2px solid var(--bgx-gold); outline-offset: -2px;
+    }
+
+    .blog-generator .bg__draft-pick {
+      position: absolute; top: 0.55rem; left: 0.7rem; z-index: 1;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      color: var(--color-text-muted); font-size: 0.72rem; font-weight: 600;
+      cursor: pointer; user-select: none;
+    }
+    .blog-generator .bg__draft-pick input { cursor: pointer; margin: 0; }
+    .blog-generator .bg__draft-card.is-picked .bg__draft-pick { color: var(--bgx-gold); }
+
+    .blog-generator .bg__batchbar {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem;
+      margin-top: 0.85rem; padding: 0.7rem 0.9rem;
+      border: 1px solid var(--bgx-gold); border-radius: 10px;
+      background-color: rgba(184, 148, 26, 0.06);
+    }
+    .blog-generator .bg__batch-count {
+      font-size: 0.85rem; font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+    .blog-generator .bg__batch-publish { margin-left: auto; }
+    .blog-generator .bg__batch-status {
+      margin: 0.6rem 0 0; font-size: 0.85rem; color: var(--color-text-muted);
+    }
+    .blog-generator .bg__batch-status[data-kind="error"] { color: var(--bgx-flag); }
+
+    .blog-generator .bg__clear {
+      margin-left: 0.5rem; padding: 0.15rem 0.6rem;
+      border: 1px solid var(--bgx-line); border-radius: 999px;
+      background: none; color: var(--color-text-muted);
+      font-family: var(--font-body); font-size: 0.72rem; cursor: pointer;
+    }
+    .blog-generator .bg__clear:hover { border-color: var(--bgx-gold); color: var(--bgx-gold); }
 
     .blog-generator .bg__pill-sm {
       padding: 0.12em 0.55em; border-radius: 999px;

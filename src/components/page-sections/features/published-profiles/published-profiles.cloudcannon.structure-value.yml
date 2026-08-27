@@ -1,0 +1,27 @@
+label: Published Winner Profiles
+icon: list
+description: >-
+  Public index of every Blog Generator article that has been approved and
+  published. The list builds itself from the published pages -- no picking
+  required.
+value:
+  # Must match the kebab path under src/components/ -- renderBlock.astro
+  # resolves the component by this exact key.
+  _component: page-sections/features/published-profiles
+  heading: "Winner Profiles"
+  description: "Profiles of Stevie Award winners, drafted from the awards record and fact-checked before publication."
+  emptyStateText: "No profiles have been published yet."
+  showFactCheck: true
+  colorScheme: light
+  backgroundColor: base
+preview:
+  text:
+    - Published Winner Profiles
+  subtext:
+    - key: heading
+  icon: list
+picker_preview:
+  text: Published Winner Profiles
+  subtext: Public index of all published winner profile articles.
+_inputs_from_glob:
+  - /src/components/page-sections/features/published-profiles/published-profiles.cloudcannon.inputs.yml

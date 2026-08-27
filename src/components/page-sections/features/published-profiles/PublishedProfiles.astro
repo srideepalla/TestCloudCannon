@@ -1,0 +1,310 @@
+---
+/**
+ * PublishedProfiles -- the public index of every Blog Generator article that
+ * has been approved and published.
+ *
+ * WHY THIS EXISTS
+ * blog_publish.py (StevieIntel) commits each approved draft to
+ * `src/content/pages/profiles/<slug>.md`, which the site's catch-all route
+ * already serves at `/profiles/<slug>`. Those pages were public from the
+ * start -- `public/auth-routes.txt` only gates `/blog-generator/*` -- but
+ * there was no way to FIND one without already knowing its URL. This is the
+ * missing front door: one public page listing all of them.
+ *
+ * WHY NO CLIENT SCRIPT, AND WHY NO API CALL
+ * The list is known at build time. Every published article is a real content
+ * file in this repo, so getCollection() sees all of them during the build --
+ * there is nothing to fetch. That matters for more than tidiness:
+ *   - it stays up with no StevieIntel server running and no tunnel open,
+ *     unlike BlogGenerator.astro which is useless without both;
+ *   - it needs no authentication, because it reads committed content rather
+ *     than talking to an API;
+ *   - the cards are in the HTML, so they are indexable and readable with
+ *     JavaScript disabled.
+ * A new article appears here the moment CloudCannon rebuilds after the
+ * publish commit -- the same trigger that makes the article's own page live,
+ * so the two can never drift apart.
+ *
+ * WHERE THE CARD TEXT COMES FROM
+ * Each published page's sole pageSections entry is the article-header
+ * component carrying the real headline/dek/tags (see build_page_markdown in
+ * blog_publish.py). Those are preferred over the page's own
+ * `title`/`description`, which are the SEO fields and are sometimes
+ * truncated. Both are read defensively: a hand-written or hand-edited page
+ * under profiles/ must not break the whole index.
+ */
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import { draftFilter } from "@utils/draft-filter";
+import { getCollection } from "astro:content";
+
+const {
+  heading = "Winner Profiles",
+  description = "",
+  emptyStateText = "No profiles have been published yet.",
+  showFactCheck = true,
+  colorScheme = "light",
+  backgroundColor = "base",
+  class: className,
+  useDefaultEditableBinding: _useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const PREFIX = "profiles/";
+
+type Card = {
+  slug: string;
+  href: string;
+  headline: string;
+  dek: string;
+  tags: string[];
+  factCheckStatus: string;
+  factCheckScore: number | null;
+};
+
+const pages = await getCollection("pages", draftFilter);
+
+const cards: Card[] = pages
+  // `profiles/index` is THIS page -- listing itself would be a card linking
+  // back to the list.
+  .filter((p) => p.id.startsWith(PREFIX) && p.id !== `${PREFIX}index`)
+  .map((p) => {
+    const data = p.data as Record<string, any>;
+    const sections: any[] = Array.isArray(data.pageSections) ? data.pageSections : [];
+    const header = sections.find(
+      (s) => s && typeof s._component === "string" && s._component.endsWith("article-header")
+    );
+    const tags = Array.isArray(header?.tags) ? header.tags.filter(Boolean) : [];
+    const score = header?.factCheckScore;
+    return {
+      slug: p.id.slice(PREFIX.length),
+      href: `/${p.id}`,
+      headline: String(header?.headline || data.title || p.id.slice(PREFIX.length)),
+      dek: String(header?.dek || data.description || ""),
+      tags: tags.map(String),
+      factCheckStatus: String(header?.factCheckStatus || ""),
+      factCheckScore: typeof score === "number" ? score : null,
+    };
+  })
+  // Alphabetical by headline. Deliberately NOT "newest first": nothing in a
+  // published page's frontmatter records when it was published (see
+  // build_page_markdown), so any date-like ordering here would be inferred
+  // from file order and silently wrong. A stable, obviously-arbitrary order
+  // beats a plausible-looking one that isn't real.
+  .sort((a, b) => a.headline.localeCompare(b.headline));
+
+const pct = (score: number | null) =>
+  score === null ? "" : `${Math.round(score * 100)}%`;
+---
+
+<CustomSection
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical="3xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  class:list={["published-profiles", className]}
+  useDefaultEditableBinding={false}
+  {...htmlAttributes}
+>
+  <div class="pp">
+    <header class="pp__head">
+      <p class="pp__kicker">Stevie Award Winners</p>
+      {heading && <h1 class="pp__heading">{heading}</h1>}
+      {description && <p class="pp__desc">{description}</p>}
+      <p class="pp__count">
+        {cards.length}
+        {cards.length === 1 ? " profile" : " profiles"}
+      </p>
+    </header>
+
+    {
+      cards.length === 0 ? (
+        <div class="pp__empty">
+          <p>{emptyStateText}</p>
+        </div>
+      ) : (
+        <ul class="pp__grid">
+          {cards.map((c) => (
+            <li class="pp__item">
+              <a
+                class="pp__card"
+                href={c.href}
+              >
+                <span class="pp__card-top">
+                  <span class="pp__type">Profile</span>
+                  {showFactCheck && c.factCheckStatus === "passed" && (
+                    <span class="pp__badge">
+                      Fact-checked{c.factCheckScore !== null && ` ${pct(c.factCheckScore)}`}
+                    </span>
+                  )}
+                </span>
+                <span class="pp__card-name">{c.headline}</span>
+                {c.dek && <span class="pp__card-dek">{c.dek}</span>}
+                {c.tags.length > 0 && (
+                  <span class="pp__tags">
+                    {c.tags.slice(0, 4).map((t) => (
+                      <span class="pp__tag">{t}</span>
+                    ))}
+                  </span>
+                )}
+                <span class="pp__more">Read profile &rarr;</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</CustomSection>
+
+<style>
+  @layer page-sections {
+    /* Tokens mirror BlogGenerator.astro's own card styling so a published
+       profile card and the picker card it came from read as one family. */
+    .published-profiles {
+      --ppx-gold: #b8941a;
+      --ppx-line: var(--color-border, #d1d5db);
+    }
+
+    .published-profiles .pp__head {
+      margin-bottom: 2rem;
+    }
+
+    .published-profiles .pp__kicker {
+      margin: 0 0 0.5rem;
+      color: var(--ppx-gold);
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .published-profiles .pp__heading {
+      margin: 0 0 0.6rem;
+      font-family: var(--font-headings);
+    }
+
+    .published-profiles .pp__desc {
+      margin: 0;
+      max-width: 60ch;
+      color: var(--color-text-muted);
+    }
+
+    .published-profiles .pp__count {
+      margin: 0.9rem 0 0;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .published-profiles .pp__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+      gap: 1rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .published-profiles .pp__item {
+      display: flex;
+      margin: 0;
+    }
+
+    .published-profiles .pp__card {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 1.1rem;
+      border: 1px solid var(--ppx-line);
+      border-radius: 12px;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      text-decoration: none;
+      transition: border-color 140ms ease, box-shadow 140ms ease,
+        transform 140ms ease;
+    }
+
+    .published-profiles .pp__card:hover,
+    .published-profiles .pp__card:focus-visible {
+      border-color: var(--ppx-gold);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .published-profiles .pp__card-top {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+    }
+
+    .published-profiles .pp__type {
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      background-color: var(--color-bg-highlight, rgba(184, 148, 26, 0.15));
+      color: var(--color-text);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .published-profiles .pp__badge {
+      margin-left: auto;
+      color: #1a7f4b;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .published-profiles .pp__card-name {
+      font-family: var(--font-headings);
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .published-profiles .pp__card-dek {
+      color: var(--color-text-muted);
+      font-size: 0.88rem;
+      line-height: 1.45;
+    }
+
+    .published-profiles .pp__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .published-profiles .pp__tag {
+      padding: 0.12rem 0.45rem;
+      border: 1px solid var(--ppx-line);
+      border-radius: 999px;
+      color: var(--color-text-muted);
+      font-size: 0.7rem;
+    }
+
+    .published-profiles .pp__more {
+      margin-top: auto;
+      padding-top: 0.35rem;
+      color: var(--ppx-gold);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .published-profiles .pp__empty {
+      padding: 2.5rem 1rem;
+      border: 1px dashed var(--ppx-line);
+      border-radius: 12px;
+      color: var(--color-text-muted);
+      text-align: center;
+    }
+
+    .published-profiles .pp__empty p {
+      margin: 0;
+    }
+  }
+</style>
