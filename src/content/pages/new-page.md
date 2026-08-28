@@ -10,7 +10,7 @@ pageSections:
       winning organization or honoree. Every answer cites its source.
     placeholder: What is the late entry fee?
     buttonLabel: Ask
-    apiEndpoint: ''
+    apiEndpoint: https://sulhhxqwfc.execute-api.us-east-1.amazonaws.com
     showSources: true
     colorScheme: inherit
     backgroundColor: surface

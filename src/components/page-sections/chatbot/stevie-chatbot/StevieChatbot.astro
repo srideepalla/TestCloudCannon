@@ -23,7 +23,7 @@ const {
   ...htmlAttributes
 } = Astro.props;
 
-const apiUrl = (apiEndpoint || import.meta.env.PUBLIC_STEVIE_API_URL || "http://localhost:8003")
+const apiUrl = (apiEndpoint || import.meta.env.PUBLIC_STEVIE_API_URL || "https://sulhhxqwfc.execute-api.us-east-1.amazonaws.com")
   .toString()
   .replace(/\/+$/, "");
 const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
