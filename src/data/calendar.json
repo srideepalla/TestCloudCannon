@@ -71,6 +71,72 @@
       "title": "Awards Event of The 23rd International Business Awards®",
       "label": "Awards Event, Pullman Paris Montparnasse, Paris, France",
       "description": "Pullman Paris Montparnasse, Paris, France"
+    },
+    {
+      "date": "2027-02-9T00:00:00.000Z",
+      "title": "Entries open for The 2027 International Business Awards®",
+      "label": null,
+      "description": "The entry kit will be distributed this week."
+    },
+    {
+      "date": "2027-04-07T00:00:00.000Z",
+      "title": "Early-bird entry deadline for The 2027 International Business Awards®",
+      "label": null,
+      "description": "Entry fees are discounted for nominations submitted through this date."
+    },
+    {
+      "date": "2027-05-05T00:00:00.000Z",
+      "title": "Primary entry deadline for The 2027 International Business Awards®",
+      "label": null,
+      "description": "Late fees will apply for nominations submitted after this date."
+    },
+    {
+      "date": "2027-06-02T00:00:00.000Z",
+      "title": "Judging of The 2027 International Business Awards® begins",
+      "label": null,
+      "description": null
+    },
+    {
+      "date": "2027-06-16T00:00:00.000Z",
+      "title": "Final entry deadline for The 2027 International Business Awards®",
+      "label": null,
+      "description": null
+    },
+    {
+      "date": "2027-06-17T00:00:00.000Z",
+      "title": "Public voting begins for the People's Choice Stevie Awards for Favorite Companies",
+      "label": "Public voting for the people's choice stevie awards begins",
+      "description": "An annual feature of The International Business Awards®"
+    },
+    {
+      "date": "2027-08-18-27T00:00:00.000Z",
+      "title": "Judging of The 2027 International Business Awards® ends",
+      "label": "Judging  Ends",
+      "description": null
+    },
+    {
+      "date": "2027-08-18T00:00:00.000Z",
+      "title": "Public voting ends for the People's Choice Stevie Awards for Favorite Companies",
+      "label": "Public voting for the people's choice stevie awards ends",
+      "description": null
+    },
+    {
+      "date": "2027-08-31T00:00:00.000Z",
+      "title": "Stevie® winners notified in The 2027 International Business Awards®",
+      "label": "Winners notified",
+      "description": "Tickets for the awards banquet go on sale today."
+    },
+    {
+      "date": "2027-09-01T00:00:00.000Z",
+      "title": "Stevie® winners publicly announced in The 2027 International Business Awards®",
+      "label": "Winners announced",
+      "description": ""
+    },
+    {
+      "date": "2027-10",
+      "title": "Awards Event of The 24th International Business Awards®",
+      "label": "Location & Date To Be Announced",
+      "description": "Pullman Paris Montparnasse, Paris, France"
     }
   ]
 }
