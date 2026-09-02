@@ -766,9 +766,6 @@ const config = {
             profile_type?: string;
           };
           const orgs = ((data.top_orgs as TopOrg[]) || []).slice(0, 10);
-          // Proportional to the LEADER within this visible list, not to some
-          // fixed scale -- the same convention the main dashboard's search
-          // page uses, so a bar reads the same way everywhere in the project.
           const max = orgs.reduce((m, o) => Math.max(m, o.awards || 0), 0);
           const extra = Math.max(0, orgs.length - 3);
           orgsEl.innerHTML = orgs.length
@@ -808,30 +805,26 @@ const config = {
         mine: number,
         q: string,
         selectedFilters: Record<string, string>,
-      ) => {
-        if (!showOverview || !overviewEl) return;
+      ): Promise<Record<string, unknown> | null> => {
+        if (!showOverview || !overviewEl) return null;
         activeOverviewController?.abort();
         const controller = new AbortController();
         activeOverviewController = controller;
-        setOverviewState("loading");
         const overviewUrl = url("/v1/overview", { q, ...selectedFilters });
         log(`fetching overview: ${overviewUrl}`);
-        // Gemini is intentionally allowed more time than the profile query.
-        // Its work is independent, so this timer can never hold the table or
-        // Search button hostage.
-        const timer = window.setTimeout(() => controller.abort(), 45000);
+        const timer = window.setTimeout(() => controller.abort(), 25000);
         try {
           const res = await fetch(overviewUrl, { signal: controller.signal });
           log(`overview response: HTTP ${res.status}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
-          if (mine !== seq) return;
-          renderOverview(data);
+          if (mine !== seq) return null;
+          return data;
         } catch (err) {
-          if (mine !== seq) return;
+          if (mine !== seq) return null;
           const detail = err instanceof Error ? err.message : String(err);
           log(`overview unavailable (non-fatal): ${detail}`);
-          setOverviewState("error");
+          return null;
         } finally {
           window.clearTimeout(timer);
           if (activeOverviewController === controller) activeOverviewController = null;
@@ -877,36 +870,48 @@ const config = {
         statusEl.innerHTML = `<span class="spw__inline-spin" aria-hidden="true"></span> Searching…`;
         statusEl.dataset.kind = "";
         if (submitBtn) submitBtn.disabled = true;
-        resultsEl.innerHTML = `<div class="spw__skel" aria-hidden="true">${"<div class='spw__skel-row'></div>".repeat(6)}</div>`;
-        // Start Gemini immediately, but do not await it. Results and controls
-        // have their own fast request and remain usable while it reasons.
-        if (showOverview && overviewEl) void loadOverview(mine, q, selectedFilters);
 
-        // One results table: PROFILES (one row per organization/person), not
-        // one row per award. `q` runs through the same natural-language parser
-        // the search API uses, applied to profiles instead of award rows, so
-        // "which companies from Germany won gold" answers with the companies
-        // themselves rather than their individual nomination records.
+        // Show loading skeletons for both overview and search results simultaneously
+        if (showOverview && overviewEl && offset === 0) {
+          setOverviewState("loading");
+        }
+        resultsEl.innerHTML = `<div class="spw__skel" aria-hidden="true">${"<div class='spw__skel-row'></div>".repeat(6)}</div>`;
+
         const searchUrl = url("/v1/profiles", params);
         log(`fetching profiles: ${searchUrl}`);
 
         try {
-          const data = await fetchProfiles(searchUrl, mine);
+          // Fetch profiles and overview in parallel, but wait for both before rendering together
+          const profilesPromise = fetchProfiles(searchUrl, mine);
+          const overviewPromise = (showOverview && overviewEl && offset === 0)
+            ? loadOverview(mine, q, selectedFilters)
+            : Promise.resolve(null);
+
+          const [data, overviewData] = await Promise.all([
+            profilesPromise,
+            overviewPromise,
+          ]);
+
+          if (mine !== seq) return; // Superseded by a newer search
+
+          // 1. Render Overview at the exact same moment
+          if (showOverview && overviewEl && offset === 0) {
+            if (overviewData && overviewData.available) {
+              renderOverview(overviewData);
+            } else {
+              setOverviewState("error");
+            }
+          }
+
+          // 2. Render Results Table at the exact same moment
           if (data.error) throw new Error(data.error);
           log(`profiles parsed OK: total=${data.total} rows=${(data.results || []).length}`);
-          if (mine !== seq) return; // superseded by a newer search
 
           total = Number(data.total || 0);
           const rows: ProfileRow[] = data.results || [];
           renderRows(rows);
           renderPager();
 
-          // Name the thing actually being counted. "23,369 profiles" reads as
-          // the whole dataset, so the count looked wrong to anyone who knew
-          // there are also 11,429 people -- the filter defaults to
-          // Organizations and, with the filter panel collapsed, nothing on
-          // screen said so. "organizations" makes the scope self-evident and
-          // "of 34,798 profiles" stays accurate for the combined view.
           const ptypeNow = data.profile_type || filters().profile_type || "all";
           const noun = ptypeNow === "person" ? "people"
             : ptypeNow === "org" ? "organizations" : "profiles";
@@ -917,11 +922,6 @@ const config = {
             : "No records found";
         } catch (err) {
           if (mine !== seq) return;
-          // "Failed to fetch" / TypeError with no HTTP status is the classic
-          // signature of CORS being blocked or the tunnel being unreachable --
-          // called out explicitly because that distinction is exactly what
-          // determines the fix, and the browser's own message is too generic
-          // to read at a glance.
           const detail = err instanceof Error ? err.message : String(err);
           const looksLikeCorsOrNetwork = err instanceof TypeError;
           log(
@@ -934,10 +934,10 @@ const config = {
           statusEl.dataset.kind = "error";
           resultsEl.innerHTML = "";
           if (pagerEl) pagerEl.hidden = true;
+          if (showOverview && overviewEl && offset === 0) setOverviewState("error");
         } finally {
           if (mine === seq && submitBtn) submitBtn.disabled = false;
         }
-
       };
 
       /** Populate the dropdowns from the real data, so a re-scrape that adds a
@@ -977,13 +977,6 @@ const config = {
         }
       };
 
-      /** Full profile: rollup stats plus every award in its history. Fetched
-       *  on click rather than bundled into the list response, because a list
-       *  page of 50 profiles would otherwise carry 50 full award histories
-       *  (some organizations have 700+) whether or not any of them get opened. */
-      // Measured fresh on every open rather than cached: the nav's height can
-      // change between opens (responsive breakpoint, promo banner, etc.), and
-      // there's no --header-height design token to read instead.
       const getNavOffset = () => {
         const nav = document.querySelector<HTMLElement>(".main-nav");
         return nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
