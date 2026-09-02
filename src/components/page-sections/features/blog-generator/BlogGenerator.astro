@@ -1075,6 +1075,11 @@ const config = {
             meta_description: d.meta_description, slug: d.slug,
             word_count: d.word_count, fact_check_reason: d.reason,
             grounding_score: d.grounding_score,
+            // Missing from this mapping entirely showed "0 / 0" for every
+            // draft reopened from Saved Drafts, regardless of the real count
+            // -- num(undefined) renders as 0, and a fresh /generate response
+            // is the ONLY path that ever set these two fields here.
+            verified_claims: d.verified_claims, total_claims: d.total_claims,
             // Stored as a JSON string in blog_store, same as tags -- passing it
             // through unparsed made renderVerdict's .map() throw on any draft
             // that actually had flagged claims.
