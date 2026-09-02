@@ -223,6 +223,21 @@ const config = {
           >
             <span data-bg-generate-label>Generate article</span>
           </button>
+
+          <!-- Multi-generate progress: hidden for a single pick (that path
+               opens straight into the finished article, nothing to track). -->
+          <div
+            class="bg__progress"
+            data-bg-progress
+            hidden
+            role="progressbar"
+            aria-valuemin="0"
+          >
+            <div class="bg__progress-track">
+              <div class="bg__progress-fill" data-bg-progress-fill></div>
+            </div>
+            <span class="bg__progress-label" data-bg-progress-label></span>
+          </div>
         </div>
       </div>
 
@@ -491,6 +506,9 @@ const config = {
       const angleInput = $<HTMLInputElement>("[data-bg-angle]");
       const generateBtn = $<HTMLButtonElement>("[data-bg-generate]");
       const generateLabel = $("[data-bg-generate-label]");
+      const progressEl = $<HTMLElement>("[data-bg-progress]");
+      const progressFillEl = $<HTMLElement>("[data-bg-progress-fill]");
+      const progressLabelEl = $("[data-bg-progress-label]");
       const draftEl = $<HTMLElement>("[data-bg-draft]");
       const verdictEl = $("[data-bg-verdict]");
       const headlineEl = $("[data-bg-headline]");
@@ -520,6 +538,36 @@ const config = {
       // from selectedMap: these are drafts that already exist, not profiles
       // waiting to be drafted.
       const selectedDrafts = new Set<string>();
+
+      // "NEW" tag on a draft nobody has opened yet -- per-browser, in
+      // localStorage, not a blog_store column: this is "has THIS reviewer
+      // looked at it", which is a viewer's own state, not a fact about the
+      // draft itself. Wrapped in try/catch throughout because localStorage
+      // can throw (private browsing, a full quota, storage disabled) and a
+      // "which drafts are new" nicety must never be why the list fails to
+      // load.
+      const SEEN_KEY = "bg:seenDraftSlugs";
+      const loadSeenSlugs = (): Set<string> => {
+        try {
+          return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || "[]"));
+        } catch {
+          return new Set();
+        }
+      };
+      const markSeen = (slug: string) => {
+        try {
+          const seen = loadSeenSlugs();
+          if (seen.has(slug)) return;
+          seen.add(slug);
+          // Capped so this can't grow forever across months of use -- only
+          // the most recent slugs matter for "have I opened this lately".
+          const capped = [...seen].slice(-500);
+          localStorage.setItem(SEEN_KEY, JSON.stringify(capped));
+        } catch {
+          /* per-viewer nicety only -- a storage failure here changes nothing
+             about the draft, so there is nothing to surface to the user */
+        }
+      };
       let ptype = "all";
       // The current page's offset and the true match count, used to render
       // the Prev/Next pager. Reset to 0 on every fresh search() call, since a
@@ -796,6 +844,30 @@ const config = {
         showDraftView();
       };
 
+      const setProgress = (done: number, total: number, label: string) => {
+        if (!progressEl) return;
+        progressEl.hidden = false;
+        progressEl.setAttribute("aria-valuenow", String(done));
+        progressEl.setAttribute("aria-valuemax", String(total));
+        if (progressFillEl) progressFillEl.style.width = `${(done / total) * 100}%`;
+        if (progressLabelEl) progressLabelEl.textContent = label;
+      };
+
+      const generateOne = async (p: ProfileRow, angle: string) => {
+        const res = await fetch(url("/api/blog-writer/generate"), {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            profile_type: p.profile_type || "org",
+            profile_key: p.profile_key,
+            angle,
+          }),
+        });
+        const d = await res.json();
+        if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+        return d;
+      };
+
       const generate = async () => {
         const picks = [...selectedMap.values()];
         if (!picks.length) return;
@@ -804,29 +876,17 @@ const config = {
         if (generateLabel) {
           generateLabel.innerHTML =
             `<span class="bg__spinner sm" aria-hidden="true"></span> ` +
-            (many
-              ? `Writing ${num(picks.length)} articles… (about ${num(picks.length * 30)}s)`
-              : "Writing and fact-checking…");
+            (many ? `Writing ${num(picks.length)} articles…` : "Writing and fact-checking…");
         }
         const angle = angleInput?.value || "";
         try {
           if (!many) {
             // Single pick keeps the original behaviour: open straight into the
             // finished article. With several there is no single article to
-            // open, so the batch path reports a summary instead.
+            // open, so the loop below reports a summary instead.
             const p = picks[0];
             log(`generating: ${p.profile_type}/${p.profile_key}`);
-            const res = await fetch(url("/api/blog-writer/generate"), {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                profile_type: p.profile_type || "org",
-                profile_key: p.profile_key,
-                angle,
-              }),
-            });
-            const d = await res.json();
-            if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
+            const d = await generateOne(p, angle);
             log(`draft generated: ${d.slug} (${d.fact_check_status})`);
             clearProfiles();
             renderDraft(d);
@@ -835,33 +895,46 @@ const config = {
             return;
           }
 
-          log(`generating ${picks.length} drafts in one batch`);
-          const res = await fetch(url("/api/blog-writer/generate-batch"), {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              profiles: picks.map((p) => ({
-                profile_type: p.profile_type || "org",
-                profile_key: p.profile_key,
-              })),
-              angle,
-            }),
-          });
-          const d = await res.json();
-          if (!res.ok) throw new Error(d.detail || `HTTP ${res.status}`);
-          // Partial success is normal (one profile with no facts must not sink
-          // the rest), so report both halves rather than a bare "done".
-          const failed = (d.results || []).filter((r: any) => !r.ok);
+          // Sequential, not Promise.all: these are paid Gemini calls against a
+          // per-minute quota, and firing them all at once is how a batch turns
+          // into a rate-limit error that loses most of the drafts (the server
+          // side generate-batch endpoint enforces the same one-at-a-time rule
+          // for the same reason). Driving the loop from here rather than
+          // POSTing the whole batch in one call is what makes a real,
+          // per-item progress bar possible -- a single blocking request has
+          // nothing to report until every profile is done.
+          log(`generating ${picks.length} drafts, one at a time`);
+          setProgress(0, picks.length, `0 of ${num(picks.length)} complete`);
+          const succeeded: string[] = [];
+          const failed: { key: string; error: string }[] = [];
+          for (let i = 0; i < picks.length; i++) {
+            const p = picks[i];
+            try {
+              const d = await generateOne(p, angle);
+              succeeded.push(d.slug);
+              log(`  [${i + 1}/${picks.length}] ok: ${p.profile_key} -> ${d.slug}`);
+            } catch (err) {
+              const detail = err instanceof Error ? err.message : String(err);
+              failed.push({ key: p.profile_key || "", error: detail });
+              log(`  [${i + 1}/${picks.length}] FAILED: ${p.profile_key} -- ${detail}`);
+            }
+            setProgress(i + 1, picks.length,
+              `${num(i + 1)} of ${num(picks.length)} complete` +
+              (failed.length ? ` (${num(failed.length)} failed)` : ""));
+            // A profile already drafted shows up right away rather than only
+            // after the whole batch finishes.
+            void loadDrafts();
+          }
+
           statusEl.textContent =
-            `Generated ${num(d.generated)} of ${num(d.requested)} drafts.` +
+            `Generated ${num(succeeded.length)} of ${num(picks.length)} drafts.` +
             (failed.length
-              ? ` Failed: ${failed.map((r: any) => r.profile_key).join(", ")}.`
+              ? ` Failed: ${failed.map((f) => f.key).join(", ")}.`
               : " They are in Saved drafts below.");
           statusEl.dataset.kind = failed.length ? "error" : "";
           if (!failed.length) statusEl.removeAttribute("data-kind");
-          log(`batch done: ${d.generated}/${d.requested} generated`);
+          log(`batch done: ${succeeded.length}/${picks.length} generated`);
           clearProfiles();
-          void loadDrafts();
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`GENERATE FAILED: ${detail}`);
@@ -869,6 +942,7 @@ const config = {
           statusEl.dataset.kind = "error";
         } finally {
           if (generateBtn) generateBtn.disabled = false;
+          if (progressEl) progressEl.hidden = true;
           renderActionbar();
         }
       };
@@ -949,10 +1023,12 @@ const config = {
           // an open-button, and interactive elements cannot legally nest
           // inside a button. The open-button carries the card's content and
           // fills the card, so clicking the body still opens the draft.
+          const seenSlugs = loadSeenSlugs();
           draftsEl.innerHTML = `<div class="bg__draft-grid">${rows.map((r) => {
             const published = r.status === "published" && r.cloudcannon_id;
             const passed = r.fact_check_status === "passed";
             const picked = selectedDrafts.has(r.slug);
+            const isNew = !seenSlugs.has(r.slug);
             const headline = r.headline || "Untitled";
             return `<div class="bg__draft-card${picked ? " is-picked" : ""}" data-slug="${esc(r.slug)}">
               <label class="bg__draft-pick">
@@ -963,7 +1039,10 @@ const config = {
               <button type="button" class="bg__draft-open" data-bg-draft-open>
                 <span class="bg__card-top">
                   <span class="bg__pill-sm ${passed ? "ok" : "warn"}">${passed ? "Passed" : "Flagged"}</span>
-                  <span class="bg__draft-state${published ? " is-live" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
+                  <span class="bg__draft-state-group">
+                    <span class="bg__draft-state${published ? " is-live" : ""}">${published ? "Published" : esc(r.status || "draft")}</span>
+                    ${isNew ? `<span class="bg__draft-new" data-bg-draft-new>New</span>` : ""}
+                  </span>
                 </span>
                 <span class="bg__draft-headline">${esc(headline)}</span>
                 <span class="bg__draft-subject">${esc(r.org_name || "")}</span>
@@ -1002,6 +1081,10 @@ const config = {
             flagged_claims: parse(d.flagged_claims),
           });
           if (pushUrl) history.pushState({ slug }, "", draftParam(slug));
+          markSeen(slug);
+          // Drop just this card's own NEW badge rather than re-fetching the
+          // whole drafts list for one flag flip.
+          draftsEl?.querySelector(`[data-slug="${slug}"] [data-bg-draft-new]`)?.remove();
         } catch (err) {
           const detail = err instanceof Error ? err.message : String(err);
           log(`open draft FAILED: ${detail}`);
@@ -1503,6 +1586,29 @@ const config = {
     .blog-generator .bg__generate:hover:not(:disabled) { filter: brightness(1.08); }
     .blog-generator .bg__generate:disabled { opacity: 0.6; cursor: progress; }
 
+    .blog-generator .bg__progress {
+      display: flex; align-items: center; gap: 0.65rem;
+      width: 100%; margin-top: 0.15rem;
+    }
+    .blog-generator .bg__progress-track {
+      flex: 1; height: 6px; border-radius: 999px;
+      background-color: var(--bgx-line);
+      overflow: hidden;
+    }
+    .blog-generator .bg__progress-fill {
+      height: 100%; width: 0%;
+      background-color: var(--bgx-gold);
+      border-radius: inherit;
+      transition: width 220ms ease;
+    }
+    .blog-generator .bg__progress-label {
+      flex: none;
+      color: var(--color-text-muted);
+      font-size: 0.78rem;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
     .blog-generator .bg__ghost,
     .blog-generator .bg__danger {
       padding: 0.5rem 1rem;
@@ -1596,8 +1702,21 @@ const config = {
     .blog-generator .bg__pill-sm.ok { background: var(--bgx-pass-bg); color: var(--bgx-pass); }
     .blog-generator .bg__pill-sm.warn { background: var(--bgx-flag-bg); color: var(--bgx-flag); }
 
+    .blog-generator .bg__draft-state-group {
+      display: flex; align-items: center; gap: 0.4rem;
+    }
     .blog-generator .bg__draft-state { font-size: 0.72rem; color: var(--color-text-muted); text-transform: capitalize; }
     .blog-generator .bg__draft-state.is-live { color: var(--bgx-pass); font-weight: 700; }
+    .blog-generator .bg__draft-new {
+      padding: 0.1em 0.5em;
+      border-radius: 999px;
+      background-color: var(--bgx-gold);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
     .blog-generator .bg__draft-headline {
       font-size: 0.95rem; font-weight: 650; line-height: 1.32;
       color: var(--color-text-strong, var(--color-text));
