@@ -2,32 +2,32 @@
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 import SimpleText from "@core-elements/simple-text/SimpleText.astro";
 import calendarData from "@data/calendar.json";
+import { getCalendarDateParts } from "@utils/calendar-dates";
 import Card from "@wrappers/card/Card.astro";
 import Grid from "@wrappers/grid/Grid.astro";
 import GridItem from "@wrappers/grid/GridItem.astro";
 
-const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+// An event with an "endDate" renders as a range in place: the month/day/year
+// slots widen (e.g. "OCT" / "28–30" / "2026") rather than gaining a second
+// date block. Events with no usable start date are dropped, so a half-filled
+// event in the CloudCannon editor cannot render "NaN".
+function getEvents(): CalendarEvent[] {
+  return calendarData.events.flatMap((e) => {
+    const parts = getCalendarDateParts(e.date, (e as { endDate?: string | null }).endDate);
 
-function getEvents() {
-  return calendarData.events.map((e) => {
-      const d = new Date(e.date);
+    if (!parts) return [];
 
-      return {
-        month: MONTHS[d.getUTCMonth()],
-        day: String(d.getUTCDate()).padStart(2, "0"),
-        year: String(d.getUTCFullYear()),
-        title: e.title,
-        description: e.description,
-      };
-    });
+    return [{ ...parts, title: e.title, description: e.description }];
+  });
 }
 
 type CalendarEvent = {
   month: string;
   day: string;
   year: string;
+  isRange: boolean;
   title: string;
-  description?: string;
+  description?: string | null;
 };
 
 const {
@@ -77,21 +77,21 @@ if (!_component && !hasEvents) return;
           >
             <div class="grid-calendar__date">
               <SimpleText
-                class="grid-calendar__month"
+                class:list={["grid-calendar__month", event.isRange && "grid-calendar__month--range"]}
                 text={event.month}
                 useDefaultEditableBinding={false}
                 size="xl"
                 alignX="center"
               />
               <SimpleText
-                class="grid-calendar__day"
+                class:list={["grid-calendar__day", event.isRange && "grid-calendar__day--range"]}
                 text={event.day}
                 useDefaultEditableBinding={false}
                 size="5xl"
                 alignX="center"
               />
               <SimpleText
-                class="grid-calendar__year"
+                class:list={["grid-calendar__year", event.isRange && "grid-calendar__year--range"]}
                 text={event.year}
                 useDefaultEditableBinding={false}
                 size="sm"
@@ -155,6 +155,23 @@ if (!_component && !hasEvents) return;
         font-weight: var(--font-weight-bold);
         letter-spacing: 0.05em;
       }
+    }
+
+    /* A date range packs more characters into the same three slots, so ease the
+       type down and keep each slot on one line. The date column stays roughly
+       as wide as a single date and the card proportions hold. */
+    .grid-calendar__date {
+      white-space: nowrap;
+    }
+
+    .grid-calendar__day--range p {
+      font-size: var(--font-size-3xl);
+    }
+
+    .grid-calendar__month--range p,
+    .grid-calendar__year--range p {
+      font-size: var(--font-size-sm);
+      letter-spacing: 0;
     }
 
     .grid-calendar__description {

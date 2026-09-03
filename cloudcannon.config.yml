@@ -599,6 +599,12 @@ collections_config:
           Only fill in "Homepage Short Label" when the full title is too long for a
           card. The homepage hides past events automatically each day; the calendar
           page always lists every event, past and upcoming.
+
+
+          For an event that spans several days, set "End Date" as well and both
+          pages show it as a range (e.g. 28–30 OCT 2026, or 28 OCT – 2 NOV 2026
+          across months). Leave "End Date" empty for a single-day event and only
+          the start date is shown.
         options:
           structures:
             values:
@@ -606,15 +612,26 @@ collections_config:
                 icon: event
                 value:
                   date: ""
+                  endDate: ""
                   title: ""
                   label: ""
                   description: ""
                 _inputs:
                   date:
-                    type: text
+                    type: date
+                    label: Start Date (required)
                     comment: >-
-                      Event date in ISO format (e.g. 2026-06-28T00:00:00.000Z). Once this date
-                      passes, the event drops off the homepage automatically (it stays listed on the calendar page).
+                      The event date, or the first day for an event spanning several days.
+                      Once the event has passed it drops off the homepage automatically
+                      (it stays listed on the calendar page).
+                  endDate:
+                    type: date
+                    label: End Date (optional)
+                    comment: >-
+                      Only for events spanning several days — the last day. Both pages then
+                      show a range, and the event stays on the homepage until this date
+                      passes. Leave empty for a single-day event. Ignored if it is not
+                      later than the start date.
                   title:
                     type: text
                     label: Event Title (required)

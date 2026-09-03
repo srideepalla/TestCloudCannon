@@ -4,28 +4,36 @@ import Button from "@core-elements/button/Button.astro";
 import Heading from "@core-elements/heading/Heading.astro";
 import Text from "@core-elements/text/Text.astro";
 import calendarData from "@data/calendar.json";
+import { formatCalendarDateRange, getEffectiveEndDate } from "@utils/calendar-dates";
 import ButtonGroup from "@wrappers/button-group/ButtonGroup.astro";
 import Card from "@wrappers/card/Card.astro";
 import Carousel from "@wrappers/carousel/Carousel.astro";
 import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
 import Split from "@wrappers/split/Split.astro";
 
-const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-
 // Render every event at build time; the inline script below removes past ones
 // in the browser. Filtering client-side keeps the homepage list correct each
 // day without waiting for a redeploy.
 function getDeadlines() {
-  return calendarData.events.map((e) => {
-    const d = new Date(e.date);
+  return calendarData.events.flatMap((e) => {
+    const endDate = (e as { endDate?: string | null }).endDate;
+    const date = formatCalendarDateRange(e.date, endDate);
 
-    return {
-      iso: e.date,
-      date: `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`,
-      // Homepage cards use the optional short label, falling back to the full
-      // calendar title so a single edit keeps both pages in sync.
-      label: e.label || e.title,
-    };
+    // No usable start date — skip rather than render "NaN". CloudCannon seeds
+    // a new event with an empty date, so this is a normal editing state.
+    if (!date) return [];
+
+    return [
+      {
+        // A range stays on the homepage until its end date passes, so a
+        // multi-day event is not dropped while it is still running.
+        iso: getEffectiveEndDate(e.date, endDate),
+        date,
+        // Homepage cards use the optional short label, falling back to the full
+        // calendar title so a single edit keeps both pages in sync.
+        label: e.label || e.title,
+      },
+    ];
   });
 }
 
@@ -199,6 +207,9 @@ const resolvedDeadlines = getDeadlines();
   // Remove past deadline cards in the browser so the homepage stays accurate
   // each day without a rebuild. This runs at parse time — before the carousel
   // (Embla) initializes on DOMContentLoaded — so dropped slides never reach it.
+  //
+  // data-event-date holds the event's END date for a range and its only date
+  // otherwise, so a multi-day event survives until the day after it finishes.
   (function () {
     var now = new Date();
     var todayUTC = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
