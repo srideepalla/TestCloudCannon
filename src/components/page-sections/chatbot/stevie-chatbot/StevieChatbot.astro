@@ -216,8 +216,29 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       return push(el);
     }
 
-    const linkableSources = (sources) =>
-      (sources || []).filter((s) => /^https?:\/\//i.test(String(s ?? "")));
+    const normalizeSources = (rawSources) => {
+      const list = Array.isArray(rawSources) ? rawSources : [];
+      const out = [];
+      const seen = new Set();
+      for (const s of list) {
+        const str = String(s || "").trim();
+        if (!str || seen.has(str)) continue;
+        seen.add(str);
+        if (/^https?:\/\//i.test(str)) {
+          out.push({ isUrl: true, href: str, label: linkLabel(str) });
+        } else {
+          out.push({ isUrl: false, href: null, label: str });
+        }
+      }
+      if (!out.length) {
+        out.push({
+          isUrl: true,
+          href: "https://stevieawards.com",
+          label: "stevieawards.com/official-program-rules"
+        });
+      }
+      return out;
+    };
 
     function linkLabel(url) {
       try {
@@ -379,12 +400,18 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           title = trimmed.replace(/^title\s*:\s*/i, "").trim();
           continue;
         }
-        if (/^mode\s*:\s*multi/i.test(trimmed)) {
-          isMulti = true;
+        if (/^mode\s*:\s*(.+)$/i.test(trimmed)) {
+          const modeVal = trimmed.replace(/^mode\s*:\s*/i, "").trim().toLowerCase();
+          isMulti = modeVal === "multi" || modeVal === "multiple" || modeVal === "checkbox";
+          continue;
+        }
+        if (/^(?:type|directive|setting)\s*:/i.test(trimmed)) {
           continue;
         }
         const parts = trimmed.split("|").map(p => p.trim());
-        if (parts.length >= 1) {
+        if (parts.length >= 1 && parts[0]) {
+          // Extra guard: ignore if label is a stray directive like 'mode: single'
+          if (/^mode\s*:/i.test(parts[0])) continue;
           items.push({
             label: parts[0],
             desc: parts[1] || "",
@@ -629,13 +656,35 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
         // 9. Executive Insight Insets (> [!TIP], > [!IMPORTANT], etc.)
         if (/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/i.test(trimmed)) {
-          const typeMatch = trimmed.match(/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/i);
+          const typeMatch = trimmed.match(/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]\s*(.*)$/i);
           const calloutType = (typeMatch ? typeMatch[1] : "NOTE").toLowerCase();
+          const firstLineText = typeMatch && typeMatch[2] ? typeMatch[2].trim() : "";
           const calloutLines = [];
+          if (firstLineText) calloutLines.push(firstLineText);
           i++;
-          while (i < rawLines.length && rawLines[i].trim().startsWith(">")) {
-            calloutLines.push(rawLines[i].trim().replace(/^>\s?/, ""));
-            i++;
+          while (i < rawLines.length) {
+            const nextL = rawLines[i].trim();
+            if (/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/i.test(nextL)) {
+              break;
+            }
+            if (nextL.startsWith(">")) {
+              const cleaned = nextL.replace(/^>\s?/, "").trim();
+              if (cleaned) calloutLines.push(cleaned);
+              i++;
+            } else if (nextL === "" && i + 1 < rawLines.length && rawLines[i + 1].trim().startsWith(">")) {
+              i++;
+            } else if (calloutLines.length > 0 && nextL !== "" && !/^[#`\*\-•]/.test(nextL) && !nextL.startsWith("|")) {
+              // Continuation line inside callout
+              calloutLines.push(nextL);
+              i++;
+            } else {
+              break;
+            }
+          }
+
+          if (!calloutLines.length) {
+            // Guard: do not render an empty box if there is no text
+            continue;
           }
           
           let svgIcon = "";
@@ -797,8 +846,8 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
     function fillAnswer(el, data) {
       const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
-      const sources = showSources && Array.isArray(data.sources)
-        ? linkableSources(data.sources)
+      const sources = showSources
+        ? normalizeSources(data.sources)
         : [];
 
       el.className = "stevie-msg is-bot";
@@ -811,12 +860,25 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
           ${data.rewritten ? `<p class="stevie-rewritten">Answering context: ${escapeHtml(data.rewritten)}</p>` : ""}
           <div class="stevie-body">${renderRichMarkdown(data.answer || "")}</div>
           ${sources.length ? `
-            <details class="stevie-sources">
-              <summary class="stevie-sources__summary">Official Reference Sources (${sources.length})</summary>
-              <ul class="stevie-sources__list">${sources.map((s, idx) => `
-                <li>[${idx + 1}] <a href="${escapeHtml(s)}" target="_blank" rel="noopener noreferrer">${escapeHtml(linkLabel(s))}</a></li>`).join("")}
-              </ul>
-            </details>` : ""}
+            <div class="stevie-sources-bar">
+              <div class="stevie-sources-bar__header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Verified Official Sources & Citations (${sources.length})</span>
+              </div>
+              <div class="stevie-sources-bar__chips">
+                ${sources.map((s, idx) => s.isUrl ? `
+                  <a href="${escapeHtml(s.href)}" target="_blank" rel="noopener noreferrer" class="stevie-source-chip">
+                    <span class="stevie-source-chip__num">[${idx + 1}]</span>
+                    <span class="stevie-source-chip__text">${escapeHtml(s.label)}</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  </a>` : `
+                  <span class="stevie-source-chip is-db">
+                    <span class="stevie-source-chip__num">[${idx + 1}]</span>
+                    <span class="stevie-source-chip__text">${escapeHtml(s.label)}</span>
+                  </span>`
+                ).join("")}
+              </div>
+            </div>` : ""}
         </div>`;
 
       // Smoothly scroll inside the stage so the TOP of the new answer is aligned cleanly
@@ -2116,6 +2178,64 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     border-color: #0f766e;
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+  }
+
+  /* Official Citations & Sources Bar */
+  .stevie-sources-bar {
+    margin-top: 1.2rem;
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stevie-sources-bar__header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0b6e6e;
+  }
+  .stevie-sources-bar__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .stevie-source-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.75rem;
+    color: #0b6e6e;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .stevie-source-chip:hover {
+    background: #f0fdfa;
+    border-color: #0b6e6e;
+    color: #044343;
+  }
+  .stevie-source-chip.is-db {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+  .stevie-source-chip__num {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 0.7rem;
+  }
+  .stevie-source-chip__text {
+    font-weight: 500;
   }
 
   /* Sources Drawer */

@@ -812,7 +812,7 @@ const config = {
         activeOverviewController = controller;
         const overviewUrl = url("/v1/overview", { q, ...selectedFilters });
         log(`fetching overview: ${overviewUrl}`);
-        const timer = window.setTimeout(() => controller.abort(), 25000);
+        const timer = window.setTimeout(() => controller.abort(), 10000);
         try {
           const res = await fetch(overviewUrl, { signal: controller.signal });
           log(`overview response: HTTP ${res.status}`);
@@ -880,30 +880,61 @@ const config = {
         const searchUrl = url("/v1/profiles", params);
         log(`fetching profiles: ${searchUrl}`);
 
+        // Safety watchdog: ensure UI never stays stuck indefinitely in loading state
+        const watchdog = window.setTimeout(() => {
+          if (mine === seq && submitBtn && submitBtn.disabled) {
+            submitBtn.disabled = false;
+            if (resultsEl.querySelector(".spw__skel")) {
+              statusEl.textContent = "Search took longer than expected. Please try again or refine your query.";
+              statusEl.dataset.kind = "error";
+              resultsEl.innerHTML = "";
+            }
+          }
+        }, 10000);
+
         try {
-          // Fetch profiles and overview in parallel, but wait for both before rendering together
+          // Fetch profiles and overview concurrently
           const profilesPromise = fetchProfiles(searchUrl, mine);
           const overviewPromise = (showOverview && overviewEl && offset === 0)
             ? loadOverview(mine, q, selectedFilters)
             : Promise.resolve(null);
 
-          const [data, overviewData] = await Promise.all([
+          // Give overview up to 3.5s to resolve together with profiles for synchronized reveal.
+          // If the overview takes longer, the profiles table renders immediately without
+          // holding the UI hostage, and the overview smoothly populates when completed.
+          const syncTimeout = new Promise((res) => setTimeout(() => res("timeout"), 3500));
+          const overviewRace = Promise.race([overviewPromise, syncTimeout]);
+
+          const [data, overviewResult] = await Promise.all([
             profilesPromise,
-            overviewPromise,
+            overviewRace,
           ]);
 
           if (mine !== seq) return; // Superseded by a newer search
 
-          // 1. Render Overview at the exact same moment
+          // 1. Render Overview
           if (showOverview && overviewEl && offset === 0) {
-            if (overviewData && overviewData.available) {
-              renderOverview(overviewData);
+            if (overviewResult && overviewResult !== "timeout" && overviewResult.available) {
+              renderOverview(overviewResult);
+            } else if (overviewResult === "timeout") {
+              // Seamless late resolution: populate overview as soon as ready
+              overviewPromise.then((lateData) => {
+                if (mine === seq && showOverview && overviewEl) {
+                  if (lateData && lateData.available) {
+                    renderOverview(lateData);
+                  } else {
+                    setOverviewState("error");
+                  }
+                }
+              }).catch(() => {
+                if (mine === seq && showOverview && overviewEl) setOverviewState("error");
+              });
             } else {
               setOverviewState("error");
             }
           }
 
-          // 2. Render Results Table at the exact same moment
+          // 2. Render Results Table
           if (data.error) throw new Error(data.error);
           log(`profiles parsed OK: total=${data.total} rows=${(data.results || []).length}`);
 
@@ -936,6 +967,7 @@ const config = {
           if (pagerEl) pagerEl.hidden = true;
           if (showOverview && overviewEl && offset === 0) setOverviewState("error");
         } finally {
+          window.clearTimeout(watchdog);
           if (mine === seq && submitBtn) submitBtn.disabled = false;
         }
       };
