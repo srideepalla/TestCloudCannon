@@ -1,82 +1,88 @@
 {
   "events": [
     {
-      "date": "2026-02-10T00:00:00.000Z",
-      "title": "Entries open for The 2026 International Business Awards®",
-      "label": null,
-      "description": "The entry kit will be distributed this week."
-    },
-    {
-      "date": "2026-04-08T00:00:00.000Z",
-      "title": "Early-bird entry deadline for The 2026 International Business Awards®",
-      "label": null,
-      "description": "Entry fees are discounted for nominations submitted through this date."
-    },
-    {
-      "date": "2026-05-06T00:00:00.000Z",
-      "title": "Primary entry deadline for The 2026 International Business Awards®",
-      "label": null,
-      "description": "Late fees will apply for nominations submitted after this date."
-    },
-    {
-      "date": "2026-06-01T00:00:00.000Z",
-      "title": "Judging of The 2026 International Business Awards® begins",
-      "label": null,
-      "description": null
-    },
-    {
-      "date": "2026-06-17T00:00:00.000Z",
-      "title": "Final entry deadline for The 2026 International Business Awards®",
-      "label": null,
-      "description": null
-    },
-    {
-      "date": "2026-07-16T00:00:00.000Z",
-      "title": "Extended Final entry deadline for The 2026 International Business Awards®",
-      "label": "Extended Final entry deadline",
-      "description": ""
-    },
-    {
-      "date": "2026-07-27T00:00:00.000Z",
-      "title": "Judging of The 2026 International Business Awards® ends",
-      "label": "Judging  Ends",
-      "description": null
-    },
-    {
-      "date": "2026-08-11T00:00:00.000Z",
-      "title": "Stevie® winners notified in The 2026 International Business Awards®",
-      "label": "Winners notified",
-      "description": "Tickets for the awards banquet go on sale today."
-    },
-    {
-      "date": "2026-08-12T00:00:00.000Z",
-      "title": "Stevie® winners publicly announced in The 2026 International Business Awards®",
-      "label": "Winners announced",
-      "description": ""
-    },
-    {
-      "date": "2026-08-13T00:00:00.000Z",
-      "title": "People's Choice Stevie® Awards for Favorite Companies public voting begins",
-      "label": "Public voting for the people's choice stevie awards begins",
-      "description": "An annual feature of The International Business Awards®"
+      "date": "2026-07-11T00:00:00.000Z",
+      "title": "Awards banquet of the 2026 Middle East & North Africa Stevie® Awards",
+      "label": "Awards banquet of the 2026 Middle East & North Africa Stevie® Awards",
+      "description": "InterContinental Hotel, Istanbul, Turkiye - note the new date"
     },
     {
       "date": "2026-09-11T00:00:00.000Z",
-      "title": "People's Choice Stevie® Awards for Favorite Companies public voting ends",
-      "label": "Public voting for the people's choice stevie awards ends",
+      "title": " حفل توزيع جوائز ستيفي الشرق الأوسط وشمال أفريقيا لعام ٢۰٢٦",
+      "label": " حفل توزيع جوائز ستيفي الشرق الأوسط وشمال أفريقيا لعام ٢۰٢٦",
+      "description": "سيتم الإعلان عن التفاصيل لاحقا."
+    },
+    {
+      "date": "2026-09-16T00:00:00.000Z",
+      "title": "Finalists notified in the 23rd Stevie® Awards for Women in Business",
+      "label": "Finalists notified in the 23rd Stevie® Awards for Women in Business",
+      "description": "Tickets for the awards banquet go on sale on this date."
+    },
+    {
+      "date": "2026-09-17T00:00:00.000Z",
+      "title": "Finalists publicly announced in the 23rd Stevie® Awards for Women in Business",
+      "label": "Finalists publicly announced in the 23rd Stevie® Awards for Women in Business",
       "description": null
     },
     {
-      "date": "2026-10-28T00:00:00.000Z",
-      "title": "Awards Event of The 23rd International Business Awards®",
-      "label": "Awards Event, Pullman Paris Montparnasse, Paris, France",
-      "description": "Pullman Paris Montparnasse, Paris, France"
+      "date": "2026-10-07T00:00:00.000Z",
+      "title": "Entries open for The 2027 American Business Awards®",
+      "label": "Entries open for The 2027 American Business Awards®",
+      "description": "The entry kit will be distributed this week"
     },
     {
-      "date": "2027-02-09T00:00:00.000Z",
-      "title": "Entries open for The 2027 International Business Awards®",
+      "date": "2026-10-14T00:00:00.000Z",
+      "title": "Entries open for the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Entries open for the 2027 Asia-Pacific Stevie® Awards",
+      "description": "The entry kit will be distributed this week"
+    },
+    {
+      "date": "2026-10-14T00:00:00.000Z",
+      "title": "Entries open for the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Entries open for the 2027 Asia-Pacific Stevie® Awards",
+      "description": "The entry kit will be available this week."
+    },
+    {
+      "date": "2026-10-28T00:00:00.000Z",
+      "title": "Awards banquet of the 2026 Stevie® Awards for Great Employers",
+      "label": "Awards banquet of the 2026 Stevie® Awards for Great Employers",
+      "description": "Part of Stevie Awards \"super event\" in Paris, France"
+    },
+    {
+      "date": "2026-10-28T00:00:00.000Z",
+      "title": "Awards banquet of the third Stevie® Awards for Technology Excellence",
+      "label": "Awards banquet of the third Stevie® Awards for Technology Excellence",
+      "description": "Part of Stevie Awards \"super event\" in Paris, France"
+    },
+    {
+      "date": "2026-10-28T00:00:00.000Z",
+      "title": "First entry deadline for the 2027 Middle East & North Africa Stevie® Awards",
+      "label": "First entry deadline for the 2027 Middle East & North Africa Stevie® Awards",
+      "description": "Winners fees will be reduced for winning entries submitted through this date."
+    },
+    {
+      "date": "2026-10-28T00:00:00.000Z",
+      "title": "Preisverleihungsbankett der German Stevie Awards 2026",
+      "label": "Preisverleihungsbankett der German Stevie Awards 2026",
+      "description": "Teil des Stevie Awards „Super-Events“ in Paris, Frankreich"
+    },
+    {
+      "date": "2026-10-28T00:00:00.000Z",
+      "title": "Awards banquet of The 23rd International Business Awards®",
+      "label": "Awards banquet of The 23rd International Business Awards®",
+      "description": "Part of Stevie Awards \"super event\" in Paris, France"
+    },
+    {
+      "date": "2026-11-12T00:00:00.000Z",
+      "title": "Early-bird entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Early-bird entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "description": "Entry fees are discounted through this date."
+    },
+    {
+      "date": "2027-11-16T00:00:00.000Z",
+      "title": "Awards banquet of the 23rd Stevie® Awards for Women in Business",
       "label": null,
-      "description": "The entry kit will be distributed this week."
+      "description": "Marriott Marquis Hotel, New York City"
     },
     {
       "date": "2027-04-07T00:00:00.000Z",
