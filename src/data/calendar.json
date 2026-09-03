@@ -1,7 +1,7 @@
 {
   "events": [
     {
-      "date": "2026-07-11T00:00:00.000Z",
+      "date": "2026-07-11T00:00:00Z",
       "endDate": "",
       "title": "Awards banquet of the 2026 Middle East & North Africa Stevie® Awards",
       "label": "Awards banquet of the 2026 Middle East & North Africa Stevie® Awards",
@@ -15,7 +15,7 @@
       "description": "سيتم الإعلان عن التفاصيل لاحقا."
     },
     {
-      "date": "2026-09-16T00:00:00.000Z",
+      "date": "2026-09-16T00:00:00Z",
       "endDate": "",
       "title": "Finalists notified in the 23rd Stevie® Awards for Women in Business",
       "label": "Finalists notified in the 23rd Stevie® Awards for Women in Business",
@@ -120,7 +120,7 @@
       "description": "Entry fees are at their lowest for nominations submitted through this date."
     },
     {
-      "date": "2026-11-18T00:00:00Z",
+      "date": "2026-11-26T00:00:00Z",
       "endDate": "",
       "title": "Final entry deadline for the 2027 Middle East & North Africa Stevie® Awards",
       "label": "Final entry deadline for the 2027 Middle East & North Africa Stevie® Awards",
@@ -134,39 +134,403 @@
       "description": "Entry fees are discounted for nominations submitted through this date."
     },
     {
-      "date": "2027-08-18T00:00:00.000Z",
+      "date": "2026-12-17T00:00:00Z",
       "endDate": "",
-      "title": "Judging of The 2027 International Business Awards® ends",
-      "label": "Judging  Ends",
+      "title": "Second early-bird entry deadline for The 2027 American Business Awards®",
+      "label": "Second early-bird entry deadline for The 2027 American Business Awards®",
+      "description": "Entry fees are discounted for nominations submitted through this date."
+    },
+    {
+      "date": "2027-01-11T00:00:00Z",
+      "endDate": "2027-04-14T00:00:00Z",
+      "title": "Judging of The 2027 American Business Awards® ",
+      "label": "Judging of The 2027 American Business Awards®",
       "description": null
     },
     {
-      "date": "2027-08-18T00:00:00.000Z",
+      "date": "2027-01-13T00:00:00Z",
       "endDate": "",
-      "title": "Public voting ends for the People's Choice Stevie Awards for Favorite Companies",
-      "label": "Public voting for the people's choice stevie awards ends",
-      "description": null
+      "title": "Primary entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Primary entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "description": "Late fees will apply for nominations submitted after this date."
     },
     {
-      "date": "2027-08-31T00:00:00.000Z",
+      "date": "2027-01-18T00:00:00Z",
       "endDate": "",
-      "title": "Stevie® winners notified in The 2027 International Business Awards®",
-      "label": "Winners notified",
-      "description": "Tickets for the awards banquet go on sale today."
+      "title": "Provisional winners notified in the 2027 Middle East & North Africa Stevie® Awards",
+      "label": "Provisional winners notified in the 2027 Middle East & North Africa Stevie® Awards",
+      "description": "Winners fees must be paid to make winner status permanent."
     },
     {
-      "date": "2027-09-01T00:00:00.000Z",
+      "date": "2027-01-21T00:00:00Z",
       "endDate": "",
-      "title": "Stevie® winners publicly announced in The 2027 International Business Awards®",
-      "label": "Winners announced",
+      "title": "Primary entry deadline for the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Primary entry deadline for the 2027 Asia-Pacific Stevie® Awards",
+      "description": "Late fees will apply for nominations submitted after this date."
+    },
+    {
+      "date": "2027-02-01T00:00:00Z",
+      "endDate": "2027-03-16T00:00:00Z",
+      "title": "Judging of the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Judging of the 2027 Asia-Pacific Stevie® Awards",
       "description": ""
     },
     {
-      "date": "2027-10-14",
+      "date": "2027-02-03T00:00:00Z",
       "endDate": "",
-      "title": "Awards Event of The 24th International Business Awards®",
-      "label": "Location & Date To Be Announced",
-      "description": "Pullman Paris Montparnasse, Paris, France"
+      "title": "Final entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Final entry deadline for the 2027 Stevie® Awards for Sales & Customer Service",
+      "description": ""
+    },
+    {
+      "date": "2027-02-09T00:00:00Z",
+      "endDate": "",
+      "title": "Entries open for The 2027 International Business Awards®",
+      "label": "Entries open for The 2027 International Business Awards®",
+      "description": "The entry kit will be distributed this week."
+    },
+    {
+      "date": "2027-02-10T00:00:00Z",
+      "endDate": "",
+      "title": "Primary entry deadline for The 2027 American Business Awards®",
+      "label": "Primary entry deadline for The 2027 American Business Awards®",
+      "description": "Late fees will apply for nominations submitted after this date."
+    },
+    {
+      "date": "2027-02-16T00:00:00Z",
+      "endDate": "",
+      "title": "Deadline for payment of winners fees in the 2027 Middle East & North Africa Stevie® Awards",
+      "label": "Deadline for payment of winners fees in the 2027 Middle East & North Africa Stevie® Awards",
+      "description": "Provisional winners will be disqualified if they winners fees are not paid by this date."
+    },
+    {
+      "date": "2027-02-17T00:00:00Z",
+      "endDate": "",
+      "title": "Final entry deadline for the 2027 Asia-Pacific Stevie® Awards",
+      "label": "",
+      "description": ""
+    },
+    {
+      "date": "2027-02-18T00:00:00Z",
+      "endDate": "",
+      "title": "Winners announced in the 2027 Middle East & North Africa Stevie® Awards",
+      "label": "Winners announced in the 2027 Middle East & North Africa Stevie® Awards",
+      "description": "Tickets for the awards banquet will go on sale on this date."
+    },
+    {
+      "date": "2027-02-24T00:00:00Z",
+      "endDate": "",
+      "title": "Entries open for the 2027 Stevie® Awards for Great Employers",
+      "label": "Entries open for the 2027 Stevie® Awards for Great Employers",
+      "description": "The entry kit will be distributed this week."
+    },
+    {
+      "date": "2027-03-10T00:00:00Z",
+      "endDate": "",
+      "title": "Entries open today for the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Entries open today for the 2027 Stevie® Awards for Technology Excellence",
+      "description": "Entries open today for the 2027 Stevie® Awards for Technology Excellence"
+    },
+    {
+      "date": "2027-03-17T00:00:00Z",
+      "endDate": "",
+      "title": "Winners notified in the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "Winners notified in the 2027 Stevie® Awards for Sales & Customer Service",
+      "description": "Tickets for the awards banquet will go on sale on this date."
+    },
+    {
+      "date": "2027-03-18T00:00:00Z",
+      "endDate": "",
+      "title": "Winners publicly announced in the 2027 Stevie® Awards for Sales & Customer Service",
+      "label": "",
+      "description": ""
+    },
+    {
+      "date": "2027-03-19T00:00:00Z",
+      "endDate": "2027-04-16T00:00:00Z",
+      "title": "Public voting component to determine the Stevie winners for Customer Service Department of the Year",
+      "label": "Public voting component to determine the Stevie winners for Customer Service Department of the Year",
+      "description": "Winners in these Stevie Awards for Sales & Customer Service categories will be determined by a blend of the scores of our professional judges and public votes."
+    },
+    {
+      "date": "2027-03-24T00:00:00Z",
+      "endDate": "",
+      "title": "Winners notified in the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Winners notified in the 2027 Asia-Pacific Stevie® Awards",
+      "description": "Tickets for the awards banquet will go on sale on this date."
+    },
+    {
+      "date": "2027-03-24T00:00:00Z",
+      "endDate": "",
+      "title": "Winners notified in the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Winners notified in the 2027 Asia-Pacific Stevie® Awards",
+      "description": "Tickets for the awards banquet will go on sale on this date."
+    },
+    {
+      "date": "2027-03-25T00:00:00Z",
+      "endDate": "",
+      "title": "Winners publicly announced in the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Winners publicly announced in the 2027 Asia-Pacific Stevie® Awards",
+      "description": ""
+    },
+    {
+      "date": "2027-03-25T00:00:00Z",
+      "endDate": "",
+      "title": "Winners publicly announced in the 2027 Asia-Pacific Stevie® Awards",
+      "label": "Winners publicly announced in the 2027 Asia-Pacific Stevie® Awards",
+      "description": ""
+    },
+    {
+      "date": "2027-03-26T00:00:00Z",
+      "endDate": "2027-04-30T00:00:00Z",
+      "title": "Public voting in the People's Choice Stevie® Awards for Favorite Companies",
+      "label": "Public voting in the People's Choice Stevie® Awards for Favorite Companies",
+      "description": "Global vote, an annual part of the Asia-Pacific Stevie® Awards"
+    },
+    {
+      "date": "2027-03-26T00:00:00Z",
+      "endDate": "2027-03-30T00:00:00Z",
+      "title": "Public voting in the People's Choice Stevie® Awards for Favorite Companies",
+      "label": "Public voting in the People's Choice Stevie® Awards for Favorite Companies",
+      "description": "An annual feature of the Asia-Pacific Stevie® Awards."
+    },
+    {
+      "date": "2027-04-02T00:00:00Z",
+      "endDate": "",
+      "title": "Awards banquet of the 8th Middle East & North Africa Stevie® Awards",
+      "label": "Awards banquet of the 8th Middle East & North Africa Stevie® Awards",
+      "description": "Date and setting to be confirmed."
+    },
+    {
+      "date": "2027-04-07T00:00:00Z",
+      "endDate": "",
+      "title": "Early-bird entry deadline for The 2027 International Business Awards®",
+      "label": "Early-bird entry deadline for The 2027 International Business Awards®",
+      "description": "Entry fees are discounted for nominations submitted through this date."
+    },
+    {
+      "date": "2027-04-08T00:00:00Z",
+      "endDate": "",
+      "title": "Early-bird entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "label": "Early-bird entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "description": "Entry fees are discounted for nominations submitted through this date."
+    },
+    {
+      "date": "2027-04-15T00:00:00Z",
+      "endDate": "",
+      "title": "Early-bird entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Early-bird entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "description": "Entry fees are discounted for nominations submitted through this date"
+    },
+    {
+      "date": "2027-04-21T00:00:00Z",
+      "endDate": "",
+      "title": "Stevie® winners notified in The 2027 American Business Awards®",
+      "label": "Stevie® winners notified in The 2027 American Business Awards®",
+      "description": "Tickets for the awards banquet will go on sale on this date."
+    },
+    {
+      "date": "2027-04-22T00:00:00Z",
+      "endDate": "",
+      "title": "Stevie® winners publicly announced in The 2027 American Business Awards®",
+      "label": "Stevie® winners publicly announced in The 2027 American Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-04-23T00:00:00Z",
+      "endDate": "2027-05-21T00:00:00Z",
+      "title": "Public voting in the People's Choice Stevie® Awards for Favorite New Products",
+      "label": "Public voting in the People's Choice Stevie® Awards for Favorite New Products",
+      "description": "Global vote, an annual part of The American Business Awards®"
+    },
+    {
+      "date": "2027-04-29T00:00:00Z",
+      "endDate": "",
+      "title": " Awards banquet of the 21st Stevie® Awards for Sales & Customer Service",
+      "label": " Awards banquet of the 21st Stevie® Awards for Sales & Customer Service",
+      "description": "Marriott Marquis Hotel, New York City, date and setting to be confirmed"
+    },
+    {
+      "date": "2027-05-03T00:00:00Z",
+      "endDate": "2027-07-08T00:00:00Z",
+      "title": "Juidging of the 2027 Stevie® Awards for Great Employers",
+      "label": "Juidging of the 2027 Stevie® Awards for Great Employers",
+      "description": ""
+    },
+    {
+      "date": "2027-05-05T00:00:00Z",
+      "endDate": "",
+      "title": "Primary entry deadline for The 2027 International Business Awards®",
+      "label": "Primary entry deadline for The 2027 International Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-05-06T00:00:00Z",
+      "endDate": "",
+      "title": "Primary entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "label": "Primary entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "description": "Late fees will apply for nominations submitted after this date."
+    },
+    {
+      "date": "2027-05-13T00:00:00Z",
+      "endDate": "",
+      "title": "Primary entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Primary entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "description": "Late fees will apply for nominations submitted after this date."
+    },
+    {
+      "date": "2027-05-19T00:00:00Z",
+      "endDate": "2027-07-28T00:00:00Z",
+      "title": "Judging of the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Judging of the 2027 Stevie® Awards for Technology Excellence",
+      "description": ""
+    },
+    {
+      "date": "",
+      "endDate": "",
+      "title": "Awards banquet of the 14th Asia-Pacific Stevie® Awards",
+      "label": "Awards banquet of the 14th Asia-Pacific Stevie® Awards",
+      "description": "Date and setting in the Asia-Pacific region to be confirmed."
+    },
+    {
+      "date": "2027-05-19T00:00:00Z",
+      "endDate": "",
+      "title": "Awards banquet of the 14th annual Asia-Pacific Stevie® Awards",
+      "label": "Awards banquet of the 14th annual Asia-Pacific Stevie® Awards",
+      "description": "Date and setting to be confirmed."
+    },
+    {
+      "date": "2027-06-02T00:00:00Z",
+      "endDate": "2027-08-18T00:00:00Z",
+      "title": "Judging of 2027 International Business Awards®",
+      "label": "Judging of 2027 International Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-06-09T00:00:00Z",
+      "endDate": "",
+      "title": "Final entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "label": "Final entry deadline for the 2027 Stevie® Awards for Great Employers",
+      "description": ""
+    },
+    {
+      "date": "2027-06-10T00:00:00Z",
+      "endDate": "",
+      "title": "Final entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Final entry deadline for the 2027 Stevie® Awards for Technology Excellence",
+      "description": ""
+    },
+    {
+      "date": "2027-06-10T00:00:00Z",
+      "endDate": "2027-07-08T00:00:00Z",
+      "title": "Public voting for Employer of the Year in the 2027 Stevie® Awards for Great Employers",
+      "label": "Public voting for Employer of the Year in the 2027 Stevie® Awards for Great Employers",
+      "description": "Winners in the Employer of the Year categories will be determined through a blending of the ratings of our professional judges and the votes of the general public."
+    },
+    {
+      "date": "2027-06-15T00:00:00Z",
+      "endDate": "",
+      "title": "Awards banquet of The 25th American Business Awards®",
+      "label": "Awards banquet of The 25th American Business Awards®",
+      "description": "Marriott Marquis Hotel, New York City"
+    },
+    {
+      "date": "2027-06-16T00:00:00Z",
+      "endDate": "",
+      "title": "Final entry deadline for The 2027 International Business Awards®",
+      "label": "Final entry deadline for The 2027 International Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-06-17T00:00:00Z",
+      "endDate": "2027-08-18T00:00:00Z",
+      "title": "Public voting for the People's Choice Stevie® Awards for Favorite Companies",
+      "label": "Public voting for the People's Choice Stevie® Awards for Favorite Companies",
+      "description": ""
+    },
+    {
+      "date": "2027-07-14T00:00:00Z",
+      "endDate": "",
+      "title": "Winners notified in the 2027 Stevie® Awards for Great Employers",
+      "label": "Winners notified in the 2027 Stevie® Awards for Great Employers",
+      "description": ""
+    },
+    {
+      "date": "2027-07-15T00:00:00Z",
+      "endDate": "",
+      "title": "Winners publicly announced in the 2027 Stevie® Awards for Great Employers",
+      "label": "Winners publicly announced in the 2027 Stevie® Awards for Great Employers",
+      "description": ""
+    },
+    {
+      "date": "2027-07-16T00:00:00Z",
+      "endDate": "2027-10-29T00:00:00Z",
+      "title": "Winners awards shipping opt-in window for the 2027 Stevie® Awards for Great Employers",
+      "label": "Winners awards shipping opt-in window for the 2027 Stevie® Awards for Great Employers",
+      "description": ""
+    },
+    {
+      "date": "2027-08-10T00:00:00Z",
+      "endDate": "",
+      "title": "Winners notified in the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Winners notified in the 2027 Stevie® Awards for Technology Excellence",
+      "description": "Tickets for the awards event will go on sale on this date."
+    },
+    {
+      "date": "2027-08-11T00:00:00Z",
+      "endDate": "",
+      "title": "Winners publicly announced in the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Winners publicly announced in the 2027 Stevie® Awards for Technology Excellence",
+      "description": ""
+    },
+    {
+      "date": "2027-08-11T00:00:00Z",
+      "endDate": "2027-10-29T00:00:00Z",
+      "title": "Winners' opt-in window for awards shipping in the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Winners' opt-in window for awards shipping in the 2027 Stevie® Awards for Technology Excellence",
+      "description": ""
+    },
+    {
+      "date": "2027-08-31T00:00:00Z",
+      "endDate": "",
+      "title": "Stevie® winners notified in The 2027 International Business Awards®",
+      "label": "",
+      "description": "Tickets for the fall awards gala will go on sale on this date."
+    },
+    {
+      "date": "2027-09-01T00:00:00Z",
+      "endDate": "2027-10-29T00:00:00Z",
+      "title": "Awards shipment opt-in window for Stevie® winners in The 2027 International Business Awards®",
+      "label": "Awards shipment opt-in window for Stevie® winners in The 2027 International Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-09-01T00:00:00Z",
+      "endDate": "",
+      "title": "Stevie® winners publicly announced in The 2027 International Business Awards®",
+      "label": "Stevie® winners publicly announced in The 2027 International Business Awards®",
+      "description": ""
+    },
+    {
+      "date": "2027-10-14T00:00:00Z",
+      "endDate": "",
+      "title": "Awards ceremony of the 2027 Stevie® Awards for Great Employers",
+      "label": "Awards ceremony of the 2027 Stevie® Awards for Great Employers",
+      "description": "Date and setting to be confirmed."
+    },
+    {
+      "date": "2027-10-14T00:00:00Z",
+      "endDate": "",
+      "title": "Awards gala of The 2027 International Business Awards®",
+      "label": "Awards gala of The 2027 International Business Awards®",
+      "description": "Date and European setting to be confirmed."
+    },
+    {
+      "date": "2026-10-14T00:00:00Z",
+      "endDate": "",
+      "title": "Awards ceremony of the 2027 Stevie® Awards for Technology Excellence",
+      "label": "Awards ceremony of the 2027 Stevie® Awards for Technology Excellence",
+      "description": "Date and setting to be confirmed."
     }
   ]
 }
