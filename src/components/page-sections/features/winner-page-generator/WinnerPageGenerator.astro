@@ -23,8 +23,8 @@ const endpoint = apiEndpoint.replace(/\/$/, "");
     </div>
     <div class="generator__table-wrap">
       <table>
-        <thead><tr><th><input id="winner-check-all" type="checkbox" aria-label="Select visible entries" /></th><th>Entry</th><th>Organization</th><th>Category</th><th>ID</th></tr></thead>
-        <tbody id="winner-rows"><tr><td colspan="5">Loading…</td></tr></tbody>
+        <thead><tr><th><input id="winner-check-all" type="checkbox" aria-label="Select visible entries" /></th><th>Entry</th><th>Organization</th><th>Category</th><th>ID</th><th>Page</th></tr></thead>
+        <tbody id="winner-rows"><tr><td colspan="6">Loading…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -58,9 +58,25 @@ const endpoint = apiEndpoint.replace(/\/$/, "");
           const check = document.createElement("input"); check.type = "checkbox"; check.className = "winner-row-check"; check.value = row.id; check.setAttribute("aria-label", `Select ${row.page_name}`); checkCell.append(check);
           const values = [row.page_name, row.organization_name, row.category_name, row.id];
           tr.append(checkCell, ...values.map((value) => { const td = document.createElement("td"); td.textContent = value; return td; }));
+          const pageCell = document.createElement("td");
+          if (row.generated && row.url_path) {
+            const link = document.createElement("a");
+            link.href = row.url_path;
+            link.textContent = "View";
+            link.target = "_blank";
+            link.rel = "noopener";
+            link.className = "generator__view-link";
+            pageCell.append(link);
+          } else {
+            const status = document.createElement("span");
+            status.textContent = "Not generated";
+            status.className = "generator__not-generated";
+            pageCell.append(status);
+          }
+          tr.append(pageCell);
           body.append(tr);
         }
-        if (!data.rows.length) { const tr=document.createElement("tr"), td=document.createElement("td"); td.colSpan=5; td.textContent="No matching entries."; tr.append(td); body.append(tr); }
+        if (!data.rows.length) { const tr=document.createElement("tr"), td=document.createElement("td"); td.colSpan=6; td.textContent="No matching entries."; tr.append(td); body.append(tr); }
         setBusy(false, "Ready");
       } catch (error) { setBusy(false, error instanceof Error ? error.message : "Could not load entries"); }
     }
@@ -73,7 +89,9 @@ const endpoint = apiEndpoint.replace(/\/$/, "");
         const response = await fetch(`${api}/api/winner-pages/${path}`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ ids: all ? [] : ids }) });
         const data = await response.json();
         if (!response.ok) throw new Error(data.detail || `${path} failed`);
-        get("winner-status").textContent = path === "publish" ? `${data.generated} page(s) published on ${data.branch}.` : `${data.generated} page(s) generated; ${data.changed} changed.`;
+        const message = path === "publish" ? `${data.generated} page(s) published on ${data.branch}.` : `${data.generated} page(s) generated; ${data.changed} changed.`;
+        await load();
+        get("winner-status").textContent = message;
       } catch (error) { get("winner-status").textContent = error instanceof Error ? error.message : `${path} failed`; }
       finally { ["winner-generate", "winner-generate-all", "winner-publish", "winner-refresh"].forEach((id) => ((get(id) as HTMLButtonElement).disabled = false)); }
     }
@@ -103,4 +121,6 @@ const endpoint = apiEndpoint.replace(/\/$/, "");
   #winner-status { color:#5f6878; font-size:.9rem; }
   .generator__table-wrap { background:#fff; border:1px solid #d8dde5; border-radius:.4rem; overflow:auto; }
   table { border-collapse:collapse; min-width:50rem; width:100%; } th,td { border-bottom:1px solid #e3e7ed; padding:.8rem; text-align:left; vertical-align:top; } th { background:#eef1f5; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; } td:first-child,th:first-child { width:2.5rem; }
+  .generator__view-link { color:#087e7d; font-weight:800; text-decoration:underline; text-decoration-color:#dfba19; text-decoration-thickness:2px; }
+  .generator__not-generated { color:#7a8392; font-size:.86rem; white-space:nowrap; }
 </style>
