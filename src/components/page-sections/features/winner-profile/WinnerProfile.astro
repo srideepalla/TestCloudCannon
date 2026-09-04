@@ -1,4 +1,11 @@
 ---
+import goldBadge320Png from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-320.png";
+import goldBadge640Png from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-640.png";
+import goldBadge1080Png from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-1080.png";
+import goldBadge320Webp from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-320.webp";
+import goldBadge640Webp from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-640.webp";
+import goldBadge1080Webp from "../../../../assets/images/winner-badges/sascs-2026/gold-stevie-winner-1080.webp";
+
 export type NarrativeSection = { heading?: string; body?: string };
 
 export interface Props {
@@ -26,7 +33,6 @@ export interface Props {
 const {
   awardLevel,
   awardYear,
-  programName,
   entryId,
   pageName,
   categoryGroup,
@@ -47,90 +53,186 @@ const {
 
 const paragraphs = (value?: string) =>
   (value || "").split(/\n\s*\n/).map((part) => part.trim()).filter(Boolean);
+const showGoldBadge = (awardLevel || "").toLowerCase() === "gold";
+const badgeAlt = `${awardYear || "2026"} ${awardLevel || "Gold"} Stevie Winner`;
 ---
 
 <article class="winner-profile" data-entry-id={entryId}>
-  <div class="winner-profile__inner">
-    <div class="winner-profile__grid">
-      <main>
-        {(awardLevel || awardYear) && (
-          <p class="winner-profile__eyebrow">
-            {[awardYear, awardLevel && `${awardLevel} Winner`].filter(Boolean).join(" · ")}
-          </p>
-        )}
-        {programName && <p class="winner-profile__program">{programName}</p>}
+  <div class="winner-profile__top">
+    <dl class="winner-profile__facts">
+      {categoryGroup && <div><dt>Category Group:</dt><dd>{categoryGroup}</dd></div>}
+      {categoryName && <div><dt>Category:</dt><dd>{categoryName}</dd></div>}
+      {organizationName && <div><dt>Organization Name:</dt><dd>{organizationName}</dd></div>}
+      {winnerName && <div><dt>Winner:</dt><dd>{winnerName}</dd></div>}
+      {location && <div><dt>Location:</dt><dd>{location}</dd></div>}
+      {organizationDescription && <div><dt>Organization Description:</dt></div>}
+    </dl>
 
-        <dl class="winner-profile__facts">
-          {categoryGroup && <div><dt>Category Group</dt><dd>{categoryGroup}</dd></div>}
-          {categoryName && <div><dt>Category</dt><dd>{categoryName}</dd></div>}
-          {organizationName && <div><dt>Organization Name</dt><dd>{organizationName}</dd></div>}
-          {winnerName && <div><dt>Winner</dt><dd>{winnerName}</dd></div>}
-          {location && <div><dt>Location</dt><dd>{location}</dd></div>}
-        </dl>
-
-        {organizationDescription && (
-          <section class="winner-profile__section">
-            <h2>Organization Description</h2>
-            {paragraphs(organizationDescription).map((paragraph) => <p>{paragraph}</p>)}
-          </section>
-        )}
-        {summary && (
-          <section class="winner-profile__section winner-profile__lead">
-            {paragraphs(summary).map((paragraph) => <p>{paragraph}</p>)}
-          </section>
-        )}
-        {sections.map((section) => (section.heading || section.body) && (
-          <section class="winner-profile__section">
-            {section.heading && <h2>{section.heading}</h2>}
-            {paragraphs(section.body).map((paragraph) => <p>{paragraph}</p>)}
-          </section>
-        ))}
-        {quote && (
-          <figure class="winner-profile__quote">
-            <blockquote>{quote}</blockquote>
-            {quoteAttribution && <figcaption>— {quoteAttribution}</figcaption>}
-          </figure>
-        )}
-        {videoUrl && (
-          <p class="winner-profile__action"><a href={videoUrl}>Watch the winner’s video</a></p>
-        )}
-        {websiteUrl && (
-          <p class="winner-profile__action"><a href={websiteUrl}>Visit {organizationName || "the winner"}</a></p>
-        )}
-      </main>
-
-      {image && (
-        <aside class="winner-profile__media">
-          <img src={image} alt={imageAlt || pageName} loading="lazy" />
-        </aside>
-      )}
-    </div>
+    {showGoldBadge && (
+      <aside class="winner-profile__badge">
+        <a href="/enter/how-to-enter" target="_blank" rel="noopener noreferrer" aria-label="How to enter the Stevie Awards">
+          <picture>
+            <source
+              srcset={`${goldBadge320Webp.src} 320w, ${goldBadge640Webp.src} 640w, ${goldBadge1080Webp.src} 1080w`}
+              type="image/webp"
+              sizes="160px"
+            />
+            <img
+              src={goldBadge1080Png.src}
+              srcset={`${goldBadge320Png.src} 320w, ${goldBadge640Png.src} 640w, ${goldBadge1080Png.src} 1080w`}
+              sizes="160px"
+              alt={badgeAlt}
+              width="1080"
+              height="1080"
+              loading="eager"
+              decoding="async"
+            />
+          </picture>
+        </a>
+      </aside>
+    )}
   </div>
+
+  {organizationDescription && (
+    <section class="winner-profile__copy">
+      {paragraphs(organizationDescription).map((paragraph) => <p>{paragraph}</p>)}
+    </section>
+  )}
+  {summary && (
+    <section class="winner-profile__copy">
+      {paragraphs(summary).map((paragraph) => <p>{paragraph}</p>)}
+    </section>
+  )}
+  {sections.map((section) => (section.heading || section.body) && (
+    <section class="winner-profile__copy">
+      {section.heading && <h2>{section.heading}</h2>}
+      {paragraphs(section.body).map((paragraph) => <p>{paragraph}</p>)}
+    </section>
+  ))}
+  {quote && (
+    <figure class="winner-profile__quote">
+      <blockquote>{quote}</blockquote>
+      {quoteAttribution && <figcaption>— {quoteAttribution}</figcaption>}
+    </figure>
+  )}
+  {image && (
+    <figure class="winner-profile__entry-image">
+      <img src={image} alt={imageAlt || pageName} loading="lazy" />
+    </figure>
+  )}
+  {(videoUrl || websiteUrl) && (
+    <div class="winner-profile__actions">
+      {videoUrl && <a href={videoUrl}>Watch the winner’s video</a>}
+      {websiteUrl && <a href={websiteUrl}>Visit {organizationName || "the winner"}</a>}
+    </div>
+  )}
 </article>
 
 <style>
-  .winner-profile { background:#fff; color:#172033; padding:clamp(2rem,5vw,5rem) 1.25rem 6rem; }
-  .winner-profile__inner { max-width:75rem; margin:0 auto; }
-  .winner-profile__grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(14rem,23rem); gap:clamp(2rem,6vw,5rem); align-items:start; }
-  .winner-profile__eyebrow { color:#a16e00; font-weight:750; letter-spacing:.09em; text-transform:uppercase; font-size:.78rem; margin:0 0 .8rem; }
-  .winner-profile__program { color:#667085; font-size:1rem; margin:1rem 0 2.25rem; }
-  .winner-profile__facts { border-top:3px solid #dfba19; margin:0 0 2.5rem; }
-  .winner-profile__facts div { display:grid; grid-template-columns:minmax(8.5rem,12rem) 1fr; gap:1rem; padding:.9rem 0; border-bottom:1px solid #d8dde5; }
-  dt { color:#687184; font-size:.76rem; font-weight:750; letter-spacing:.07em; text-transform:uppercase; }
-  dd { margin:0; font-weight:600; }
-  .winner-profile__section { margin:2.2rem 0; max-width:48rem; }
-  .winner-profile__section h2 { color:#073c4a; font-family:Raleway, sans-serif; font-size:clamp(1.45rem,3vw,2rem); line-height:1.2; margin:0 0 .8rem; }
-  .winner-profile__section p { font-size:1.03rem; line-height:1.75; margin:0 0 1rem; }
-  .winner-profile__lead { font-size:1.12rem; }
-  .winner-profile__quote { border-left:4px solid #dfba19; margin:2.5rem 0; padding:.25rem 0 .25rem 1.4rem; }
-  blockquote { color:#073c4a; font-family:Raleway,sans-serif; font-size:1.35rem; line-height:1.45; margin:0; }
-  figcaption { color:#687184; margin-top:.8rem; }
-  .winner-profile__media { position:sticky; top:6rem; }
-  .winner-profile__media img { border-radius:.35rem; display:block; height:auto; max-width:100%; width:100%; }
-  .winner-profile__action a { color:#073c4a; font-weight:700; text-decoration-color:#dfba19; text-decoration-thickness:2px; }
-  @media (max-width:48rem) {
-    .winner-profile__grid { grid-template-columns:1fr; }
-    .winner-profile__media { grid-row:1; position:static; }
-    .winner-profile__facts div { grid-template-columns:1fr; gap:.25rem; }
+  .winner-profile {
+    background: #fff;
+    color: #000;
+    padding: 1.6rem 0 6rem;
+  }
+  .winner-profile__top {
+    align-items: start;
+    display: grid;
+    gap: clamp(2rem, 7vw, 5rem);
+    grid-template-columns: minmax(0, 2fr) minmax(10rem, 1fr);
+    margin-bottom: 1.65rem;
+  }
+  .winner-profile__facts {
+    margin: 0;
+  }
+  .winner-profile__facts div {
+    margin: 0 0 .9rem;
+  }
+  .winner-profile__facts dt,
+  .winner-profile__facts dd {
+    display: inline;
+    font-family: Oswald, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.45;
+  }
+  .winner-profile__facts dt {
+    font-weight: 700;
+  }
+  .winner-profile__facts dd {
+    font-weight: 400;
+    margin: 0 0 0 .25rem;
+  }
+  .winner-profile__badge {
+    display: flex;
+    justify-content: center;
+  }
+  .winner-profile__badge a,
+  .winner-profile__badge picture,
+  .winner-profile__badge img {
+    display: block;
+  }
+  .winner-profile__badge img {
+    height: 10rem;
+    object-fit: contain;
+    width: 10rem;
+  }
+  .winner-profile__copy {
+    margin: 0 0 1.2rem;
+  }
+  .winner-profile__copy h2 {
+    color: #000;
+    font-family: Oswald, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin: .9rem 0;
+  }
+  .winner-profile__copy p {
+    color: #000;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+  }
+  .winner-profile__quote {
+    border-left: 3px solid #d2aa22;
+    margin: 1.5rem 0;
+    padding: .25rem 0 .25rem 1.25rem;
+  }
+  .winner-profile__quote blockquote {
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .winner-profile__quote figcaption {
+    margin-top: .75rem;
+  }
+  .winner-profile__entry-image {
+    margin: 2rem 0;
+    max-width: 42rem;
+  }
+  .winner-profile__entry-image img {
+    display: block;
+    height: auto;
+    max-width: 100%;
+  }
+  .winner-profile__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+  .winner-profile__actions a {
+    color: #000;
+    font-weight: 700;
+    text-decoration-color: #d2aa22;
+    text-decoration-thickness: 2px;
+  }
+  @media (max-width: 42rem) {
+    .winner-profile__top {
+      gap: 1.5rem;
+      grid-template-columns: 1fr;
+    }
+    .winner-profile__badge {
+      justify-content: flex-start;
+    }
   }
 </style>
