@@ -1,9 +1,9 @@
 {
-  "name": "International Business Awards®",
-  "url": "https://iba.stevieawards.com",
-  "description": "For more than 20 years, The International Business Awards®, known as the “International Stevies”, have shone a spotlight on organizations of every type and size worldwide: large and small, public and private, for-profit and non-profit. Open to all organizations and individuals, the 2025 competition attracted more than 3,800 nominations from organizations in 78 nations and markets. ",
+  "name": "The Stevie® Awards",
+  "url": "https://stevieawards.com",
+  "description": "The Stevie® Awards are the world's premier business awards and are conferred in seven programs. Stevie Awards competitions receive more than 10,000 entries each year from organizations in more than 60 nations.",
   "logoSource": "/assets/images/hero/1.jpg",
-  "titleFormat": "{title} | International Business Awards®",
+  "titleFormat": "{title} | The Stevie® Awards",
   "twitterHandle": "@thestevieawards",
   "keywords": "Stevie Awards, Customer Service, Sales, business awards, entrepreneurs, sales executives, business recognition, awards programs"
 }

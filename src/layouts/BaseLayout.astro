@@ -24,7 +24,7 @@ const pageImageRaw = props.image || seoData.logoSource;
 // Open Graph requires absolute URLs for images.
 const pageImage = pageImageRaw.startsWith("http")
   ? pageImageRaw
-  : new URL(pageImageRaw, Astro.site ?? "https://iba.stevieawards.com").href;
+  : new URL(pageImageRaw, Astro.site ?? "https://stevieawards.com").href;
 const pageKeywords = props.keywords?.join(", ") || seoData.keywords;
 const ogType = props.ogType ?? "website";
  
@@ -82,7 +82,7 @@ const darkThemeCSS = generateThemeCSS(themeData.dark, '[data-theme="dark"]');
 const rootThemeCSS = generateThemeCSS(themeData.dark, 'html[data-theme]');
 const globalThemeCSS = generateGlobalThemeCSS();
 
-const siteOrigin = "https://iba.stevieawards.com";
+const siteOrigin = "https://stevieawards.com";
 
 // English-only site: one locale, so this is the whole set.
 const DEFAULT_LOCALE = { htmlLang: "en", dir: "ltr", ogLocale: "en_US" };

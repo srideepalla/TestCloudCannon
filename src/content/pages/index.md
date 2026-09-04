@@ -1,13 +1,10 @@
 ---
 _schema: default
-title: The International Business Awards®
+title: The World's Premier Business Award Competitions
 description: >-
-  For more than 20 years, The International Business Awards®, known as the
-  “International Stevies”, have shone a spotlight on organizations of every type
-  and size worldwide: large and small, public and private, for-profit and
-  non-profit. Open to all organizations and individuals, the 2025 competition
-  attracted more than 3,800 nominations from organizations in 78 nations and
-  markets.
+  The Stevie® Awards are the world's premier business awards and are conferred
+  in seven programs. Stevie Awards competitions receive more than 10,000 entries
+  each year from organizations in more than 60 nations.
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
