@@ -1,0 +1,14 @@
+label: Winner profile
+icon: workspace_premium
+value:
+  _component: page-sections/features/winner-profile
+  pageName: Winner profile title
+  categoryGroup: ""
+  categoryName: ""
+  organizationName: ""
+  awardLevel: Gold
+  awardYear: 2026
+  programName: The Stevie Awards for Sales & Customer Service
+  organizationDescription: ""
+  summary: ""
+  sections: []

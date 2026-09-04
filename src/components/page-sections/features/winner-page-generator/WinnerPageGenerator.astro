@@ -1,0 +1,106 @@
+---
+export interface Props { heading?: string; apiEndpoint?: string; }
+const { heading = "SASCS Winner Page Generator", apiEndpoint = "http://127.0.0.1:8002" } = Astro.props;
+const endpoint = apiEndpoint.replace(/\/$/, "");
+---
+
+<section class="generator" data-api={endpoint}>
+  <div class="generator__inner">
+    <p class="generator__eyebrow">Stevie Intelligence</p>
+    <h1>{heading}</h1>
+    <p class="generator__intro">Review the validated CSV entries, generate selected or all pages, then publish them as one controlled Git batch.</p>
+
+    <div class="generator__summary" id="winner-summary" aria-live="polite">Loading source…</div>
+    <div class="generator__toolbar">
+      <label><span>Find an entry</span><input id="winner-search" type="search" placeholder="Organization, title, category, or ID" /></label>
+      <button id="winner-refresh" type="button" class="secondary">Refresh</button>
+    </div>
+    <div class="generator__actions">
+      <button id="winner-generate" type="button">Generate selected</button>
+      <button id="winner-generate-all" type="button" class="secondary">Generate all validated pages</button>
+      <button id="winner-publish" type="button" class="publish">Publish selected</button>
+      <span id="winner-status" aria-live="polite"></span>
+    </div>
+    <div class="generator__table-wrap">
+      <table>
+        <thead><tr><th><input id="winner-check-all" type="checkbox" aria-label="Select visible entries" /></th><th>Entry</th><th>Organization</th><th>Category</th><th>ID</th></tr></thead>
+        <tbody id="winner-rows"><tr><td colspan="5">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>(".generator[data-api]");
+  if (root) {
+    const api = root.dataset.api || "";
+    const get = (id: string) => document.getElementById(id) as HTMLElement;
+    const selected = () => Array.from(document.querySelectorAll<HTMLInputElement>(".winner-row-check:checked")).map((el) => el.value);
+    let timer: ReturnType<typeof setTimeout>;
+
+    const setBusy = (busy: boolean, message = "") => {
+      ["winner-generate", "winner-generate-all", "winner-publish", "winner-refresh"].forEach((id) => ((get(id) as HTMLButtonElement).disabled = busy));
+      get("winner-status").textContent = message;
+    };
+
+    async function load() {
+      const q = (get("winner-search") as HTMLInputElement).value.trim();
+      setBusy(true, "Validating CSV…");
+      try {
+        const response = await fetch(`${api}/api/winner-pages/source?q=${encodeURIComponent(q)}&limit=200`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || "Could not read the source");
+        get("winner-summary").textContent = `${data.total} validated entries · ${data.organizations} organizations · ${data.category_groups} category groups`;
+        const body = get("winner-rows"); body.replaceChildren();
+        for (const row of data.rows) {
+          const tr = document.createElement("tr");
+          const checkCell = document.createElement("td");
+          const check = document.createElement("input"); check.type = "checkbox"; check.className = "winner-row-check"; check.value = row.id; check.setAttribute("aria-label", `Select ${row.page_name}`); checkCell.append(check);
+          const values = [row.page_name, row.organization_name, row.category_name, row.id];
+          tr.append(checkCell, ...values.map((value) => { const td = document.createElement("td"); td.textContent = value; return td; }));
+          body.append(tr);
+        }
+        if (!data.rows.length) { const tr=document.createElement("tr"), td=document.createElement("td"); td.colSpan=5; td.textContent="No matching entries."; tr.append(td); body.append(tr); }
+        setBusy(false, "Ready");
+      } catch (error) { setBusy(false, error instanceof Error ? error.message : "Could not load entries"); }
+    }
+
+    async function run(path: "generate" | "publish", ids: string[], all = false) {
+      if (!all && !ids.length) { get("winner-status").textContent = "Select at least one entry."; return; }
+      if (path === "publish" && !confirm(`Publish ${ids.length} selected page(s) to the test branch?`)) return;
+      setBusy(true, path === "publish" ? "Generating, committing and pushing…" : "Generating pages…");
+      try {
+        const response = await fetch(`${api}/api/winner-pages/${path}`, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({ ids: all ? [] : ids }) });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.detail || `${path} failed`);
+        get("winner-status").textContent = path === "publish" ? `${data.generated} page(s) published on ${data.branch}.` : `${data.generated} page(s) generated; ${data.changed} changed.`;
+      } catch (error) { get("winner-status").textContent = error instanceof Error ? error.message : `${path} failed`; }
+      finally { ["winner-generate", "winner-generate-all", "winner-publish", "winner-refresh"].forEach((id) => ((get(id) as HTMLButtonElement).disabled = false)); }
+    }
+
+    get("winner-refresh").addEventListener("click", load);
+    get("winner-search").addEventListener("input", () => { clearTimeout(timer); timer=setTimeout(load, 250); });
+    get("winner-check-all").addEventListener("change", (event) => document.querySelectorAll<HTMLInputElement>(".winner-row-check").forEach((el) => el.checked=(event.target as HTMLInputElement).checked));
+    get("winner-generate").addEventListener("click", () => run("generate", selected()));
+    get("winner-generate-all").addEventListener("click", () => run("generate", [], true));
+    get("winner-publish").addEventListener("click", () => run("publish", selected()));
+    load();
+  }
+</script>
+
+<style>
+  .generator { background:#f5f7fa; color:#172033; min-height:70vh; padding:clamp(2rem,5vw,5rem) 1rem; }
+  .generator__inner { max-width:75rem; margin:auto; }
+  .generator__eyebrow { color:#a16e00; font-size:.78rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  h1 { color:#073c4a; font-family:Raleway,sans-serif; font-size:clamp(2rem,4vw,3.5rem); margin:.3rem 0; }
+  .generator__intro { color:#5f6878; max-width:48rem; }
+  .generator__summary { background:#fff; border-left:4px solid #dfba19; margin:1.8rem 0 1rem; padding:1rem; }
+  .generator__toolbar,.generator__actions { display:flex; gap:.75rem; align-items:end; flex-wrap:wrap; margin:1rem 0; }
+  label { flex:1 1 22rem; } label span { color:#3d485c; display:block; font-size:.75rem; font-weight:750; letter-spacing:.06em; margin-bottom:.35rem; text-transform:uppercase; }
+  input[type=search] { background:#fff; border:1px solid #aeb6c3; border-radius:.3rem; color:#172033; font:inherit; padding:.7rem .8rem; width:100%; }
+  button { background:#dfba19; border:1px solid #cda800; border-radius:.3rem; color:#172033; cursor:pointer; font:inherit; font-weight:750; padding:.7rem 1rem; }
+  button.secondary { background:#fff; border-color:#aeb6c3; } button.publish { background:#087e7d; border-color:#087e7d; color:#fff; } button:disabled { cursor:wait; opacity:.55; }
+  #winner-status { color:#5f6878; font-size:.9rem; }
+  .generator__table-wrap { background:#fff; border:1px solid #d8dde5; border-radius:.4rem; overflow:auto; }
+  table { border-collapse:collapse; min-width:50rem; width:100%; } th,td { border-bottom:1px solid #e3e7ed; padding:.8rem; text-align:left; vertical-align:top; } th { background:#eef1f5; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase; } td:first-child,th:first-child { width:2.5rem; }
+</style>

@@ -1,0 +1,6 @@
+label: Winner page generator
+icon: dynamic_feed
+value:
+  _component: page-sections/features/winner-page-generator
+  heading: SASCS Winner Page Generator
+  apiEndpoint: http://127.0.0.1:8002
