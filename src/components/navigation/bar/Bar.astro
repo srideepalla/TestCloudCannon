@@ -579,7 +579,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
       > .bar-list > .nav-item > .nav-item-trigger,
       > .bar-list > .nav-item > .nav-item-split {
         border-radius: var(--radius-xs);
-        color: var(--gray-0) !important;
+        color: var(--gray-12) !important;
         cursor: pointer;
         display: block;
         font-family: var(--font-headings);
@@ -593,7 +593,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
 
       > .bar-list > .nav-item > a:not(:hover),
       > .bar-list > .nav-item > .nav-item-trigger:not(:hover) {
-        color: var(--gray-0) !important;
+        color: var(--gray-12) !important;
       }
 
       > .bar-list > .nav-item > .nav-item-trigger:hover,
@@ -608,7 +608,7 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         min-width: 0;
 
         .nav-item-link {
-          color: var(--gray-0) !important;
+          color: var(--gray-12) !important;
           cursor: pointer;
           display: block;
           flex: 1 1 auto;
@@ -701,6 +701,20 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         :global(path) {
           stroke-width: 3px;
           stroke: var(--color-text);
+        }
+      }
+
+      /* Top-level chevrons follow their label instead of --color-text, which is
+         a theme token set by the page's colour scheme and does not track the
+         explicit link colour above — it left the arrows light on a light bar. */
+      > .bar-list > .nav-item > .nav-item-trigger > .nav-item-icon,
+      > .bar-list > .nav-item > .nav-item-split .nav-item-icon {
+        /* Nested, not `... .nav-item-icon :global(path)` on one line: Astro only
+           resolves :global() when it is the whole nested selector, and the
+           single-line form shipped a literal `:global(path)` that matched
+           nothing. */
+        :global(path) {
+          stroke: currentColor;
         }
       }
 

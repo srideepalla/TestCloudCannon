@@ -109,7 +109,7 @@ const mobileNavData = [
 
       .desktop-main-nav.bar > .bar-list > .nav-item > a:not(:hover),
       .desktop-main-nav.bar > .bar-list > .nav-item > .nav-item-trigger:not(:hover) {
-        color: var(--gray-0) !important;
+        color: var(--gray-12) !important;
       }
 
       .desktop-main-nav.bar > .bar-list > .nav-item > a:hover,
@@ -125,6 +125,16 @@ const mobileNavData = [
       .desktop-main-nav.bar .nav-item-content a:hover,
       .desktop-main-nav.bar .nav-item-content .nav-item-group-heading:hover {
         color: var(--color-brand) !important;
+      }
+
+      /* The ghost button variant colours itself with --color-text-strong, which
+         html[data-theme] sets to #fff — white on this bar's cream background,
+         and white on gold once :hover swaps in --color-bg-brand. Both states are
+         pinned to black so the button matches the nav links beside it. */
+      .desktop-button-group.button-group .button-inner,
+      .desktop-button-group.button-group .button-inner:hover,
+      .desktop-button-group.button-group .button-inner:focus {
+        color: var(--gray-12) !important;
       }
 
       .nav-hamburger.mobile-button {
