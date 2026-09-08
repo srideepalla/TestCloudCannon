@@ -1,0 +1,53 @@
+heading:
+  type: text
+  comment: Section heading shown above the chat.
+
+description:
+  type: text
+  comment: Short line of copy explaining what the assistant does.
+
+apiEndpoint:
+  type: url
+  comment: >-
+    Base URL of the Nomination Assistant API, with no trailing slash (e.g.
+    https://your-tunnel.trycloudflare.com). A quick-tunnel URL changes every
+    time the tunnel restarts, so expect to update this when testing.
+
+emptyStateText:
+  type: text
+  comment: Message shown in the chat panel before the first message is sent.
+
+debug:
+  type: checkbox
+  comment: >-
+    Show a live log panel under the chat — every fetch it makes and every
+    error, in plain text, right on the page. Turn this on when the assistant
+    isn't responding and you need to see why without opening browser devtools.
+    Turn it off once things are working; it is not meant to ship visible to
+    visitors.
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

@@ -1,0 +1,25 @@
+label: Nomination Assistant
+icon: chat_bubble
+description: Conversational assistant that recommends real Stevie Awards for Women in Business categories.
+value:
+  # Must match the kebab path under src/components/ — renderBlock.astro resolves
+  # the component by this exact key.
+  _component: page-sections/features/nomination-assistant
+  heading: "Find Your Stevie Awards Category"
+  description: "Tell the assistant about your company, product, or achievement, and it will recommend real categories from the Stevie Awards for Women in Business catalog."
+  apiEndpoint: ""
+  emptyStateText: "Tell me about your company, your role, and what you'd like to nominate -- I'll help you find the right categories."
+  debug: true
+  colorScheme: inherit
+  backgroundColor: base
+preview:
+  text:
+    - Nomination Assistant
+  subtext:
+    - key: heading
+  icon: chat_bubble
+picker_preview:
+  text: Nomination Assistant
+  subtext: Conversational assistant that recommends real Stevie Awards for Women in Business categories.
+_inputs_from_glob:
+  - /src/components/page-sections/features/nomination-assistant/nomination-assistant.cloudcannon.inputs.yml

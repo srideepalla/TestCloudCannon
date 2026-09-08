@@ -1,0 +1,34 @@
+# Lets an editor drop <NominationAssistant /> straight into MDX body content.
+# MDX components are auto-registered by filename in src/pages/[...slug].astro,
+# so no import is needed in the page.
+nomination_assistant:
+  template: mdx_component
+  inline: false
+  preview:
+    text:
+      - Nomination Assistant
+    subtext:
+      - key: heading
+      - Conversational Stevie Awards category finder
+    icon: chat_bubble
+  definitions:
+    component_name: NominationAssistant
+    named_args:
+      - editor_key: heading
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: description
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: apiEndpoint
+        type: string
+        optional: true
+        remove_empty: true
+      - editor_key: emptyStateText
+        type: string
+        optional: true
+        remove_empty: true
+  _inputs_from_glob:
+    - /src/components/page-sections/features/nomination-assistant/nomination-assistant.cloudcannon.inputs.yml
