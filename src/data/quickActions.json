@@ -2,7 +2,39 @@
   "heading": "THE STEVIE® AWARDS",
   "links": [
     {
-      "text": "Sponsor",
+      "text": "Enter Now/Submit Entries",
+      "href": "/enter/how-to-enter",
+      "openInNewTab": false,
+      "modalTarget": "select-program"
+    },
+    {
+      "text": "Log in/Create Account",
+      "href": "https://the-stevie-awards.com/login",
+      "openInNewTab": false
+    },
+    {
+      "text": "Get Entry Kit",
+      "href": "/enter/request-the-iba-entry-kit",
+      "openInNewTab": false
+    },
+    {
+      "text": "Schedule Reminders",
+      "href": "/about/calendar",
+      "openInNewTab": false,
+      "modalTarget": "schedule-reminders"
+    },
+    {
+      "text": "Submit Entries",
+      "href": "https://the-stevie-awards.com/login",
+      "openInNewTab": false
+    },
+    {
+      "text": "Apply to be a Judge",
+      "href": "/judges/you-be-the-judge",
+      "openInNewTab": false
+    },
+    {
+      "text": "Become a Sponsor",
       "href": "/sponsors/become-sponsor",
       "openInNewTab": false
     },
@@ -10,11 +42,28 @@
       "text": "Contact Us",
       "href": "/about/contact",
       "openInNewTab": false
+    }
+  ],
+  "awardPrograms": [
+    {
+      "name": "American Business Awards®",
+      "href": "https://aba.stevieawards.com/"
     },
     {
-      "text": "Request Your Entry Kit",
-      "href": "/enter/request-the-iba-entry-kit",
-      "openInNewTab": false
+      "name": "Asia-Pacific Stevie Awards®",
+      "href": "https://asia.stevieawards.com/"
+    },
+    {
+      "name": "Stevie Awards for Sales & Customer Service",
+      "href": "https://sales.stevieawards.com/"
+    },
+    {
+      "name": "Stevie Awards for Great Employers",
+      "href": "https://hr.stevieawards.com/"
+    },
+    {
+      "name": "Stevie Awards for Technology Excellence",
+      "href": "https://tech.stevieawards.com/"
     }
   ]
 }
