@@ -20,7 +20,8 @@
     {
       "text": "Submit Entries",
       "href": "https://the-stevie-awards.com/login",
-      "openInNewTab": false
+      "openInNewTab": false,
+      "modalTarget": "select-program"
     },
     {
       "text": "Apply to be a Judge",
