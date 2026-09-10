@@ -17,7 +17,7 @@ pageSections:
       of the world's most coveted prizes.
     buttonSections:
       - _component: building-blocks/core-elements/button
-        text: Request Your Entry Kit
+        text: ENTER NOW
         hideText: false
         link: /enter/request-the-iba-entry-kit/
         openInNewTab: false
@@ -27,7 +27,7 @@ pageSections:
         uppercase: true
         size: md
       - _component: building-blocks/core-elements/button
-        text: See the 2026 Winners
+        text: LEARN MORE
         hideText: false
         link: /awards/iba-winners/2026/stevie-award-winners/
         openInNewTab: false
@@ -49,7 +49,7 @@ pageSections:
         statusType: closed
         dateLabel: ''
         dateValue: ''
-        link: /awards/iba-winners/2026/stevie-award-winners/
+        link: https://stevieawards.com
       - name: Stevie Awards for Sales & Customer Service
         status: Entries Open
         statusType: open
@@ -260,31 +260,6 @@ pageSections:
         buttonColor: ''
     colorScheme: light
     backgroundColor: base
-  - _component: page-sections/features/grid-testimonials
-    heading: Testimonials
-    testimonials:
-      - quote: My Stevie Awards judging experience was truly exceptional. Engaging with
-          innovative entries and collaborating with industry experts was not
-          only inspiring but also incredibly enriching. The well-organized
-          process and the dedication of the Stevie Awards team made this
-          experience unforgettable.
-        authorName: CLINTUS VICTORIYA
-        authorTitle: Account Manager, Suisse Associates LLC
-        companyLogo:
-          source:
-          alt: IBM India
-      - quote: I am incredibly honored to have participated on the judging committee for
-          the Stevie Awards Women in Business for Media & Social Media Awards.
-          It has been an extremely rewarding experience reviewing all of the
-          incredible accomplishments and real world impact by female leaders all
-          over the world!
-        authorName: KRISTEN DOLAN
-        authorTitle: Vice President Media Strategy &amp; Innovation at Influential
-        companyLogo:
-          source:
-          alt: Setupad
-    colorScheme: light
-    backgroundColor: surface
   - _component: page-sections/features/split-list-form
     subheading: The Stevie® Awards
     heading: Download the Stevie Awards 2027 Entry Kit &amp; Best Submission
@@ -376,4 +351,29 @@ pageSections:
     viewMoreText: View More
     colorScheme: dark
     backgroundColor: base
+  - _component: page-sections/features/grid-testimonials
+    heading: Testimonials
+    testimonials:
+      - quote: My Stevie Awards judging experience was truly exceptional. Engaging with
+          innovative entries and collaborating with industry experts was not
+          only inspiring but also incredibly enriching. The well-organized
+          process and the dedication of the Stevie Awards team made this
+          experience unforgettable.
+        authorName: CLINTUS VICTORIYA
+        authorTitle: Account Manager, Suisse Associates LLC
+        companyLogo:
+          source:
+          alt: IBM India
+      - quote: I am incredibly honored to have participated on the judging committee for
+          the Stevie Awards Women in Business for Media & Social Media Awards.
+          It has been an extremely rewarding experience reviewing all of the
+          incredible accomplishments and real world impact by female leaders all
+          over the world!
+        authorName: KRISTEN DOLAN
+        authorTitle: Vice President Media Strategy &amp; Innovation at Influential
+        companyLogo:
+          source:
+          alt: Setupad
+    colorScheme: light
+    backgroundColor: surface
 ---
