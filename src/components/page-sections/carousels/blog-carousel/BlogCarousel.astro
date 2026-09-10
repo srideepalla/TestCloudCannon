@@ -61,7 +61,6 @@ const typedPosts = posts as BlogPost[];
         loop={true}
         align="start"
         class="blog-carousel__carousel"
-        data-children-prop={useDefaultEditableBinding ? "posts" : undefined}
       >
         {typedPosts.map((post) => (
           <CarouselSlide>
