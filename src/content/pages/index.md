@@ -10,13 +10,11 @@ pageSections:
       source: /images/hero/hero-bg.jpg
       alt: Stevie Awards hero background
     subheading: WINNERS ANNOUNCED
-    heading: The 23rd Annual International Business Awards®
-    description: The International Business Awards® are the top honors for
-      achievement in the workplace around the world. Each year our judges review
-      thousands of nominations from organizations and individuals in more than
-      60 nations. The 2026 competition is no longer accepting nominations. The
-      2027 edition will begin accepting nominations in February. Get the entry
-      kit to learn how to prepare and submit nominations.
+    heading: THE STEVIE AWARDS ARE THE WORLD’S PREMIER BUSINESS AWARDS
+    description: They were created in 2002 to honor and generate public recognition
+      of the achievements and positive contributions of organizations and
+      working professionals worldwide. In short order the Stevie has become one
+      of the world's most coveted prizes.
     buttonSections:
       - _component: building-blocks/core-elements/button
         text: Request Your Entry Kit
@@ -107,61 +105,6 @@ pageSections:
         icon: social/linkedin
     colorScheme: dark
     backgroundColor: base
-  - _component: page-sections/features/grid-testimonials
-    heading: Winner Testimonials
-    testimonials:
-      - quote: Winning the Stevie Award has been an affirmation of our good work and the
-          intent that we set out with. It gives us validation of our effort, our
-          plans, and our execution. This award helps bring our initiatives to a
-          larger community. We will be able to build on our purpose to make
-          students industry-ready, and hope this award will encourage others to
-          do more for the larger community.
-        authorName: Mona Bharadwaj
-        authorTitle: Technology Partner ,Specialist, IBM India
-        companyLogo:
-          source: /images/IBA/IBA-Winner-IBM.png
-          alt: IBM India
-      - quote: On behalf of my team at Pepsico, we are very excited and proud to have
-          won the Gold Stevie Award. This award is a confirmation of the efforts
-          that Pepsico as a company has taken to focus on high-tech to bring
-          more innovation, productivity, and tech-based capabilities to the
-          business, our partners, and consumers. Winning the Stevie Award also
-          boosts the morale and ambition of the team.
-        authorName: Ravi Boggaram
-        authorTitle: CTO Sr. Director, Global Digital Services, Pepsico
-        companyLogo:
-          source: /images/pepsico-logo-header.webp
-          alt: Pepsico
-      - quote: Winning a Stevie Award is about more than recognition; it's about the
-          commitment we've made to ourselves and those who believe in our
-          vision. The Gold Stevie Award reinforces that our dedication is making
-          a difference, and it drives us to continue striving for excellence.
-        authorName: Charles Chima
-        authorTitle: Chief Strategy Officer, Dynace Global, Malaysia
-        companyLogo:
-          source: /images/dynace-logo-2.png
-          alt: chargeback
-      - quote: We're proud that Setupad's drive to deliver the best publisher tech on
-          the market was acknowledged by this esteemed award. The Stevie triumph
-          is not just an accolade;it's a strategic asset leading to new heights
-          of impact, reputation, and sustainable growth. It's a catalyst for our
-          ongoing success story.
-        authorName: Toms Panders
-        authorTitle: '&nbsp;Co-Founder &amp; CEO, Setupad, Latvia'
-        companyLogo:
-          source: /images/logo-fin-v-x3.webp
-          alt: Setupad
-      - quote: Winning this Stevie Award has positively impacted my personal life and
-          transformed my business! My business, Kasselot Evanesse, has received
-          international recognition. Stevie Awards are super beneficial to
-          launching new brands.
-        authorName: LeeAnne Kassel
-        authorTitle: '&nbsp;CEO, Kasselot Evanesse, (Pty) Ltd, South Africa'
-        companyLogo:
-          source: /images/1684529716669.jpg
-          alt: Evanesse
-    colorScheme: light
-    backgroundColor: surface
   - _component: page-sections/carousels/card-carousel
     heading: Learn About all of the Stevie® Award Programs
     description: Whatever your organization is seeking recognition for, there is a
@@ -317,6 +260,61 @@ pageSections:
         buttonColor: ''
     colorScheme: light
     backgroundColor: base
+  - _component: page-sections/features/grid-testimonials
+    heading: Winner Testimonials
+    testimonials:
+      - quote: Winning the Stevie Award has been an affirmation of our good work and the
+          intent that we set out with. It gives us validation of our effort, our
+          plans, and our execution. This award helps bring our initiatives to a
+          larger community. We will be able to build on our purpose to make
+          students industry-ready, and hope this award will encourage others to
+          do more for the larger community.
+        authorName: Mona Bharadwaj
+        authorTitle: Technology Partner ,Specialist, IBM India
+        companyLogo:
+          source: /images/IBA/IBA-Winner-IBM.png
+          alt: IBM India
+      - quote: On behalf of my team at Pepsico, we are very excited and proud to have
+          won the Gold Stevie Award. This award is a confirmation of the efforts
+          that Pepsico as a company has taken to focus on high-tech to bring
+          more innovation, productivity, and tech-based capabilities to the
+          business, our partners, and consumers. Winning the Stevie Award also
+          boosts the morale and ambition of the team.
+        authorName: Ravi Boggaram
+        authorTitle: CTO Sr. Director, Global Digital Services, Pepsico
+        companyLogo:
+          source: /images/pepsico-logo-header.webp
+          alt: Pepsico
+      - quote: Winning a Stevie Award is about more than recognition; it's about the
+          commitment we've made to ourselves and those who believe in our
+          vision. The Gold Stevie Award reinforces that our dedication is making
+          a difference, and it drives us to continue striving for excellence.
+        authorName: Charles Chima
+        authorTitle: Chief Strategy Officer, Dynace Global, Malaysia
+        companyLogo:
+          source: /images/dynace-logo-2.png
+          alt: chargeback
+      - quote: We're proud that Setupad's drive to deliver the best publisher tech on
+          the market was acknowledged by this esteemed award. The Stevie triumph
+          is not just an accolade;it's a strategic asset leading to new heights
+          of impact, reputation, and sustainable growth. It's a catalyst for our
+          ongoing success story.
+        authorName: Toms Panders
+        authorTitle: '&nbsp;Co-Founder &amp; CEO, Setupad, Latvia'
+        companyLogo:
+          source: /images/logo-fin-v-x3.webp
+          alt: Setupad
+      - quote: Winning this Stevie Award has positively impacted my personal life and
+          transformed my business! My business, Kasselot Evanesse, has received
+          international recognition. Stevie Awards are super beneficial to
+          launching new brands.
+        authorName: LeeAnne Kassel
+        authorTitle: '&nbsp;CEO, Kasselot Evanesse, (Pty) Ltd, South Africa'
+        companyLogo:
+          source: /images/1684529716669.jpg
+          alt: Evanesse
+    colorScheme: light
+    backgroundColor: surface
   - _component: page-sections/features/split-list-form
     subheading: The Stevie® Awards
     heading: Download the Stevie Awards 2027 Entry Kit &amp; Best Submission
@@ -371,8 +369,11 @@ pageSections:
         postedDate: May 12, 2024
         readTime: 2 mins
         title: Who's coming to the Middle East & North Africa Stevie® Awards on Friday?
-        description: All U.S.-based organisations are eligible to enter in the top
-          business awards program in the United State of America (USA).
+        description: This Friday, September 11 we will stage the seventh annual Middle
+          East & North Africa Stevie® Awards at the InterContinental Hotel in
+          Istanbul, Türkiye.  This Stevie Awards program recognizes innovation
+          in the workplace in 18th nations of the MENA region. The program has
+          been sponsored, since its inception, by the Ras Al Khaimah Chamber...
         link: https://blog.stevieawards.com/blog/whos-coming-to-the-middle-east-north-africa-stevie-awards-on-friday
       - image:
           source: /src/assets/images/grand20announced-1.png
@@ -380,8 +381,13 @@ pageSections:
         postedDate: May 12, 2024
         readTime: 2 mins
         title: 2026 International Business Awards® Grand Stevie® Winners Announced
-        description: All U.S.-based organisations are eligible to enter in the top
-          business awards program in the United State of America (USA).
+        description: >
+          Eight top “best in show” honors recognize leading organizations,
+          agencies, nominations, and a new product or service; winners will be
+          celebrated on 28 October in Paris, France. The Stevie® Awards today
+          announced the eight Grand Stevie Award winners in The 2026
+          International Business Awards®, the 23rd annual edition of the global
+          business awards...
         link: https://blog.stevieawards.com/blog/2026-international-business-awards-grand-stevie-winners-announced
       - image:
           source: /src/assets/images/gsa2620pressreleaseblog.png
@@ -389,18 +395,13 @@ pageSections:
         postedDate: May 12, 2024
         readTime: 2 mins
         title: Preisträgerinnen und Preisträger der German Stevie Awards 2026
-        description: All U.S.-based organisations are eligible to enter in the top
-          business awards program in the United State of America (USA).
+        description: 'German Stevie® Awards 2026: Die Gewinner stehen fest – diese
+          Unternehmen wurdenausgezeichnet Über 250 Bewerbungen bewertet –
+          Unternehmen aus Deutschland, Österreich, der Schweiz, Luxemburg und
+          weiteren deutschsprachigen Märkten ausgezeichnet – Preisverleihung im
+          Oktober in Paris Die Gewinnerinnen und Gewinner der 12. German Stevie®
+          Awards...'
         link: https://blog.stevieawards.com/blog/preistr%C3%A4gerinnen-und-preistr%C3%A4ger-der-german-stevie-awards-2026
-      - image:
-          source: /src/assets/images/54344562486-08317006a1-w.jpg
-          alt: Call for Entries Issued for the 2024 Stevie Awards
-        postedDate: May 12, 2024
-        readTime: 2 mins
-        title: Call for Entries Issued for the 2024 Stevie Awards
-        description: All U.S.-based organisations are eligible to enter in the top
-          business awards program in the United State of America (USA).
-        link: https://blog.stevieawards.com/blog
     viewMoreLink: https://blog.stevieawards.com/blog
     viewMoreText: View More
     colorScheme: dark
