@@ -119,6 +119,7 @@ const judgesCollection = makeCollection("./src/content/judges");
 const pressCollection = makeCollection("./src/content/press");
 const sponsorsCollection = makeCollection("./src/content/sponsors");
 const tagsCollection = makeCollection("./src/content/tags");
+const ticketsCollection = makeCollection("./src/content/tickets");
 const newCollection = makeCollection("./src/content/new");
 
 export const collections = {
@@ -132,5 +133,6 @@ export const collections = {
   press: pressCollection,
   sponsors: sponsorsCollection,
   tags: tagsCollection,
+  tickets: ticketsCollection,
   new: newCollection,
 };

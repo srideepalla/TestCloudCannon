@@ -142,5 +142,20 @@
         "openInNewTab": false
       }
     ]
+  },
+  "new": {
+    "heading": "New",
+    "links": [
+      {
+        "text": "Search Past Winners",
+        "href": "/new/search-past-winners",
+        "openInNewTab": false
+      },
+      {
+        "text": "Nomination Assistant",
+        "href": "/new/nomination-assistant",
+        "openInNewTab": false
+      }
+    ]
   }
 }
