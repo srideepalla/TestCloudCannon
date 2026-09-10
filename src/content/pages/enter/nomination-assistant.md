@@ -1,0 +1,17 @@
+---
+_schema: default
+title: Nomination Assistant
+description: Ask about entering the Stevie Awards — fees, deadlines, categories, judging — or look up a winning organization or honoree.
+pageSections:
+  - _component: page-sections/chatbot/stevie-chatbot
+    heading: Stevie Awards Assistant
+    text: >-
+      Ask about entering — fees, deadlines, categories, judging — or look up a
+      winning organization or honoree. Every answer cites its source.
+    placeholder: What is the late entry fee?
+    buttonLabel: Ask
+    apiEndpoint: ""
+    showSources: true
+    colorScheme: inherit
+    backgroundColor: surface
+---
