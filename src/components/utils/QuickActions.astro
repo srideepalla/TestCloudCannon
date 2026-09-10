@@ -124,7 +124,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
         </li>
       ))}
     </ul>
-    <button class="qa-program-enter-btn" type="button">ENTER</button>
+    <button class="qa-program-enter-btn" type="button">CONTINUE</button>
   </div>
 </div>
 
@@ -147,21 +147,96 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
     <!-- Step 1: Enter details -->
     <div class="qa-reminder-step" data-step="1">
       <div class="qa-reminder-field">
-        <label class="qa-reminder-label" for="reminder-name">Full Name</label>
-        <input type="text" id="reminder-name" class="qa-reminder-input" placeholder="Your full name" />
+        <label class="qa-reminder-label" for="reminder-name">Full Name<span class="qa-required">*</span></label>
+        <input type="text" id="reminder-name" class="qa-reminder-input" placeholder="Full Name" />
       </div>
       <div class="qa-reminder-field">
-        <label class="qa-reminder-label" for="reminder-email">Email Address</label>
-        <input type="email" id="reminder-email" class="qa-reminder-input" placeholder="you@example.com" />
+        <label class="qa-reminder-label" for="reminder-country">Select Country<span class="qa-required">*</span></label>
+        <select id="reminder-country" class="qa-reminder-input qa-reminder-select">
+          <option value="">Select Country</option>
+          <option value="US">United States</option>
+          <option value="GB">United Kingdom</option>
+          <option value="CA">Canada</option>
+          <option value="AU">Australia</option>
+          <option value="DE">Germany</option>
+          <option value="FR">France</option>
+          <option value="IN">India</option>
+          <option value="AE">United Arab Emirates</option>
+          <option value="SA">Saudi Arabia</option>
+          <option value="SG">Singapore</option>
+          <option value="JP">Japan</option>
+          <option value="KR">South Korea</option>
+          <option value="CN">China</option>
+          <option value="BR">Brazil</option>
+          <option value="MX">Mexico</option>
+          <option value="OTHER">Other</option>
+        </select>
       </div>
       <div class="qa-reminder-field">
         <label class="qa-reminder-label" for="reminder-phone">Mobile Number</label>
-        <input type="tel" id="reminder-phone" class="qa-reminder-input" placeholder="+1 (555) 000-0000" />
+        <div class="qa-phone-row">
+          <select id="reminder-phone-code" class="qa-reminder-input qa-phone-code">
+            <option value="+1">🇺🇸 +1</option>
+            <option value="+44">🇬🇧 +44</option>
+            <option value="+1-ca">🇨🇦 +1</option>
+            <option value="+61">🇦🇺 +61</option>
+            <option value="+49">🇩🇪 +49</option>
+            <option value="+33">🇫🇷 +33</option>
+            <option value="+91">🇮🇳 +91</option>
+            <option value="+971">🇦🇪 +971</option>
+            <option value="+966">🇸🇦 +966</option>
+            <option value="+65">🇸🇬 +65</option>
+            <option value="+81">🇯🇵 +81</option>
+            <option value="+82">🇰🇷 +82</option>
+            <option value="+86">🇨🇳 +86</option>
+            <option value="+55">🇧🇷 +55</option>
+            <option value="+52">🇲🇽 +52</option>
+          </select>
+          <input type="tel" id="reminder-phone" class="qa-reminder-input qa-phone-input" placeholder="Mobile Number" />
+        </div>
+      </div>
+      <div class="qa-reminder-field">
+        <label class="qa-reminder-label" for="reminder-type">Reminder Type<span class="qa-required">*</span></label>
+        <select id="reminder-type" class="qa-reminder-input qa-reminder-select">
+          <option value="">Reminder Type</option>
+          <option value="sms">SMS</option>
+          <option value="email">Email</option>
+          <option value="both">SMS & Email</option>
+        </select>
+      </div>
+      <div class="qa-reminder-field">
+        <label class="qa-reminder-label" for="reminder-options">Select Options<span class="qa-required">*</span></label>
+        <select id="reminder-options" class="qa-reminder-input qa-reminder-select">
+          <option value="">Select Options</option>
+          <option value="all">All Programs</option>
+          <option value="aba">American Business Awards</option>
+          <option value="iba">International Business Awards</option>
+          <option value="sales">Sales & Customer Service</option>
+          <option value="women">Women In Business</option>
+          <option value="mena">Middle East & North Africa</option>
+          <option value="apac">Asia-Pacific</option>
+          <option value="employers">Great Employers</option>
+          <option value="tech">Technology Excellence</option>
+        </select>
+      </div>
+      <div class="qa-reminder-field qa-consent-field">
+        <label class="qa-consent-label">
+          <input type="checkbox" id="reminder-consent" class="qa-consent-checkbox" />
+          <span>I give consent to gather and process my data provided in the form above, and to the storing of IP address of my internet service provider.</span>
+        </label>
+      </div>
+      <div class="qa-reminder-field qa-recaptcha-placeholder" title="Placeholder — real reCAPTCHA will be integrated">
+        <div class="qa-recaptcha-box">
+          <input type="checkbox" id="reminder-captcha" class="qa-consent-checkbox" />
+          <span>I am not a robot</span>
+          <span class="qa-recaptcha-badge">reCAPTCHA</span>
+        </div>
       </div>
       <div class="qa-reminder-actions">
-        <button class="qa-reminder-btn qa-reminder-btn--outline" type="button" popovertarget="modal-schedule-reminders" popovertargetaction="hide">Cancel</button>
-        <button class="qa-reminder-btn qa-reminder-btn--primary" type="button" data-action="send-otp">Submit</button>
+        <button class="qa-reminder-btn qa-reminder-btn--outline" type="button" data-action="remove-info">REMOVE MY INFORMATION</button>
+        <button class="qa-reminder-btn qa-reminder-btn--primary" type="button" data-action="send-otp">SUBMIT</button>
       </div>
+      <p class="qa-reminder-note">Reminders are sent 8 days prior to every program deadline unless you edit your preferences.</p>
     </div>
     <!-- Step 2: OTP verification -->
     <div class="qa-reminder-step" data-step="2" hidden>
@@ -226,12 +301,21 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       });
     });
 
-    // Shared OTP verification logic
-    let pendingRedirectUrl: string | null = null;
+    // Select Awards Program — CONTINUE button navigates to selected program
+    const programEnterBtn = document.querySelector<HTMLButtonElement>(".qa-program-enter-btn");
+    if (programEnterBtn) {
+      programEnterBtn.addEventListener("click", () => {
+        const selected = document.querySelector<HTMLInputElement>('input[name="award-program"]:checked');
+        if (selected?.value) {
+          window.location.href = selected.value;
+        }
+      });
+    }
 
-    const verifyModal = document.getElementById("modal-schedule-reminders");
-    if (verifyModal) {
-      const steps = verifyModal.querySelectorAll<HTMLElement>(".qa-reminder-step");
+    // Schedule Reminders — step navigation
+    const remindersModal = document.getElementById("modal-schedule-reminders");
+    if (remindersModal) {
+      const steps = remindersModal.querySelectorAll<HTMLElement>(".qa-reminder-step");
 
       function showStep(stepNum: number) {
         steps.forEach((step) => {
@@ -239,32 +323,95 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
         });
       }
 
-      const sendOtpBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="send-otp"]');
-      sendOtpBtn?.addEventListener("click", () => {
-        showStep(2);
+      const nameInput = remindersModal.querySelector<HTMLInputElement>("#reminder-name");
+      const countrySelect = remindersModal.querySelector<HTMLSelectElement>("#reminder-country");
+      const phoneInput = remindersModal.querySelector<HTMLInputElement>("#reminder-phone");
+      const typeSelect = remindersModal.querySelector<HTMLSelectElement>("#reminder-type");
+      const optionsSelect = remindersModal.querySelector<HTMLSelectElement>("#reminder-options");
+      const consentCheckbox = remindersModal.querySelector<HTMLInputElement>("#reminder-consent");
+      const captchaCheckbox = remindersModal.querySelector<HTMLInputElement>("#reminder-captcha");
+      const phoneRegex = /^[\d\s\-()]{7,}$/;
+
+      function clearErrors() {
+        remindersModal.querySelectorAll<HTMLElement>(".qa-field-error").forEach((el) => el.remove());
+      }
+
+      function showError(el: HTMLElement, msg: string) {
+        const parent = el.closest(".qa-reminder-field") || el.parentElement;
+        const existing = parent?.querySelector(".qa-field-error");
+        if (existing) existing.remove();
+        const err = document.createElement("span");
+        err.className = "qa-field-error";
+        err.textContent = msg;
+        parent?.appendChild(err);
+      }
+
+      const removeBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="remove-info"]');
+      removeBtn?.addEventListener("click", () => {
+        if (nameInput) nameInput.value = "";
+        if (countrySelect) countrySelect.value = "";
+        if (phoneInput) phoneInput.value = "";
+        if (typeSelect) typeSelect.value = "";
+        if (optionsSelect) optionsSelect.value = "";
+        if (consentCheckbox) consentCheckbox.checked = false;
+        if (captchaCheckbox) captchaCheckbox.checked = false;
+        clearErrors();
       });
 
-      const verifyBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="verify-otp"]');
+      const sendOtpBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="send-otp"]');
+      sendOtpBtn?.addEventListener("click", () => {
+        clearErrors();
+        let valid = true;
+
+        if (!nameInput?.value.trim()) {
+          showError(nameInput!, "Name is required");
+          valid = false;
+        }
+        if (!countrySelect?.value) {
+          showError(countrySelect!, "Select a country");
+          valid = false;
+        }
+        if (!phoneInput?.value.trim() || !phoneRegex.test(phoneInput!.value.trim())) {
+          showError(phoneInput!, "Enter a valid phone number");
+          valid = false;
+        }
+        if (!typeSelect?.value) {
+          showError(typeSelect!, "Select a reminder type");
+          valid = false;
+        }
+        if (!optionsSelect?.value) {
+          showError(optionsSelect!, "Select an option");
+          valid = false;
+        }
+        if (!consentCheckbox?.checked) {
+          showError(consentCheckbox!, "Consent is required");
+          valid = false;
+        }
+        if (!captchaCheckbox?.checked) {
+          showError(captchaCheckbox!, "Please verify you are not a robot");
+          valid = false;
+        }
+
+        if (valid) showStep(2);
+      });
+
+      const verifyBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="verify-otp"]');
       verifyBtn?.addEventListener("click", () => {
         showStep(3);
       });
 
-      const gotItBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="got-it"]');
+      const gotItBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="got-it"]');
       gotItBtn?.addEventListener("click", () => {
-        verifyModal.hidePopover();
-        if (pendingRedirectUrl) {
-          window.location.href = pendingRedirectUrl;
-          pendingRedirectUrl = null;
-        }
+        remindersModal.hidePopover();
       });
 
-      const resendBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="resend-otp"]');
+      const resendBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="resend-otp"]');
       resendBtn?.addEventListener("click", () => {
         // Placeholder for resend logic
       });
 
       // OTP auto-advance
-      const otpInputs = verifyModal.querySelectorAll<HTMLInputElement>(".qa-otp-digit");
+      const otpInputs = remindersModal.querySelectorAll<HTMLInputElement>(".qa-otp-digit");
       otpInputs.forEach((input, idx) => {
         input.addEventListener("input", () => {
           if (input.value.length === 1 && idx < otpInputs.length - 1) {
@@ -279,23 +426,18 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       });
 
       // Reset to step 1 when modal closes
-      verifyModal.addEventListener("toggle", (e) => {
+      remindersModal.addEventListener("toggle", (e) => {
         if ((e as ToggleEvent).newState === "closed") {
           showStep(1);
           otpInputs.forEach((input) => (input.value = ""));
-        }
-      });
-    }
-
-    // Select Awards Program — ENTER button → opens verification flow
-    const programEnterBtn = document.querySelector<HTMLButtonElement>(".qa-program-enter-btn");
-    if (programEnterBtn) {
-      programEnterBtn.addEventListener("click", () => {
-        const selected = document.querySelector<HTMLInputElement>('input[name="award-program"]:checked');
-        if (selected?.value && verifyModal) {
-          pendingRedirectUrl = selected.value;
-          document.getElementById("modal-select-program")?.hidePopover();
-          verifyModal.showPopover();
+          clearErrors();
+          if (nameInput) nameInput.value = "";
+          if (countrySelect) countrySelect.value = "";
+          if (phoneInput) phoneInput.value = "";
+          if (typeSelect) typeSelect.value = "";
+          if (optionsSelect) optionsSelect.value = "";
+          if (consentCheckbox) consentCheckbox.checked = false;
+          if (captchaCheckbox) captchaCheckbox.checked = false;
         }
       });
     }
@@ -499,7 +641,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
 
     .qa-modal-panel {
       background: #fff;
-      border-radius: var(--radius-lg);
+      border-radius: 0;
       padding: var(--spacing-2xl);
       box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
     }
@@ -624,6 +766,13 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
     }
 
     /* Schedule Reminders */
+    .qa-field-error {
+      display: block;
+      color: #dc2626;
+      font-size: var(--font-size-xs);
+      margin-top: var(--spacing-xs);
+    }
+
     .qa-reminder-field {
       margin-bottom: var(--spacing-lg);
     }
@@ -655,6 +804,88 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
     .qa-reminder-input:focus {
       outline: none;
       border-color: var(--color-brand, #dfba19);
+    }
+
+    .qa-reminder-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%23666' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    .qa-required {
+      color: #dc2626;
+      margin-left: 2px;
+    }
+
+    .qa-phone-row {
+      display: flex;
+      gap: var(--spacing-sm);
+    }
+
+    .qa-phone-code {
+      width: 110px;
+      flex-shrink: 0;
+      padding-right: 28px;
+    }
+
+    .qa-phone-input {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .qa-consent-field {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .qa-consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      font-size: var(--font-size-xs);
+      color: #555;
+      line-height: 1.4;
+      cursor: pointer;
+    }
+
+    .qa-consent-checkbox {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      accent-color: var(--color-brand, #dfba19);
+      cursor: pointer;
+    }
+
+    .qa-recaptcha-placeholder {
+      margin-bottom: var(--spacing-md);
+    }
+
+    .qa-recaptcha-box {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border: 1px solid #ddd;
+      background: #fafafa;
+      font-size: var(--font-size-sm);
+      color: #333;
+    }
+
+    .qa-recaptcha-badge {
+      margin-left: auto;
+      font-size: var(--font-size-xs);
+      color: #999;
+      font-style: italic;
+    }
+
+    .qa-reminder-note {
+      margin: var(--spacing-md) 0 0;
+      font-size: var(--font-size-xs);
+      color: #888;
+      line-height: 1.4;
     }
 
     .qa-reminder-actions {
