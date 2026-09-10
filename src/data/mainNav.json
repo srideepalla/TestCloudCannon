@@ -154,6 +154,12 @@
       "path": "/webinars/upcoming-webinars/",
       "openInNewTab": false,
       "children": []
+    },
+    {
+      "name": "NEW ",
+      "path": "",
+      "openInNewTab": false,
+      "children": []
     }
   ],
   "buttonSections": [
