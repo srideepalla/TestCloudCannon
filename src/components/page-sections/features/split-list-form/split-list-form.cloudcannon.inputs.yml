@@ -6,6 +6,25 @@ heading:
   type: text
   comment: Main section heading.
 
+image:
+  type: object
+  comment: Optional wide image displayed between the heading and the description.
+
+image.source:
+  type: image
+  comment: Image file path.
+  options:
+    paths:
+      uploads: src/assets/images
+      static: ""
+    resize_style: cover
+    width: 1280
+    height: 400
+
+image.alt:
+  type: text
+  comment: Alt text for the image.
+
 description:
   type: markdown
   comment: Optional description below the heading.

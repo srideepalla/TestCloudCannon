@@ -317,6 +317,26 @@ pageSections:
         buttonColor: ''
     colorScheme: light
     backgroundColor: base
+  - _component: page-sections/features/split-list-form
+    subheading: The Stevie® Awards
+    heading: Download the Stevie Awards 2027 Entry Kit & Best Submission Practice Guide
+    image:
+      source: /src/assets/images/54916228917-5dda7cc82f-o.jpg
+      alt: Stevie Award winners celebrating with their trophy
+    description: Please fill the form to gain access to essential resources with the
+      Stevie Awards 2027 Entry Kit and Best Submission Practice Guide to elevate
+      your submission and make a lasting impression. Simply complete the form to
+      stand out from the crowd.
+    list: {}
+    buttonSections: []
+    formHeading: Get Your Entry Kit
+    formEmbed: |-
+      <script src="https://js.hsforms.net/forms/embed/35655.js" defer></script>
+      <div class="hs-form-frame" data-region="na1" data-form-id="fa2a5858-32e2-4240-9ed0-2a6a3ba34b8e" data-portal-id="35655"></div>
+    formCardColorScheme: light
+    formCardBackgroundColor: base
+    colorScheme: dark
+    backgroundColor: base
   - _component: page-sections/carousels/blog-carousel
     subheading: The Stevie® Awards
     heading: Check Our Stevie® Awards Blog

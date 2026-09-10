@@ -2,6 +2,7 @@
 import CustomSection from "@builders/custom-section/CustomSection.astro";
 import Embed from "@core-elements/embed/Embed.astro";
 import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
 import ListComponent from "@core-elements/list/List.astro";
 import Text from "@core-elements/text/Text.astro";
 import ArticleLinkList from "@wrappers/article-link-list/ArticleLinkList.astro";
@@ -12,6 +13,7 @@ import Split from "@wrappers/split/Split.astro";
 const {
   subheading = "",
   heading = "",
+  image = {},
   description = "",
   list = null,
   buttonSections = [],
@@ -62,6 +64,20 @@ const {
         data-prop="heading"
         class="split-list-form__heading"
       />
+      {
+        image?.source && (
+          <Image
+            source={image.source}
+            alt={image.alt || ""}
+            aspectRatio="horizontal-strip"
+            alignX="start"
+            rounded={true}
+            data-prop-src="image.source"
+            data-prop-alt="image.alt"
+            class="split-list-form__image"
+          />
+        )
+      }
       {
         description && (
           <Text
@@ -155,6 +171,10 @@ const {
       font-weight: var(--font-weight-bold);
       letter-spacing: 0.05em;
       margin: 0;
+    }
+
+    .split-list-form__image {
+      margin-top: var(--spacing-lg);
     }
 
     .split-list-form__list {

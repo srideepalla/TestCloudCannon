@@ -5,6 +5,9 @@ value:
   _component: page-sections/features/split-list-form
   subheading: ""
   heading: ""
+  image:
+    source: ""
+    alt: ""
   description: ""
   list: {}
   buttonSections: []
