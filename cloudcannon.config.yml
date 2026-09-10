@@ -212,14 +212,12 @@ collections_config:
     disable_add: false
     disable_add_folder: false
     disable_file_actions: false
-  tickets:
-    path: src/content/tickets
-    icon: local_activity
+  new:
+    path: src/content/new
+    icon: new_releases
     disable_url: false
     _enabled_editors:
       - visual
-      - content
-      - data
       - content
       - data
     add_options:
@@ -228,7 +226,7 @@ collections_config:
         schema: default
     create:
       path: "[relative_base_path]/{filename|slugify|lowercase}.mdx"
-    new_preview_url: /about/about-us
+    new_preview_url: /new/search-past-winners
     schemas:
       default:
         path: .cloudcannon/schemas/sidebarPage.md

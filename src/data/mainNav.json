@@ -162,13 +162,13 @@
       "children": [
         {
           "name": "Search Past Winners",
-          "path": "/enter/search-past-winners",
+          "path": "/new/search-past-winners",
           "openInNewTab": false,
           "children": []
         },
         {
           "name": "Nomination Assistant",
-          "path": "/enter/nomination-assistant",
+          "path": "/new/nomination-assistant",
           "openInNewTab": false,
           "children": []
         }
