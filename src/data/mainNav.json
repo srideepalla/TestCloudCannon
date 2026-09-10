@@ -156,10 +156,23 @@
       "children": []
     },
     {
-      "name": "NEW ",
+      "name": "NEW",
       "path": "",
       "openInNewTab": false,
-      "children": []
+      "children": [
+        {
+          "name": "Search Past Winners",
+          "path": "/enter/search-past-winners",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "Nomination Assistant",
+          "path": "/enter/nomination-assistant",
+          "openInNewTab": false,
+          "children": []
+        }
+      ]
     }
   ],
   "buttonSections": [
