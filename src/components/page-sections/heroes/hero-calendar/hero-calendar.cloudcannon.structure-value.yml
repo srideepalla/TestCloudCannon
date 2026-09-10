@@ -29,6 +29,14 @@ value:
       variant: tertiary
       size: md
       uppercase: true
+  awardProgramsHeading: "Our Award Programs"
+  awardPrograms:
+    - name: "Award Program Name"
+      status: "Entries Open"
+      statusType: open
+      dateLabel: "Entries Open:"
+      dateValue: "Date"
+      link: ""
   deadlinesHeading: "Heading Text"
   socialLinks:
     - platform: LinkedIn
@@ -60,6 +68,47 @@ picker_preview:
 _inputs_from_glob:
   - /src/components/page-sections/heroes/hero-calendar/hero-calendar.cloudcannon.inputs.yml
 _structures:
+  awardProgram:
+    values:
+      - label: Award Program
+        icon: emoji_events
+        value:
+          name: ""
+          status: "Entries Open"
+          statusType: open
+          dateLabel: ""
+          dateValue: ""
+          link: ""
+        preview:
+          text:
+            - key: name
+          subtext:
+            - key: status
+        _inputs:
+          name:
+            type: text
+            comment: Award program name.
+          status:
+            type: text
+            comment: Status text (e.g., "Entries Open", "Winners Announced").
+          statusType:
+            type: select
+            comment: Controls the status text color.
+            options:
+              values:
+                - id: open
+                  name: Open (gold)
+                - id: closed
+                  name: Closed (red)
+          dateLabel:
+            type: text
+            comment: Label before the date (e.g., "Entries Open:", "Final Deadline:").
+          dateValue:
+            type: text
+            comment: The date or value to highlight (e.g., "October 7, 2026").
+          link:
+            type: url
+            comment: URL to the award program page.
   socialLink:
     values:
       - label: Social Link

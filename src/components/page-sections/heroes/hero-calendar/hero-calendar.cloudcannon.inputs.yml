@@ -39,6 +39,16 @@ buttonSections:
   options:
     structures: _structures.buttonSections
 
+awardProgramsHeading:
+  type: text
+  comment: Heading text for the award programs widget.
+
+awardPrograms:
+  type: array
+  comment: Award programs listed in the hero widget.
+  options:
+    structures: _structures.awardProgram
+
 deadlinesHeading:
   type: text
   comment: Heading above the deadlines carousel.

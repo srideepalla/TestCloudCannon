@@ -7,8 +7,8 @@ description: The Stevie® Awards are the world's premier business awards and are
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source:
-      alt:
+      source: /images/hero/hero-bg.jpg
+      alt: Stevie Awards hero background
     subheading: WINNERS ANNOUNCED
     heading: The 23rd Annual International Business Awards®
     description: The International Business Awards® are the top honors for
@@ -38,8 +38,73 @@ pageSections:
         variant: tertiary
         uppercase: true
         size: md
+    awardProgramsHeading: Our Award Programs
+    awardPrograms:
+      - name: American Business Awards®
+        status: Entries Open
+        statusType: open
+        dateLabel: "Entries Open:"
+        dateValue: October 7, 2026
+        link: https://aba.stevieawards.com/
+      - name: International Business Awards®
+        status: Winners Announced
+        statusType: closed
+        dateLabel: ""
+        dateValue: ""
+        link: /awards/iba-winners/2026/stevie-award-winners/
+      - name: Stevie Awards for Sales & Customer Service
+        status: Entries Open
+        statusType: open
+        dateLabel: "Entries Open:"
+        dateValue: Now
+        link: https://sales.stevieawards.com/
+      - name: Stevie Awards for Women In Business
+        status: Entries Open
+        statusType: open
+        dateLabel: "Entries Open:"
+        dateValue: Now
+        link: https://women.stevieawards.com
+      - name: Middle East & North Africa Stevie Awards
+        status: Entries Open
+        statusType: open
+        dateLabel: ""
+        dateValue: September 23, 2026
+        link: https://mena.stevieawards.com/
+      - name: Asia-Pacific Stevie Awards
+        status: Entries Open
+        statusType: open
+        dateLabel: "Entries Open:"
+        dateValue: October 14, 2026
+        link: https://asia.stevieawards.com
+      - name: Stevie Awards for Great Employers
+        status: Entries Open
+        statusType: open
+        dateLabel: ""
+        dateValue: February 24, 2027
+        link: https://hr.stevieawards.com
+      - name: Stevie Awards for Technology Excellence
+        status: Entries Open
+        statusType: open
+        dateLabel: ""
+        dateValue: March 10, 2027
+        link: https://tech.stevieawards.com/
     deadlinesHeading: Upcoming Deadlines &amp; Events
-    socialLinks: []
+    socialLinks:
+      - platform: Instagram
+        link: https://www.instagram.com/thestevieawards/
+        icon: social/instagram
+      - platform: X
+        link: https://x.com/thestevieawards
+        icon: social/x
+      - platform: YouTube
+        link: https://www.youtube.com/user/TheStevies
+        icon: social/youtube
+      - platform: Facebook
+        link: https://www.facebook.com/TheStevieAwards/
+        icon: social/facebook
+      - platform: LinkedIn
+        link: https://www.linkedin.com/company/the-stevie-awards
+        icon: social/linkedin
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
