@@ -272,6 +272,6 @@ pageSections:
           alt: ' Preisträgerinnen und Preisträger der German Stevie Awards 2026'
         title: ' Preisträgerinnen und Preisträger der German Stevie Awards 2026'
         link: https://blog.stevieawards.com/blog/preistr%C3%A4gerinnen-und-preistr%C3%A4ger-der-german-stevie-awards-2026
-    colorScheme: inherit
+    colorScheme: light
     backgroundColor: base
 ---
