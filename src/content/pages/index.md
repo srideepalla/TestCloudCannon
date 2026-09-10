@@ -261,7 +261,7 @@ pageSections:
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
-    heading: Winner Testimonials
+    heading: ' Testimonials'
     testimonials:
       - quote: Winning the Stevie Award has been an affirmation of our good work and the
           intent that we set out with. It gives us validation of our effort, our
@@ -274,26 +274,6 @@ pageSections:
         companyLogo:
           source: /images/IBA/IBA-Winner-IBM.png
           alt: IBM India
-      - quote: On behalf of my team at Pepsico, we are very excited and proud to have
-          won the Gold Stevie Award. This award is a confirmation of the efforts
-          that Pepsico as a company has taken to focus on high-tech to bring
-          more innovation, productivity, and tech-based capabilities to the
-          business, our partners, and consumers. Winning the Stevie Award also
-          boosts the morale and ambition of the team.
-        authorName: Ravi Boggaram
-        authorTitle: CTO Sr. Director, Global Digital Services, Pepsico
-        companyLogo:
-          source: /images/pepsico-logo-header.webp
-          alt: Pepsico
-      - quote: Winning a Stevie Award is about more than recognition; it's about the
-          commitment we've made to ourselves and those who believe in our
-          vision. The Gold Stevie Award reinforces that our dedication is making
-          a difference, and it drives us to continue striving for excellence.
-        authorName: Charles Chima
-        authorTitle: Chief Strategy Officer, Dynace Global, Malaysia
-        companyLogo:
-          source: /images/dynace-logo-2.png
-          alt: chargeback
       - quote: We're proud that Setupad's drive to deliver the best publisher tech on
           the market was acknowledged by this esteemed award. The Stevie triumph
           is not just an accolade;it's a strategic asset leading to new heights
@@ -304,15 +284,6 @@ pageSections:
         companyLogo:
           source: /images/logo-fin-v-x3.webp
           alt: Setupad
-      - quote: Winning this Stevie Award has positively impacted my personal life and
-          transformed my business! My business, Kasselot Evanesse, has received
-          international recognition. Stevie Awards are super beneficial to
-          launching new brands.
-        authorName: LeeAnne Kassel
-        authorTitle: '&nbsp;CEO, Kasselot Evanesse, (Pty) Ltd, South Africa'
-        companyLogo:
-          source: /images/1684529716669.jpg
-          alt: Evanesse
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/features/split-list-form
