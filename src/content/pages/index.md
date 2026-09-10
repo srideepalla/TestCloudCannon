@@ -298,10 +298,18 @@ pageSections:
         alt: Carrefoursa
       - source: /images/IBA/IBA-Winner-CathayUnitedBank.jpg
         alt: Cathay United Bank
+      - source: /images/IBA/IBA-Winner-Cisco.png
+        alt: Cisco
       - source: ''
         alt: Company Logo
-      - source: ''
-        alt: Company Logo
+      - source: /images/IBA/IBA-Winner-Dell.png
+        alt: Dell
+      - source: /images/IBA/IBA-Winner-DHL.png
+        alt: DHL
+      - source: /images/IBA/IBA-Winner-Delta.jpg
+        alt: Delta
+      - source: /images/IBA/IBA-Winner-DrPhoneFix.jpg
+        alt: Dr. Phone Fix
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/carousels/blog-carousel
