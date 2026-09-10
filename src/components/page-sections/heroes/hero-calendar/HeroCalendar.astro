@@ -87,7 +87,7 @@ const {
             <div class="award-programs__header">
               <h2 class="award-programs__title" data-prop="awardProgramsHeading">{awardProgramsHeading}</h2>
             </div>
-            <ul class="award-programs__list" data-children-prop="awardPrograms">
+            <ul class="award-programs__list" data-editable="array" data-prop="awardPrograms">
               {awardPrograms.map((program) => (
                 <li
                   class="award-programs__item"
@@ -131,7 +131,7 @@ const {
   </Split>
   {
     socialLinks.length > 0 && (
-      <div class="hero-calendar__hero-socials" data-children-prop="socialLinks">
+      <div class="hero-calendar__hero-socials" data-editable="array" data-prop="socialLinks">
         {socialLinks.map((social) => (
           <Button
             size="md"
