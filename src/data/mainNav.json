@@ -20,12 +20,6 @@
           "children": []
         },
         {
-          "name": "FAQ",
-          "path": "/about/faq",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
           "name": "Staff",
           "path": "/about/staff",
           "openInNewTab": false,
@@ -46,474 +40,95 @@
       ]
     },
     {
-      "name": "THE AWARDS",
-      "path": "",
+      "name": "Programs ",
+      "path": null,
       "openInNewTab": false,
       "children": [
         {
-          "name": "2026 Stevie Award Winners",
-          "path": "/awards/iba-winners/2026/stevie-award-winners/",
-          "openInNewTab": false,
-          "children": [
-            {
-              "name": "Achievement Category Winners",
-              "path": "/awards/IBA-Winners/2026/Achievement-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Management Category Winners",
-              "path": "/awards/IBA-Winners/2026/Achievement-in-Management-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Marketing Category Winners",
-              "path": "/awards/IBA-Winners/2026/Achievement-in-Marketing-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Public Relations Category Winners",
-              "path": "/awards/IBA-Winners/2026/Achievement-in-Public-Relations-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "AI Innovation & Transformation Category Winners",
-              "path": "/awards/IBA-Winners/2026/AI-Innovation-Transformation-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "App Category Winners",
-              "path": "/awards/IBA-Winners/2026/App-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Company/Organization Category Winners",
-              "path": "/awards/IBA-Winners/2026/Company-Organization-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Creative Category Winners",
-              "path": "/awards/IBA-Winners/2026/Creative-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Customer Service Category Winners",
-              "path": "/awards/IBA-Winners/2026/Customer-Service-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Entrepreneur Category Winners",
-              "path": "/awards/IBA-Winners/2026/Entrepreneur-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Event Category Winners",
-              "path": "/awards/IBA-Winners/2026/Event-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Human Resources Category Winners",
-              "path": "/awards/IBA-Winners/2026/Human-Resources-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Individual Category Winners",
-              "path": "/awards/IBA-Winners/2026/Individual-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "New Product & Product Management Category Winners",
-              "path": "/awards/IBA-Winners/2026/New-Product-Product-Management-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Podcast Category Winners",
-              "path": "/awards/IBA-Winners/2026/Podcast-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Public Sector & Government Innovation Category Winners",
-              "path": "/awards/IBA-Winners/2026/Public-Sector-Government-Innovation-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Publication Category Winners",
-              "path": "/awards/IBA-Winners/2026/Publication-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Social Media Category Winners",
-              "path": "/awards/IBA-Winners/2026/Social-Media-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Support Category Winners",
-              "path": "/awards/IBA-Winners/2026/Support-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Sustainability Category Winners",
-              "path": "/awards/IBA-Winners/2026/Sustainability-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Technology Category Winners",
-              "path": "/awards/IBA-Winners/2026/Technology-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Thought Leadership Category Winners",
-              "path": "/awards/IBA-Winners/2026/Thought-Leadership-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Video Category Winners",
-              "path": "/awards/IBA-Winners/2026/Video-Category-Winners",
-              "openInNewTab": false
-            },
-            {
-              "name": "Web Achievement Category Winners",
-              "path": "/awards/IBA-Winners/2026/Web-Achievement-Category-Winners",
-              "openInNewTab": false
-            }
-          ]
-        },
-        {
-          "name": "The Stevie® Award Trophy",
-          "path": "/awards/thestevieaward/",
+          "name": "AMERICAN BUSINESS AWARDS®",
+          "path": "https://aba.stevieawards.com/",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "Categories",
-          "path": "/awards/categories/",
-          "openInNewTab": false,
-          "children": [
-            {
-              "name": "Achievement Categories",
-              "path": "/awards/categories/achievement-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Management Categories",
-              "path": "/awards/categories/achievement-in-management-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Marketing Categories",
-              "path": "/awards/categories/achievement-in-marketing-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Achievement in Public Relations Categories",
-              "path": "/awards/categories/achievement-in-public-relations-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "AI Innovation & Transformation Categories",
-              "path": "/awards/categories/ai-innovation-transformation-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "App Categories",
-              "path": "/awards/categories/app-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Company/Organization Categories",
-              "path": "/awards/categories/company-organization-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Creative Categories",
-              "path": "/awards/categories/creative-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Customer Service Categories",
-              "path": "/awards/categories/customer-service-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Entrepreneur Categories",
-              "path": "/awards/categories/entrepreneur-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Event Categories",
-              "path": "/awards/categories/event-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Human Resources Categories",
-              "path": "/awards/categories/human-resources-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Individual Categories",
-              "path": "/awards/categories/individual-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "New Product & Product Management Categories",
-              "path": "/awards/categories/new-product-product-management-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Podcast Categories",
-              "path": "/awards/categories/podcast-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Public Sector & Government Innovation Categories",
-              "path": "/awards/categories/public-sector-government-innovation-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Publication Categories",
-              "path": "/awards/categories/publication-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Social Media Categories",
-              "path": "/awards/categories/social-media-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Support Categories",
-              "path": "/awards/categories/support-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Sustainability Categories",
-              "path": "/awards/categories/sustainability-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Technology Categories",
-              "path": "/awards/categories/technology-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Thought Leadership Categories",
-              "path": "/awards/categories/thought-leadership-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Video Categories",
-              "path": "/awards/categories/video-categories/",
-              "openInNewTab": false
-            },
-            {
-              "name": "Web Achievement Categories",
-              "path": "/awards/categories/web-achievement-categories/",
-              "openInNewTab": false
-            }
-          ]
-        },
-        {
-          "name": "Best of the IBA Awards",
-          "path": "/awards/best-iba-awards/",
+          "name": "Asia-Pacific Stevie® Awards",
+          "path": "https://asia.stevieawards.com",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "2026 Winners' Circle",
-          "path": "/awards/IBA-Winners/2026/winners-circle",
+          "name": "German Stevie® Awards",
+          "path": "https://gsa.stevieawards.com/",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "People's Choice Stevie Awards for Favorite Companies",
-          "path": "/awards/peopleschoice/",
+          "name": "International Business Awards®",
+          "path": "https://iba.stevieawards.com/",
           "openInNewTab": false,
           "children": []
         },
         {
-          "name": "People's Choice Stevie Awards for Favorite Companies Voting",
-          "path": "/awards/peopleschoicevoting/",
+          "name": "Middle East & North Africa Stevie® Awards",
+          "path": "https://mena.stevieawards.com",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": " Stevie® Awards for Great Employers",
+          "path": "https://hr.stevieawards.com/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "Stevie® Awards for Sales & Customer Service",
+          "path": "https://sales.stevieawards.com/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "Stevie® Awards for Technology Excellence",
+          "path": "https://tech.stevieawards.com/",
+          "openInNewTab": false,
+          "children": []
+        },
+        {
+          "name": "Stevie® Awards for Women in Business",
+          "path": "https://women.stevieawards.com/",
           "openInNewTab": false,
           "children": []
         }
       ]
     },
     {
-      "name": "ENTER",
-      "path": "",
+      "name": "STEVIE",
+      "path": "/awards/thestevieaward/",
       "openInNewTab": false,
-      "children": [
-        {
-          "name": "How To Enter",
-          "path": "/enter/how-to-enter",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Regulations, Terms & Conditions",
-          "path": "/enter/regulations-terms-conditions",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Entry Preparation Tips",
-          "path": "/enter/entry-preparation-tips",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Entry Fees",
-          "path": "/enter/entry-fees",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "10 Reasons to Enter",
-          "path": "/enter/10-reasons-enter",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "How to Submit Winning Entries",
-          "path": "/enter/how-to-submit-winning-entries",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "What's New & Different for 2026",
-          "path": "/enter/whats-new-different",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Search Past Winners",
-          "path": "/enter/search-past-winners",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Nomination Assistant",
-          "path": "/enter/nomination-assistant",
-          "openInNewTab": false,
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
-      "name": "JUDGES",
-      "path": "",
+      "name": "JUDGING",
+      "path": "/judges/you-be-the-judge/",
       "openInNewTab": false,
-      "children": [
-        {
-          "name": "Judging & Awards Process",
-          "path": "/judges/judging-awards-process",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Apply to Be a Judge",
-          "path": "/judges/you-be-the-judge",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Judging Committees",
-          "path": "/judges/judging-committees",
-          "openInNewTab": false,
-          "children": [
-            {
-              "name": "Achievement & Thought Leadership Awards Judging Committee",
-              "path": "/judges/judging-committees/achievement-thought-leadership-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "AI, Technology, & Sustainability Awards Judging Committee",
-              "path": "/judges/judging-committees/ai-technology-sustainability-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Company/Organization Awards Judging Committee",
-              "path": "/judges/judging-committees/company-organization-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Corporate Communications, Investor Relations & Public Relations Awards Judging Committee",
-              "path": "/judges/judging-committees/corporate-communications-investor-relations-public-relations-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Customer Service Awards Judging Committee",
-              "path": "/judges/judging-committees/customer-service-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Entrepreneur Awards Judging Committee",
-              "path": "/judges/judging-committees/entrepreneur-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Management, Human Resources, Individual, & Support Awards Judging Committee",
-              "path": "/judges/judging-committees/management-human-resources-individual-support-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Marketing & Event Awards Judging Committee",
-              "path": "/judges/judging-committees/marketing-event-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Media (Website, Apps, Creative, Video, Publications, Social Media & Podcast) Awards Judging Committee",
-              "path": "/judges/judging-committees/media-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "New Product & Product Management Awards Judging Committee",
-              "path": "/judges/judging-committees/new-product-product-management-awards-judging-committee",
-              "openInNewTab": false
-            },
-            {
-              "name": "Public Sector & Government Innovation Awards Judging Committee",
-              "path": "/judges/judging-committees/public-sector-government-innovation-awards-judging-committee",
-              "openInNewTab": false
-            }
-          ]
-        }
-      ]
+      "children": []
     },
     {
       "name": "SPONSORS",
-      "path": "",
+      "path": "/sponsors/supporting-sponsorship/",
       "openInNewTab": false,
-      "children": [
-        {
-          "name": "Become a Sponsor",
-          "path": "/sponsors/become-sponsor/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Supporting Sponsorship",
-          "path": "/sponsors/supporting-sponsorship/",
-          "openInNewTab": false,
-          "children": []
-        }
-      ]
+      "children": []
+    },
+    {
+      "name": "STORE",
+      "path": "https://stevieawards.myshopify.com/",
+      "openInNewTab": true,
+      "children": []
     },
     {
       "name": "PRESS",
       "path": "",
       "openInNewTab": false,
       "children": [
-        {
-          "name": "Media Inquiry",
-          "path": "/press/media-inquiry/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Press Releases",
-          "path": "/press/press-releases/",
-          "openInNewTab": false,
-          "children": []
-        },
         {
           "name": "Press Clippings",
           "path": "/press/press-clippings/",
@@ -529,22 +144,10 @@
       ]
     },
     {
-      "name": "TICKETS",
-      "path": "",
+      "name": "Calendar",
+      "path": "/about/calendar",
       "openInNewTab": false,
       "children": [
-        {
-          "name": "2026 Awards Event",
-          "path": "/tickets/awards-banquet/",
-          "openInNewTab": false,
-          "children": []
-        },
-        {
-          "name": "Watch the Luncheon Ceremony Awards Presentations",
-          "path": "/tickets/watch-awards-presentations-luncheon/",
-          "openInNewTab": false,
-          "children": []
-        },
         {
           "name": "Watch the Evening Ceremony Awards Presentations",
           "path": "/tickets/watch-awards-presentations-evening/",
@@ -552,12 +155,6 @@
           "children": []
         }
       ]
-    },
-    {
-      "name": "STORE",
-      "path": "https://stevieawards.myshopify.com/",
-      "openInNewTab": true,
-      "children": []
     },
     {
       "name": "WEBINARS",

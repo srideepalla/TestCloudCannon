@@ -30,39 +30,11 @@
     ]
   },
   "awards": {
-    "heading": "Awards",
+    "heading": "STEIVE",
     "links": [
       {
-        "text": " IBA Winners",
-        "href": "/awards/iba-winners/2026/stevie-award-winners/",
-        "openInNewTab": false
-      },
-      {
-        "text": "The Stevie Award trophy",
-        "href": "/awards/thestevieaward",
-        "openInNewTab": false
-      },
-      {
-        "text": "Categories",
-        "href": "/awards/categories",
-        "openInNewTab": false
-      },
-      {
-        "text": "Best of the IBA Awards",
-        "href": "/awards/best-iba-awards/",
-        "openInNewTab": false
-      },
-      {
-        "text": "2026 Winners' Circle",
-        "href": "/awards/IBA-Winners/2026/winners-circle"
-      },
-      {
-        "text": "People's Choice Stevie Awards",
-        "href": "/awards/peopleschoice/"
-      },
-      {
-        "text": "People's Choice Stevie Awards Voting",
-        "href": "/awards/peopleschoicevoting/"
+        "text": "STEVIE",
+        "href": ""
       }
     ]
   },
@@ -130,23 +102,13 @@
     "heading": "Press",
     "links": [
       {
-        "text": "Media Inquiries",
-        "href": "/press/media-inquiry",
-        "openInNewTab": false
-      },
-      {
-        "text": "Press Releases",
-        "href": "/press/press-releases",
+        "text": "Photos & Logos",
+        "href": "/press/photos-and-logos/",
         "openInNewTab": false
       },
       {
         "text": "Press Clippings",
-        "href": "/press/press-clippings",
-        "openInNewTab": false
-      },
-      {
-        "text": "Photos & Logos",
-        "href": "/press/photos-and-logos",
+        "href": "/press/press-clippings/",
         "openInNewTab": false
       }
     ]
