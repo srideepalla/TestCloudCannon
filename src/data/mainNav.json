@@ -167,8 +167,8 @@
           "children": []
         },
         {
-          "name": "Nomination Assistant",
-          "path": "/new/nomination-assistant",
+          "name": "Chat Bot",
+          "path": "/new/chat-bot/",
           "openInNewTab": false,
           "children": []
         }
