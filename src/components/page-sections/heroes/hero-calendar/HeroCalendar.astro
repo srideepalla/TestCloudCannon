@@ -83,11 +83,11 @@ const {
     >
       {
         awardPrograms.length > 0 && (
-          <div class="award-programs" data-children-prop="awardPrograms">
+          <div class="award-programs">
             <div class="award-programs__header">
               <h2 class="award-programs__title" data-prop="awardProgramsHeading">{awardProgramsHeading}</h2>
             </div>
-            <ul class="award-programs__list">
+            <ul class="award-programs__list" data-children-prop="awardPrograms">
               {awardPrograms.map((program) => (
                 <li
                   class="award-programs__item"
