@@ -3,33 +3,28 @@
     "heading": "About",
     "links": [
       {
-        "text": "About Us",
-        "href": "/about/about-us",
-        "openInNewTab": false
-      },
-      {
-        "text": "FAQ",
-        "href": "/about/faq",
+        "text": "About The Stevie® Awards",
+        "href": "/about/about-us/",
         "openInNewTab": false
       },
       {
         "text": "Calendar",
-        "href": "/about/calendar",
+        "href": "/about/calendar/",
         "openInNewTab": false
       },
       {
         "text": "Staff",
-        "href": "/about/staff",
+        "href": "/about/staff/",
         "openInNewTab": false
       },
       {
         "text": "Stevie Awards Update Newsletter",
-        "href": "/about/newsletter",
+        "href": "/about/newsletter/",
         "openInNewTab": false
       },
       {
         "text": "Contact",
-        "href": "/about/contact",
+        "href": "/about/contact/",
         "openInNewTab": false
       }
     ]
