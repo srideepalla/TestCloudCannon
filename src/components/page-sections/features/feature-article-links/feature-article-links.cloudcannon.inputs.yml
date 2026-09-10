@@ -1,0 +1,47 @@
+subheading:
+  type: text
+  comment: Optional uppercase label above the main heading.
+
+heading:
+  type: text
+  comment: Main section heading.
+
+description:
+  type: markdown
+  comment: Optional description below the heading.
+  options:
+    bold: true
+    italic: true
+    link: true
+
+stories:
+  type: array
+  comment: Article items, each with a thumbnail image, title, and link.
+  options:
+    structures: _structures.storyItem
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: light
+        name: Light
+      - id: dark
+        name: Dark
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

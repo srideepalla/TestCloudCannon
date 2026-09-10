@@ -1,0 +1,91 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import ArticleLinkList from "@wrappers/article-link-list/ArticleLinkList.astro";
+
+const {
+  subheading = "",
+  heading = "",
+  description = "",
+  stories = [],
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+---
+
+<CustomSection
+  class:list={["feature-article-links", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  {
+    subheading && (
+      <Heading
+        level="h2"
+        size="md"
+        text={subheading}
+        data-prop="subheading"
+        class="feature-article-links__subheading"
+      />
+    )
+  }
+  <Heading
+    level="h3"
+    size="3xl"
+    text={heading}
+    data-prop="heading"
+    class="feature-article-links__heading"
+  />
+  {
+    description && (
+      <Text
+        size="sm"
+        text={description}
+        data-prop="description"
+        class="feature-article-links__description"
+      />
+    )
+  }
+  {/* stories is passed explicitly rather than spread, so _component is not
+      forwarded — that keeps ArticleLinkList's own empty-state guard working. */}
+  <div class="feature-article-links__list">
+    <ArticleLinkList
+      stories={stories}
+      data-children-prop="stories"
+    />
+  </div>
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .feature-article-links__subheading,
+    .feature-article-links__heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+      letter-spacing: 0.05em;
+      margin: 0;
+    }
+
+    .feature-article-links__description {
+      margin-top: var(--spacing-sm);
+    }
+
+    .feature-article-links__list {
+      margin-top: var(--spacing-xl);
+
+      p {
+        color: var(--color-text-strong);
+      }
+    }
+  }
+</style>
