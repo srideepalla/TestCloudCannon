@@ -29,7 +29,7 @@ pageSections:
       - _component: building-blocks/core-elements/button
         text: LEARN MORE
         hideText: false
-        link: /awards/iba-winners/2026/stevie-award-winners/
+        link:
         openInNewTab: false
         iconName: ''
         iconPosition: before
