@@ -285,7 +285,7 @@ const config = {
             <div>
               <p class="spw__overview-loading-title">Search results are ready</p>
               <p class="spw__overview-loading-copy">
-                Gemini is taking longer than expected to prepare the overview. You can use the complete results below or retry the overview.
+                AI is taking longer than expected to prepare the overview. You can use the complete results below or retry the overview.
               </p>
             </div>
             <button type="button" class="spw__overview-retry" data-spw-overview-retry>
@@ -437,7 +437,7 @@ const config = {
         </div>
         <form class="spw-modal-body" id="spw-feedback-form">
           <p class="spw-modal-desc">
-            Didn't find what you were searching for? Let us know what was missing or incorrect, and our team will open a Zendesk ticket to review the winner records.
+            Didn't find what you were searching for? Let us know what was missing or incorrect, and our team will open a ticket to review the winner records.
           </p>
           <input type="hidden" id="spw-feedback-id" value="" />
           <input type="hidden" id="spw-feedback-query" value="" />
@@ -461,7 +461,7 @@ const config = {
           <div class="spw-modal-footer">
             <button type="button" class="spw-modal-btn is-secondary" data-spw-modal-close>Cancel</button>
             <button type="submit" class="spw-modal-btn is-primary" id="spw-feedback-submit-btn">
-              <span>Submit & Create Zendesk Ticket</span>
+              <span>Submit & Create Ticket</span>
             </button>
           </div>
         </form>
@@ -471,7 +471,7 @@ const config = {
           </div>
           <h4 class="spw-modal-success-title">Thank You!</h4>
           <p class="spw-modal-success-copy" id="spw-feedback-success-msg">
-            Your search feedback has been saved and forwarded to the Stevie Awards team via Zendesk.
+            Your search feedback has been saved and forwarded to the Stevie Awards team.
           </p>
           <button type="button" class="spw-modal-btn is-primary" data-spw-modal-close>Done</button>
         </div>
@@ -484,6 +484,10 @@ const config = {
   import { onPageLoad } from "@component-utils/onPageLoad";
 
   const NS = "[search-past-winners]";
+
+  // Set from `config.endpoint` inside initSearchPastWinners's per-root closure;
+  // read from module scope by the feedback code below, which runs outside that closure.
+  let spwEndpoint = "";
 
   // One row per ORGANIZATION or PERSON (a rolled-up profile), not one row per
   // award -- so IBM's 894 nominations are one clickable row with a total, the
@@ -589,6 +593,7 @@ const config = {
         log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
         return;
       }
+      spwEndpoint = endpoint;
 
       const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
       const form = $<HTMLFormElement>("[data-spw-form]");
@@ -1419,7 +1424,7 @@ const config = {
       const spwFeedbackCommentsInput = document.getElementById("spw-feedback-comments");
       const spwFeedbackSubmitBtn = document.getElementById("spw-feedback-submit-btn");
       const spwFeedbackUrl = (path: string) => {
-        let endpoint = config.endpoint || "";
+        let endpoint = spwEndpoint || "";
         if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
           endpoint = "http://127.0.0.1:8010";
         }
@@ -3037,6 +3042,9 @@ const config = {
     flex-direction: column;
     gap: 1rem;
   }
+  .spw-modal-body[hidden] {
+    display: none !important;
+  }
   .spw-modal-desc {
     margin: 0;
     font-size: 0.84rem;
@@ -3064,14 +3072,25 @@ const config = {
   .spw-form-input,
   .spw-form-textarea {
     width: 100%;
+    background-color: #ffffff !important;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     padding: 0.55rem 0.75rem;
     font-size: 0.84rem;
-    color: #0f172a;
+    /* The modal is moved to document.body at runtime. Explicitly override
+       inherited site form colours so entered feedback remains readable. */
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a;
+    caret-color: #0f172a;
     font-family: inherit;
     transition: border-color 0.15s, box-shadow 0.15s;
     box-sizing: border-box;
+  }
+  .spw-form-input::placeholder,
+  .spw-form-textarea::placeholder {
+    color: #64748b;
+    -webkit-text-fill-color: #64748b;
+    opacity: 1;
   }
   .spw-form-input:focus,
   .spw-form-textarea:focus {
