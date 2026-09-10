@@ -127,7 +127,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SAGE26%20Webinar%20Replay.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Thank%20you%20March%2025%20IBA%20Webinar%20Email_a.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -135,13 +135,13 @@ pageSections:
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/heroes/hero-banner
-    heading: Presented Live on March 25, 2026 Preparing Effective Nominations for
-      The 2026 International Business Awards®&nbsp;
+    heading: Presented Live on March 18, 2026 Entry Tips for the 2026 Stevie® Awards
+      for Great Employers&nbsp;
     headingLevel: h2
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/thank-you-march-25-iba-webinar-email-a.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SAGE26%20Webinar%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -149,13 +149,13 @@ pageSections:
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/heroes/hero-banner
-    heading: Presented Live on March 25, 2026 Preparing Effective Nominations for
-      The 2026 International Business Awards®&nbsp;
+    heading: 'Presented Live on January 12, 2026 Live Workshop: Explore the New
+      Stevie Awards Entry System&nbsp;'
     headingLevel: h2
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/thank-you-march-25-iba-webinar-email-a.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Landing%20Page%20(5).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -169,7 +169,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-5.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Landing%20Page%20(12)%20(1).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -183,7 +183,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/mena26-webinar-email.jpg" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/MENA26%20Webinar%20Email.jpg" /></p>
 
       Presented Live on March 25, 2026
 
@@ -197,7 +197,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/apsa26-webinar-replay-1.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/APSA26%20Webinar%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -211,7 +211,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/aba26-webinar.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/ABA26%20Webinar.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -225,7 +225,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/sascs26-webinar-1-1.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SASCS26%20Webinar%20(1)-1.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -239,7 +239,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/workshop-replay.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Workshop%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -254,7 +254,8 @@ pageSections:
 
 
       <p><img loading="lazy" class="astro-qvaelhz7"
-      src="/uploads/wfw-webinar-landing-page-1.png" /></p>
+      src="https://blog.stevieawards.com/hubfs/WFW_Webinar%20Landing%20Page.png"
+      /></p>
 
 
       Presented Live on March 25, 2026
@@ -271,7 +272,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/sawib-webinar-landing-page-ondemand.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/18323_gsa/SAWIB%20Webinar%20Landing%20Page_ondemand.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -285,7 +286,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-4-2.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Landing%20Page%20(4)%20(2).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -299,7 +300,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/gsa.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/GSA.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -313,7 +314,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/sage25-webinar-2-1.jpg" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SAGE25%20webinar%202.jpg" /></p>
 
       Presented Live on March 25, 2026
 
@@ -327,7 +328,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/iba-replay.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/IBA%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -341,7 +342,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-today.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Landing%20Page_today.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -355,7 +356,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-replay-sascs-1.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Landing%20Page_replay_sascs.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -369,7 +370,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-1.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/18315/Webinar%20Landing%20Page%20(1).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -383,7 +384,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/apsa-webinar-replay-landing-page.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/APSA%20Webinar%20Replay%20landing%20page.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -397,7 +398,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-9.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Images%2010.24.24/Webinar%20Landing%20Page%20(9).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -411,7 +412,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinars/Webinar%20Landing%20Page.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -425,7 +426,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/webinar-landing-page-4.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/Webinar%20Images%2010.24.24/Webinar%20Landing%20Page%20(4).png" /></p>
 
       Presented Live on March 25, 2026
 
