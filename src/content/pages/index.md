@@ -49,7 +49,7 @@ pageSections:
         statusType: closed
         dateLabel: ''
         dateValue: ''
-        link: https://stevieawards.com
+        link: https://iba.stevieawards.com
       - name: Stevie Awards for Sales & Customer Service
         status: Entries Open
         statusType: open
