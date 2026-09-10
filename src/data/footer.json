@@ -61,7 +61,12 @@
       "icon": "social/youtube",
       "link": "https://www.youtube.com/user/TheStevies",
       "openInNewTab": true
+    },
+    {
+      "icon": "social/Stevie® Awards RSS feed",
+      "link": "https://blog.stevieawards.com/blog",
+      "openInNewTab": true
     }
   ],
-  "footerText": "Questions? Problems? <a href='/About/contact'>Contact Us</a>. Read Our <a href='/refund-policy'>Refunds & Delivery Policy</a>. Our privacy policy is <a href='/privacy'>available here</a>. Copyright © 2026 Stevie Awards, Inc. All Rights Reserved. American Business Awards and International Business Awards are registered trademarks of Stevie Awards, Inc."
+  "footerText": "Questions? Problems? [Contact Us](/About/contact). Read Our [Refunds & Delivery Policy](/refund-policy). Our privacy policy is [available here](/privacy). Copyright © 2026 Stevie Awards, Inc. All Rights Reserved. American Business Awards and International Business Awards are registered trademarks of Stevie Awards, Inc."
 }
