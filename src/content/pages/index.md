@@ -310,6 +310,8 @@ pageSections:
         alt: Delta
       - source: /images/IBA/IBA-Winner-DrPhoneFix.jpg
         alt: Dr. Phone Fix
+      - source: /images/IBA/IBA-Winner-ExtendMax.jpg
+        alt: ExtendMax
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/carousels/blog-carousel
