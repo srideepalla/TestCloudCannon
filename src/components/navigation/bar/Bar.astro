@@ -555,7 +555,12 @@ function createNavItemData(item: any, level: any, parentGroupId: any) {
         align-items: center;
         justify-content: center;
         display: flex;
-        gap: var(--spacing-sm);
+
+        /* Fluid spacing between top-level nav items. Held at the previous
+           0.5rem at the 1025px breakpoint — with 10 nowrap items in a
+           min-width:0 grid column there is no spare width there — and opened up
+           to 1.5rem on wider screens where the room exists. */
+        gap: clamp(0.5rem, 1.8vw - 10px, 1.5rem);
         list-style: none;
         margin: 0;
         padding: 0;
