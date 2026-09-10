@@ -82,18 +82,8 @@
     "heading": "Judges",
     "links": [
       {
-        "text": "Judging & Awards Process",
-        "href": "/judges/judging-awards-process",
-        "openInNewTab": false
-      },
-      {
         "text": "Apply to Be a Judge",
         "href": "/judges/you-be-the-judge",
-        "openInNewTab": false
-      },
-      {
-        "text": "Judging Committees",
-        "href": "/judges/judging-committees",
         "openInNewTab": false
       }
     ]
@@ -137,13 +127,8 @@
     "heading": "Sponsors",
     "links": [
       {
-        "text": "Become a Sponsor",
+        "text": "Sponsorship Opportunities",
         "href": "/sponsors/become-sponsor",
-        "openInNewTab": false
-      },
-      {
-        "text": "Supporting Sponsorship",
-        "href": "/sponsors/supporting-sponsorship",
         "openInNewTab": false
       }
     ]
@@ -152,7 +137,7 @@
     "heading": "Webinars",
     "links": [
       {
-        "text": "Upcoming Webinars",
+        "text": "Stevie Awards Webinars",
         "href": "/webinars/upcoming-webinars",
         "openInNewTab": false
       }
