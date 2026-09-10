@@ -290,14 +290,14 @@ pageSections:
     heading: Heading Text
     description: ''
     logos:
-      - source: ''
-        alt: Company Logo
-      - source: ''
-        alt: Company Logo
-      - source: ''
-        alt: Company Logo
-      - source: ''
-        alt: Company Logo
+      - source: /images/IBA/IBA-Winner-Amazon.jpeg
+        alt: Amazon
+      - source: /images/IBA/IBA-Winner-AyalaLand.jpg
+        alt: AyalaLand
+      - source: /images/IBA/IBA-Winner-Carrefoursa.png
+        alt: Carrefoursa
+      - source: /images/IBA/IBA-Winner-CathayUnitedBank.jpg
+        alt: Cathay United Bank
       - source: ''
         alt: Company Logo
       - source: ''
