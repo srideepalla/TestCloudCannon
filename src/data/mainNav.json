@@ -147,14 +147,7 @@
       "name": "Calendar",
       "path": "/about/calendar",
       "openInNewTab": false,
-      "children": [
-        {
-          "name": "Watch the Evening Ceremony Awards Presentations",
-          "path": "/tickets/watch-awards-presentations-evening/",
-          "openInNewTab": false,
-          "children": []
-        }
-      ]
+      "children": []
     },
     {
       "name": "WEBINARS",
