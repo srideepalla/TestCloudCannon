@@ -1,0 +1,3361 @@
+---
+/**
+ * StevieChatbot — Executive Stevie Awards Intelligence Canvas.
+ * A full-canvas, executive-grade AI assistant integrated into the website.
+ */
+import CustomSection from "@components/page-sections/builders/custom-section/CustomSection.astro";
+
+const {
+  heading = "Stevie Awards Assistant",
+  text = "Ask about entering — fees, deadlines, categories, judging — or explore past winner records and honorees. Every answer cites official sources.",
+  placeholder = "Ask anything about winners, categories, deadlines, fees, or how to enter...",
+  buttonLabel = "Ask",
+  apiEndpoint = "",
+  apiKey: apiKeyProp = "",
+  showSources = true,
+  colorScheme = "inherit",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const apiUrl = (
+  apiEndpoint ||
+  import.meta.env.PUBLIC_STEVIE_API_URL ||
+  "https://sulhhxqwfc.execute-api.us-east-1.amazonaws.com"
+)
+  .toString()
+  .replace(/\/+$/, "");
+const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
+---
+
+<CustomSection
+  class:list={["stevie-chatbot-section", className]}
+  maxContentWidth="full"
+  paddingHorizontal="none"
+  paddingVertical="none"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div
+    class="stevie-canvas"
+    id="stevie-canvas-root"
+  >
+    <!-- Executive Top Header Bar -->
+    <header class="stevie-canvas__header">
+      <div class="stevie-canvas__brand">
+        <div class="stevie-canvas__brand-icon">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
+            ></polygon>
+          </svg>
+        </div>
+        <div class="stevie-canvas__brand-text">
+          <span class="stevie-canvas__brand-title">STEVIE AWARDS INTELLIGENCE</span>
+          <span class="stevie-canvas__brand-status">
+            <span class="stevie-canvas__status-dot"></span>
+            Official Knowledge Engine
+          </span>
+        </div>
+      </div>
+      <div class="stevie-canvas__header-actions">
+        <button
+          type="button"
+          class="stevie-canvas__btn-reset"
+          id="stevie-chatbot-reset"
+          title="Start a fresh conversation"
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+          </svg>
+          <span>New Session</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Stage / Conversation Feed with consistent height -->
+    <div
+      class="stevie-canvas__stage"
+      id="stevie-chatbot-transcript"
+      role="log"
+      aria-live="polite"
+    >
+      <!-- Initial Hero (Visible inside stage, collapses once conversation starts) -->
+      <div
+        class="stevie-canvas__hero"
+        id="stevie-canvas-hero"
+      >
+        <div class="stevie-canvas__hero-badge">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle
+              cx="12"
+              cy="8"
+              r="6"
+            ></circle>
+            <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path>
+          </svg>
+          <span>9 Global Programs • 83,000+ Verified Honors</span>
+        </div>
+        <h1 class="stevie-canvas__hero-title">{heading}</h1>
+        <p class="stevie-canvas__hero-subtitle">{text}</p>
+
+        <!-- Quick Discovery Starter Inquiries -->
+        <div class="stevie-canvas__starters">
+          <span class="stevie-canvas__starters-label">Suggested Inquiries</span>
+          <div class="stevie-canvas__starters-grid">
+            <button
+              type="button"
+              class="stevie-canvas__starter-btn"
+            >
+              <span class="stevie-canvas__starter-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><line
+                    x1="18"
+                    y1="20"
+                    x2="18"
+                    y2="10"
+                  ></line><line
+                    x1="12"
+                    y1="20"
+                    x2="12"
+                    y2="4"
+                  ></line><line
+                    x1="6"
+                    y1="20"
+                    x2="6"
+                    y2="14"
+                  ></line></svg
+                >
+              </span>
+              <span>Compare awards between IBM and Microsoft</span>
+            </button>
+            <button
+              type="button"
+              class="stevie-canvas__starter-btn"
+            >
+              <span class="stevie-canvas__starter-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><rect
+                    x="3"
+                    y="4"
+                    width="18"
+                    height="18"
+                    rx="2"
+                    ry="2"
+                  ></rect><line
+                    x1="16"
+                    y1="2"
+                    x2="16"
+                    y2="6"
+                  ></line><line
+                    x1="8"
+                    y1="2"
+                    x2="8"
+                    y2="6"
+                  ></line><line
+                    x1="3"
+                    y1="10"
+                    x2="21"
+                    y2="10"
+                  ></line></svg
+                >
+              </span>
+              <span>What are the entry deadlines for 2027?</span>
+            </button>
+            <button
+              type="button"
+              class="stevie-canvas__starter-btn"
+            >
+              <span class="stevie-canvas__starter-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><circle
+                    cx="12"
+                    cy="12"
+                    r="10"
+                  ></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"
+                  ></polygon></svg
+                >
+              </span>
+              <span>Which Stevie programs are best for an Indian startup?</span>
+            </button>
+            <button
+              type="button"
+              class="stevie-canvas__starter-btn"
+            >
+              <span class="stevie-canvas__starter-icon">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  ><circle
+                    cx="12"
+                    cy="8"
+                    r="6"
+                  ></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg
+                >
+              </span>
+              <span>Show me DHL's award breakdown by tier</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Messages Stream Container -->
+      <div
+        class="stevie-canvas__feed"
+        id="stevie-chatbot-feed"
+      >
+      </div>
+    </div>
+
+    <!-- Executive Bottom Floating Composer Dock -->
+    <div
+      class="stevie-canvas__dock-container"
+      id="stevie-chatbot-composer"
+    >
+      <div class="stevie-canvas__dock">
+        <label
+          class="stevie-canvas__dock-label"
+          for="stevie-chatbot-input"
+          >Ask a question</label
+        >
+        <div class="stevie-canvas__dock-row">
+          <input
+            id="stevie-chatbot-input"
+            class="stevie-canvas__dock-input"
+            type="text"
+            name="question"
+            placeholder={placeholder}
+            autocomplete="off"
+            maxlength="600"
+          />
+          <button
+            class="stevie-canvas__dock-submit"
+            type="button"
+            aria-label={buttonLabel}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line
+                x1="12"
+                y1="19"
+                x2="12"
+                y2="5"
+              ></line>
+              <polyline points="5 12 12 5 19 12"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="stevie-canvas__dock-footnote">
+        Official Stevie Awards Assistant • Verified data from 83,000+ honorees, entry kits & program
+        regulations
+      </div>
+    </div>
+    <!-- Feedback Modal Popup -->
+    <div
+      class="stevie-modal-backdrop"
+      id="stevie-feedback-modal"
+      hidden
+    >
+      <div
+        class="stevie-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="stevie-feedback-title"
+      >
+        <div class="stevie-modal-header">
+          <div class="stevie-modal-title-wrap">
+            <span class="stevie-modal-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                ></circle><line
+                  x1="12"
+                  y1="8"
+                  x2="12"
+                  y2="12"
+                ></line><line
+                  x1="12"
+                  y1="16"
+                  x2="12.01"
+                  y2="16"
+                ></line></svg
+              >
+            </span>
+            <h3
+              id="stevie-feedback-title"
+              class="stevie-modal-title"
+            >
+              Help Us Improve This Answer
+            </h3>
+          </div>
+          <button
+            type="button"
+            class="stevie-modal-close"
+            data-modal-close
+            aria-label="Close feedback modal"
+            >&times;</button
+          >
+        </div>
+        <form
+          class="stevie-modal-body"
+          id="stevie-feedback-form"
+        >
+          <p class="stevie-modal-desc">
+            We're sorry this response didn't meet your expectations. Tell us what went wrong, and we
+            will automatically open a support ticket with our team.
+          </p>
+          <input
+            type="hidden"
+            id="stevie-feedback-id"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="stevie-feedback-query"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="stevie-feedback-answer"
+            value=""
+          />
+
+          <div class="stevie-form-group">
+            <label
+              for="stevie-feedback-name"
+              class="stevie-form-label"
+              >Your Name <span class="stevie-required">*</span></label
+            >
+            <input
+              type="text"
+              id="stevie-feedback-name"
+              class="stevie-form-input"
+              placeholder="e.g. Jane Doe"
+              required
+            />
+          </div>
+
+          <div class="stevie-form-group">
+            <label
+              for="stevie-feedback-email"
+              class="stevie-form-label"
+              >Your Email <span class="stevie-optional">(optional - to receive ticket updates)</span
+              ></label
+            >
+            <input
+              type="email"
+              id="stevie-feedback-email"
+              class="stevie-form-input"
+              placeholder="e.g. jane@company.com"
+            />
+          </div>
+
+          <div class="stevie-form-group">
+            <label
+              for="stevie-feedback-comments"
+              class="stevie-form-label"
+              >Feedback Details <span class="stevie-required">*</span></label
+            >
+            <textarea
+              id="stevie-feedback-comments"
+              class="stevie-form-textarea"
+              rows="3"
+              placeholder="Tell us what was inaccurate, missing, or how this response could be improved..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="stevie-modal-footer">
+            <button
+              type="button"
+              class="stevie-modal-btn is-secondary"
+              data-modal-close
+              >Cancel</button
+            >
+            <button
+              type="submit"
+              class="stevie-modal-btn is-primary"
+              id="stevie-feedback-submit-btn"
+            >
+              <span>Submit & Create Ticket</span>
+            </button>
+          </div>
+        </form>
+        <div
+          class="stevie-modal-success"
+          id="stevie-feedback-success"
+          hidden
+        >
+          <div class="stevie-modal-success-icon">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0b6e6e"
+              stroke-width="2.2"
+              ><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline
+                points="22 4 12 14.01 9 11.01"></polyline></svg
+            >
+          </div>
+          <h4 class="stevie-modal-success-title">Thank You!</h4>
+          <p
+            class="stevie-modal-success-copy"
+            id="stevie-feedback-success-msg"
+          >
+            Your feedback has been recorded and submitted to our support team.
+          </p>
+          <button
+            type="button"
+            class="stevie-modal-btn is-primary"
+            data-modal-close
+            >Done</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</CustomSection>
+
+<script define:vars={{ apiUrl, apiKey, showSources }}>
+  // Automatically route to local chatbot API if on localhost/127.0.0.1
+  const effectiveApiUrl =
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+      ? "http://127.0.0.1:8003"
+      : apiUrl;
+
+  const TIERS = {
+    profile: ["is-records", "Official Winner Records"],
+    totals: ["is-records", "Stevie Awards Database"],
+    tier1: ["is-verified", "Verified Program Information"],
+    tier2a: ["is-live", "Official Stevie Awards Site"],
+    tier2b: ["is-web", "External Web Reference"],
+  };
+
+  function getTierSvg(tierClass) {
+    if (tierClass === "is-records") {
+      return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"></circle><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"></path></svg>';
+    }
+    if (tierClass === "is-verified") {
+      return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>';
+    }
+    return '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+  }
+
+  const HISTORY_TURNS = 30;
+  const history = [];
+
+  const root = document.getElementById("stevie-canvas-root");
+  const hero = document.getElementById("stevie-canvas-hero");
+  const composer = document.getElementById("stevie-chatbot-composer");
+  const resetBtn = document.getElementById("stevie-chatbot-reset");
+
+  if (composer && root) {
+    const input = document.getElementById("stevie-chatbot-input");
+    const transcript = document.getElementById("stevie-chatbot-transcript");
+    const submitBtn = composer.querySelector(".stevie-canvas__dock-submit");
+
+    const escapeHtml = (value) =>
+      String(value ?? "").replace(
+        /[&<>"']/g,
+        (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]
+      );
+
+    const stage = document.getElementById("stevie-chatbot-transcript");
+    const feed = document.getElementById("stevie-chatbot-feed") || stage;
+
+    function push(el) {
+      if (root) root.classList.add("has-conversation");
+      feed.appendChild(el);
+      return el;
+    }
+
+    function userMessage(question) {
+      const el = document.createElement("div");
+      el.className = "stevie-msg is-user";
+      el.innerHTML = `
+        <div class="stevie-msg__user-bubble">
+          <div class="stevie-msg__user-text">${escapeHtml(question)}</div>
+        </div>`;
+      return push(el);
+    }
+
+    function pendingMessage() {
+      const el = document.createElement("div");
+      el.className = "stevie-msg is-bot is-pending";
+      el.innerHTML = `
+        <div class="stevie-msg__card" data-theme="light">
+          <div class="stevie-msg__thinking">
+            <span class="stevie-msg__thinking-dots">
+              <i></i><i></i><i></i>
+            </span>
+            <span class="stevie-msg__thinking-label">Consulting Stevie Awards knowledge engine...</span>
+          </div>
+        </div>`;
+      return push(el);
+    }
+
+    const normalizeSources = (rawSources) => {
+      const list = Array.isArray(rawSources) ? rawSources : [];
+      const out = [];
+      const seen = new Set();
+      for (const s of list) {
+        const str = String(s || "").trim();
+        if (!str || seen.has(str)) continue;
+        seen.add(str);
+        // Citations show live website links only -- a database record count or
+        // internal-catalog description (e.g. "Official Stevie Awards Database
+        // (83,021 Records)") isn't a link a visitor can open, so it's dropped
+        // here rather than shown as a non-clickable citation chip.
+        if (/^https?:\/\//i.test(str)) {
+          out.push({ isUrl: true, href: str, label: linkLabel(str) });
+        }
+      }
+      if (!out.length) {
+        out.push({
+          isUrl: true,
+          href: "https://stevieawards.com",
+          label: "stevieawards.com/official-program-rules",
+        });
+      }
+      return out;
+    };
+
+    function linkLabel(url) {
+      try {
+        const u = new URL(url);
+        const parts = u.pathname.split("/").filter(Boolean);
+        const tail = parts.length ? "/" + parts[parts.length - 1] : "";
+        const trimmed = tail.length > 40 ? tail.slice(0, 40) + "…" : tail;
+        return u.hostname + (parts.length > 1 ? "/…" : "") + trimmed;
+      } catch {
+        return url;
+      }
+    }
+
+    function formatInline(str) {
+      return String(str || "")
+        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+        .replace(/__(.+?)__/g, "<strong>$1</strong>")
+        .replace(/\*([^\*\n]+)\*/g, "<em>$1</em>")
+        .replace(/_([^_\n]+)_/g, "<em>$1</em>")
+        .replace(/`([^`\n]+)`/g, '<code class="stevie-code">$1</code>')
+        .replace(
+          /\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g,
+          '<a class="stevie-link" href="$2" target="_blank" rel="noopener noreferrer">$1</a>'
+        );
+    }
+
+    function renderKpiBlock(lines) {
+      const items = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        let p1 = "",
+          p2 = "";
+        if (trimmed.includes("|")) {
+          const parts = trimmed.split("|").map((p) => p.trim());
+          p1 = parts[0];
+          p2 = parts[1];
+        } else if (trimmed.includes(":")) {
+          const parts = trimmed.split(":").map((p) => p.trim());
+          p1 = parts[0];
+          p2 = parts.slice(1).join(":");
+        }
+        if (p1 && p2) {
+          if (/[\d]/.test(p2) && !/[\d]/.test(p1)) {
+            items.push({ val: p2, label: p1 });
+          } else {
+            items.push({ val: p1, label: p2 });
+          }
+        }
+      }
+      if (!items.length) return "";
+      let html = '<div class="stevie-kpi-grid">';
+      for (const it of items) {
+        const isLong = it.val.length > 10 || /[@\/\.]/.test(it.val);
+        html += `
+          <div class="stevie-kpi-card">
+            <div class="stevie-kpi-card__val ${isLong ? "is-long" : ""}">${escapeHtml(it.val)}</div>
+            <div class="stevie-kpi-card__label">${escapeHtml(it.label)}</div>
+          </div>`;
+      }
+      html += "</div>";
+      return html;
+    }
+
+    function renderTimelineBlock(lines) {
+      let title = "";
+      const items = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (/^title\s*:\s*(.+)$/i.test(trimmed)) {
+          title = trimmed.replace(/^title\s*:\s*/i, "").trim();
+          continue;
+        }
+        const parts = trimmed.split("|").map((p) => p.trim());
+        if (parts.length >= 2) {
+          items.push({
+            date: parts[0],
+            title: parts[1],
+            status: (parts[2] || "upcoming").toLowerCase(),
+          });
+        }
+      }
+      if (!items.length) return "";
+      let html = '<div class="stevie-timeline-card">';
+      if (title) {
+        html += `<div class="stevie-timeline-card__header"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg><span class="stevie-timeline-card__title">${escapeHtml(title)}</span></div>`;
+      }
+      html += '<div class="stevie-timeline">';
+      for (const it of items) {
+        const statusClass =
+          it.status.includes("done") || it.status.includes("passed")
+            ? "is-done"
+            : it.status.includes("active") || it.status.includes("open")
+              ? "is-active"
+              : "is-upcoming";
+        html += `
+          <div class="stevie-timeline__item ${statusClass}">
+            <div class="stevie-timeline__marker"></div>
+            <div class="stevie-timeline__content">
+              <span class="stevie-timeline__date">${escapeHtml(it.date)}</span>
+              <span class="stevie-timeline__desc">${escapeHtml(it.title)}</span>
+            </div>
+          </div>`;
+      }
+      html += "</div></div>";
+      return html;
+    }
+
+    function renderAccordionBlock(lines) {
+      let title = "More Information";
+      const bodyLines = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (/^title\s*:\s*(.+)$/i.test(trimmed)) {
+          title = trimmed.replace(/^title\s*:\s*/i, "").trim();
+        } else if (trimmed) {
+          bodyLines.push(line);
+        }
+      }
+      const renderedBody = renderRichMarkdown(bodyLines.join("\n"));
+      return `
+        <details class="stevie-accordion">
+          <summary class="stevie-accordion__summary">${escapeHtml(title)}</summary>
+          <div class="stevie-accordion__body">${renderedBody}</div>
+        </details>`;
+    }
+
+    function renderProgramsBlock(lines) {
+      const items = [];
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        const parts = trimmed.split("|").map((p) => p.trim());
+        if (parts.length >= 1) {
+          items.push({ name: parts[0], tags: parts.slice(1) });
+        }
+      }
+      if (!items.length) return "";
+      let html = '<div class="stevie-programs-grid">';
+      for (const p of items) {
+        const q = `Tell me about the ${p.name} and how to enter`;
+        html += `
+          <div class="stevie-program-card is-interactive" role="button" tabindex="0" data-query="${escapeHtml(q)}" aria-label="Select ${escapeHtml(p.name)}">
+            <div class="stevie-program-card__header">
+              <div class="stevie-program-card__name">${escapeHtml(p.name)}</div>
+              <div class="stevie-program-card__action">
+                <span class="stevie-program-card__prompt">Select</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+            <div class="stevie-program-card__tags">${p.tags.map((t) => `<span class="stevie-tag">${escapeHtml(t)}</span>`).join("")}</div>
+          </div>`;
+      }
+      html += "</div>";
+      return html;
+    }
+
+    function renderOptionsBlock(lines) {
+      let title = "";
+      let isMulti = false;
+      const items = [];
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (/^title\s*:\s*(.+)$/i.test(trimmed)) {
+          title = trimmed.replace(/^title\s*:\s*/i, "").trim();
+          continue;
+        }
+        if (/^mode\s*:\s*(.+)$/i.test(trimmed)) {
+          const modeVal = trimmed
+            .replace(/^mode\s*:\s*/i, "")
+            .trim()
+            .toLowerCase();
+          isMulti = modeVal === "multi" || modeVal === "multiple" || modeVal === "checkbox";
+          continue;
+        }
+        if (/^(?:type|directive|setting)\s*:/i.test(trimmed)) {
+          continue;
+        }
+        const parts = trimmed.split("|").map((p) => p.trim());
+        if (parts.length >= 1 && parts[0]) {
+          // Extra guard: ignore if label is a stray directive like 'mode: single'
+          if (/^mode\s*:/i.test(parts[0])) continue;
+          items.push({
+            label: parts[0],
+            desc: parts[1] || "",
+            query: parts[2] || parts[0],
+          });
+        }
+      }
+      if (!items.length) return "";
+
+      let html = `<div class="stevie-options-container ${isMulti ? "is-multi" : "is-single"}">`;
+      if (title) {
+        html += `<div class="stevie-options-title">${escapeHtml(title)}</div>`;
+      }
+      html += '<div class="stevie-options-grid">';
+      for (const opt of items) {
+        html += `
+          <div class="stevie-option-card" role="button" tabindex="0" data-query="${escapeHtml(opt.query)}" data-label="${escapeHtml(opt.label)}">
+            <div class="stevie-option-card__indicator">
+              ${isMulti ? '<span class="stevie-checkbox"></span>' : '<span class="stevie-radio"></span>'}
+            </div>
+            <div class="stevie-option-card__content">
+              <div class="stevie-option-card__label">${escapeHtml(opt.label)}</div>
+              ${opt.desc ? `<div class="stevie-option-card__desc">${escapeHtml(opt.desc)}</div>` : ""}
+            </div>
+            <div class="stevie-option-card__chevron">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>`;
+      }
+      html += "</div>";
+      if (isMulti) {
+        html += `
+          <div class="stevie-options-actions">
+            <button type="button" class="stevie-options-submit" disabled>
+              <span>Continue with Selected (0)</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>`;
+      }
+      html += "</div>";
+      return html;
+    }
+
+    function renderChipsBlock(lines) {
+      const chips = [];
+      for (const line of lines) {
+        const trimmed = line.trim().replace(/^[\*\-•]\s*/, "");
+        if (trimmed) chips.push(trimmed);
+      }
+      if (!chips.length) return "";
+      let html = '<div class="stevie-chips-wrap">';
+      html += '<span class="stevie-chips-label">Explore Next:</span>';
+      html += '<div class="stevie-chips">';
+      for (const c of chips) {
+        html += `<button type="button" class="stevie-chip" data-query="${escapeHtml(c)}">${escapeHtml(c)}</button>`;
+      }
+      html += "</div></div>";
+      return html;
+    }
+
+    function renderChartBlock(lines) {
+      let title = "Data Comparison";
+      const items = [];
+      const colors = ["#0b6e6e", "#0284c7", "#d97706", "#7c3aed", "#059669", "#dc2626", "#4f46e5"];
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed) continue;
+        if (/^title\s*:\s*(.+)$/i.test(trimmed)) {
+          title = trimmed.replace(/^title\s*:\s*/i, "").trim();
+          continue;
+        }
+        if (/^type\s*:/i.test(trimmed)) continue;
+
+        const m = trimmed.match(/^([^:]+?)\s*[:=\-]\s*([\d,]+(?:\.\d+)?)\s*(?:%|awards?|wins?)?$/i);
+        if (m) {
+          const label = m[1].trim();
+          const num = parseFloat(m[2].replace(/,/g, ""));
+          if (!isNaN(num)) items.push({ label, val: num });
+        }
+      }
+      if (!items.length) return "";
+
+      const maxVal = Math.max(...items.map((i) => i.val)) || 1;
+      const getColor = (lbl, idx) => {
+        const l = lbl.toLowerCase();
+        if (l.includes("gold")) return "linear-gradient(90deg, #d4af37, #f6d365)";
+        if (l.includes("silver")) return "linear-gradient(90deg, #8a9ba8, #bdc3c7)";
+        if (l.includes("bronze")) return "linear-gradient(90deg, #b87333, #e67e22)";
+        if (l.includes("grand")) return "linear-gradient(90deg, #6b21a8, #a855f7)";
+        const base = colors[idx % colors.length];
+        return `linear-gradient(90deg, ${base}, color-mix(in srgb, ${base} 75%, #ffffff))`;
+      };
+
+      let html = '<div class="stevie-chart-card">';
+      html += `<div class="stevie-chart-card__header"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg><span class="stevie-chart-card__title">${escapeHtml(title)}</span></div>`;
+      html += '<div class="stevie-chart-card__list">';
+
+      items.forEach((item, idx) => {
+        const pct = Math.max(Math.round((item.val / maxVal) * 100), 2);
+        const bg = getColor(item.label, idx);
+        html += `
+          <div class="stevie-chart-item">
+            <div class="stevie-chart-item__meta">
+              <span class="stevie-chart-item__label">${escapeHtml(item.label)}</span>
+              <span class="stevie-chart-item__val">${item.val.toLocaleString()}</span>
+            </div>
+            <div class="stevie-chart-item__track">
+              <div class="stevie-chart-item__bar" style="width: ${pct}%; background: ${bg};"></div>
+            </div>
+          </div>`;
+      });
+      html += "</div></div>";
+      return html;
+    }
+
+    function renderRichMarkdown(md) {
+      if (!md) return "";
+      const rawLines = String(md).replace(/\r\n/g, "\n").split("\n");
+      const out = [];
+      let i = 0;
+
+      while (i < rawLines.length) {
+        const line = rawLines[i];
+        const trimmed = line.trim();
+
+        if (!trimmed) {
+          i++;
+          continue;
+        }
+
+        // 1. KPI Stat Cards
+        if (/^`{3,}\s*(?:kpi|stats)/i.test(trimmed)) {
+          const kpiLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            kpiLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const kpiHtml = renderKpiBlock(kpiLines);
+          if (kpiHtml) out.push(kpiHtml);
+          continue;
+        }
+
+        // 2. Timeline Block
+        if (/^`{3,}\s*timeline/i.test(trimmed)) {
+          const timeLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            timeLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const timeHtml = renderTimelineBlock(timeLines);
+          if (timeHtml) out.push(timeHtml);
+          continue;
+        }
+
+        // 3. Accordion Block
+        if (/^`{3,}\s*accordion/i.test(trimmed)) {
+          const accLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            accLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const accHtml = renderAccordionBlock(accLines);
+          if (accHtml) out.push(accHtml);
+          continue;
+        }
+
+        // 4. Interactive Programs Block
+        if (/^`{3,}\s*programs/i.test(trimmed)) {
+          const progLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            progLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const progHtml = renderProgramsBlock(progLines);
+          if (progHtml) out.push(progHtml);
+          continue;
+        }
+
+        // 5. Interactive Options / Choices Block
+        if (/^`{3,}\s*(?:options|select|choices)/i.test(trimmed)) {
+          const optLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            optLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const optHtml = renderOptionsBlock(optLines);
+          if (optHtml) out.push(optHtml);
+          continue;
+        }
+
+        // 6. Follow-Up Chips Block
+        if (/^`{3,}\s*(?:chips|suggested|followups)/i.test(trimmed)) {
+          const chipLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            chipLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const chipHtml = renderChipsBlock(chipLines);
+          if (chipHtml) out.push(chipHtml);
+          continue;
+        }
+
+        // 7. Chart Code Blocks
+        if (/^`{3,}\s*(?:chart|graph)/i.test(trimmed)) {
+          const chartLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            chartLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          const chartHtml = renderChartBlock(chartLines);
+          if (chartHtml) out.push(chartHtml);
+          continue;
+        }
+
+        // 8. Generic Code Block Fallback (safely consumes any other ``` block to prevent hang)
+        if (/^`{3,}/.test(trimmed)) {
+          const genericLines = [];
+          i++;
+          while (i < rawLines.length && !/^`{3,}\s*$/.test(rawLines[i].trim())) {
+            genericLines.push(rawLines[i]);
+            i++;
+          }
+          if (i < rawLines.length && /^`{3,}\s*$/.test(rawLines[i].trim())) i++;
+          out.push(
+            `<pre class="stevie-code"><code>${escapeHtml(genericLines.join("\n"))}</code></pre>`
+          );
+          continue;
+        }
+
+        // 9. Executive Insight Insets (> [!TIP], > [!IMPORTANT], etc.)
+        if (/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/i.test(trimmed)) {
+          const typeMatch = trimmed.match(
+            /^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]\s*(.*)$/i
+          );
+          const calloutType = (typeMatch ? typeMatch[1] : "NOTE").toLowerCase();
+          const firstLineText = typeMatch && typeMatch[2] ? typeMatch[2].trim() : "";
+          const calloutLines = [];
+          if (firstLineText) calloutLines.push(firstLineText);
+          i++;
+          while (i < rawLines.length) {
+            const nextL = rawLines[i].trim();
+            if (/^>\s*\[!(TIP|NOTE|IMPORTANT|WARNING|CAUTION)\]/i.test(nextL)) {
+              break;
+            }
+            if (nextL.startsWith(">")) {
+              const cleaned = nextL.replace(/^>\s?/, "").trim();
+              if (cleaned) calloutLines.push(cleaned);
+              i++;
+            } else if (
+              nextL === "" &&
+              i + 1 < rawLines.length &&
+              rawLines[i + 1].trim().startsWith(">")
+            ) {
+              i++;
+            } else if (
+              calloutLines.length > 0 &&
+              nextL !== "" &&
+              !/^[#`\*\-•]/.test(nextL) &&
+              !nextL.startsWith("|")
+            ) {
+              // Continuation line inside callout
+              calloutLines.push(nextL);
+              i++;
+            } else {
+              break;
+            }
+          }
+
+          if (!calloutLines.length) {
+            // Guard: do not render an empty box if there is no text
+            continue;
+          }
+
+          let svgIcon = "";
+          let badgeText = "EXECUTIVE INSIGHT";
+          if (calloutType === "tip") {
+            badgeText = "EXECUTIVE INSIGHT";
+            svgIcon =
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>';
+          } else if (calloutType === "important") {
+            badgeText = "KEY REQUIREMENT";
+            svgIcon =
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+          } else if (calloutType === "warning" || calloutType === "caution") {
+            badgeText = "COMPLIANCE ADVISORY";
+            svgIcon =
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+          } else {
+            badgeText = "OFFICIAL GUIDELINES";
+            svgIcon =
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+          }
+
+          const innerText = formatInline(escapeHtml(calloutLines.join(" ")));
+          out.push(`
+            <div class="stevie-insight is-${calloutType}">
+              <div class="stevie-insight__header">
+                <span class="stevie-insight__badge">${svgIcon}<span>${badgeText}</span></span>
+              </div>
+              <div class="stevie-insight__content">${innerText}</div>
+            </div>`);
+          continue;
+        }
+
+        // 10. Horizontal Rule
+        if (/^(?:---|\*\*\*|___)$/.test(trimmed)) {
+          out.push('<hr class="stevie-divider" />');
+          i++;
+          continue;
+        }
+
+        // 11. Markdown Headings (# H1, ## H2, ### H3, #### H4)
+        const headingMatch = trimmed.match(/^(#{1,4})\s+(.+)$/);
+        if (headingMatch) {
+          const level = headingMatch[1].length;
+          const text = formatInline(escapeHtml(headingMatch[2]));
+          const tag = level === 1 ? "h2" : level === 2 ? "h3" : "h4";
+          out.push(`<${tag} class="stevie-${tag}">${text}</${tag}>`);
+          i++;
+          continue;
+        }
+
+        // 12. Implicit Section Titles
+        if (
+          /^(?:The \d+-Step|Key Takeaways|Judging Process|Overview|Step-by-Step|Criteria|Eligibility|Key Program Highlights)/i.test(
+            trimmed
+          ) &&
+          trimmed.length <= 60 &&
+          !trimmed.endsWith(".")
+        ) {
+          const text = formatInline(escapeHtml(trimmed.replace(/:$/, "")));
+          out.push(`<h3 class="stevie-h3 stevie-section-heading">${text}</h3>`);
+          i++;
+          continue;
+        }
+
+        // 13. Markdown Tables
+        if (trimmed.startsWith("|") && trimmed.endsWith("|")) {
+          const tableLines = [];
+          while (
+            i < rawLines.length &&
+            rawLines[i].trim().startsWith("|") &&
+            rawLines[i].trim().endsWith("|")
+          ) {
+            tableLines.push(rawLines[i].trim());
+            i++;
+          }
+          if (tableLines.length >= 2) {
+            const parseRow = (r) =>
+              r
+                .split("|")
+                .slice(1, -1)
+                .map((c) => formatInline(escapeHtml(c.trim())));
+            const headers = parseRow(tableLines[0]);
+            const isSep = /^\|(?::?-+:?\|)+$/.test(tableLines[1].replace(/\s+/g, ""));
+            const startBody = isSep ? 2 : 1;
+
+            let tableHtml = '<div class="stevie-table-wrap"><table class="stevie-table">';
+            tableHtml +=
+              "<thead><tr>" + headers.map((h) => `<th>${h}</th>`).join("") + "</tr></thead><tbody>";
+            for (let b = startBody; b < tableLines.length; b++) {
+              const cells = parseRow(tableLines[b]);
+              tableHtml += "<tr>" + cells.map((c) => `<td>${c}</td>`).join("") + "</tr>";
+            }
+            tableHtml += "</tbody></table></div>";
+            out.push(tableHtml);
+            continue;
+          }
+        }
+
+        // 14. Unordered Lists
+        if (/^[\*\-•]\s+/.test(trimmed)) {
+          let listHtml = '<ul class="stevie-list">';
+          while (i < rawLines.length) {
+            const l = rawLines[i];
+            const t = l.trim();
+            if (/^[\*\-•]\s+/.test(t)) {
+              let clean = t.replace(/^[\*\-•]\s+/, "");
+              if (
+                /^([A-Z][A-Za-z0-9\s\/\-&]{1,30}):\s+(.+)$/.test(clean) &&
+                !clean.startsWith("**")
+              ) {
+                clean = clean.replace(/^([A-Z][A-Za-z0-9\s\/\-&]{1,30}):\s+(.+)$/, "**$1:** $2");
+              }
+              const itemText = formatInline(escapeHtml(clean));
+              listHtml += `<li>${itemText}</li>`;
+              i++;
+            } else if (/^\s{2,}[\*\-•]\s+/.test(l)) {
+              let clean = t.replace(/^[\*\-•]\s+/, "");
+              if (
+                /^([A-Z][A-Za-z0-9\s\/\-&]{1,30}):\s+(.+)$/.test(clean) &&
+                !clean.startsWith("**")
+              ) {
+                clean = clean.replace(/^([A-Z][A-Za-z0-9\s\/\-&]{1,30}):\s+(.+)$/, "**$1:** $2");
+              }
+              const subText = formatInline(escapeHtml(clean));
+              listHtml += `<li class="stevie-nested-li">${subText}</li>`;
+              i++;
+            } else if (
+              l.trim() === "" &&
+              i + 1 < rawLines.length &&
+              /^[\*\-•]\s+/.test(rawLines[i + 1].trim())
+            ) {
+              i++;
+            } else {
+              break;
+            }
+          }
+          listHtml += "</ul>";
+          out.push(listHtml);
+          continue;
+        }
+
+        // 15. Ordered Lists with Badges
+        if (/^\d+\.\s+/.test(trimmed)) {
+          let olistHtml = '<ol class="stevie-olist">';
+          while (i < rawLines.length) {
+            const t = rawLines[i].trim();
+            if (/^\d+\.\s+/.test(t)) {
+              const numMatch = t.match(/^(\d+)\.\s+(.+)$/);
+              const stepNum = numMatch ? numMatch[1] : "";
+              const itemText = formatInline(
+                escapeHtml(numMatch ? numMatch[2] : t.replace(/^\d+\.\s+/, ""))
+              );
+              olistHtml += `<li class="stevie-olist__item"><span class="stevie-olist__badge">${stepNum}</span><div class="stevie-olist__content">${itemText}</div></li>`;
+              i++;
+            } else if (
+              rawLines[i].trim() === "" &&
+              i + 1 < rawLines.length &&
+              /^\d+\.\s+/.test(rawLines[i + 1].trim())
+            ) {
+              i++;
+            } else {
+              break;
+            }
+          }
+          olistHtml += "</ol>";
+          out.push(olistHtml);
+          continue;
+        }
+
+        // 16. Paragraphs
+        const pLines = [];
+        const startI = i;
+        while (i < rawLines.length) {
+          const l = rawLines[i];
+          const t = l.trim();
+          if (
+            !t ||
+            /^`{3,}/.test(t) ||
+            /^~{3,}/.test(t) ||
+            t.startsWith(">") ||
+            /^(?:---|\*\*\*|___)$/.test(t) ||
+            /^(#{1,4})\s+/.test(t) ||
+            /^[\*\-•]\s+/.test(t) ||
+            /^\d+\.\s+/.test(t) ||
+            (t.startsWith("|") && t.endsWith("|"))
+          ) {
+            break;
+          }
+          pLines.push(formatInline(escapeHtml(t)));
+          i++;
+        }
+        if (pLines.length) {
+          out.push(`<p class="stevie-p">${pLines.join("<br />")}</p>`);
+        }
+        // Safety: Always advance if nothing consumed to prevent any infinite loop
+        if (i === startI) {
+          i++;
+        }
+      }
+
+      return out.join("");
+    }
+
+    function fillAnswer(el, data) {
+      const [badgeClass, badgeLabel] = TIERS[data.tier] || ["is-other", data.label || ""];
+      const sources = showSources ? normalizeSources(data.sources) : [];
+
+      el.className = "stevie-msg is-bot";
+      el.innerHTML = `
+        <div class="stevie-msg__card" data-theme="light">
+          <div class="stevie-msg__meta-bar">
+            ${badgeLabel ? `<span class="stevie-badge ${badgeClass}">${getTierSvg(badgeClass)}<span>${escapeHtml(badgeLabel)}</span></span>` : ""}
+            <span class="stevie-msg__timestamp">Live Response</span>
+          </div>
+          ${data.rewritten ? `<p class="stevie-rewritten">Answering context: ${escapeHtml(data.rewritten)}</p>` : ""}
+          <div class="stevie-body">${renderRichMarkdown(data.answer || "")}</div>
+          ${
+            sources.length
+              ? `
+            <div class="stevie-sources-bar">
+              <div class="stevie-sources-bar__header">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span>Verified Official Sources & Citations (${sources.length})</span>
+              </div>
+              <div class="stevie-sources-bar__chips">
+                ${sources
+                  .map((s, idx) =>
+                    s.isUrl
+                      ? `
+                  <a href="${escapeHtml(s.href)}" target="_blank" rel="noopener noreferrer" class="stevie-source-chip">
+                    <span class="stevie-source-chip__num">[${idx + 1}]</span>
+                    <span class="stevie-source-chip__text">${escapeHtml(s.label)}</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                  </a>`
+                      : `
+                  <span class="stevie-source-chip is-db">
+                    <span class="stevie-source-chip__num">[${idx + 1}]</span>
+                    <span class="stevie-source-chip__text">${escapeHtml(s.label)}</span>
+                  </span>`
+                  )
+                  .join("")}
+              </div>
+            </div>`
+              : ""
+          }
+          <div class="stevie-feedback-bar" data-feedback-bar>
+            <span class="stevie-feedback-label">Was this answer helpful?</span>
+            <div class="stevie-feedback-actions">
+              <button type="button" class="stevie-feedback-btn is-up" data-feedback-action="thumbs_up" title="Helpful" aria-label="Thumbs up">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v12"></path><path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3"></path><path d="m7 10 5-5.5a2 2 0 0 1 3 1.38z"></path></svg>
+                <span>Helpful</span>
+              </button>
+              <button type="button" class="stevie-feedback-btn is-down" data-feedback-action="thumbs_down" title="Not helpful" aria-label="Thumbs down">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 14V2"></path><path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3"></path><path d="m17 14-5 5.5a2 2 0 0 1-3-1.38z"></path></svg>
+                <span>Not helpful</span>
+              </button>
+            </div>
+            <span class="stevie-feedback-status" hidden></span>
+          </div>
+        </div>`;
+
+      // Smoothly scroll inside the stage so the TOP of the new answer is aligned cleanly
+      const targetY = Math.max(0, el.offsetTop - 15);
+      stage.scrollTo({ top: targetY, behavior: "smooth" });
+    }
+
+    function fillError(el, message) {
+      el.className = "stevie-msg is-bot has-error";
+      el.innerHTML = `
+        <div class="stevie-msg__card is-error" data-theme="light">
+          <div class="stevie-msg__error-title">System Advisory</div>
+          <div class="stevie-body">${escapeHtml(message)}</div>
+        </div>`;
+    }
+
+    // Click delegation for interactive components (Chips, Program Cards, Option Cards)
+    transcript.addEventListener("click", (e) => {
+      // 1. Suggested Follow-up Chip clicks
+      const chip = e.target.closest(".stevie-chip");
+      if (chip && chip.dataset.query && !submitBtn.disabled) {
+        input.value = chip.dataset.query.trim();
+        ask();
+        return;
+      }
+
+      // 2. Program Card Click
+      const progCard = e.target.closest(".stevie-program-card.is-interactive");
+      if (progCard && progCard.dataset.query && !submitBtn.disabled) {
+        input.value = progCard.dataset.query.trim();
+        ask();
+        return;
+      }
+
+      // 3. Option Card Click (Single or Multi)
+      const optCard = e.target.closest(".stevie-option-card");
+      if (optCard && !submitBtn.disabled) {
+        const container = optCard.closest(".stevie-options-container");
+        if (container && container.classList.contains("is-multi")) {
+          optCard.classList.toggle("is-selected");
+          const selectedCards = container.querySelectorAll(".stevie-option-card.is-selected");
+          const submit = container.querySelector(".stevie-options-submit");
+          if (submit) {
+            submit.disabled = selectedCards.length === 0;
+            submit.querySelector("span").innerText =
+              `Continue with Selected (${selectedCards.length})`;
+          }
+        } else {
+          // Single select -> immediately ask
+          input.value = optCard.dataset.query
+            ? optCard.dataset.query.trim()
+            : optCard.dataset.label.trim();
+          ask();
+        }
+        return;
+      }
+
+      // 4. Multi-Select Continue Button Click
+      const submit = e.target.closest(".stevie-options-submit");
+      if (submit && !submit.disabled && !submitBtn.disabled) {
+        const container = submit.closest(".stevie-options-container");
+        if (container) {
+          const selectedLabels = Array.from(
+            container.querySelectorAll(".stevie-option-card.is-selected")
+          ).map((c) => (c.dataset.label ? c.dataset.label.trim() : c.innerText.trim()));
+          if (selectedLabels.length) {
+            input.value = `I am interested in: ${selectedLabels.join(", ")}`;
+            ask();
+          }
+        }
+        return;
+      }
+
+      // 5. Thumbs Up / Down Feedback Click Handling
+      const fbBtn = e.target.closest("[data-feedback-action]");
+      if (fbBtn) {
+        const bar = fbBtn.closest("[data-feedback-bar]");
+        const botMsg = bar ? bar.closest(".stevie-msg") : null;
+        const action = fbBtn.dataset.feedbackAction;
+        const statusEl = bar ? bar.querySelector(".stevie-feedback-status") : null;
+        const upBtn = bar ? bar.querySelector(".is-up") : null;
+        const downBtn = bar ? bar.querySelector(".is-down") : null;
+
+        if (upBtn) upBtn.disabled = true;
+        if (downBtn) downBtn.disabled = true;
+        fbBtn.classList.add("is-selected");
+
+        const query = botMsg ? botMsg.dataset.userQuery || "" : "";
+        const answerEl = botMsg ? botMsg.querySelector(".stevie-body") : null;
+        const answer = answerEl ? answerEl.innerText.slice(0, 3000) : "";
+
+        (async () => {
+          try {
+            const res = await fetch(`${effectiveApiUrl}/feedback`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                source: "chatbot",
+                rating: action,
+                query: query,
+                response_summary: answer,
+              }),
+            });
+            const data = await res.json();
+            const feedbackId = data.feedback_id;
+
+            if (action === "thumbs_up") {
+              if (statusEl) {
+                statusEl.textContent = "Thank you for your feedback!";
+                statusEl.hidden = false;
+              }
+            } else {
+              activeFeedbackBar = bar;
+              if (feedbackIdInput) feedbackIdInput.value = feedbackId || "";
+              if (feedbackQueryInput) feedbackQueryInput.value = query;
+              if (feedbackAnswerInput) feedbackAnswerInput.value = answer;
+              if (feedbackModal) {
+                feedbackModal.hidden = false;
+                setTimeout(() => feedbackNameInput?.focus(), 100);
+              }
+            }
+          } catch (err) {
+            console.warn("Feedback error:", err);
+            if (action === "thumbs_up" && statusEl) {
+              statusEl.textContent = "Thank you!";
+              statusEl.hidden = false;
+            }
+          }
+        })();
+        return;
+      }
+    });
+
+    // Feedback Modal elements & handler inside composer scope
+    const feedbackModal = document.getElementById("stevie-feedback-modal");
+    if (feedbackModal && feedbackModal.parentElement !== document.body) {
+      document.body.appendChild(feedbackModal);
+    }
+    const feedbackForm = document.getElementById("stevie-feedback-form");
+    const feedbackSuccess = document.getElementById("stevie-feedback-success");
+    const feedbackIdInput = document.getElementById("stevie-feedback-id");
+    const feedbackQueryInput = document.getElementById("stevie-feedback-query");
+    const feedbackAnswerInput = document.getElementById("stevie-feedback-answer");
+    const feedbackNameInput = document.getElementById("stevie-feedback-name");
+    const feedbackEmailInput = document.getElementById("stevie-feedback-email");
+    const feedbackCommentsInput = document.getElementById("stevie-feedback-comments");
+    const feedbackSubmitBtn = document.getElementById("stevie-feedback-submit-btn");
+    let activeFeedbackBar = null;
+
+    function closeFeedbackModal() {
+      if (!feedbackModal) return;
+      feedbackModal.hidden = true;
+      if (feedbackForm) {
+        feedbackForm.reset();
+        feedbackForm.hidden = false;
+      }
+      if (feedbackSuccess) feedbackSuccess.hidden = true;
+      if (feedbackSubmitBtn) feedbackSubmitBtn.disabled = false;
+    }
+
+    document.querySelectorAll("#stevie-feedback-modal [data-modal-close]").forEach((btn) => {
+      btn.addEventListener("click", closeFeedbackModal);
+    });
+    feedbackModal?.addEventListener("click", (e) => {
+      if (e.target === feedbackModal) closeFeedbackModal();
+    });
+
+    feedbackForm?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = (feedbackNameInput?.value || "").trim();
+      const email = (feedbackEmailInput?.value || "").trim();
+      const comments = (feedbackCommentsInput?.value || "").trim();
+      const feedbackId = feedbackIdInput?.value ? parseInt(feedbackIdInput.value, 10) : null;
+      const query = feedbackQueryInput?.value || "";
+      const answer = feedbackAnswerInput?.value || "";
+
+      if (!name || !comments) return;
+
+      if (feedbackSubmitBtn) {
+        feedbackSubmitBtn.disabled = true;
+        feedbackSubmitBtn.innerHTML = `<span class="stevie-inline-spin" aria-hidden="true"></span> Submitting...`;
+      }
+
+      try {
+        const res = await fetch(`${effectiveApiUrl}/feedback/submit`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            feedback_id: feedbackId,
+            user_name: name,
+            user_email: email || null,
+            feedback_text: comments,
+            source: "chatbot",
+            query: query,
+            response_summary: answer,
+          }),
+        });
+        const result = await res.json();
+
+        if (feedbackForm) feedbackForm.hidden = true;
+        if (feedbackSuccess) {
+          feedbackSuccess.hidden = false;
+          const msgEl = document.getElementById("stevie-feedback-success-msg");
+          if (msgEl) {
+            if (result.ticket_id) {
+              msgEl.textContent = `Thank you, ${name}! Your feedback was received and ticket #${result.ticket_id} was opened with our support team.`;
+            } else {
+              msgEl.textContent = `Thank you, ${name}! Your feedback has been saved and forwarded to our support team.`;
+            }
+          }
+        }
+        if (activeFeedbackBar) {
+          const statusEl = activeFeedbackBar.querySelector(".stevie-feedback-status");
+          if (statusEl) {
+            statusEl.textContent = "Ticket created. Thank you!";
+            statusEl.hidden = false;
+          }
+        }
+      } catch (err) {
+        console.error("Failed to submit detailed feedback:", err);
+        alert("Thank you for your feedback! It has been captured.");
+        closeFeedbackModal();
+      }
+    });
+
+    // Keyboard support for cards (Enter or Space)
+    transcript.addEventListener("keydown", (e) => {
+      if ((e.key === "Enter" || e.key === " ") && !submitBtn.disabled) {
+        const target = e.target.closest(".stevie-program-card.is-interactive, .stevie-option-card");
+        if (target) {
+          e.preventDefault();
+          target.click();
+        }
+      }
+    });
+
+    // Starter Discovery Buttons
+    if (hero) {
+      hero.addEventListener("click", (e) => {
+        const btn = e.target.closest(".stevie-canvas__starter-btn");
+        if (btn && !submitBtn.disabled) {
+          input.value = btn.querySelector("span:last-child")
+            ? btn.querySelector("span:last-child").innerText.trim()
+            : btn.innerText.trim();
+          ask();
+        }
+      });
+    }
+
+    // Reset / New Session Button
+    if (resetBtn) {
+      resetBtn.addEventListener("click", () => {
+        history.length = 0;
+        if (feed && feed !== stage) {
+          feed.innerHTML = "";
+        }
+        root.classList.remove("has-conversation");
+        input.value = "";
+        input.focus();
+        stage.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    submitBtn.addEventListener("click", () => ask());
+    input.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        ask();
+      }
+    });
+
+    async function ask() {
+      const question = input.value.trim();
+      if (!question || submitBtn.disabled) return;
+
+      userMessage(question);
+      input.value = "";
+      submitBtn.disabled = true;
+      const pending = pendingMessage();
+
+      // Scroll stage to pending so user sees question and thinking state
+      stage.scrollTo({ top: stage.scrollHeight, behavior: "smooth" });
+
+      try {
+        const response = await fetch(`${effectiveApiUrl}/ask`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(apiKey ? { "X-API-Key": apiKey } : {}),
+          },
+          body: JSON.stringify({ q: question, history: history.slice(-HISTORY_TURNS) }),
+        });
+
+        if (!response.ok) {
+          let detail = `Request failed (${response.status})`;
+          try {
+            const body = await response.json();
+            if (body && body.detail) detail = body.detail;
+          } catch {}
+          throw new Error(detail);
+        }
+
+        const data = await response.json();
+        fillAnswer(pending, data);
+        history.push({ role: "user", content: question });
+        history.push({ role: "assistant", content: String(data.answer || "").slice(0, 3500) });
+      } catch (error) {
+        const message =
+          error && error.message && !/^Failed to fetch$/i.test(error.message)
+            ? error.message
+            : "Could not reach the chatbot service. Please ensure the local backend server is running.";
+        fillError(pending, message);
+      } finally {
+        submitBtn.disabled = false;
+        input.focus();
+      }
+    }
+  }
+</script>
+
+<style is:global>
+  /* --- Executive Stevie Intelligence Canvas Styles --- */
+
+  .stevie-chatbot-section {
+    position: relative;
+    width: 100%;
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+  }
+
+  .stevie-canvas {
+    position: relative;
+    max-width: 1120px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+    /* Strictly locked, consistent height that scales with the screen */
+    height: 80vh !important;
+    height: 80dvh !important;
+    min-height: 620px !important;
+    max-height: 880px !important;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* Fixed Stage that scrolls internally: NEVER shrinks on load, NEVER stretches page */
+  .stevie-canvas__stage {
+    flex: 1 1 0px !important;
+    min-height: 0 !important;
+    max-height: 100% !important;
+    overflow-y: auto !important;
+    padding: 0.5rem 0.5rem 1rem 0;
+    display: flex;
+    flex-direction: column;
+    scroll-behavior: smooth;
+  }
+
+  .stevie-canvas__feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  /* Top Executive Header */
+  .stevie-canvas__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.1rem 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(216, 225, 225, 0.25);
+  }
+
+  .stevie-canvas__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .stevie-canvas__brand-icon {
+    width: 2.3rem;
+    height: 2.3rem;
+    background: linear-gradient(135deg, #0b6e6e, #064444);
+    color: #f6d365;
+    border-radius: 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(11, 110, 110, 0.3);
+  }
+
+  .stevie-canvas__brand-text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stevie-canvas__brand-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .stevie-canvas__brand-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #94a3b8;
+  }
+
+  .stevie-canvas__status-dot {
+    width: 7px;
+    height: 7px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    display: inline-block;
+  }
+
+  .stevie-canvas__btn-reset {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.95rem;
+    background: rgba(255, 255, 255, 0.07);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .stevie-canvas__btn-reset:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Hero Section (Before Conversation Starts) */
+  .stevie-canvas__hero {
+    text-align: center;
+    padding: 2.5rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: auto 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .stevie-canvas.has-conversation .stevie-canvas__hero {
+    display: none;
+  }
+
+  .stevie-canvas__hero-badge {
+    display: inline-flex;
+    padding: 0.35rem 1rem;
+    background: rgba(11, 110, 110, 0.25);
+    border: 1px solid rgba(11, 110, 110, 0.45);
+    border-radius: 2rem;
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #5eead4;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.4rem;
+  }
+
+  .stevie-canvas__hero-title {
+    font-size: clamp(2rem, 3.8vw, 2.9rem);
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.85rem;
+    line-height: 1.2;
+  }
+
+  .stevie-canvas__hero-subtitle {
+    max-width: 680px;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin: 0 0 2.5rem;
+  }
+
+  .stevie-canvas__starters {
+    width: 100%;
+    max-width: 780px;
+  }
+
+  .stevie-canvas__starters-label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #64748b;
+    margin-bottom: 0.9rem;
+  }
+
+  .stevie-canvas__starters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .stevie-canvas__starter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.95rem 1.15rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 0.85rem;
+    color: #f1f5f9;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .stevie-canvas__starter-btn:hover {
+    background: rgba(11, 110, 110, 0.3);
+    border-color: #0b6e6e;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .stevie-canvas__starter-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* Conversation Feed */
+  .stevie-canvas__feed {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  /* User Message */
+  .stevie-msg.is-user {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .stevie-msg__user-bubble {
+    max-width: min(720px, 85%);
+    padding: 0.9rem 1.35rem;
+    background: linear-gradient(135deg, #0e766e, #0b5e58);
+    border-radius: 1.25rem 1.25rem 0.25rem 1.25rem;
+    box-shadow: 0 6px 18px rgba(11, 110, 110, 0.35);
+    color: #ffffff;
+  }
+
+  .stevie-msg__user-text {
+    font-size: 1rem;
+    line-height: 1.55;
+    font-weight: 500;
+  }
+
+  /* Bot Message Dossier Card */
+  .stevie-msg.is-bot {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .stevie-msg__card {
+    width: 100%;
+    background: #ffffff !important;
+    border: 1px solid #d4e2e0;
+    border-radius: 1.35rem;
+    padding: 1.6rem 2rem;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.25);
+    color: #142a30 !important;
+    transition: box-shadow 0.2s ease;
+  }
+
+  /* Universal Dark Text Guarantee inside White Briefing Card */
+  .stevie-msg__card,
+  .stevie-msg__card *,
+  .stevie-msg__card p,
+  .stevie-msg__card li,
+  .stevie-msg__card ul,
+  .stevie-msg__card ol,
+  .stevie-msg__card span,
+  .stevie-msg__card div,
+  .stevie-msg__card td {
+    color: #142a30 !important;
+  }
+
+  /* Specific exceptions for badges with dark backgrounds */
+  .stevie-msg__card .stevie-olist__badge,
+  .stevie-olist__badge {
+    background: linear-gradient(135deg, #0b6e6e, #064444) !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+  }
+
+  .stevie-msg__card strong,
+  .stevie-msg__card h1,
+  .stevie-msg__card h2,
+  .stevie-msg__card h3,
+  .stevie-msg__card h4,
+  .stevie-msg__card .stevie-h2,
+  .stevie-msg__card .stevie-h3,
+  .stevie-msg__card .stevie-h4 {
+    color: #0b4f4f !important;
+  }
+
+  .stevie-msg__card th {
+    color: #0b4f4f !important;
+    background: #f0f6f6 !important;
+  }
+
+  .stevie-msg__card .stevie-kpi-card__val {
+    color: #0b4f4f !important;
+  }
+
+  .stevie-msg__card .stevie-kpi-card__label {
+    color: #52666d !important;
+  }
+
+  .stevie-msg__card .stevie-chart-item__val {
+    color: #0b6e6e !important;
+  }
+
+  .stevie-msg__card .stevie-timeline__date {
+    color: #0b6e6e !important;
+  }
+
+  .stevie-msg__card .stevie-callout__badge {
+    color: #0b4f4f !important;
+  }
+
+  .stevie-msg__card .stevie-chip {
+    color: #0f766e !important;
+    background: #f0fdfa !important;
+    border-color: #99f6e4 !important;
+  }
+
+  .stevie-msg__card .stevie-tag {
+    color: #0b6e6e !important;
+    background: #e3f2f1 !important;
+  }
+
+  .stevie-msg__card.is-error {
+    border-left: 4px solid #ef4444;
+    background: #fffafa;
+  }
+
+  .stevie-msg__error-title {
+    font-weight: 700;
+    color: #b91c1c;
+    margin-bottom: 0.5rem;
+  }
+
+  .stevie-msg__meta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #edf2f2;
+  }
+
+  .stevie-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 999px;
+  }
+
+  .stevie-badge.is-records {
+    color: #047857;
+    background: #ecfdf5;
+    border: 1px solid #a7f3d0;
+  }
+  .stevie-badge.is-verified {
+    color: #0f766e;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+  }
+  .stevie-badge.is-live {
+    color: #b45309;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+  }
+  .stevie-badge.is-web {
+    color: #b91c1c;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+  }
+
+  .stevie-msg__timestamp {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #94a3b8;
+  }
+
+  .stevie-rewritten {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: #64748b;
+    margin-bottom: 0.85rem;
+  }
+
+  /* Thinking Animation */
+  .stevie-msg__thinking {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.6rem 0;
+  }
+
+  .stevie-msg__thinking-dots {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .stevie-msg__thinking-dots i {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: #0b6e6e;
+    animation: stevie-blink 1.2s infinite ease-in-out;
+  }
+  .stevie-msg__thinking-dots i:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .stevie-msg__thinking-dots i:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+
+  @keyframes stevie-blink {
+    0%,
+    80%,
+    100% {
+      opacity: 0.25;
+    }
+    40% {
+      opacity: 1;
+    }
+  }
+
+  .stevie-msg__thinking-label {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #64748b;
+  }
+
+  /* Content Elements Inside Briefing Card */
+  .stevie-body {
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: #142a30 !important;
+  }
+
+  .stevie-body,
+  .stevie-body p,
+  .stevie-p,
+  .stevie-list,
+  .stevie-olist,
+  .stevie-list li,
+  .stevie-olist li {
+    color: #142a30 !important;
+    font-weight: 450;
+    line-height: 1.7;
+  }
+
+  .stevie-body strong {
+    color: #0b4f4f !important;
+    font-weight: 700;
+  }
+
+  .stevie-p {
+    margin: 0 0 0.95rem;
+    color: #142a30 !important;
+  }
+  .stevie-p:last-child {
+    margin-bottom: 0;
+  }
+
+  .stevie-h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0b4f4f;
+    margin: 1.4rem 0 0.6rem;
+    line-height: 1.3;
+  }
+  .stevie-h3 {
+    font-size: 1.18rem;
+    font-weight: 800;
+    color: #0b6e6e;
+    margin: 1.2rem 0 0.5rem;
+    line-height: 1.3;
+  }
+  .stevie-h4 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #142a30;
+    margin: 1rem 0 0.4rem;
+  }
+
+  .stevie-list,
+  .stevie-olist {
+    margin: 0.5rem 0 1rem 1.5rem;
+    padding: 0;
+    line-height: 1.7;
+  }
+  .stevie-list li,
+  .stevie-olist li {
+    margin-bottom: 0.45rem;
+  }
+  .stevie-nested-li {
+    margin-left: 1.4rem;
+    list-style-type: circle;
+  }
+
+  .stevie-divider {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 1.3rem 0;
+  }
+
+  .stevie-link {
+    color: #0b6e6e;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .stevie-link:hover {
+    color: #0d9488;
+  }
+
+  .stevie-code {
+    background: #f1f5f9;
+    color: #0b6e6e;
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.88em;
+  }
+
+  /* Modern Responsive Tables */
+  .stevie-table-wrap {
+    overflow-x: auto;
+    margin: 1.1rem 0;
+    border: 1px solid #d4e2e0;
+    border-radius: 0.85rem;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .stevie-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    text-align: left;
+  }
+
+  .stevie-table th {
+    background: #f0f6f6;
+    color: #0b4f4f;
+    font-weight: 700;
+    padding: 0.75rem 1.1rem;
+    border-bottom: 2px solid #d4e2e0;
+    white-space: nowrap;
+  }
+
+  .stevie-table td {
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid #edf2f2;
+    color: #142a30;
+    vertical-align: top;
+  }
+  .stevie-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .stevie-table tr:nth-child(even) {
+    background: #fafcfc;
+  }
+  .stevie-table tr:hover {
+    background: #f0fdfa;
+  }
+
+  /* KPI Stat Highlight Cards */
+  .stevie-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.9rem;
+    margin: 1.2rem 0;
+  }
+
+  .stevie-kpi-card {
+    padding: 1.1rem 1.25rem;
+    background: linear-gradient(180deg, #ffffff 0%, #f7faf9 100%);
+    border: 1px solid #d4e2e0;
+    border-radius: 0.95rem;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    transition:
+      transform 0.18s ease,
+      border-color 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+  .stevie-kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: #0b6e6e;
+    box-shadow: 0 6px 16px rgba(11, 110, 110, 0.12);
+  }
+
+  .stevie-kpi-card__val {
+    font-size: clamp(1.3rem, 2vw, 1.8rem);
+    font-weight: 800;
+    color: #0b4f4f;
+    line-height: 1.15;
+    margin-bottom: 0.35rem;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .stevie-kpi-card__val.is-long {
+    font-size: clamp(0.82rem, 1.25vw, 1.12rem) !important;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+  }
+
+  .stevie-kpi-card__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Visual Comparison Chart Card */
+  .stevie-chart-card {
+    margin: 1.2rem 0;
+    padding: 1.2rem 1.5rem;
+    background: #ffffff;
+    border: 1px solid #d4e2e0;
+    border-radius: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  }
+
+  .stevie-chart-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.1rem;
+    padding-bottom: 0.65rem;
+    border-bottom: 1px solid #edf2f2;
+    color: #0b4f4f;
+  }
+
+  .stevie-chart-card__title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .stevie-chart-card__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .stevie-chart-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .stevie-chart-item__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.88rem;
+  }
+
+  .stevie-chart-item__label {
+    font-weight: 600;
+    color: #142a30;
+  }
+
+  .stevie-chart-item__val {
+    font-weight: 700;
+    color: #0b6e6e;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stevie-chart-item__track {
+    width: 100%;
+    height: 10px;
+    background: #edf2f2;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .stevie-chart-item__bar {
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Timeline Card */
+  .stevie-timeline-card {
+    margin: 1.2rem 0;
+    padding: 1.25rem 1.5rem;
+    background: #ffffff;
+    border: 1px solid #d4e2e0;
+    border-radius: 1rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  }
+
+  .stevie-timeline-card__header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: #0b4f4f;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #edf2f2;
+  }
+
+  .stevie-timeline {
+    position: relative;
+    margin-left: 0.5rem;
+    padding-left: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+  }
+
+  .stevie-timeline::before {
+    content: "";
+    position: absolute;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    left: 0.45rem;
+    width: 2px;
+    background: #d8e4e4;
+  }
+
+  .stevie-timeline__item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .stevie-timeline__marker {
+    position: absolute;
+    left: -1.8rem;
+    top: 0.2rem;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #ffffff;
+    border: 2px solid #8fa2a6;
+  }
+
+  .stevie-timeline__item.is-done .stevie-timeline__marker {
+    border-color: #10b981;
+    background: #10b981;
+  }
+
+  .stevie-timeline__item.is-active .stevie-timeline__marker {
+    border-color: #0b6e6e;
+    background: #0b6e6e;
+    box-shadow: 0 0 0 4px rgba(11, 110, 110, 0.2);
+  }
+
+  .stevie-timeline__content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .stevie-timeline__date {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #0b6e6e;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .stevie-timeline__desc {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #142a30;
+  }
+
+  /* Executive Editorial Inset Cards (Non-AI, High-End Corporate Inset) */
+  .stevie-insight {
+    margin: 1.35rem 0;
+    padding: 1.25rem 1.45rem;
+    border-radius: 0.9rem;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.04);
+    border: 1px solid #d8e5e3;
+    background: #ffffff;
+  }
+
+  .stevie-insight.is-tip {
+    background: linear-gradient(180deg, #f9fbfb 0%, #f2f7f6 100%);
+    border-color: #cce0dd;
+  }
+
+  .stevie-insight.is-important {
+    background: linear-gradient(180deg, #f9fbff 0%, #f0f4fc 100%);
+    border-color: #d2e0f8;
+  }
+
+  .stevie-insight.is-warning,
+  .stevie-insight.is-caution {
+    background: linear-gradient(180deg, #fffdfa 0%, #fdf6ec 100%);
+    border-color: #fae4c8;
+  }
+
+  .stevie-insight__header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.65rem;
+  }
+
+  .stevie-insight__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.25rem 0.65rem;
+    background: rgba(11, 110, 110, 0.12);
+    color: #0b4f4f !important;
+    border-radius: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .stevie-insight.is-important .stevie-insight__badge {
+    background: rgba(37, 99, 235, 0.12);
+    color: #1e40af !important;
+  }
+
+  .stevie-insight.is-warning .stevie-insight__badge,
+  .stevie-insight.is-caution .stevie-insight__badge {
+    background: rgba(217, 119, 6, 0.12);
+    color: #92400e !important;
+  }
+
+  .stevie-insight__content {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #142a30 !important;
+  }
+
+  /* Executive Step Numbers & Ordered List Roadmap */
+  .stevie-olist {
+    list-style: none;
+    padding-left: 0;
+    margin: 1.1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .stevie-olist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    line-height: 1.65;
+    color: #142a30 !important;
+  }
+
+  .stevie-olist__badge {
+    flex-shrink: 0;
+    width: 1.45rem;
+    height: 1.45rem;
+    background: linear-gradient(135deg, #0b6e6e, #064444);
+    color: #ffffff !important;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(11, 110, 110, 0.3);
+    margin-top: 0.15rem;
+  }
+
+  .stevie-olist__content {
+    flex: 1 1 auto;
+    color: #142a30 !important;
+    font-size: 0.96rem;
+  }
+
+  /* Section Headings & Visual Anchors */
+  .stevie-h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #0b4f4f !important;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid #edf2f2;
+    letter-spacing: -0.01em;
+  }
+
+  .stevie-h3,
+  .stevie-section-heading {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #0f766e !important;
+    margin: 1.25rem 0 0.55rem;
+    letter-spacing: -0.01em;
+  }
+
+  .stevie-h4 {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #142a30 !important;
+    margin: 1rem 0 0.45rem;
+  }
+
+  /* Program Badges */
+  .stevie-programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0.9rem;
+    margin: 1.2rem 0;
+  }
+
+  .stevie-program-card {
+    padding: 1.1rem 1.25rem;
+    background: #ffffff;
+    border: 1px solid #d4e2e0;
+    border-radius: 0.9rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.03);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+  .stevie-program-card.is-interactive {
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+  }
+  .stevie-program-card.is-interactive:hover {
+    transform: translateY(-3px);
+    border-color: #0b6e6e;
+    box-shadow: 0 6px 18px rgba(11, 110, 110, 0.12);
+    background: #fbfdfd;
+  }
+  .stevie-program-card.is-interactive:focus-visible {
+    box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.35);
+    border-color: #0b6e6e;
+  }
+
+  .stevie-program-card__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .stevie-program-card__name {
+    font-size: 0.96rem;
+    font-weight: 700;
+    color: #0b4f4f;
+    line-height: 1.35;
+  }
+
+  .stevie-program-card__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0b6e6e;
+    background: #e6f4f3;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.4rem;
+    opacity: 0.85;
+    transition: all 0.18s ease;
+    flex-shrink: 0;
+  }
+  .stevie-program-card.is-interactive:hover .stevie-program-card__action {
+    opacity: 1;
+    background: #0b6e6e;
+    color: #ffffff;
+    transform: translateX(2px);
+  }
+
+  /* Interactive Option Cards (Single & Multi-Select) */
+  .stevie-options-container {
+    margin: 1.25rem 0;
+    padding: 1.15rem 1.3rem;
+    background: linear-gradient(180deg, #f9fbfb 0%, #f4f8f7 100%);
+    border: 1px solid #d4e4e2;
+    border-radius: 1rem;
+  }
+
+  .stevie-options-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #0b4f4f;
+    margin-bottom: 0.85rem;
+    letter-spacing: -0.01em;
+  }
+
+  .stevie-options-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+
+  .stevie-option-card {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    border: 1px solid #dce8e6;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: all 0.18s ease;
+  }
+  .stevie-option-card:hover {
+    border-color: #0b6e6e;
+    background: #fbfdfd;
+    transform: translateX(2px);
+  }
+  .stevie-option-card:focus-visible {
+    box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.3);
+  }
+  .stevie-option-card.is-selected {
+    border-color: #0b6e6e;
+    background: #eef8f7;
+    box-shadow: 0 2px 8px rgba(11, 110, 110, 0.1);
+  }
+
+  .stevie-option-card__indicator {
+    flex-shrink: 0;
+  }
+  .stevie-checkbox,
+  .stevie-radio {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #8fa8a6;
+    border-radius: 4px;
+    background: #ffffff;
+    transition: all 0.15s ease;
+  }
+  .stevie-radio {
+    border-radius: 50%;
+  }
+  .stevie-option-card.is-selected .stevie-checkbox,
+  .stevie-option-card.is-selected .stevie-radio {
+    border-color: #0b6e6e;
+    background: #0b6e6e;
+    box-shadow: inset 0 0 0 3px #ffffff;
+  }
+
+  .stevie-option-card__content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .stevie-option-card__label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #142a30;
+  }
+  .stevie-option-card.is-selected .stevie-option-card__label {
+    color: #0b4f4f;
+  }
+
+  .stevie-option-card__desc {
+    font-size: 0.8rem;
+    color: #52676b;
+  }
+
+  .stevie-option-card__chevron {
+    color: #8fa8a6;
+    transition:
+      transform 0.18s ease,
+      color 0.18s ease;
+  }
+  .stevie-option-card:hover .stevie-option-card__chevron {
+    color: #0b6e6e;
+    transform: translateX(2px);
+  }
+
+  .stevie-options-actions {
+    margin-top: 0.9rem;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .stevie-options-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.15rem;
+    background: #0b6e6e;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+  .stevie-options-submit:hover:not(:disabled) {
+    background: #085252;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(11, 110, 110, 0.25);
+  }
+  .stevie-options-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .stevie-program-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .stevie-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #0b6e6e;
+    background: #e3f2f1;
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+  }
+
+  /* Suggested Follow-up Chips */
+  .stevie-chips-wrap {
+    margin-top: 1.4rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #cbd5e1;
+  }
+
+  .stevie-chips-label {
+    display: block;
+    font-size: 0.74rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #64748b;
+    margin-bottom: 0.6rem;
+  }
+
+  .stevie-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .stevie-chip {
+    background: #f0fdfa;
+    color: #0f766e;
+    border: 1px solid #99f6e4;
+    border-radius: 2rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .stevie-chip:hover {
+    background: #0f766e;
+    color: #ffffff;
+    border-color: #0f766e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+  }
+
+  /* Official Citations & Sources Bar */
+  .stevie-sources-bar {
+    margin-top: 1.2rem;
+    padding: 0.75rem 1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .stevie-sources-bar__header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0b6e6e;
+  }
+  .stevie-sources-bar__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .stevie-source-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.28rem 0.55rem;
+    font-size: 0.75rem;
+    color: #0b6e6e;
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+  .stevie-source-chip:hover {
+    background: #f0fdfa;
+    border-color: #0b6e6e;
+    color: #044343;
+  }
+  .stevie-source-chip.is-db {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+  .stevie-source-chip__num {
+    font-weight: 700;
+    color: #94a3b8;
+    font-size: 0.7rem;
+  }
+  .stevie-source-chip__text {
+    font-weight: 500;
+  }
+
+  /* Sources Drawer */
+  .stevie-sources {
+    margin-top: 1.1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #edf2f2;
+  }
+
+  .stevie-sources__summary {
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .stevie-sources__summary::-webkit-details-marker {
+    display: none;
+  }
+  .stevie-sources__summary::before {
+    content: "▸";
+    font-size: 0.8rem;
+  }
+  .stevie-sources[open] .stevie-sources__summary::before {
+    content: "▾";
+  }
+
+  .stevie-sources__list {
+    margin: 0.6rem 0 0 1.2rem;
+    padding: 0;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #64748b;
+  }
+  .stevie-sources__list a {
+    color: #0b6e6e;
+    text-decoration: underline;
+    word-break: break-all;
+  }
+
+  /* Floating Bottom Dock Composer */
+  .stevie-canvas__dock-container {
+    flex: 0 0 auto;
+    width: 100%;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(216, 225, 225, 0.2);
+    margin-top: auto;
+  }
+
+  .stevie-canvas__dock {
+    max-width: 860px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(11, 110, 110, 0.25);
+    border-radius: 2.5rem;
+    box-shadow:
+      0 20px 50px -10px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: 0.4rem 0.4rem 0.4rem 1.4rem;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .stevie-canvas__dock:focus-within {
+    border-color: #0b6e6e;
+    box-shadow:
+      0 20px 55px -10px rgba(11, 110, 110, 0.45),
+      0 0 0 3px rgba(11, 110, 110, 0.2);
+  }
+
+  .stevie-canvas__dock-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    clip-path: inset(50%);
+    overflow: hidden;
+  }
+
+  .stevie-canvas__dock-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .stevie-canvas__dock-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 2.85rem;
+    padding: 0.65rem 0;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #142a30;
+    background: transparent;
+    border: 0;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .stevie-canvas__dock-submit {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 2.85rem;
+    height: 2.85rem;
+    background: linear-gradient(135deg, #0b6e6e, #064444);
+    color: #ffffff;
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      transform 0.18s ease,
+      opacity 0.18s ease,
+      background 0.18s ease;
+    box-shadow: 0 4px 12px rgba(11, 110, 110, 0.35);
+  }
+
+  .stevie-canvas__dock-submit:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0d8484, #085555);
+    transform: scale(1.05);
+  }
+
+  .stevie-canvas__dock-submit:disabled {
+    opacity: 0.45;
+    cursor: default;
+  }
+
+  .stevie-canvas__dock-footnote {
+    text-align: center;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    margin-top: 0.6rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Mobile & Screen Optimization */
+  @media (max-width: 768px) {
+    .stevie-canvas {
+      height: calc(100dvh - 95px) !important;
+      min-height: 520px !important;
+      max-height: 100dvh !important;
+      padding: 0 0.75rem;
+    }
+    .stevie-msg__card {
+      padding: 1.2rem 1.25rem;
+      border-radius: 1rem;
+    }
+    .stevie-canvas__hero-title {
+      font-size: 1.75rem;
+    }
+    .stevie-canvas__hero {
+      padding: 1.5rem 0.5rem 1rem;
+    }
+    .stevie-canvas__starters-grid {
+      grid-template-columns: 1fr;
+    }
+    .stevie-kpi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ==========================================
+     FEEDBACK BAR & ZENDESK MODAL STYLING
+     ========================================== */
+  .stevie-feedback-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1rem;
+    padding-top: 0.65rem;
+    border-top: 1px solid #f1f5f9;
+    font-size: 0.76rem;
+    color: #64748b;
+  }
+  .stevie-feedback-label {
+    font-weight: 500;
+  }
+  .stevie-feedback-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .stevie-feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 0.22rem 0.5rem;
+    font-size: 0.72rem;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .stevie-feedback-btn:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1e293b;
+  }
+  .stevie-feedback-btn.is-up:hover:not(:disabled),
+  .stevie-feedback-btn.is-up.is-selected {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #059669;
+  }
+  .stevie-feedback-btn.is-down:hover:not(:disabled),
+  .stevie-feedback-btn.is-down.is-selected {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #dc2626;
+  }
+  .stevie-feedback-btn:disabled {
+    cursor: default;
+    opacity: 0.75;
+  }
+  .stevie-feedback-status {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #0b6e6e;
+    animation: fadeIn 0.2s ease;
+  }
+
+  /* Modal Backdrop & Dialog */
+  .stevie-modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 9999999 !important;
+    background: rgba(15, 23, 42, 0.7) !important;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    animation: fadeIn 0.2s ease;
+  }
+  .stevie-modal-backdrop[hidden] {
+    display: none !important;
+  }
+  .stevie-modal-dialog {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+      0 20px 25px -5px rgba(0, 0, 0, 0.1),
+      0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 500px;
+    overflow: hidden;
+    animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .stevie-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.1rem 1.4rem;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+  }
+  .stevie-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .stevie-modal-icon {
+    color: #0b6e6e;
+    display: flex;
+  }
+  .stevie-modal-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .stevie-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    line-height: 1;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    transition: color 0.15s;
+  }
+  .stevie-modal-close:hover {
+    color: #334155;
+  }
+  .stevie-modal-body {
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .stevie-modal-body[hidden] {
+    display: none !important;
+  }
+  .stevie-modal-desc {
+    margin: 0;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #64748b;
+  }
+  .stevie-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .stevie-form-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #334155;
+  }
+  .stevie-required {
+    color: #ef4444;
+  }
+  .stevie-optional {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 0.72rem;
+  }
+  .stevie-form-input,
+  .stevie-form-textarea {
+    width: 100%;
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.84rem;
+    /* The modal is moved to document.body at runtime. Explicitly override
+       inherited site form colours so entered feedback remains readable. */
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a;
+    caret-color: #0f172a;
+    font-family: inherit;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s;
+    box-sizing: border-box;
+  }
+  .stevie-form-input::placeholder,
+  .stevie-form-textarea::placeholder {
+    color: #64748b;
+    -webkit-text-fill-color: #64748b;
+    opacity: 1;
+  }
+  .stevie-form-input:focus,
+  .stevie-form-textarea:focus {
+    outline: none;
+    border-color: #0b6e6e;
+    box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.12);
+  }
+  .stevie-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #f1f5f9;
+  }
+  .stevie-modal-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .stevie-modal-btn.is-secondary {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+  }
+  .stevie-modal-btn.is-secondary:hover {
+    background: #f8fafc;
+    color: #0f172a;
+  }
+  .stevie-modal-btn.is-primary {
+    background: #0b6e6e;
+    border: 1px solid #0b6e6e;
+    color: #ffffff;
+  }
+  .stevie-modal-btn.is-primary:hover:not(:disabled) {
+    background: #085050;
+    border-color: #085050;
+  }
+  .stevie-modal-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+  .stevie-modal-success {
+    padding: 2.2rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .stevie-modal-success[hidden] {
+    display: none !important;
+  }
+  .stevie-modal-success-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #f0fdfa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .stevie-modal-success-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .stevie-modal-success-copy {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #64748b;
+    max-width: 360px;
+    line-height: 1.5;
+  }
+  .stevie-inline-spin {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border: 2px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+</style>

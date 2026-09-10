@@ -1,0 +1,3856 @@
+---
+/**
+ * SearchPastWinners — search the scraped Stevie Awards winner records.
+ *
+ * WHY THE FETCH IS CLIENT-SIDE
+ * This site builds static (no `output: "server"`, no active adapter), so
+ * frontmatter runs once at build time. A frontmatter fetch would bake one set of
+ * results into the HTML and could never respond to what a visitor types. So the
+ * search runs in the browser against the winners API, the same way
+ * EnquiryForm.astro posts to Zendesk from the browser.
+ *
+ * WHY THE ENDPOINT IS A `PUBLIC_` ENV VAR
+ * It is baked into the client bundle and therefore visible to anyone. That is
+ * fine and intended: the API is read-only and unauthenticated by design (see
+ * public_api.py). Never put a token here — there is nowhere private to hide it
+ * in a static build.
+ *
+ * CSS-FIRST, PER THE COMPONENT SKILL
+ * The form is a real <form> with real inputs and a real submit button, so it is
+ * legible and focusable with JavaScript disabled; the results panel simply
+ * stays in its empty state. JS is the enhancement that fills it in.
+ */
+import Heading from "@core-elements/heading/Heading.astro";
+import Text from "@core-elements/text/Text.astro";
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+
+const WINNERS_API_ENDPOINT = "https://wjfv230b2b.execute-api.us-east-1.amazonaws.com";
+
+const {
+  heading = "Search Past Stevie Award Winners",
+  description = "Search every past winner by company, person, category, country or year.",
+  // Overridable in CloudCannon so an editor can repoint the component at a
+  // tunnel URL without a code change, and by env for per-environment builds.
+  apiEndpoint = "",
+  pageSize = 24,
+  showFilters = true,
+  showOverview = true,
+  initialQuery = "",
+  emptyStateText = "Enter a search above, or browse every record.",
+  // Prints every step (config read, each fetch, each error) into a visible
+  // on-page panel, not just the browser console. Needed because the CMS
+  // editor's live-preview iframe is awkward to open devtools against, and
+  // "records are not loading" with no visible error is otherwise a guess.
+  // Default true while this component is new; turn off once trusted.
+  debug = true,
+
+  colorScheme = "inherit",
+  backgroundColor,
+  paddingVertical = "4xl",
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const endpoint = (
+  apiEndpoint ||
+  import.meta.env.PUBLIC_WINNERS_API_ENDPOINT ||
+  WINNERS_API_ENDPOINT
+).replace(/\/+$/, "");
+
+// Clamped: the API caps `limit` at 50, and a request over that is rejected
+// rather than quietly truncated, which would silently break paging.
+const perPage = Math.max(1, Math.min(Number(pageSize) || 24, 50));
+
+const config = {
+  endpoint,
+  perPage,
+  showOverview: !!showOverview,
+  initialQuery: String(initialQuery || ""),
+  debug: !!debug,
+};
+---
+
+<CustomSection
+  class:list={["search-past-winners", className]}
+  maxContentWidth="2xl"
+  paddingHorizontal="lg"
+  paddingVertical={paddingVertical}
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <div
+    class="spw"
+    data-spw
+    data-config={JSON.stringify(config)}
+  >
+    <div class="spw__eyebrow">
+      <span class="spw__eyebrow-pill">
+        <svg
+          class="spw__eyebrow-icon"
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"></path>
+        </svg>
+        Stevie® Awards Intelligence
+      </span>
+      <span class="spw__eyebrow-stat">83,000+ Verified Winners Archive</span>
+    </div>
+    <Heading
+      level="h2"
+      size="lg"
+      text={heading}
+      data-prop="heading"
+    />
+    <Text
+      text={description}
+      data-prop="description"
+    />
+
+    <form
+      class="spw__form"
+      data-spw-form
+      novalidate
+    >
+      <div class="spw__row">
+        <label class="spw__field spw__field--grow">
+          <span class="spw__label">Search</span>
+          <div class="spw__input-wrap">
+            <svg
+              class="spw__input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle
+                cx="11"
+                cy="11"
+                r="8"
+              ></circle>
+              <line
+                x1="21"
+                y1="21"
+                x2="16.65"
+                y2="16.65"
+              ></line>
+            </svg>
+            <input
+              type="search"
+              name="q"
+              class="spw__input"
+              data-spw-q
+              placeholder="e.g. IBM, customer service team, gold winners in 2024"
+              autocomplete="off"
+            />
+          </div>
+        </label>
+        <button
+          type="submit"
+          class="spw__submit"
+          data-spw-submit
+        >
+          <svg
+            class="spw__submit-icon"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle
+              cx="11"
+              cy="11"
+              r="8"
+            ></circle>
+            <line
+              x1="21"
+              y1="21"
+              x2="16.65"
+              y2="16.65"
+            ></line>
+          </svg>
+          Search
+        </button>
+        {
+          showFilters && (
+            <button
+              type="button"
+              class="spw__filters-toggle"
+              data-spw-filters-toggle
+              aria-expanded="false"
+              aria-controls="spw-filters-panel"
+            >
+              <svg
+                class="spw__filters-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <line
+                  x1="4"
+                  y1="6"
+                  x2="20"
+                  y2="6"
+                />
+                <circle
+                  cx="9"
+                  cy="6"
+                  r="2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <line
+                  x1="4"
+                  y1="12"
+                  x2="20"
+                  y2="12"
+                />
+                <circle
+                  cx="15"
+                  cy="12"
+                  r="2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <line
+                  x1="4"
+                  y1="18"
+                  x2="20"
+                  y2="18"
+                />
+                <circle
+                  cx="9"
+                  cy="18"
+                  r="2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </svg>
+              Filters
+              <span
+                class="spw__filters-count"
+                data-spw-filters-count
+                hidden
+              />
+            </button>
+          )
+        }
+      </div>
+
+      {
+        showFilters && (
+          <div
+            class="spw__row spw__row--filters"
+            data-spw-filters
+            id="spw-filters-panel"
+            hidden
+          >
+            <label class="spw__field">
+              <span class="spw__label">Profile type</span>
+              <select
+                name="profile_type"
+                class="spw__select"
+                data-spw-filter="profile_type"
+              >
+                <option
+                  value="all"
+                  selected
+                >
+                  All
+                </option>
+                <option value="org">Organizations</option>
+                <option value="person">People</option>
+              </select>
+            </label>
+            <label class="spw__field">
+              <span class="spw__label">Award level</span>
+              <select
+                name="award"
+                class="spw__select"
+                data-spw-filter="award"
+              >
+                <option value="">All levels</option>
+              </select>
+            </label>
+            <label class="spw__field">
+              <span class="spw__label">Country</span>
+              <select
+                name="country"
+                class="spw__select"
+                data-spw-filter="country"
+              >
+                <option value="">All countries</option>
+              </select>
+            </label>
+            <label class="spw__field">
+              <span class="spw__label">Sector</span>
+              <select
+                name="category"
+                class="spw__select"
+                data-spw-filter="category"
+              >
+                <option value="">All sectors</option>
+              </select>
+            </label>
+            <label class="spw__field spw__field--narrow">
+              <span class="spw__label">Year from</span>
+              <input
+                type="number"
+                name="year_from"
+                class="spw__input"
+                data-spw-filter="year_from"
+                min="1990"
+                max="2100"
+                placeholder="1996"
+              />
+            </label>
+            <label class="spw__field spw__field--narrow">
+              <span class="spw__label">Year to</span>
+              <input
+                type="number"
+                name="year_to"
+                class="spw__input"
+                data-spw-filter="year_to"
+                min="1990"
+                max="2100"
+                placeholder="2026"
+              />
+            </label>
+            <button
+              type="reset"
+              class="spw__reset"
+              data-spw-reset
+            >
+              Clear
+            </button>
+          </div>
+        )
+      }
+    </form>
+
+    <p
+      class="spw__status"
+      data-spw-status
+      role="status"
+      aria-live="polite"
+    >
+      {emptyStateText}
+    </p>
+
+    {
+      showOverview && (
+        <section
+          class="spw__overview"
+          data-spw-overview
+          data-state="idle"
+          hidden
+        >
+          <div
+            class="spw__overview-loading"
+            data-spw-overview-loading
+            hidden
+          >
+            <span
+              class="spw__spinner"
+              aria-hidden="true"
+            />
+            <div>
+              <p class="spw__overview-loading-title">Preparing overview</p>
+              <p class="spw__overview-loading-copy">
+                Counting every matching award and writing the summary…
+              </p>
+            </div>
+          </div>
+          <div
+            class="spw__overview-error"
+            data-spw-overview-error
+            hidden
+          >
+            <div>
+              <p class="spw__overview-loading-title">Search results are ready</p>
+              <p class="spw__overview-loading-copy">
+                AI is taking longer than expected to prepare the overview. You can use the complete
+                results below or retry the overview.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="spw__overview-retry"
+              data-spw-overview-retry
+            >
+              Retry overview
+            </button>
+          </div>
+          <div
+            class="spw__overview-ready"
+            data-spw-overview-ready
+          >
+            <div class="spw__overview-head">
+              <div class="spw__overview-head-left">
+                <span class="spw__overview-title">Overview</span>
+                <span
+                  class="spw__overview-source"
+                  data-spw-overview-source
+                />
+              </div>
+              <div
+                class="spw__feedback"
+                data-spw-feedback
+              >
+                <span class="spw__feedback-label">Helpful?</span>
+                <div class="spw__feedback-actions">
+                  <button
+                    type="button"
+                    class="spw__feedback-btn is-up"
+                    data-spw-feedback-action="thumbs_up"
+                    title="Helpful search"
+                    aria-label="Thumbs up"
+                  >
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <>
+                        <path d="M7 10v12" />
+                        <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h3" />
+                        <path d="m7 10 5-5.5a2 2 0 0 1 3 1.38z" />
+                      </>
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    class="spw__feedback-btn is-down"
+                    data-spw-feedback-action="thumbs_down"
+                    title="Not helpful search"
+                    aria-label="Thumbs down"
+                  >
+                    <svg
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <>
+                        <path d="M17 14V2" />
+                        <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-3" />
+                        <path d="m17 14-5 5.5a2 2 0 0 1-3-1.38z" />
+                      </>
+                    </svg>
+                  </button>
+                </div>
+                <span
+                  class="spw__feedback-status"
+                  hidden
+                />
+              </div>
+            </div>
+            <p
+              class="spw__answer"
+              data-spw-answer
+            />
+            <p
+              class="spw__detail"
+              data-spw-detail
+            />
+            <div
+              class="spw__chips"
+              data-spw-levels
+            />
+            <div
+              class="spw__orgs"
+              data-spw-orgs
+            />
+          </div>
+        </section>
+      )
+    }
+
+    {
+      debug && (
+        <pre
+          class="spw__debug"
+          data-spw-debug
+        >
+          {"Debug: waiting for the client script to start…\n" +
+            "(if this line never changes, the <script> below never ran " +
+            "in this preview — that is itself the finding)"}
+        </pre>
+      )
+    }
+
+    <div
+      class="spw__results"
+      data-spw-results
+    >
+    </div>
+
+    <nav
+      class="spw__pager"
+      data-spw-pager
+      hidden
+      aria-label="Search results pages"
+    >
+      <button
+        type="button"
+        class="spw__page-btn"
+        data-spw-prev
+        >Previous</button
+      >
+      <span
+        class="spw__page-info"
+        data-spw-page-info
+      ></span>
+      <button
+        type="button"
+        class="spw__page-btn"
+        data-spw-next
+        >Next</button
+      >
+    </nav>
+
+    <!-- Profile detail: centered floating window. Hidden until a row is
+         clicked; closed by the close button, the scrim, or Escape. Markup
+         is stable so listeners survive result re-renders. -->
+    <div
+      class="spw__scrim"
+      data-spw-scrim
+      hidden
+    >
+    </div>
+    <aside
+      class="spw__drawer"
+      data-spw-drawer
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="spw-drawer-name"
+    >
+      <div class="spw__drawer-head">
+        <div>
+          <h3
+            class="spw__drawer-name"
+            id="spw-drawer-name"
+            data-spw-drawer-name
+          >
+            —
+          </h3>
+          <p
+            class="spw__drawer-sub"
+            data-spw-drawer-sub
+          >
+          </p>
+        </div>
+        <button
+          type="button"
+          class="spw__drawer-close"
+          data-spw-drawer-close
+        >
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line
+              x1="18"
+              y1="6"
+              x2="6"
+              y2="18"
+            ></line>
+            <line
+              x1="6"
+              y1="6"
+              x2="18"
+              y2="18"
+            ></line>
+          </svg>
+          Close
+        </button>
+      </div>
+      <div
+        class="spw__drawer-body"
+        data-spw-drawer-body
+      >
+      </div>
+    </aside>
+    <!-- SPW Feedback Modal Popup -->
+    <div
+      class="spw-modal-backdrop"
+      id="spw-feedback-modal"
+      hidden
+    >
+      <div
+        class="spw-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="spw-feedback-title"
+      >
+        <div class="spw-modal-header">
+          <div class="spw-modal-title-wrap">
+            <span class="spw-modal-icon">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                ><circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                ></circle><line
+                  x1="12"
+                  y1="8"
+                  x2="12"
+                  y2="12"
+                ></line><line
+                  x1="12"
+                  y1="16"
+                  x2="12.01"
+                  y2="16"
+                ></line></svg
+              >
+            </span>
+            <h3
+              id="spw-feedback-title"
+              class="spw-modal-title"
+            >
+              Search Feedback & Support Ticket
+            </h3>
+          </div>
+          <button
+            type="button"
+            class="spw-modal-close"
+            data-spw-modal-close
+            aria-label="Close modal"
+            >&times;</button
+          >
+        </div>
+        <form
+          class="spw-modal-body"
+          id="spw-feedback-form"
+        >
+          <p class="spw-modal-desc">
+            Didn't find what you were searching for? Let us know what was missing or incorrect, and
+            our team will open a ticket to review the winner records.
+          </p>
+          <input
+            type="hidden"
+            id="spw-feedback-id"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="spw-feedback-query"
+            value=""
+          />
+          <input
+            type="hidden"
+            id="spw-feedback-overview"
+            value=""
+          />
+
+          <div class="spw-form-group">
+            <label
+              for="spw-feedback-name"
+              class="spw-form-label"
+              >Your Name <span class="spw-required">*</span></label
+            >
+            <input
+              type="text"
+              id="spw-feedback-name"
+              class="spw-form-input"
+              placeholder="e.g. Jane Doe"
+              required
+            />
+          </div>
+
+          <div class="spw-form-group">
+            <label
+              for="spw-feedback-email"
+              class="spw-form-label"
+              >Your Email <span class="spw-optional">(optional - to receive ticket updates)</span
+              ></label
+            >
+            <input
+              type="email"
+              id="spw-feedback-email"
+              class="spw-form-input"
+              placeholder="e.g. jane@company.com"
+            />
+          </div>
+
+          <div class="spw-form-group">
+            <label
+              for="spw-feedback-comments"
+              class="spw-form-label"
+              >Feedback Details <span class="spw-required">*</span></label
+            >
+            <textarea
+              id="spw-feedback-comments"
+              class="spw-form-textarea"
+              rows="3"
+              placeholder="Tell us what winner record or category you expected to see..."
+              required
+            ></textarea>
+          </div>
+
+          <div class="spw-modal-footer">
+            <button
+              type="button"
+              class="spw-modal-btn is-secondary"
+              data-spw-modal-close
+              >Cancel</button
+            >
+            <button
+              type="submit"
+              class="spw-modal-btn is-primary"
+              id="spw-feedback-submit-btn"
+            >
+              <span>Submit & Create Ticket</span>
+            </button>
+          </div>
+        </form>
+        <div
+          class="spw-modal-success"
+          id="spw-feedback-success"
+          hidden
+        >
+          <div class="spw-modal-success-icon">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0b6e6e"
+              stroke-width="2.2"
+              ><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline
+                points="22 4 12 14.01 9 11.01"></polyline></svg
+            >
+          </div>
+          <h4 class="spw-modal-success-title">Thank You!</h4>
+          <p
+            class="spw-modal-success-copy"
+            id="spw-feedback-success-msg"
+          >
+            Your search feedback has been saved and forwarded to the Stevie Awards team.
+          </p>
+          <button
+            type="button"
+            class="spw-modal-btn is-primary"
+            data-spw-modal-close
+            >Done</button
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</CustomSection>
+
+<script>
+  import { onPageLoad } from "@component-utils/onPageLoad";
+
+  const NS = "[search-past-winners]";
+
+  // Set from `config.endpoint` inside initSearchPastWinners's per-root closure;
+  // read from module scope by the feedback code below, which runs outside that closure.
+  let spwEndpoint = "";
+
+  // One row per ORGANIZATION or PERSON (a rolled-up profile), not one row per
+  // award -- so IBM's 894 nominations are one clickable row with a total, the
+  // same shape the dashboard's own Explorer settled on after the same
+  // question came up there ("why are there two different result tables for
+  // one search").
+  type ProfileRow = {
+    profile_key?: string;
+    display_name?: string;
+    profile_type?: "org" | "person";
+    category?: string; // sector (orgs) or role (people)
+    country?: string;
+    city?: string;
+    award_count?: number;
+    gold?: number;
+    silver?: number;
+    bronze?: number;
+    first_year?: string;
+    last_year?: string;
+    programs?: string;
+    match_kind?: "exact" | "related";
+  };
+
+  type AwardRow = {
+    year?: string;
+    award?: string;
+    award_programs?: string;
+    category?: string;
+    category_group?: string;
+    nomination_title?: string;
+    industry?: string;
+    city?: string;
+    country?: string;
+    organization_name?: string;
+    role?: string;
+    org_name?: string;
+  };
+
+  const esc = (value: unknown): string =>
+    String(value ?? "").replace(
+      /[&<>"']/g,
+      (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c
+    );
+
+  const num = (value: unknown): string => Number(value ?? 0).toLocaleString("en-US");
+
+  /** The stored award string is "Gold Stevie® Award"; the chip wants "Gold". */
+  const levelOf = (award: unknown): string => {
+    const text = String(award ?? "");
+    const hit = ["Grand", "Gold", "Silver", "Bronze", "Finalist", "People's Choice"].find((label) =>
+      text.toLowerCase().includes(label.toLowerCase())
+    );
+    return hit || (text.trim() ? "Other" : "");
+  };
+
+  const initSearchPastWinners = () => {
+    const roots = document.querySelectorAll<HTMLElement>("[data-spw]");
+    if (!roots.length) return;
+
+    roots.forEach((root) => {
+      // Astro re-runs module scripts on view transitions; without this a second
+      // set of listeners would fire one request per past navigation.
+      if (root.dataset.spwReady === "true") return;
+      root.dataset.spwReady = "true";
+
+      const debugEl = root.querySelector<HTMLElement>("[data-spw-debug]");
+      // Writes to BOTH the browser console and a visible on-page panel, so a
+      // CMS preview iframe that is awkward to open devtools against still
+      // shows exactly where this broke. debugEl is null when the `debug` prop
+      // is off, so this degrades to console-only with no extra cost.
+      const log = (msg: string, ...rest: unknown[]) => {
+        const line = `[${new Date().toLocaleTimeString()}] ${msg}`;
+        console.log(NS, msg, ...rest);
+        if (debugEl) {
+          debugEl.textContent += "\n" + line + (rest.length ? " " + JSON.stringify(rest[0]) : "");
+        }
+      };
+
+      log("component script started");
+
+      let config: {
+        endpoint: string;
+        perPage: number;
+        showOverview: boolean;
+        initialQuery: string;
+        debug: boolean;
+      };
+      try {
+        config = JSON.parse(root.dataset.config || "{}");
+      } catch (err) {
+        log("FAILED to parse config JSON", String(err));
+        return;
+      }
+      let { endpoint, perPage, showOverview } = config;
+      // Smart localhost fallback: if browsing on localhost or 127.0.0.1, route to local SPW API port 8010
+      if (
+        typeof window !== "undefined" &&
+        (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+      ) {
+        if (!endpoint || endpoint.includes("sslip.io") || endpoint.includes("execute-api")) {
+          endpoint = "http://127.0.0.1:8010";
+        }
+      }
+      log(`config parsed: endpoint="${endpoint}" perPage=${perPage} showOverview=${showOverview}`);
+      if (!endpoint) {
+        log("STOPPING: no API endpoint configured (apiEndpoint field is empty)");
+        return;
+      }
+      spwEndpoint = endpoint;
+
+      const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel);
+      const form = $<HTMLFormElement>("[data-spw-form]");
+      const qInput = $<HTMLInputElement>("[data-spw-q]");
+      const statusEl = $("[data-spw-status]");
+      const resultsEl = $("[data-spw-results]");
+      const pagerEl = $("[data-spw-pager]");
+      const pageInfoEl = $("[data-spw-page-info]");
+      const prevBtn = $<HTMLButtonElement>("[data-spw-prev]");
+      const nextBtn = $<HTMLButtonElement>("[data-spw-next]");
+      const submitBtn = $<HTMLButtonElement>("[data-spw-submit]");
+      const filtersToggleBtn = $<HTMLButtonElement>("[data-spw-filters-toggle]");
+      const filtersPanel = $("[data-spw-filters]");
+      const filtersCountEl = $("[data-spw-filters-count]");
+      const overviewEl = $("[data-spw-overview]");
+      const scrimEl = $("[data-spw-scrim]");
+      const drawerEl = $("[data-spw-drawer]");
+      const drawerNameEl = $("[data-spw-drawer-name]");
+      const drawerSubEl = $("[data-spw-drawer-sub]");
+      const drawerBodyEl = $("[data-spw-drawer-body]");
+      const drawerCloseBtn = $<HTMLButtonElement>("[data-spw-drawer-close]");
+      if (!form || !qInput || !statusEl || !resultsEl) return;
+
+      const filterEls = Array.from(
+        root.querySelectorAll<HTMLInputElement | HTMLSelectElement>("[data-spw-filter]")
+      );
+
+      // Captured before loadFacets() appends any option and before the user
+      // can touch a control, so it's each field's true rest state -- "org" for
+      // profile_type (its only pre-selected option), "" for everything else.
+      // Filters live behind an icon now instead of an always-visible row, so
+      // the button needs to say how many are actually narrowing the search
+      // without the panel being open to show it.
+      const filterDefaults = new Map(filterEls.map((el) => [el, el.value]));
+
+      const updateFiltersCount = () => {
+        if (!filtersCountEl) return;
+        const active = filterEls.filter(
+          (el) => el.value.trim() !== (filterDefaults.get(el) ?? "").trim()
+        ).length;
+        filtersCountEl.textContent = String(active);
+        filtersCountEl.hidden = active === 0;
+      };
+
+      let offset = 0;
+      let total = 0;
+      // Only the newest request may paint. Without this, a slow early request
+      // can land after a newer one and repaint the grid with stale rows — the
+      // exact fault this project already hit on its internal search page.
+      let seq = 0;
+      let activeProfileController: AbortController | null = null;
+      let activeOverviewController: AbortController | null = null;
+
+      const filters = (): Record<string, string> => {
+        const out: Record<string, string> = {};
+        filterEls.forEach((el) => {
+          const key = el.dataset.spwFilter;
+          const value = el.value.trim();
+          if (key && value) out[key] = value;
+        });
+        return out;
+      };
+
+      const url = (path: string, params: Record<string, string | number>) => {
+        const qs = new URLSearchParams();
+        Object.entries(params).forEach(([k, v]) => {
+          if (v !== "" && v !== undefined && v !== null) qs.set(k, String(v));
+        });
+        return `${endpoint}${path}?${qs.toString()}`;
+      };
+
+      /** "2003–2026", or a single year, or "" when neither is known. */
+      const spanOf = (first?: string, last?: string): string =>
+        first && last ? (first === last ? first : `${first}–${last}`) : first || last || "";
+
+      /** A pipe-separated field ("Brazil | Germany | India | ...", up to 11 for
+       *  a global company) truncated to `keep` items plus a "+N" count, with the
+       *  full list in the returned title for hover. Same convention the
+       *  dashboard's own Explorer uses (see pipes() in explorer.html) --
+       *  without it a table cell can be a single 200-character unbroken run
+       *  that forces its whole column wider than the page rather than wrapping,
+       *  since a table in the default auto layout sizes columns to fit content
+       *  first and only wraps once nothing else can shrink further. */
+      const pipes = (value: unknown, keep = 2): { text: string; title: string } => {
+        const parts = String(value ?? "")
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        if (!parts.length) return { text: "—", title: "" };
+        const head = parts.slice(0, keep).join(", ");
+        const extra = parts.length - keep;
+        return { text: extra > 0 ? `${head} +${extra}` : head, title: parts.join(", ") };
+      };
+
+      const renderTable = (rows: ProfileRow[]) => {
+        const showType = (filters().profile_type || "all") === "all";
+        return `
+          <table class="spw__table">
+            <thead>
+              <tr>
+                <th scope="col">Profile</th>
+                ${showType ? '<th scope="col">Type</th>' : ""}
+                <th scope="col">Sector / role</th>
+                <th scope="col">Country</th>
+                <th scope="col" class="spw__num">Awards</th>
+                <th scope="col">Medals</th>
+                <th scope="col">Span</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map((r) => {
+                  const key = r.profile_key || r.display_name || "";
+                  const ptype = r.profile_type === "person" ? "person" : "org";
+                  const cat = pipes(r.category, 2);
+                  const ctry = pipes(r.country, 2);
+                  // Gold+Silver+Bronze do not have to sum to Awards, and for
+                  // roughly 3 in 10 organizations they genuinely don't: the
+                  // raw data also carries Finalist (9,796 records), People's
+                  // Choice, Grand Stevie and Distinguished Honoree awards --
+                  // real wins, just not medal tiers, and the source rollup
+                  // never kept a count for them beyond the lifetime total.
+                  // Reported live: "5G 5S 9B" beside an Awards value of 20
+                  // reads as a counting error (14+5=19, not 20) when it's
+                  // really an omission -- the 20th award exists, it simply
+                  // isn't Gold, Silver or Bronze. This chip is the reconciling
+                  // remainder (award_count minus the three shown tiers), not a
+                  // fourth medal tier the data actually distinguishes.
+                  const other = Math.max(
+                    0,
+                    (r.award_count || 0) - (r.gold || 0) - (r.silver || 0) - (r.bronze || 0)
+                  );
+                  const medals = [
+                    r.gold
+                      ? `<span class="spw__medal spw__medal--gold"><i></i>${num(r.gold)} Gold</span>`
+                      : "",
+                    r.silver
+                      ? `<span class="spw__medal spw__medal--silver"><i></i>${num(r.silver)} Silver</span>`
+                      : "",
+                    r.bronze
+                      ? `<span class="spw__medal spw__medal--bronze"><i></i>${num(r.bronze)} Bronze</span>`
+                      : "",
+                    other
+                      ? `<span class="spw__medal spw__medal--other" title="Awards at a level other than Gold/Silver/Bronze -- Finalist, People's Choice, Grand Stevie, or Distinguished Honoree">+${num(other)} other</span>`
+                      : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+                  // data-label carries each cell's column name so the narrow
+                  // -screen layout can print it via ::before. Below 768px the
+                  // header row is hidden and every row becomes a stacked card,
+                  // because six columns in ~360px left each one so narrow that
+                  // the browser broke words -- and worse, NUMBERS -- mid
+                  // character: an award count of 772 rendered as "77" above a
+                  // lone "2", which reads as a different figure entirely.
+                  return `<tr class="spw__hit" data-profile-type="${esc(ptype)}" data-profile-key="${esc(key)}">
+                    <td class="spw__cell-org">
+                      <button
+                        type="button"
+                        class="spw__profile-link"
+                        data-profile-type="${esc(ptype)}"
+                        data-profile-key="${esc(key)}"
+                      >${esc(r.display_name || key)}</button>
+                    </td>
+                    ${showType ? `<td data-label="Type"><span class="spw__type-badge spw__type-badge--${ptype}">${ptype === "org" ? "Org" : "Person"}</span></td>` : ""}
+                    <td class="spw__cell-muted" data-label="${showType ? "Sector / role" : "Sector"}" title="${esc(cat.title)}">${esc(cat.text)}</td>
+                    <td class="spw__cell-muted" data-label="Country" title="${esc(ctry.title)}">${esc(ctry.text)}</td>
+                    <td class="spw__num" data-label="Awards">${num(r.award_count)}</td>
+                    <td data-label="Medals"><span class="spw__medal-group">${medals || "—"}</span></td>
+                    <td class="spw__cell-muted" data-label="Span">${esc(spanOf(r.first_year, r.last_year)) || "—"}</td>
+                  </tr>`;
+                })
+                .join("")}
+            </tbody>
+          </table>`;
+      };
+
+      const renderRows = (rows: ProfileRow[]) => {
+        if (!rows.length) {
+          resultsEl.innerHTML = `<div class="spw__empty" role="status"><p>No records found</p></div>`;
+          return;
+        }
+        const exact = rows.filter((r) => r.match_kind === "exact");
+        const related = rows.filter((r) => r.match_kind === "related");
+        if (exact.length && related.length) {
+          resultsEl.innerHTML =
+            `<p class="spw__group-label">Exact matches</p>${renderTable(exact)}` +
+            `<p class="spw__group-label">Related</p>${renderTable(related)}`;
+          return;
+        }
+        resultsEl.innerHTML = renderTable(rows);
+      };
+
+      const renderPager = () => {
+        if (!pagerEl || !pageInfoEl || !prevBtn || !nextBtn) return;
+        const pages = Math.max(1, Math.ceil(total / perPage));
+        const page = Math.floor(offset / perPage) + 1;
+        pagerEl.hidden = total <= perPage;
+        pageInfoEl.textContent = `Page ${num(page)} of ${num(pages)}`;
+        prevBtn.disabled = offset <= 0;
+        nextBtn.disabled = offset + perPage >= total;
+      };
+
+      const setOverviewState = (state: "idle" | "loading" | "ready" | "error") => {
+        if (!overviewEl) return;
+        overviewEl.dataset.state = state;
+        overviewEl.hidden = state === "idle";
+        const loadingEl = $("[data-spw-overview-loading]");
+        const errorEl = $("[data-spw-overview-error]");
+        const readyEl = $("[data-spw-overview-ready]");
+        if (loadingEl) loadingEl.hidden = state !== "loading";
+        if (errorEl) errorEl.hidden = state !== "error";
+        if (readyEl) readyEl.hidden = state !== "ready";
+      };
+
+      const renderOverview = (data: Record<string, unknown> | null) => {
+        if (!overviewEl) return;
+        if (!data || !data.available) {
+          setOverviewState("error");
+          return;
+        }
+        setOverviewState("ready");
+
+        const answerEl = $("[data-spw-answer]");
+        const detailEl = $("[data-spw-detail]");
+        const sourceEl = $("[data-spw-overview-source]");
+        const levelsEl = $("[data-spw-levels]");
+        const orgsEl = $("[data-spw-orgs]");
+
+        if (answerEl) answerEl.textContent = String(data.answer ?? "No records found");
+        if (detailEl) detailEl.textContent = String(data.headline ?? "");
+        if (sourceEl) {
+          sourceEl.textContent =
+            data.generated_by === "scope"
+              ? "Past-winner search only"
+              : `Counted from all ${num(data.total || 0)} matches`;
+        }
+        if (levelsEl) {
+          const levels = (data.levels as { level: string; count: number }[]) || [];
+          levelsEl.innerHTML = levels
+            .map((l) => {
+              const slug = String(l.level)
+                .toLowerCase()
+                .replace(/[^a-z]+/g, "-");
+              return `<span class="spw__chip spw__level--${esc(slug)}"><i></i>${esc(l.level)} <b>${num(l.count)}</b></span>`;
+            })
+            .join("");
+        }
+        if (orgsEl) {
+          type TopOrg = {
+            name: string;
+            awards: number;
+            gold?: number;
+            silver?: number;
+            bronze?: number;
+            first_year?: string;
+            last_year?: string;
+            profile_type?: string;
+          };
+          const orgs = ((data.top_orgs as TopOrg[]) || []).slice(0, 10);
+          const max = orgs.reduce((m, o) => Math.max(m, o.awards || 0), 0);
+          const extra = Math.max(0, orgs.length - 3);
+          orgsEl.innerHTML = orgs.length
+            ? `<span class="spw__orgs-label">Top results</span><div class="spw__orgs-list"${extra ? " data-collapsed" : ""}>${orgs
+                .map((o, i) => {
+                  const pct = max ? Math.round(((o.awards || 0) / max) * 100) : 0;
+                  const span = spanOf(o.first_year, o.last_year);
+                  const slot = (tone: string, n: number | undefined) =>
+                    n
+                      ? `<span class="spw__medal spw__medal--${tone}"><i></i>${num(n)}</span>`
+                      : `<span class="spw__medal spw__medal--${tone} is-empty" aria-hidden="true"></span>`;
+                  return `<div class="spw__org-row" style="--spw-i:${i}">
+                    <div class="spw__org-head">
+                      <span class="spw__org-rank">${i + 1}</span>
+                      <span class="spw__org-name">${esc(o.name)}</span>
+                      <span class="spw__org-count">${num(o.awards)}</span>
+                    </div>
+                    <div class="spw__org-meta">
+                      <span class="spw__org-bar"><i style="width:${pct}%"></i></span>
+                      ${slot("gold", o.gold)}
+                      ${slot("silver", o.silver)}
+                      ${slot("bronze", o.bronze)}
+                      <span class="spw__org-span">${esc(span) || "—"}</span>
+                    </div>
+                  </div>`;
+                })
+                .join("")}</div>${
+                extra
+                  ? `<button type="button" class="spw__chip-more" data-spw-top-more data-extra="${extra}" aria-expanded="false">+${extra} more</button>`
+                  : ""
+              }`
+            : "";
+        }
+      };
+
+      const loadOverview = async (
+        mine: number,
+        q: string,
+        selectedFilters: Record<string, string>
+      ): Promise<Record<string, unknown> | null> => {
+        if (!showOverview || !overviewEl) return null;
+        activeOverviewController?.abort();
+        const controller = new AbortController();
+        activeOverviewController = controller;
+        const overviewUrl = url("/v1/overview", { q, ...selectedFilters });
+        log(`fetching overview: ${overviewUrl}`);
+        const timer = window.setTimeout(() => controller.abort(), 25000);
+        try {
+          const res = await fetch(overviewUrl, { signal: controller.signal });
+          log(`overview response: HTTP ${res.status}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (mine !== seq) return null;
+          return data;
+        } catch (err) {
+          if (mine !== seq) return null;
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`overview unavailable (non-fatal): ${detail}`);
+          return null;
+        } finally {
+          window.clearTimeout(timer);
+          if (activeOverviewController === controller) activeOverviewController = null;
+        }
+      };
+
+      const fetchProfiles = async (searchUrl: string, mine: number) => {
+        activeProfileController?.abort();
+        let lastError: unknown = new Error("Profile search failed");
+        for (let attempt = 0; attempt < 2; attempt += 1) {
+          const controller = new AbortController();
+          activeProfileController = controller;
+          const timer = window.setTimeout(() => controller.abort(), attempt ? 18000 : 12000);
+          try {
+            const res = await fetch(searchUrl, { signal: controller.signal });
+            log(`profiles response: HTTP ${res.status} (attempt ${attempt + 1})`);
+            if (!res.ok) {
+              const error = new Error(`HTTP ${res.status}`);
+              if (res.status < 500 || attempt === 1) throw error;
+              lastError = error;
+              continue;
+            }
+            return await res.json();
+          } catch (err) {
+            lastError = err;
+            if (mine !== seq) throw err;
+            if (attempt === 1) throw err;
+          } finally {
+            window.clearTimeout(timer);
+            if (activeProfileController === controller) activeProfileController = null;
+          }
+        }
+        throw lastError;
+      };
+
+      const run = async (nextOffset = 0) => {
+        const mine = ++seq;
+        offset = nextOffset;
+        const q = qInput.value.trim();
+        const selectedFilters = filters();
+        const params = { q, limit: perPage, offset, ...selectedFilters };
+
+        statusEl.innerHTML = `<span class="spw__inline-spin" aria-hidden="true"></span> Searching…`;
+        statusEl.dataset.kind = "";
+        if (submitBtn) submitBtn.disabled = true;
+        resetSpwFeedbackUi();
+
+        // Show loading skeletons for both overview and search results simultaneously
+        if (showOverview && overviewEl && offset === 0) {
+          setOverviewState("loading");
+        }
+        resultsEl.innerHTML = `<div class="spw__skel" aria-hidden="true">${"<div class='spw__skel-row'></div>".repeat(6)}</div>`;
+
+        const searchUrl = url("/v1/profiles", params);
+        log(`fetching profiles: ${searchUrl}`);
+
+        // Safety watchdog: both requests have their own abort budgets, but cancel any
+        // remaining work as a final fallback. Rendering below waits for both requests
+        // to settle, so the overview and table always enter together.
+        const watchdog = window.setTimeout(() => {
+          if (mine === seq) {
+            activeProfileController?.abort();
+            activeOverviewController?.abort();
+          }
+        }, 35000);
+
+        try {
+          // Fetch profiles and overview concurrently
+          const profilesPromise = fetchProfiles(searchUrl, mine);
+          const overviewPromise =
+            showOverview && overviewEl && offset === 0
+              ? loadOverview(mine, q, selectedFilters)
+              : Promise.resolve(null);
+
+          // Do not reveal either section until both requests settle. In particular,
+          // do not race a slow overview against the faster profile response: that made
+          // the results table appear first and caused a visible layout jump later.
+          const [profilesResult, overviewResult] = await Promise.allSettled([
+            profilesPromise,
+            overviewPromise,
+          ]);
+
+          if (mine !== seq) return; // Superseded by a newer search
+
+          // 1. Render Overview
+          if (showOverview && overviewEl && offset === 0) {
+            if (overviewResult.status === "fulfilled" && overviewResult.value?.available) {
+              renderOverview(overviewResult.value);
+            } else {
+              setOverviewState("error");
+            }
+          }
+
+          // 2. Render Results Table
+          if (profilesResult.status === "rejected") throw profilesResult.reason;
+          const data = profilesResult.value;
+          if (data.error) throw new Error(data.error);
+          log(`profiles parsed OK: total=${data.total} rows=${(data.results || []).length}`);
+
+          total = Number(data.total || 0);
+          const rows: ProfileRow[] = data.results || [];
+          renderRows(rows);
+          renderPager();
+
+          const ptypeNow = data.profile_type || filters().profile_type || "all";
+          const noun =
+            ptypeNow === "person" ? "people" : ptypeNow === "org" ? "organizations" : "profiles";
+          const from = total ? offset + 1 : 0;
+          const to = offset + rows.length;
+          statusEl.textContent = total
+            ? `${num(from)}–${num(to)} of ${num(total)} ${noun}`
+            : "No records found";
+        } catch (err) {
+          if (mine !== seq) return;
+          const detail = err instanceof Error ? err.message : String(err);
+          const looksLikeCorsOrNetwork = err instanceof TypeError;
+          log(
+            `SEARCH FAILED: ${detail}` +
+              (looksLikeCorsOrNetwork
+                ? " -- likely CORS blocked, tunnel down, or wrong URL (no HTTP status reached)"
+                : "")
+          );
+          statusEl.textContent = "Search is unavailable right now. Please try again.";
+          statusEl.dataset.kind = "error";
+          resultsEl.innerHTML = "";
+          if (pagerEl) pagerEl.hidden = true;
+          if (showOverview && overviewEl && offset === 0) setOverviewState("error");
+        } finally {
+          window.clearTimeout(watchdog);
+          if (mine === seq && submitBtn) submitBtn.disabled = false;
+        }
+      };
+
+      /** Populate the dropdowns from the real data, so a re-scrape that adds a
+       *  country shows up without a code change. */
+      const loadFacets = async () => {
+        if (!filterEls.length) return;
+        const facetsUrl = url("/v1/facets", { limit: 250 });
+        log(`fetching facets: ${facetsUrl}`);
+        try {
+          const res = await fetch(facetsUrl);
+          log(`facets response: HTTP ${res.status}`);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          const fill = (key: string, items: { name: string; count: number }[]) => {
+            const sel = filterEls.find(
+              (el) => el.dataset.spwFilter === key && el.tagName === "SELECT"
+            ) as HTMLSelectElement | undefined;
+            if (!sel || !items) return;
+            items.forEach((item) => {
+              if (!item.name) return;
+              const opt = document.createElement("option");
+              opt.value = item.name;
+              opt.textContent = `${item.name} (${num(item.count)})`;
+              sel.appendChild(opt);
+            });
+          };
+          fill("award", data.awards);
+          fill("country", data.countries);
+          // The curated ~21-value organization taxonomy, not `industries`
+          // (which is `winners.industry` -- 1,175 free-text scrape values,
+          // not a real filter vocabulary). See public_api.py's /v1/facets.
+          fill("category", data.sectors);
+        } catch (err) {
+          // Filters degrade to "All" only; free-text search still works.
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`facets unavailable (non-fatal): ${detail}`);
+        }
+      };
+
+      const getNavOffset = () => {
+        const nav = document.querySelector<HTMLElement>(".main-nav");
+        return nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+      };
+
+      /* THE overlay problem, and its actual cause.
+         This component is rendered inside CustomSection's
+         `.content` wrapper, which sets BOTH `position: relative; z-index: 10`
+         and `container-type: inline-size`. Either alone establishes a stacking
+         context, so the drawer's own z-index only orders it WITHIN that
+         wrapper -- it can never outrank anything painted above the wrapper
+         itself, whatever number it uses. Confirmed live: with the drawer at
+         z-index 1000, elementFromPoint() over the drawer returned a plain
+         static <p> from the site footer, and earlier the sticky nav won the
+         same way.
+
+         The top layer is the one place that is immune: a shown popover paints
+         above the whole page regardless of ancestor stacking contexts, so it
+         fixes the footer and the nav together and needs no z-index tuning at
+         all. `manual` (not `auto`) because this drawer already implements its
+         own dismissal -- scrim click, Close button, Escape -- and `auto` would
+         add light-dismiss on top of that, closing the panel on interactions
+         inside it that bubble oddly.
+
+         Feature-detected, with the previous hidden-attribute path kept intact
+         as the fallback: on a browser without the API the drawer still opens,
+         just back to competing on z-index, which is why the nav offset below
+         is still applied in that branch. */
+      const topLayerOK =
+        typeof HTMLElement !== "undefined" &&
+        typeof HTMLElement.prototype.showPopover === "function";
+      if (topLayerOK && scrimEl && drawerEl) {
+        scrimEl.setAttribute("popover", "manual");
+        drawerEl.setAttribute("popover", "manual");
+        // The popover attribute itself governs visibility from here on; leaving
+        // `hidden` set as well would keep display:none after showPopover().
+        scrimEl.removeAttribute("hidden");
+        drawerEl.removeAttribute("hidden");
+      }
+
+      const isDrawerOpen = () => {
+        if (!drawerEl) return false;
+        return topLayerOK ? drawerEl.matches(":popover-open") : !drawerEl.hidden;
+      };
+
+      const showOverlay = () => {
+        if (!scrimEl || !drawerEl) return;
+        document.documentElement.classList.add("spw-modal-open");
+        if (topLayerOK) {
+          // Scrim first: top-layer paint order follows the order things were
+          // shown, so this puts the dimming behind the panel.
+          try {
+            if (!scrimEl.matches(":popover-open")) scrimEl.showPopover();
+            if (!drawerEl.matches(":popover-open")) drawerEl.showPopover();
+            return;
+          } catch {
+            /* fall through to the attribute path */
+          }
+        }
+        drawerEl.style.setProperty("--spw-nav-offset", `${getNavOffset()}px`);
+        scrimEl.hidden = false;
+        drawerEl.hidden = false;
+      };
+
+      const hideOverlay = () => {
+        document.documentElement.classList.remove("spw-modal-open");
+        if (topLayerOK) {
+          try {
+            if (drawerEl?.matches(":popover-open")) drawerEl.hidePopover();
+            if (scrimEl?.matches(":popover-open")) scrimEl.hidePopover();
+            return;
+          } catch {
+            /* fall through to the attribute path */
+          }
+        }
+        if (scrimEl) scrimEl.hidden = true;
+        if (drawerEl) drawerEl.hidden = true;
+      };
+
+      const openProfile = async (profileType: string, profileKey: string) => {
+        if (!scrimEl || !drawerEl || !drawerNameEl || !drawerBodyEl) return;
+        showOverlay();
+        drawerNameEl.textContent = profileKey;
+        if (drawerSubEl)
+          drawerSubEl.textContent = profileType === "person" ? "Person" : "Organization";
+        drawerBodyEl.innerHTML = `<div class="spw__drawer-loading"><span class="spw__spinner" aria-hidden="true"></span><p>Loading this profile…</p></div>`;
+
+        // Query parameters, not path segments. AWS API Gateway URL-decodes the PATH before
+        // forwarding to the origin, so a profile key containing a space -- "DHL Express",
+        // "IBM Corporation", "Tata Consultancy Services", most organisation names -- reached the
+        // server as a literal space in the HTTP request line. That is malformed, so it was
+        // rejected with 400 "Invalid HTTP request received" and every such profile opened as
+        // "Could not load this profile right now." Single-word keys like "Ooredoo" worked, which
+        // is why it looked intermittent. Query strings are not rewritten that way, and the API
+        // serves the identical payload from /v1/profile_lookup.
+        const detailUrl = url("/v1/profile_lookup", {
+          profile_type: profileType,
+          profile_key: profileKey,
+        });
+        log(`fetching profile detail: ${detailUrl}`);
+        try {
+          const res = await fetch(detailUrl);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (data.error) throw new Error(data.error);
+          log(`profile detail parsed OK: awards=${data.award_history_count}`);
+
+          drawerNameEl.textContent = data.display_name || profileKey;
+          const p = data.profile || {};
+          const awards: AwardRow[] = data.awards || [];
+          // Same reconciling remainder as the results table's Medals column
+          // (see renderRows): Gold+Silver+Bronze do not have to sum to Total
+          // awards -- Finalist/People's Choice/Grand Stevie/Distinguished
+          // Honoree wins are real awards with no medal-tier count of their
+          // own. Shown as "Other" rather than omitted so the tiles always add
+          // up to Total awards instead of looking like an undercount.
+          const otherAwards = Math.max(
+            0,
+            (Number(data.award_count) || 0) -
+              (Number(p.gold) || 0) -
+              (Number(p.silver) || 0) -
+              (Number(p.bronze) || 0)
+          );
+          const tiles = [
+            ["Total awards", num(data.award_count), ""],
+            ["Gold", num(p.gold), "gold"],
+            ["Silver", num(p.silver), "silver"],
+            ["Bronze", num(p.bronze), "bronze"],
+            ["Other", num(otherAwards), "other"],
+            ["Active", spanOf(p.first_year, p.last_year), ""],
+          ]
+            .filter(([, v]) => v && v !== "0")
+            .map(
+              ([label, value, tone]) =>
+                `<div class="spw__tile${tone ? ` spw__tile--${tone}` : ""}"><b>${esc(value)}</b><span>${esc(label)}</span></div>`
+            )
+            .join("");
+
+          // Multi-value fields are stored pipe-separated ("Brazil | Germany |
+          // India"); render each as its own chip rather than one long string.
+          // Extra chips stay in the DOM so "+N more" can reveal them without
+          // another fetch.
+          const chipRow = (label: string, raw: unknown, limit = 8) => {
+            const items = String(raw ?? "")
+              .split("|")
+              .map((s) => s.trim())
+              .filter(Boolean);
+            if (!items.length) return "";
+            const extra = Math.max(0, items.length - limit);
+            const chips = items
+              .map(
+                (v, i) => `<span class="spw__chip${i >= limit ? " is-extra" : ""}">${esc(v)}</span>`
+              )
+              .join("");
+            const more = extra
+              ? `<button type="button" class="spw__chip-more" data-spw-more data-extra="${extra}" aria-expanded="false">+${extra} more</button>`
+              : "";
+            return `<div class="spw__fact-row"${extra ? " data-collapsed" : ""}>
+              <span class="spw__fact-label">${esc(label)}</span>
+              <span class="spw__fact-chips">${chips}${more}</span>
+            </div>`;
+          };
+
+          const facts =
+            profileType === "person"
+              ? chipRow("Roles", p.roles) +
+                chipRow("Organizations", p.orgs) +
+                chipRow("Programs", p.programs) +
+                chipRow("Countries", p.countries)
+              : chipRow("Sector", p.industry_sector, 1) +
+                chipRow("Programs", p.programs) +
+                chipRow("Categories", p.categories, 6) +
+                chipRow("Country", p.country);
+
+          // domain/employee_count/linkedin_url come from an earlier, less
+          // rigorous enrichment pass than the isolated/verified pipeline this
+          // project settled on -- the internal Explorer never presents them as
+          // confirmed, and this drawer shouldn't either. Shown, but labelled.
+          const companyBits = [
+            p.domain
+              ? `<a href="https://${esc(p.domain)}" target="_blank" rel="noopener noreferrer">${esc(p.domain)}</a>`
+              : "",
+            p.employee_count ? `${esc(p.employee_count)} employees` : "",
+            p.linkedin_url
+              ? `<a href="${esc(p.linkedin_url)}" target="_blank" rel="noopener noreferrer">LinkedIn</a>`
+              : "",
+          ].filter(Boolean);
+          const companyInfo = companyBits.length
+            ? `<p class="spw__drawer-note">${companyBits.join(" · ")} <em>(unverified, from an earlier research pass)</em></p>`
+            : "";
+
+          const historySlice = awards.slice(0, 200);
+          const historyRows = historySlice
+            .map((a) => {
+              const level = levelOf(a.award);
+              const place = [a.city, a.country].filter(Boolean).join(", ");
+              const slug = level.toLowerCase().replace(/[^a-z]+/g, "-");
+              return `<tr>
+                <td>${esc(a.year)}</td>
+                <td>${level ? `<span class="spw__level spw__level--${esc(slug)}">${esc(level)}</span>` : ""}</td>
+                <td class="spw__cell-muted">${esc(a.category || a.category_group)}</td>
+                <td>${esc(a.nomination_title)}</td>
+                <td class="spw__cell-muted">${esc(place)}</td>
+              </tr>`;
+            })
+            .join("");
+          const historyCards = historySlice
+            .map((a) => {
+              const level = levelOf(a.award);
+              const place = [a.city, a.country].filter(Boolean).join(", ");
+              const slug = level.toLowerCase().replace(/[^a-z]+/g, "-");
+              return `<li class="spw__history-card">
+                <div class="spw__history-card-top">
+                  <span class="spw__history-year">${esc(a.year)}</span>
+                  ${level ? `<span class="spw__level spw__level--${esc(slug)}">${esc(level)}</span>` : ""}
+                </div>
+                <p class="spw__history-cat">${esc(a.category || a.category_group || "")}</p>
+                <p class="spw__history-nom">${esc(a.nomination_title || "")}</p>
+                ${place ? `<p class="spw__history-place">${esc(place)}</p>` : ""}
+              </li>`;
+            })
+            .join("");
+
+          drawerBodyEl.innerHTML = `
+            ${tiles ? `<div class="spw__tiles">${tiles}</div>` : ""}
+            ${facts ? `<div class="spw__facts">${facts}</div>` : ""}
+            ${companyInfo}
+            <h4 class="spw__drawer-heading">Award history</h4>
+            ${
+              awards.length
+                ? `<div class="spw__table-scroll">
+                    <table class="spw__table spw__table--history">
+                      <thead><tr><th>Year</th><th>Level</th><th>Category</th><th>Nomination</th><th>Location</th></tr></thead>
+                      <tbody>${historyRows}</tbody>
+                    </table>
+                  </div>
+                  <ol class="spw__history-cards">${historyCards}</ol>
+                  ${awards.length > 200 ? `<p class="spw__drawer-note">Showing the first 200 of ${num(awards.length)} awards.</p>` : ""}`
+                : `<p class="spw__drawer-note">No award history on file for this profile.</p>`
+            }`;
+        } catch (err) {
+          const detail = err instanceof Error ? err.message : String(err);
+          log(`profile detail FAILED: ${detail}`);
+          drawerBodyEl.innerHTML = `<p class="spw__drawer-note">Could not load this profile right now.</p>`;
+        }
+      };
+
+      const closeDrawer = () => {
+        hideOverlay();
+      };
+
+      // Delegated: rows are replaced wholesale on every search/page, so a
+      // listener bound to each button at render time would be discarded along
+      // with it. One listener on the results container outlives every re-render.
+      resultsEl.addEventListener("click", (event) => {
+        const btn = (event.target as HTMLElement)?.closest<HTMLElement>("[data-profile-key]");
+        if (!btn) return;
+        const key = btn.dataset.profileKey;
+        const type = btn.dataset.profileType || "org";
+        if (key) openProfile(type, key);
+      });
+      overviewEl?.addEventListener("click", (event) => {
+        const retry = (event.target as HTMLElement)?.closest<HTMLButtonElement>(
+          "[data-spw-overview-retry]"
+        );
+        if (retry) {
+          void loadOverview(seq, qInput.value.trim(), filters());
+          return;
+        }
+        const btn = (event.target as HTMLElement)?.closest<HTMLButtonElement>(
+          "[data-spw-top-more]"
+        );
+        if (!btn || !overviewEl) return;
+        const list = overviewEl.querySelector(".spw__orgs-list");
+        if (!list) return;
+        const extra = btn.dataset.extra || "0";
+        const open = list.hasAttribute("data-collapsed");
+        if (open) {
+          list.removeAttribute("data-collapsed");
+          btn.setAttribute("aria-expanded", "true");
+          btn.textContent = "Show less";
+        } else {
+          list.setAttribute("data-collapsed", "");
+          btn.setAttribute("aria-expanded", "false");
+          btn.textContent = `+${extra} more`;
+        }
+      });
+      drawerBodyEl.addEventListener("click", (event) => {
+        const btn = (event.target as HTMLElement)?.closest<HTMLButtonElement>("[data-spw-more]");
+        if (!btn) return;
+        const row = btn.closest(".spw__fact-row");
+        if (!row) return;
+        const extra = btn.dataset.extra || "0";
+        const open = row.hasAttribute("data-collapsed");
+        if (open) {
+          row.removeAttribute("data-collapsed");
+          btn.setAttribute("aria-expanded", "true");
+          btn.textContent = "Show less";
+        } else {
+          row.setAttribute("data-collapsed", "");
+          btn.setAttribute("aria-expanded", "false");
+          btn.textContent = `+${extra} more`;
+        }
+      });
+      scrimEl?.addEventListener("click", closeDrawer);
+      drawerCloseBtn?.addEventListener("click", closeDrawer);
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && isDrawerOpen()) closeDrawer();
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        run(0);
+      });
+      filterEls.forEach((el) =>
+        el.addEventListener("change", () => {
+          updateFiltersCount();
+          run(0);
+        })
+      );
+      form.addEventListener("reset", () => {
+        // The reset lands after this handler, so defer past both it and the
+        // count update to the same tick run() already waits for.
+        window.setTimeout(() => {
+          updateFiltersCount();
+          run(0);
+        }, 0);
+      });
+      prevBtn?.addEventListener("click", () => run(Math.max(0, offset - perPage)));
+      nextBtn?.addEventListener("click", () => run(offset + perPage));
+
+      // Filters live in a collapsed panel behind this button rather than an
+      // always-visible row -- six fields plus Clear were pushing the actual
+      // results below the fold on a phone screen before a visitor had typed
+      // anything. aria-expanded (not just [hidden]) so a screen reader
+      // announces the toggle state, not just a DOM node appearing.
+      filtersToggleBtn?.addEventListener("click", () => {
+        if (!filtersPanel) return;
+        const open = filtersPanel.hidden;
+        filtersPanel.hidden = !open;
+        filtersToggleBtn.setAttribute("aria-expanded", String(open));
+      });
+
+      qInput.value = config.initialQuery || "";
+      updateFiltersCount();
+      void loadFacets();
+      void run(0); // land on the full record list rather than an empty panel
+    });
+  };
+
+  // ==========================================
+  // SPW USER FEEDBACK & ZENDESK TICKET LOGIC
+  // ==========================================
+  const spwFeedbackBox = document.querySelector("[data-spw-feedback]");
+  const spwFeedbackModal = document.getElementById("spw-feedback-modal");
+  if (spwFeedbackModal && spwFeedbackModal.parentElement !== document.body) {
+    document.body.appendChild(spwFeedbackModal);
+  }
+  const spwFeedbackForm = document.getElementById("spw-feedback-form");
+  const spwFeedbackSuccess = document.getElementById("spw-feedback-success");
+  const spwFeedbackIdInput = document.getElementById("spw-feedback-id");
+  const spwFeedbackQueryInput = document.getElementById("spw-feedback-query");
+  const spwFeedbackOverviewInput = document.getElementById("spw-feedback-overview");
+  const spwFeedbackNameInput = document.getElementById("spw-feedback-name");
+  const spwFeedbackEmailInput = document.getElementById("spw-feedback-email");
+  const spwFeedbackCommentsInput = document.getElementById("spw-feedback-comments");
+  const spwFeedbackSubmitBtn = document.getElementById("spw-feedback-submit-btn");
+  const spwFeedbackUrl = (path: string) => {
+    let endpoint = spwEndpoint || "";
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      endpoint = "http://127.0.0.1:8010";
+    }
+    return `${endpoint.replace(/\/+$/, "")}${path}`;
+  };
+
+  function resetSpwFeedbackUi() {
+    if (!spwFeedbackBox) return;
+    const upBtn = spwFeedbackBox.querySelector(".is-up");
+    const downBtn = spwFeedbackBox.querySelector(".is-down");
+    const statusEl = spwFeedbackBox.querySelector(".spw__feedback-status");
+    if (upBtn) {
+      upBtn.disabled = false;
+      upBtn.classList.remove("is-selected");
+    }
+    if (downBtn) {
+      downBtn.disabled = false;
+      downBtn.classList.remove("is-selected");
+    }
+    if (statusEl) {
+      statusEl.hidden = true;
+      statusEl.textContent = "";
+    }
+  }
+
+  function closeSpwFeedbackModal() {
+    if (!spwFeedbackModal) return;
+    spwFeedbackModal.hidden = true;
+    if (spwFeedbackForm) {
+      spwFeedbackForm.reset();
+      spwFeedbackForm.hidden = false;
+    }
+    if (spwFeedbackSuccess) spwFeedbackSuccess.hidden = true;
+    if (spwFeedbackSubmitBtn) spwFeedbackSubmitBtn.disabled = false;
+  }
+
+  document.querySelectorAll("#spw-feedback-modal [data-spw-modal-close]").forEach((btn) => {
+    btn.addEventListener("click", closeSpwFeedbackModal);
+  });
+  spwFeedbackModal?.addEventListener("click", (e) => {
+    if (e.target === spwFeedbackModal) closeSpwFeedbackModal();
+  });
+
+  spwFeedbackBox?.addEventListener("click", async (e) => {
+    const btn = e.target.closest("[data-spw-feedback-action]");
+    if (!btn) return;
+    const action = btn.dataset.spwFeedbackAction; // "thumbs_up" | "thumbs_down"
+    const upBtn = spwFeedbackBox.querySelector(".is-up");
+    const downBtn = spwFeedbackBox.querySelector(".is-down");
+    const statusEl = spwFeedbackBox.querySelector(".spw__feedback-status");
+
+    if (upBtn) upBtn.disabled = true;
+    if (downBtn) downBtn.disabled = true;
+    btn.classList.add("is-selected");
+
+    const q = (document.querySelector<HTMLInputElement>("[data-spw-q]")?.value || "").trim();
+    const answerEl = document.querySelector("[data-spw-answer]");
+    const detailEl = document.querySelector("[data-spw-detail]");
+    const overviewSummary = (
+      (answerEl?.textContent || "") +
+      " " +
+      (detailEl?.textContent || "")
+    ).trim();
+
+    try {
+      const feedbackUrl = spwFeedbackUrl("/v1/feedback");
+      const res = await fetch(feedbackUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          source: "search_past_winners",
+          rating: action,
+          query: q,
+          response_summary: overviewSummary,
+          context: {},
+        }),
+      });
+      const data = await res.json();
+      const feedbackId = data.feedback_id;
+
+      if (action === "thumbs_up") {
+        if (statusEl) {
+          statusEl.textContent = "Thanks!";
+          statusEl.hidden = false;
+        }
+      } else {
+        // Thumbs down: show modal
+        if (spwFeedbackIdInput) spwFeedbackIdInput.value = feedbackId || "";
+        if (spwFeedbackQueryInput) spwFeedbackQueryInput.value = q;
+        if (spwFeedbackOverviewInput) spwFeedbackOverviewInput.value = overviewSummary;
+        if (spwFeedbackModal) {
+          spwFeedbackModal.hidden = false;
+          setTimeout(() => spwFeedbackNameInput?.focus(), 100);
+        }
+      }
+    } catch (err) {
+      console.warn("SPW feedback error:", err);
+      if (action === "thumbs_up" && statusEl) {
+        statusEl.textContent = "Thanks!";
+        statusEl.hidden = false;
+      }
+    }
+  });
+
+  spwFeedbackForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const name = (spwFeedbackNameInput?.value || "").trim();
+    const email = (spwFeedbackEmailInput?.value || "").trim();
+    const comments = (spwFeedbackCommentsInput?.value || "").trim();
+    const feedbackId = spwFeedbackIdInput?.value ? parseInt(spwFeedbackIdInput.value, 10) : null;
+    const q = spwFeedbackQueryInput?.value || "";
+    const overview = spwFeedbackOverviewInput?.value || "";
+
+    if (!name || !comments) return;
+
+    if (spwFeedbackSubmitBtn) {
+      spwFeedbackSubmitBtn.disabled = true;
+      spwFeedbackSubmitBtn.innerHTML = `<span class="spw__inline-spin" aria-hidden="true"></span> Submitting...`;
+    }
+
+    try {
+      const submitUrl = spwFeedbackUrl("/v1/feedback/submit");
+      const res = await fetch(submitUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          feedback_id: feedbackId,
+          user_name: name,
+          user_email: email || null,
+          feedback_text: comments,
+          source: "search_past_winners",
+          query: q,
+          response_summary: overview,
+        }),
+      });
+      const result = await res.json();
+
+      if (spwFeedbackForm) spwFeedbackForm.hidden = true;
+      if (spwFeedbackSuccess) {
+        spwFeedbackSuccess.hidden = false;
+        const msgEl = document.getElementById("spw-feedback-success-msg");
+        if (msgEl) {
+          if (result.ticket_id) {
+            msgEl.textContent = `Thank you, ${name}! Your feedback has been received and ticket #${result.ticket_id} was created with our support team.`;
+          } else {
+            msgEl.textContent = `Thank you, ${name}! Your feedback has been sent directly to the Stevie Awards support team.`;
+          }
+        }
+      }
+      if (spwFeedbackBox) {
+        const statusEl = spwFeedbackBox.querySelector(".spw__feedback-status");
+        if (statusEl) {
+          statusEl.textContent = "Feedback sent!";
+          statusEl.hidden = false;
+        }
+      }
+    } catch (err) {
+      console.error("Failed to submit SPW feedback:", err);
+      alert("Thank you for your feedback! It has been captured.");
+      closeSpwFeedbackModal();
+    }
+  });
+
+  onPageLoad(initSearchPastWinners);
+</script>
+
+<style is:global>
+  @layer page-sections {
+    .search-past-winners {
+      /* Brand & Core Palette */
+      --spw-gold: #c69214;
+      --spw-gold-dark: #92400e;
+      --spw-gold-solid: #a16207;
+      --spw-gold-light: #fefce8;
+      --spw-gold-subtle: #fef3c7;
+      --spw-gold-border: #fde047;
+
+      /* Solid Award Tier Colors (WCAG AA compliant white text) */
+      --spw-gold-pill: #a16207;
+      --spw-silver-pill: #475569;
+      --spw-bronze-pill: #9a3412;
+      --spw-grand-pill: #6d28d9;
+      --spw-finalist-pill: #4338ca;
+      --spw-peoples-choice-pill: #1d4ed8;
+      --spw-distinguished-pill: #0f766e;
+      --spw-other-pill: #57534e;
+
+      /* UI Surfaces & Typography */
+      --spw-surface: #ffffff;
+      --spw-surface-alt: #f8fafc;
+      --spw-surface-muted: #f1f5f9;
+      --spw-border: #e2e8f0;
+      --spw-border-subtle: #f1f5f9;
+      --spw-border-focus: #c69214;
+      --spw-text: #0f172a;
+      --spw-text-muted: #64748b;
+      --spw-text-dim: #94a3b8;
+
+      /* Modern Elevations */
+      --spw-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --spw-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --spw-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --spw-shadow-lg:
+        0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+      --spw-shadow-xl:
+        0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+      --spw-shadow-modal:
+        0 25px 50px -12px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(15, 23, 42, 0.06);
+
+      /* Radii */
+      --spw-radius-sm: 6px;
+      --spw-radius-md: 10px;
+      --spw-radius-lg: 14px;
+      --spw-radius-xl: 18px;
+    }
+
+    /* Explicit dark section override only when section explicitly requests it */
+    .search-past-winners[data-color-scheme="dark"],
+    .search-past-winners[data-color-scheme="invert"] {
+      --spw-surface: #1e293b;
+      --spw-surface-alt: #0f172a;
+      --spw-surface-muted: #1e293b;
+      --spw-border: #334155;
+      --spw-border-subtle: #1e293b;
+      --spw-text: #f8fafc;
+      --spw-text-muted: #94a3b8;
+      --spw-text-dim: #64748b;
+    }
+
+    /* Keyframe Animations */
+    @keyframes spw-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes spw-shimmer {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
+
+    @keyframes spw-fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes spw-pop {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -46%) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    @keyframes spw-scrim-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    html.spw-modal-open,
+    html.spw-modal-open body {
+      overflow: hidden;
+    }
+
+    /* --- Eyebrow & Hero Header --- */
+    .search-past-winners .spw__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .search-past-winners .spw__eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(161, 98, 7, 0.1) 100%);
+      border: 1px solid rgba(161, 98, 7, 0.25);
+      color: #92400e;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .search-past-winners .spw__eyebrow-icon {
+      color: #c69214;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__eyebrow-stat {
+      color: var(--spw-text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* --- Main Form & Search Command Bar --- */
+    .search-past-winners .spw__form {
+      margin-top: 1.5rem;
+      padding: 1.35rem 1.5rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-lg);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-md);
+      position: relative;
+      transition:
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .search-past-winners .spw__form::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 2px;
+      background: linear-gradient(90deg, #d4af37 0%, #b45309 40%, rgba(212, 175, 55, 0.2) 100%);
+      border-radius: 2px;
+    }
+
+    .search-past-winners .spw__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      align-items: flex-end;
+    }
+
+    .search-past-winners .spw__field {
+      display: flex;
+      flex: 1 1 12rem;
+      flex-direction: column;
+      gap: 0.4rem;
+      min-width: 0;
+    }
+
+    .search-past-winners .spw__field--grow {
+      flex: 4 1 20rem;
+    }
+
+    .search-past-winners .spw__field--narrow {
+      flex: 0 1 7.5rem;
+    }
+
+    .search-past-winners .spw__label {
+      font-size: 0.72rem;
+      color: var(--spw-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .search-past-winners .spw__input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-past-winners .spw__input-icon {
+      position: absolute;
+      left: 0.95rem;
+      width: 1.15rem;
+      height: 1.15rem;
+      color: var(--spw-text-dim);
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+
+    .search-past-winners .spw__input-wrap:focus-within .spw__input-icon {
+      color: var(--spw-gold-dark);
+    }
+
+    .search-past-winners .spw__input,
+    .search-past-winners .spw__select {
+      width: 100%;
+      height: 2.75rem;
+      padding: 0.55rem 0.95rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
+      box-sizing: border-box;
+    }
+
+    .search-past-winners .spw__input-wrap .spw__input {
+      padding-left: 2.65rem;
+    }
+
+    .search-past-winners .spw__input::placeholder {
+      color: var(--spw-text-dim);
+    }
+
+    .search-past-winners .spw__input:focus,
+    .search-past-winners .spw__input:focus-visible,
+    .search-past-winners .spw__select:focus,
+    .search-past-winners .spw__select:focus-visible {
+      outline: none;
+      background-color: #ffffff;
+      border-color: var(--spw-gold);
+      box-shadow: 0 0 0 3px rgba(198, 146, 20, 0.16);
+    }
+
+    .search-past-winners .spw__select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+      padding-right: 2.2rem;
+      cursor: pointer;
+    }
+
+    /* Primary Search Button */
+    .search-past-winners .spw__submit {
+      height: 2.75rem;
+      padding: 0 1.4rem;
+      border: 1px solid #a16207;
+      border-radius: var(--spw-radius-md);
+      background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+      color: #ffffff !important;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(146, 64, 14, 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__submit-icon {
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__submit:hover:not(:disabled) {
+      background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+      border-color: #78350f;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(146, 64, 14, 0.32);
+    }
+
+    .search-past-winners .spw__submit:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(146, 64, 14, 0.2);
+    }
+
+    .search-past-winners .spw__submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Filters Toggle Button */
+    .search-past-winners .spw__filters-toggle {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: 0.5rem;
+      height: 2.75rem;
+      padding: 0 1.15rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .search-past-winners .spw__filters-toggle:hover {
+      background-color: #ffffff;
+      border-color: var(--spw-gold-border);
+      color: var(--spw-gold-dark);
+    }
+
+    .search-past-winners .spw__filters-toggle[aria-expanded="true"] {
+      border-color: var(--spw-gold);
+      background-color: #fefce8;
+      color: #92400e;
+      box-shadow: 0 0 0 1px var(--spw-gold);
+    }
+
+    .search-past-winners .spw__filters-icon {
+      width: 1.15rem;
+      height: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__filters-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.35rem;
+      border-radius: 9999px;
+      background-color: #a16207;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    /* Filter Expansion Panel */
+    .search-past-winners .spw__row--filters {
+      margin-top: 1rem;
+      padding: 1.15rem;
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      animation: spw-fade-up 0.2s ease;
+    }
+
+    /* Bulletproof [hidden] overrides */
+    .search-past-winners .spw__row--filters[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__reset {
+      height: 2.75rem;
+      padding: 0 1rem;
+      border: 1px dashed var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: transparent;
+      color: var(--spw-text-muted);
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      align-self: flex-end;
+    }
+
+    .search-past-winners .spw__reset:hover:not(:disabled) {
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+
+    /* --- Status Line --- */
+    .search-past-winners .spw__status {
+      margin-top: 0.9rem;
+      padding: 0.45rem 0.75rem;
+      color: var(--spw-text-muted);
+      font-size: 0.86rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .search-past-winners .spw__status[data-kind="error"] {
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--spw-radius-sm);
+      color: #b91c1c;
+      font-weight: 600;
+    }
+
+    /* --- Spinners & Skeletons --- */
+    .search-past-winners .spw__spinner {
+      display: inline-block;
+      width: 1.8rem;
+      height: 1.8rem;
+      border: 2.5px solid var(--spw-border);
+      border-top-color: #c69214;
+      border-right-color: #b45309;
+      border-radius: 50%;
+      animation: spw-spin 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__inline-spin {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(161, 98, 7, 0.25);
+      border-top-color: #a16207;
+      border-radius: 50%;
+      animation: spw-spin 0.7s linear infinite;
+      vertical-align: -0.15em;
+      margin-right: 0.45em;
+    }
+
+    .search-past-winners .spw__skel {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .search-past-winners .spw__skel-row {
+      height: 3.6rem;
+      border-radius: var(--spw-radius-md);
+      background: linear-gradient(
+        90deg,
+        var(--spw-surface-muted) 0%,
+        #e2e8f0 45%,
+        var(--spw-surface-muted) 100%
+      );
+      background-size: 200% 100%;
+      animation: spw-shimmer 1.5s ease-in-out infinite;
+    }
+
+    /* --- Executive AI Overview Brief --- */
+    .search-past-winners .spw__overview {
+      margin-top: 1.75rem;
+      padding: 1.65rem 1.85rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-lg);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-lg);
+      position: relative;
+      overflow: hidden;
+      animation: spw-fade-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__overview::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #d4af37 0%, #f59e0b 50%, #0d9488 100%);
+    }
+
+    .search-past-winners .spw__overview[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__overview-loading,
+    .search-past-winners .spw__overview-error {
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      min-height: 5.5rem;
+    }
+
+    .search-past-winners .spw__overview-error {
+      justify-content: space-between;
+      background-color: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: var(--spw-radius-md);
+      padding: 1.15rem 1.35rem;
+    }
+
+    .search-past-winners .spw__overview-loading[hidden],
+    .search-past-winners .spw__overview-error[hidden],
+    .search-past-winners .spw__overview-ready[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__overview-retry {
+      flex: 0 0 auto;
+      height: 2.5rem;
+      padding: 0 1.15rem;
+      border: 1px solid #a16207;
+      border-radius: var(--spw-radius-md);
+      background: #ffffff;
+      color: #92400e;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+    }
+
+    .search-past-winners .spw__overview-retry:hover {
+      background: #fefce8;
+      border-color: #854d0e;
+      color: #78350f;
+    }
+
+    .search-past-winners .spw__overview-loading-title {
+      margin: 0;
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--spw-text);
+    }
+
+    .search-past-winners .spw__overview-loading-copy {
+      margin: 0.25rem 0 0;
+      color: var(--spw-text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .search-past-winners .spw__overview-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .search-past-winners .spw__overview-head-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .search-past-winners .spw__overview-title {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      color: #a16207;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .search-past-winners .spw__overview-source {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
+    }
+
+    /* AI Answer Callout */
+    .search-past-winners .spw__answer {
+      margin-top: 0.75rem;
+      padding: 1.15rem 1.35rem;
+      border-left: 4px solid #d4af37;
+      border-radius: 0 var(--spw-radius-md) var(--spw-radius-md) 0;
+      background: linear-gradient(
+        90deg,
+        rgba(212, 175, 55, 0.08) 0%,
+        rgba(212, 175, 55, 0.015) 100%
+      );
+      color: var(--spw-text);
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .search-past-winners .spw__answer:empty,
+    .search-past-winners .spw__detail:empty,
+    .search-past-winners .spw__orgs:empty,
+    .search-past-winners .spw__chips:empty {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__detail {
+      margin-top: 0.85rem;
+      color: var(--spw-text-muted);
+      font-size: 0.92rem;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    /* Award Level Chips */
+    .search-past-winners .spw__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      margin-top: 1.15rem;
+    }
+
+    .search-past-winners .spw__chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      line-height: 1.2;
+      transition: transform 0.15s ease;
+      color: #ffffff !important;
+    }
+
+    .search-past-winners .spw__chip b {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      margin-left: 0.15rem;
+      color: #ffffff !important;
+    }
+
+    .search-past-winners .spw__chip i,
+    .search-past-winners .spw__medal i {
+      display: inline-block;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      background: #ffffff !important;
+      flex-shrink: 0;
+    }
+
+    /* Solid Award Tier Pills (Consistent across chip, medal, tile) */
+    .search-past-winners .spw__level--gold,
+    .search-past-winners .spw__chip.spw__level--gold,
+    .search-past-winners .spw__medal--gold,
+    .search-past-winners .spw__tile--gold {
+      color: #ffffff !important;
+      background-color: var(--spw-gold-pill) !important;
+      border-color: var(--spw-gold-pill) !important;
+    }
+
+    .search-past-winners .spw__level--silver,
+    .search-past-winners .spw__chip.spw__level--silver,
+    .search-past-winners .spw__medal--silver,
+    .search-past-winners .spw__tile--silver {
+      color: #ffffff !important;
+      background-color: var(--spw-silver-pill) !important;
+      border-color: var(--spw-silver-pill) !important;
+    }
+
+    .search-past-winners .spw__level--bronze,
+    .search-past-winners .spw__chip.spw__level--bronze,
+    .search-past-winners .spw__medal--bronze,
+    .search-past-winners .spw__tile--bronze {
+      color: #ffffff !important;
+      background-color: var(--spw-bronze-pill) !important;
+      border-color: var(--spw-bronze-pill) !important;
+    }
+
+    .search-past-winners .spw__level--grand-stevie,
+    .search-past-winners .spw__chip.spw__level--grand-stevie {
+      color: #ffffff !important;
+      background-color: var(--spw-grand-pill) !important;
+      border-color: var(--spw-grand-pill) !important;
+    }
+
+    .search-past-winners .spw__level--finalist,
+    .search-past-winners .spw__chip.spw__level--finalist {
+      color: #ffffff !important;
+      background-color: var(--spw-finalist-pill) !important;
+      border-color: var(--spw-finalist-pill) !important;
+    }
+
+    .search-past-winners .spw__level--people-s-choice,
+    .search-past-winners .spw__chip.spw__level--people-s-choice {
+      color: #ffffff !important;
+      background-color: var(--spw-peoples-choice-pill) !important;
+      border-color: var(--spw-peoples-choice-pill) !important;
+    }
+
+    .search-past-winners .spw__level--distinguished-honoree,
+    .search-past-winners .spw__chip.spw__level--distinguished-honoree {
+      color: #ffffff !important;
+      background-color: var(--spw-distinguished-pill) !important;
+      border-color: var(--spw-distinguished-pill) !important;
+    }
+
+    .search-past-winners .spw__level--other,
+    .search-past-winners .spw__chip.spw__level--other {
+      color: #ffffff !important;
+      background-color: var(--spw-other-pill) !important;
+      border-color: var(--spw-other-pill) !important;
+    }
+
+    /* Top Organizations Leaderboard */
+    .search-past-winners .spw__orgs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.35rem;
+      border-top: 1px solid var(--spw-border-subtle);
+    }
+
+    .search-past-winners .spw__orgs-label {
+      font-size: 0.72rem;
+      color: var(--spw-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
+    }
+
+    .search-past-winners .spw__org-row {
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border-subtle);
+      animation: spw-fade-up 0.25s ease both;
+      animation-delay: calc(var(--spw-i, 0) * 35ms);
+      transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease;
+    }
+
+    .search-past-winners .spw__org-row:hover {
+      background-color: #ffffff;
+      border-color: var(--spw-border);
+      box-shadow: var(--spw-shadow-xs);
+    }
+
+    .search-past-winners .spw__orgs-list[data-collapsed] .spw__org-row:nth-child(n + 4) {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__org-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.65rem;
+    }
+
+    .search-past-winners .spw__org-rank {
+      flex: 0 0 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background-color: var(--spw-surface-muted);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text-muted);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-past-winners .spw__org-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--spw-text);
+    }
+
+    .search-past-winners .spw__org-count {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: #a16207;
+      font-size: 0.92rem;
+    }
+
+    .search-past-winners .spw__org-meta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 3.6rem 3.6rem 3.6rem 5.8rem;
+      align-items: center;
+      column-gap: 0.5rem;
+      margin-top: 6px;
+    }
+
+    .search-past-winners .spw__org-bar {
+      display: block;
+      height: 7px;
+      border-radius: 9999px;
+      background-color: #e2e8f0;
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .search-past-winners .spw__org-bar i {
+      display: block;
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #d4af37 0%, #b45309 100%);
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__org-meta > .spw__medal {
+      justify-content: center;
+      min-width: 0;
+      padding: 0.15em 0.3em;
+    }
+
+    .search-past-winners .spw__org-span {
+      color: var(--spw-text-muted);
+      font-size: 0.76rem;
+      text-align: right;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .search-past-winners .spw__medal.is-empty {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .search-past-winners .spw__chip-more {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.95rem;
+      border: 1px solid var(--spw-border);
+      border-radius: 9999px;
+      background: var(--spw-surface);
+      color: #a16207;
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+      align-self: flex-start;
+      margin-top: 0.5rem;
+    }
+
+    .search-past-winners .spw__chip-more:hover {
+      background: #fefce8;
+      border-color: var(--spw-gold);
+      color: #92400e;
+    }
+
+    /* --- Results Data Grid --- */
+    .search-past-winners .spw__results {
+      max-width: 100%;
+      overflow-x: auto;
+      margin-top: 1.75rem;
+      border-radius: var(--spw-radius-lg);
+      border: 1px solid var(--spw-border);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-md);
+    }
+
+    .search-past-winners .spw__table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.88rem;
+    }
+
+    .search-past-winners .spw__table thead th {
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--spw-border);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .search-past-winners .spw__table thead th.spw__num {
+      text-align: right;
+    }
+
+    .search-past-winners .spw__table tbody td {
+      padding: 0.95rem 1.1rem;
+      border-bottom: 1px solid var(--spw-border-subtle);
+      vertical-align: middle;
+      transition: background-color 0.12s ease;
+    }
+
+    .search-past-winners .spw__table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    .search-past-winners .spw__hit {
+      cursor: pointer;
+    }
+
+    .search-past-winners .spw__hit:nth-child(even) td {
+      background-color: #fafbfd;
+    }
+
+    .search-past-winners .spw__hit:hover td {
+      background-color: rgba(212, 175, 55, 0.06);
+    }
+
+    .search-past-winners .spw__cell-org {
+      font-weight: 700;
+    }
+
+    .search-past-winners .spw__profile-link {
+      border: 0;
+      background: none;
+      padding: 0;
+      color: var(--spw-text);
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 700;
+      text-align: left;
+      cursor: pointer;
+      transition: color 0.15s ease;
+      line-height: 1.35;
+    }
+
+    .search-past-winners .spw__profile-link:hover {
+      color: #a16207;
+      text-decoration: underline;
+    }
+
+    .search-past-winners .spw__type-badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .search-past-winners .spw__type-badge--org {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+    }
+
+    .search-past-winners .spw__type-badge--person {
+      background-color: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      color: #6d28d9;
+    }
+
+    .search-past-winners .spw__cell-muted {
+      color: var(--spw-text-muted);
+    }
+
+    .search-past-winners .spw__num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--spw-text);
+      text-align: right;
+    }
+
+    .search-past-winners .spw__medal-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+      min-width: 11rem;
+    }
+
+    .search-past-winners .spw__medal {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3em;
+      padding: 0.22em 0.6em;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .search-past-winners .spw__medal--other {
+      color: #57534e !important;
+      border: 1px solid #e7e5e4 !important;
+      background-color: #f5f5f4 !important;
+      font-weight: 500;
+    }
+
+    .search-past-winners .spw__medal--other i {
+      background: currentColor !important;
+    }
+
+    /* Section group labels for Exact / Related */
+    .search-past-winners .spw__group-label {
+      margin: 1.75rem 0 0.75rem;
+      color: #a16207;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .search-past-winners .spw__group-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: var(--spw-border);
+    }
+
+    /* Empty state card */
+    .search-past-winners .spw__empty {
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      background-color: var(--spw-surface);
+      border-radius: var(--spw-radius-lg);
+      border: 1px solid var(--spw-border);
+      box-shadow: var(--spw-shadow-sm);
+      margin-top: 1.75rem;
+    }
+
+    .search-past-winners .spw__empty p {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--spw-text);
+    }
+
+    /* Pagination */
+    .search-past-winners .spw__pager {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
+    .search-past-winners .spw__pager[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__page-btn {
+      padding: 0.6rem 1.25rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface);
+      color: var(--spw-text);
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+    }
+
+    .search-past-winners .spw__page-btn:hover:not(:disabled) {
+      background-color: var(--spw-surface-alt);
+      border-color: var(--spw-gold-border);
+      color: var(--spw-gold-dark);
+    }
+
+    .search-past-winners .spw__page-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .search-past-winners .spw__page-info {
+      color: var(--spw-text-muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Profile Detail Modal / Drawer --- */
+    .search-past-winners .spw__scrim,
+    .search-past-winners .spw__scrim[popover],
+    [data-spw-scrim] {
+      position: fixed !important;
+      inset: 0 !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      z-index: 9999990 !important;
+      background: rgba(15, 23, 42, 0.65) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    .search-past-winners .spw__scrim[hidden],
+    [data-spw-scrim][hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__drawer {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999995;
+      display: flex;
+      flex-direction: column;
+      width: min(58rem, calc(100vw - 2.5rem));
+      max-height: min(88vh, 58rem);
+      background-color: var(--spw-surface);
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-xl);
+      box-shadow: var(--spw-shadow-modal);
+      overflow-y: auto;
+      animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__drawer[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__drawer[popover]:not(:popover-open),
+    .search-past-winners .spw__scrim[popover]:not(:popover-open) {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__drawer[popover] {
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-xl);
+      overflow-y: auto;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-height: min(88vh, 58rem);
+      box-shadow: var(--spw-shadow-modal);
+    }
+
+    .search-past-winners .spw__drawer[popover]:popover-open {
+      animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__scrim[popover]:popover-open {
+      animation: spw-scrim-in 0.18s ease;
+    }
+
+    .search-past-winners .spw__drawer-head {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 1.35rem 1.75rem;
+      border-bottom: 1px solid var(--spw-border);
+      position: sticky;
+      top: 0;
+      background-color: var(--spw-surface);
+      z-index: 10;
+    }
+
+    .search-past-winners .spw__drawer-name {
+      margin: 0;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--spw-text);
+    }
+
+    .search-past-winners .spw__drawer-sub {
+      margin: 0.3rem 0 0;
+      color: var(--spw-text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .search-past-winners .spw__drawer-close {
+      border: 1px solid var(--spw-border);
+      background: var(--spw-surface-alt);
+      border-radius: 9999px;
+      padding: 0.38rem 0.95rem;
+      width: auto;
+      height: auto;
+      min-height: 2rem;
+      color: var(--spw-text-muted);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+    }
+
+    .search-past-winners .spw__drawer-close:hover {
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+      transform: translateY(-1px);
+    }
+
+    .search-past-winners .spw__drawer-body {
+      padding: 1.65rem 1.75rem;
+    }
+
+    .search-past-winners .spw__drawer-loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      min-height: 12rem;
+      color: var(--spw-text-muted);
+      font-size: 0.92rem;
+    }
+
+    .search-past-winners .spw__drawer-note {
+      color: var(--spw-text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Metric KPI Tiles */
+    .search-past-winners .spw__tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.65rem;
+    }
+
+    .search-past-winners .spw__tile {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.95rem 1.15rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+    }
+
+    .search-past-winners .spw__tile b {
+      font-size: 1.55rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+      color: var(--spw-text);
+    }
+
+    .search-past-winners .spw__tile span {
+      font-size: 0.68rem;
+      color: var(--spw-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .search-past-winners .spw__tile--gold b,
+    .search-past-winners .spw__tile--silver b,
+    .search-past-winners .spw__tile--bronze b {
+      color: #ffffff !important;
+    }
+
+    .search-past-winners .spw__tile--gold span,
+    .search-past-winners .spw__tile--silver span,
+    .search-past-winners .spw__tile--bronze span {
+      color: rgba(255, 255, 255, 0.85) !important;
+    }
+
+    /* Facts Grid */
+    .search-past-winners .spw__facts {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.65rem;
+      padding-bottom: 1.35rem;
+      border-bottom: 1px solid var(--spw-border);
+    }
+
+    .search-past-winners .spw__fact-row {
+      display: grid;
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: 0.4rem 1rem;
+      align-items: start;
+    }
+
+    .search-past-winners .spw__fact-label {
+      padding-top: 0.35rem;
+      color: var(--spw-text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+    }
+
+    .search-past-winners .spw__fact-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      min-width: 0;
+    }
+
+    .search-past-winners .spw__fact-chips .spw__chip {
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text) !important;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
+    }
+
+    .search-past-winners .spw__fact-row[data-collapsed] .spw__chip.is-extra {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__drawer-heading {
+      margin: 1.25rem 0 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--spw-text-muted);
+    }
+
+    /* History Table */
+    .search-past-winners .spw__table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      border-radius: var(--spw-radius-md);
+      border: 1px solid var(--spw-border);
+      background-color: var(--spw-surface);
+    }
+
+    .search-past-winners .spw__table--history {
+      font-size: 0.82rem;
+    }
+
+    .search-past-winners .spw__table--history th {
+      padding: 0.75rem 0.95rem;
+      background-color: var(--spw-surface-alt);
+    }
+
+    .search-past-winners .spw__table--history td {
+      padding: 0.75rem 0.95rem;
+    }
+
+    .search-past-winners .spw__table--history th:nth-child(1),
+    .search-past-winners .spw__table--history td:nth-child(1) {
+      white-space: nowrap;
+      width: 4rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+
+    .search-past-winners .spw__table--history th:nth-child(2),
+    .search-past-winners .spw__table--history td:nth-child(2) {
+      white-space: nowrap;
+      width: 5.5rem;
+    }
+
+    .search-past-winners .spw__history-cards {
+      display: none;
+    }
+
+    /* --- Diagnostic Debug Panel --- */
+    .search-past-winners .spw__debug {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1.15rem;
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px dashed #b3261e;
+      border-radius: var(--spw-radius-sm);
+      background-color: #0b0f19;
+      color: #7ee787;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.76rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* --- Mobile Responsiveness (@media width < 768px) --- */
+    @media (width < 768px) {
+      .search-past-winners .spw__field--narrow {
+        flex: 1 1 6.5rem;
+      }
+
+      .search-past-winners .spw__drawer,
+      .search-past-winners .spw__drawer[popover] {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        max-height: 100dvh;
+        transform: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .search-past-winners .spw__drawer-head {
+        padding: 1rem 1.25rem;
+      }
+
+      .search-past-winners .spw__drawer-body {
+        padding: 1rem 1.25rem;
+      }
+
+      .search-past-winners .spw__tiles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem;
+      }
+
+      .search-past-winners .spw__fact-row {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+      }
+
+      .search-past-winners .spw__fact-label {
+        padding-top: 0;
+      }
+
+      .search-past-winners .spw__org-meta {
+        grid-template-columns: minmax(0, 1fr) 2.8rem 2.8rem 2.8rem 4.8rem;
+        column-gap: 0.35rem;
+      }
+
+      .search-past-winners .spw__table-scroll {
+        display: none !important;
+      }
+
+      .search-past-winners .spw__history-cards {
+        display: flex !important;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .search-past-winners .spw__history-card {
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--spw-border);
+        border-radius: var(--spw-radius-md);
+        background-color: var(--spw-surface);
+      }
+
+      .search-past-winners .spw__history-card-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+      }
+
+      .search-past-winners .spw__history-year {
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        font-size: 0.9rem;
+      }
+
+      .search-past-winners .spw__history-cat,
+      .search-past-winners .spw__history-nom,
+      .search-past-winners .spw__history-place {
+        margin: 0.2rem 0 0;
+        overflow-wrap: anywhere;
+      }
+
+      .search-past-winners .spw__history-cat,
+      .search-past-winners .spw__history-place {
+        color: var(--spw-text-muted);
+        font-size: 0.76rem;
+      }
+
+      .search-past-winners .spw__history-nom {
+        font-size: 0.88rem;
+        font-weight: 500;
+      }
+
+      .search-past-winners .spw__medal-group {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        min-width: 0;
+        width: 100%;
+      }
+
+      /* Stacked mobile cards transformation for results data table */
+      .search-past-winners .spw__results {
+        overflow-x: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
+      }
+
+      .search-past-winners .spw__table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+
+      .search-past-winners .spw__table,
+      .search-past-winners .spw__table tbody,
+      .search-past-winners .spw__table tr,
+      .search-past-winners .spw__table td {
+        display: block;
+        width: auto;
+      }
+
+      .search-past-winners .spw__table tr {
+        margin-bottom: 1rem;
+        padding: 1.15rem;
+        border: 1px solid var(--spw-border);
+        border-radius: var(--spw-radius-lg);
+        background-color: var(--spw-surface);
+        box-shadow: var(--spw-shadow-sm);
+      }
+
+      .search-past-winners .spw__table td {
+        display: grid;
+        grid-template-columns: 6.5rem 1fr;
+        gap: 0.5rem;
+        align-items: baseline;
+        padding: 0.35rem 0;
+        border: 0;
+      }
+
+      .search-past-winners .spw__table td::before {
+        content: attr(data-label);
+        color: var(--spw-text-muted);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        font-weight: 700;
+        line-height: 1.4;
+      }
+
+      .search-past-winners .spw__table td.spw__cell-org {
+        display: block;
+        margin-bottom: 0.65rem;
+        padding-bottom: 0.65rem;
+        border-bottom: 1px solid var(--spw-border-subtle);
+      }
+
+      .search-past-winners .spw__table td.spw__cell-org .spw__profile-link {
+        font-size: 1.08rem;
+        font-weight: 800;
+      }
+
+      .search-past-winners .spw__table td.spw__cell-org::before {
+        content: none;
+      }
+
+      .search-past-winners .spw__table td.spw__num {
+        text-align: left;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .search-past-winners .spw__overview,
+      .search-past-winners .spw__org-row,
+      .search-past-winners .spw__drawer,
+      .search-past-winners .spw__drawer[popover]:popover-open,
+      .search-past-winners .spw__scrim[popover]:popover-open,
+      .search-past-winners .spw__skel-row,
+      .search-past-winners .spw__spinner,
+      .search-past-winners .spw__inline-spin {
+        animation: none !important;
+      }
+    }
+  }
+
+  /* ==========================================
+     SPW FEEDBACK WIDGET & MODAL STYLING
+     ========================================== */
+  .spw__feedback {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--spw-text-muted, #64748b);
+  }
+
+  .spw__feedback-label {
+    font-weight: 600;
+  }
+
+  .spw__feedback-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .spw__feedback-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .spw__feedback-btn:hover:not(:disabled) {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    color: #0f172a;
+  }
+
+  .spw__feedback-btn.is-up:hover:not(:disabled),
+  .spw__feedback-btn.is-up.is-selected {
+    background: #ecfdf5;
+    border-color: #10b981;
+    color: #059669;
+  }
+
+  .spw__feedback-btn.is-down:hover:not(:disabled),
+  .spw__feedback-btn.is-down.is-selected {
+    background: #fef2f2;
+    border-color: #ef4444;
+    color: #dc2626;
+  }
+
+  .spw__feedback-btn:disabled {
+    cursor: default;
+    opacity: 0.8;
+  }
+
+  .spw__feedback-status {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #0f766e;
+  }
+
+  /* SPW Feedback Modal Dialog */
+  .spw-modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    z-index: 9999999 !important;
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+    animation: spw-scrim-in 0.2s ease;
+  }
+
+  .spw-modal-backdrop[hidden] {
+    display: none !important;
+  }
+
+  .spw-modal-dialog {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow:
+      0 25px 50px -12px rgba(15, 23, 42, 0.25),
+      0 0 0 1px rgba(15, 23, 42, 0.05);
+    width: 100%;
+    max-width: 520px;
+    overflow: hidden;
+    animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .spw-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.6rem;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+  }
+
+  .spw-modal-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .spw-modal-icon {
+    color: #0f766e;
+    display: flex;
+  }
+
+  .spw-modal-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: -0.01em;
+  }
+
+  .spw-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+  }
+
+  .spw-modal-close:hover {
+    color: #0f172a;
+    background-color: #e2e8f0;
+  }
+
+  .spw-modal-body {
+    padding: 1.5rem 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .spw-modal-body[hidden] {
+    display: none !important;
+  }
+
+  .spw-modal-desc {
+    margin: 0;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: #64748b;
+  }
+
+  .spw-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .spw-form-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  .spw-required {
+    color: #ef4444;
+  }
+
+  .spw-optional {
+    font-weight: 400;
+    color: #94a3b8;
+    font-size: 0.74rem;
+  }
+
+  .spw-form-input,
+  .spw-form-textarea {
+    width: 100%;
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.88rem;
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a;
+    caret-color: #0f172a;
+    font-family: inherit;
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .spw-form-input::placeholder,
+  .spw-form-textarea::placeholder {
+    color: #94a3b8;
+    -webkit-text-fill-color: #94a3b8;
+  }
+
+  .spw-form-input:focus,
+  .spw-form-textarea:focus {
+    outline: none;
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+  }
+
+  .spw-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  .spw-modal-btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .spw-modal-btn.is-secondary {
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+  }
+
+  .spw-modal-btn.is-secondary:hover {
+    background: #f8fafc;
+    color: #0f172a;
+    border-color: #94a3b8;
+  }
+
+  .spw-modal-btn.is-primary {
+    background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+    border: 1px solid #0f766e;
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(15, 118, 110, 0.25);
+  }
+
+  .spw-modal-btn.is-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+    box-shadow: 0 4px 8px rgba(15, 118, 110, 0.35);
+  }
+
+  .spw-modal-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+  }
+
+  .spw-modal-success {
+    padding: 2.5rem 1.75rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .spw-modal-success[hidden] {
+    display: none !important;
+  }
+
+  .spw-modal-success-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #f0fdfa;
+    border: 2px solid #ccfbf1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
+  }
+
+  .spw-modal-success-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .spw-modal-success-copy {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #64748b;
+    max-width: 380px;
+    line-height: 1.55;
+  }
+
+  /* Global Fallback for Hidden Elements */
+  [data-spw] [hidden],
+  [data-spw][hidden] {
+    display: none !important;
+  }
+</style>
