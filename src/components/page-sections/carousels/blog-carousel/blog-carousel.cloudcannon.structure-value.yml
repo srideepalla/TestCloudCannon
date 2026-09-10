@@ -1,0 +1,82 @@
+label: Blog Carousel
+icon: article
+description: Blog post card carousel with heading, image cards, and view-more button.
+value:
+  _component: page-sections/carousels/blog-carousel
+  subheading: "The Stevie® Awards"
+  heading: "Check Our Stevie® Awards Blog"
+  posts:
+    - image:
+        source: ""
+        alt: ""
+      postedDate: ""
+      readTime: "2 mins"
+      title: "Blog Post Title"
+      description: "Blog post description text."
+      link: ""
+  viewMoreLink: "https://blog.stevieawards.com/blog"
+  viewMoreText: "View More"
+  colorScheme: dark
+  backgroundColor: base
+preview:
+  text:
+    - Blog Carousel
+  subtext:
+    - key: heading
+  icon:
+picker_preview:
+  text: Blog Carousel
+  subtext: Blog post card carousel with heading, image cards, and view-more button.
+_inputs_from_glob:
+  - /src/components/page-sections/carousels/blog-carousel/blog-carousel.cloudcannon.inputs.yml
+_structures:
+  blogPost:
+    values:
+      - label: Blog Post
+        icon: article
+        value:
+          image:
+            source: ""
+            alt: ""
+          postedDate: ""
+          readTime: "2 mins"
+          title: ""
+          description: ""
+          link: ""
+        preview:
+          text:
+            - key: title
+          subtext:
+            - key: postedDate
+        _inputs:
+          image:
+            type: object
+            comment: Blog post featured image.
+          image.source:
+            type: image
+            comment: Image file path.
+            options:
+              paths:
+                uploads: src/assets/images
+                static: ""
+              resize_style: cover
+              width: 800
+              height: 450
+          image.alt:
+            type: text
+            comment: Alt text for the image.
+          postedDate:
+            type: text
+            comment: Display date (e.g., "May 12, 2024").
+          readTime:
+            type: text
+            comment: Estimated read time (e.g., "2 mins").
+          title:
+            type: text
+            comment: Blog post title.
+          description:
+            type: textarea
+            comment: Short excerpt or description.
+          link:
+            type: url
+            comment: URL to the full blog post.

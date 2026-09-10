@@ -1,0 +1,47 @@
+subheading:
+  type: text
+  comment: Small gold text above the heading.
+
+heading:
+  type: text
+  comment: Main heading text.
+
+posts:
+  type: array
+  comment: Blog post cards shown in the carousel.
+  options:
+    structures: _structures.blogPost
+
+viewMoreLink:
+  type: url
+  comment: URL for the "View More" button.
+
+viewMoreText:
+  type: text
+  comment: Text for the "View More" button.
+
+colorScheme:
+  type: select
+  options:
+    values:
+      - id: inherit
+        name: Inherit
+      - id: dark
+        name: Dark
+      - id: light
+        name: Light
+
+backgroundColor:
+  type: select
+  options:
+    values:
+      - id: none
+        name: None
+      - id: base
+        name: Base
+      - id: surface
+        name: Surface
+      - id: accent
+        name: Accent
+      - id: highlight
+        name: Highlight

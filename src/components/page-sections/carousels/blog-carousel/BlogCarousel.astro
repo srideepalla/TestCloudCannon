@@ -1,0 +1,229 @@
+---
+import CustomSection from "@builders/custom-section/CustomSection.astro";
+import Button from "@core-elements/button/Button.astro";
+import Heading from "@core-elements/heading/Heading.astro";
+import Image from "@core-elements/image/Image.astro";
+import Carousel from "@wrappers/carousel/Carousel.astro";
+import CarouselSlide from "@wrappers/carousel/CarouselSlide.astro";
+
+interface BlogPost {
+  image: { source: string; alt: string };
+  postedDate: string;
+  readTime: string;
+  title: string;
+  description: string;
+  link: string;
+}
+
+const {
+  subheading = "The Stevie® Awards",
+  heading = "Check Our Stevie® Awards Blog",
+  posts = [],
+  viewMoreLink = "https://blog.stevieawards.com/blog",
+  viewMoreText = "View More",
+
+  colorScheme = "dark",
+  backgroundColor,
+  class: className,
+  useDefaultEditableBinding = false,
+  _component,
+  ...htmlAttributes
+} = Astro.props;
+
+const typedPosts = posts as BlogPost[];
+---
+
+<CustomSection
+  class:list={["blog-carousel", className]}
+  maxContentWidth="3xl"
+  paddingHorizontal="lg"
+  paddingVertical="4xl"
+  colorScheme={colorScheme}
+  backgroundColor={backgroundColor}
+  useDefaultEditableBinding={useDefaultEditableBinding}
+  {...htmlAttributes}
+>
+  <p class="blog-carousel__subheading" data-prop="subheading">{subheading}</p>
+  <Heading
+    level="h2"
+    size="2xl"
+    text={heading}
+    data-prop="heading"
+    class="blog-carousel__heading"
+  />
+
+  {
+    typedPosts.length > 0 && (
+      <Carousel
+        slideWidthPercent={33}
+        showIndicators={false}
+        showArrows={true}
+        loop={true}
+        align="start"
+        class="blog-carousel__carousel"
+        data-children-prop={useDefaultEditableBinding ? "posts" : undefined}
+      >
+        {typedPosts.map((post) => (
+          <CarouselSlide>
+            <a href={post.link} class="blog-card" target="_blank" rel="noopener noreferrer">
+              <div class="blog-card__image-wrapper">
+                <Image
+                  source={post.image?.source}
+                  alt={post.image?.alt || ""}
+                  aspectRatio="landscape"
+                  class="blog-card__image"
+                />
+              </div>
+              <div class="blog-card__content">
+                <p class="blog-card__meta">
+                  <span class="blog-card__date">Posted on: {post.postedDate}</span>
+                  {post.readTime && <span class="blog-card__read-time"> • {post.readTime}</span>}
+                </p>
+                <h3 class="blog-card__title">{post.title}</h3>
+                <p class="blog-card__description">{post.description}</p>
+                <span class="blog-card__link">
+                  Know More
+                  <svg class="blog-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+                </span>
+              </div>
+            </a>
+          </CarouselSlide>
+        ))}
+      </Carousel>
+    )
+  }
+
+  {
+    viewMoreLink && (
+      <div class="blog-carousel__view-more">
+        <Button
+          text={viewMoreText}
+          link={viewMoreLink}
+          variant="tertiary"
+          size="md"
+          uppercase={true}
+          openInNewTab={true}
+          data-prop="viewMoreText"
+        />
+      </div>
+    )
+  }
+</CustomSection>
+
+<style is:global>
+  @layer page-sections {
+    .blog-carousel__subheading {
+      margin: 0;
+      font-family: var(--font-headings);
+      font-size: var(--font-size-sm);
+      font-weight: var(--font-weight-bold);
+      color: var(--color-brand);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .blog-carousel__heading {
+      text-transform: uppercase;
+      font-weight: var(--font-weight-bold);
+    }
+
+    .blog-carousel__heading .heading-inner {
+      margin-top: var(--spacing-xs);
+    }
+
+    .blog-carousel__carousel {
+      margin-top: var(--spacing-xl);
+    }
+
+    .blog-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+    }
+
+    .blog-card__image-wrapper {
+      overflow: hidden;
+      border-radius: 0.5rem;
+    }
+
+    .blog-card__image-wrapper .image {
+      margin-top: 0 !important;
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover .blog-card__image-wrapper .image {
+      transform: scale(1.05);
+    }
+
+    .blog-card__content {
+      padding: var(--spacing-lg) 0;
+    }
+
+    .blog-card__meta {
+      margin: 0;
+      font-family: var(--font-headings);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--color-brand);
+    }
+
+    .blog-card__title {
+      margin: var(--spacing-sm) 0 0;
+      font-family: var(--font-headings);
+      font-size: 1.15rem;
+      font-weight: 800;
+      line-height: 1.3;
+      color: var(--color-text-strong);
+    }
+
+    .blog-card__description {
+      margin: var(--spacing-sm) 0 0;
+      font-size: var(--font-size-sm);
+      line-height: 1.6;
+      color: var(--color-text);
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .blog-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+      margin-top: var(--spacing-md);
+      font-family: var(--font-headings);
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-brand);
+    }
+
+    .blog-card__arrow {
+      width: 1em;
+      height: 1em;
+    }
+
+    .blog-carousel__view-more {
+      display: flex;
+      justify-content: center;
+      margin-top: var(--spacing-2xl);
+    }
+
+    .blog-carousel .carousel-inner {
+      gap: var(--spacing-xl);
+    }
+
+    .blog-carousel .controls-wrapper {
+      justify-content: flex-start;
+    }
+
+    .blog-carousel .controls-wrapper .button button {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>

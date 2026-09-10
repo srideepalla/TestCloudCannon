@@ -317,26 +317,44 @@ pageSections:
         buttonColor: ''
     colorScheme: light
     backgroundColor: base
-  - _component: page-sections/features/feature-article-links
-    subheading: ''
-    heading: The Stevie Awards Blog
-    description:
-    stories:
+  - _component: page-sections/carousels/blog-carousel
+    subheading: The Stevie® Awards
+    heading: Check Our Stevie® Awards Blog
+    posts:
       - image:
           source: /src/assets/images/54344562486-08317006a1-w.jpg
           alt: Who's coming to the Middle East & North Africa Stevie® Awards on Friday?
+        postedDate: "May 12, 2024"
+        readTime: "2 mins"
         title: Who's coming to the Middle East & North Africa Stevie® Awards on Friday?
+        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/whos-coming-to-the-middle-east-north-africa-stevie-awards-on-friday
       - image:
           source: /src/assets/images/grand20announced-1.png
-          alt: ' 2026 International Business Awards® Grand Stevie® Winners Announced'
-        title: ' 2026 International Business Awards® Grand Stevie® Winners Announced'
+          alt: 2026 International Business Awards® Grand Stevie® Winners Announced
+        postedDate: "May 12, 2024"
+        readTime: "2 mins"
+        title: 2026 International Business Awards® Grand Stevie® Winners Announced
+        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/2026-international-business-awards-grand-stevie-winners-announced
       - image:
           source: /src/assets/images/gsa2620pressreleaseblog.png
-          alt: ' Preisträgerinnen und Preisträger der German Stevie Awards 2026'
-        title: ' Preisträgerinnen und Preisträger der German Stevie Awards 2026'
+          alt: Preisträgerinnen und Preisträger der German Stevie Awards 2026
+        postedDate: "May 12, 2024"
+        readTime: "2 mins"
+        title: Preisträgerinnen und Preisträger der German Stevie Awards 2026
+        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/preistr%C3%A4gerinnen-und-preistr%C3%A4ger-der-german-stevie-awards-2026
-    colorScheme: light
+      - image:
+          source: /src/assets/images/54344562486-08317006a1-w.jpg
+          alt: Call for Entries Issued for the 2024 Stevie Awards
+        postedDate: "May 12, 2024"
+        readTime: "2 mins"
+        title: Call for Entries Issued for the 2024 Stevie Awards
+        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
+        link: https://blog.stevieawards.com/blog
+    viewMoreLink: https://blog.stevieawards.com/blog
+    viewMoreText: View More
+    colorScheme: dark
     backgroundColor: base
 ---
