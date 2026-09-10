@@ -41,7 +41,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img src="/uploads/june-22-workshop-replay.webp" loading="lazy" class="astro-qvaelhz7" /></p>
+      <p><img src="https://blog.stevieawards.com/hubfs/June%2022%20Workshop%20Replay.png" loading="lazy" class="astro-qvaelhz7" /></p>
 
       Presented Live on March 25, 2026
 
@@ -55,7 +55,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img src="/uploads/sawib26-webinar-email-1.png" loading="lazy" class="astro-qvaelhz7" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SAWIB26%20Webinar%20Email%20(1).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -70,7 +70,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img src="/uploads/gsa26-webinar-email-3.png" loading="lazy" class="astro-qvaelhz7" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/GSA26%20Webinar%20Email%20(3).png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -85,7 +85,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img src="/uploads/gsa26-webinar-email-3-2.png" loading="lazy" class="astro-qvaelhz7" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/GSA26%20Webinar%20Email.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -93,13 +93,13 @@ pageSections:
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/heroes/hero-banner
-    heading: 'Presented Live on April 9, 2026 Entry Tips for the 2026
-      Stevie®&nbsp;Awards for Technology Excellence&nbsp; '
+    heading: Presented Live on April 9, 2026 Entry Tips for the 2026
+      Stevie®&nbsp;Awards for Technology Excellence&nbsp;
     headingLevel: h2
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/sate26-webinar-replay.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SATE26%20Webinar%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -113,7 +113,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/april-2-workshop-replay.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/April%202%20Workshop%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -127,7 +127,7 @@ pageSections:
     text: |-
       &nbsp;
 
-      <p><img loading="lazy" class="astro-qvaelhz7" src="/uploads/thank-you-march-25-iba-webinar-email-a.png" /></p>
+      <p><img loading="lazy" class="astro-qvaelhz7" src="https://blog.stevieawards.com/hubfs/SAGE26%20Webinar%20Replay.png" /></p>
 
       Presented Live on March 25, 2026
 
@@ -247,7 +247,7 @@ pageSections:
     colorScheme: inherit
     backgroundColor: surface
   - _component: page-sections/heroes/hero-banner
-    heading: '2025 Women|Future Webinars Series '
+    heading: 2025 Women|Future Webinars Series
     headingLevel: h2
     text: >-
       &nbsp;
