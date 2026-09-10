@@ -7,8 +7,8 @@ description: The Stevie® Awards are the world's premier business awards and are
 pageSections:
   - _component: page-sections/heroes/hero-calendar
     backgroundImage:
-      source: /images/IBA/IBA-Home-5.jpg
-      alt: International Business Awards®
+      source:
+      alt:
     subheading: WINNERS ANNOUNCED
     heading: The 23rd Annual International Business Awards®
     description: The International Business Awards® are the top honors for
@@ -98,7 +98,7 @@ pageSections:
     colorScheme: light
     backgroundColor: surface
   - _component: page-sections/carousels/card-carousel
-    heading: Explore Other Stevie® Awards Competitions
+    heading: Learn About all of the Stevie® Award Programs
     description: Whatever your organization is seeking recognition for, there is a
       Stevie Awards program and category for it. From individual professionals
       and teams to departments and company-wide accomplishments, each of our
@@ -255,7 +255,7 @@ pageSections:
   - _component: page-sections/features/feature-article-links
     subheading: ''
     heading: The Stevie Awards Blog
-    description: ''
+    description:
     stories:
       - image:
           source: /src/assets/images/54344562486-08317006a1-w.jpg
