@@ -43,49 +43,49 @@ pageSections:
       - name: American Business Awards®
         status: Entries Open
         statusType: open
-        dateLabel: "Entries Open:"
+        dateLabel: 'Entries Open:'
         dateValue: October 7, 2026
         link: https://aba.stevieawards.com/
       - name: International Business Awards®
         status: Winners Announced
         statusType: closed
-        dateLabel: ""
-        dateValue: ""
+        dateLabel: ''
+        dateValue: ''
         link: /awards/iba-winners/2026/stevie-award-winners/
       - name: Stevie Awards for Sales & Customer Service
         status: Entries Open
         statusType: open
-        dateLabel: "Entries Open:"
+        dateLabel: 'Entries Open:'
         dateValue: Now
         link: https://sales.stevieawards.com/
       - name: Stevie Awards for Women In Business
         status: Entries Open
         statusType: open
-        dateLabel: "Entries Open:"
+        dateLabel: 'Entries Open:'
         dateValue: Now
         link: https://women.stevieawards.com
       - name: Middle East & North Africa Stevie Awards
         status: Entries Open
         statusType: open
-        dateLabel: ""
+        dateLabel: ''
         dateValue: September 23, 2026
         link: https://mena.stevieawards.com/
       - name: Asia-Pacific Stevie Awards
         status: Entries Open
         statusType: open
-        dateLabel: "Entries Open:"
+        dateLabel: 'Entries Open:'
         dateValue: October 14, 2026
         link: https://asia.stevieawards.com
       - name: Stevie Awards for Great Employers
         status: Entries Open
         statusType: open
-        dateLabel: ""
+        dateLabel: ''
         dateValue: February 24, 2027
         link: https://hr.stevieawards.com
       - name: Stevie Awards for Technology Excellence
         status: Entries Open
         statusType: open
-        dateLabel: ""
+        dateLabel: ''
         dateValue: March 10, 2027
         link: https://tech.stevieawards.com/
     deadlinesHeading: Upcoming Deadlines &amp; Events
@@ -319,23 +319,47 @@ pageSections:
     backgroundColor: base
   - _component: page-sections/features/split-list-form
     subheading: The Stevie® Awards
-    heading: Download the Stevie Awards 2027 Entry Kit & Best Submission Practice Guide
+    heading: Download the Stevie Awards 2027 Entry Kit &amp; Best Submission
+      Practice Guide
     image:
-      source: /src/assets/images/54916228917-5dda7cc82f-o.jpg
+      source: /src/assets/images/c5fafde9bbe4ad46c0023676f32d3979f5607faa-1.png
       alt: Stevie Award winners celebrating with their trophy
     description: Please fill the form to gain access to essential resources with the
       Stevie Awards 2027 Entry Kit and Best Submission Practice Guide to elevate
       your submission and make a lasting impression. Simply complete the form to
       stand out from the crowd.
-    list: {}
+    list:
+      _component: building-blocks/wrappers/article-link-list
+      stories: []
     buttonSections: []
     formHeading: Get Your Entry Kit
-    formEmbed: |-
+    formEmbed: >-
       <script src="https://js.hsforms.net/forms/embed/35655.js" defer></script>
-      <div class="hs-form-frame" data-region="na1" data-form-id="fa2a5858-32e2-4240-9ed0-2a6a3ba34b8e" data-portal-id="35655"></div>
+
+      <div class="hs-form-frame" data-region="na1"
+      data-form-id="fa2a5858-32e2-4240-9ed0-2a6a3ba34b8e"
+      data-portal-id="35655"></div>
     formCardColorScheme: light
     formCardBackgroundColor: base
     colorScheme: dark
+    backgroundColor: base
+  - _component: page-sections/features/feature-logo-scroller
+    heading: Heading Text
+    description: ''
+    logos:
+      - source: ''
+        alt: Company Logo
+      - source: ''
+        alt: Company Logo
+      - source: ''
+        alt: Company Logo
+      - source: ''
+        alt: Company Logo
+      - source: ''
+        alt: Company Logo
+      - source: ''
+        alt: Company Logo
+    colorScheme: light
     backgroundColor: base
   - _component: page-sections/carousels/blog-carousel
     subheading: The Stevie® Awards
@@ -344,34 +368,38 @@ pageSections:
       - image:
           source: /src/assets/images/54344562486-08317006a1-w.jpg
           alt: Who's coming to the Middle East & North Africa Stevie® Awards on Friday?
-        postedDate: "May 12, 2024"
-        readTime: "2 mins"
+        postedDate: May 12, 2024
+        readTime: 2 mins
         title: Who's coming to the Middle East & North Africa Stevie® Awards on Friday?
-        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
+        description: All U.S.-based organisations are eligible to enter in the top
+          business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/whos-coming-to-the-middle-east-north-africa-stevie-awards-on-friday
       - image:
           source: /src/assets/images/grand20announced-1.png
           alt: 2026 International Business Awards® Grand Stevie® Winners Announced
-        postedDate: "May 12, 2024"
-        readTime: "2 mins"
+        postedDate: May 12, 2024
+        readTime: 2 mins
         title: 2026 International Business Awards® Grand Stevie® Winners Announced
-        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
+        description: All U.S.-based organisations are eligible to enter in the top
+          business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/2026-international-business-awards-grand-stevie-winners-announced
       - image:
           source: /src/assets/images/gsa2620pressreleaseblog.png
           alt: Preisträgerinnen und Preisträger der German Stevie Awards 2026
-        postedDate: "May 12, 2024"
-        readTime: "2 mins"
+        postedDate: May 12, 2024
+        readTime: 2 mins
         title: Preisträgerinnen und Preisträger der German Stevie Awards 2026
-        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
+        description: All U.S.-based organisations are eligible to enter in the top
+          business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog/preistr%C3%A4gerinnen-und-preistr%C3%A4ger-der-german-stevie-awards-2026
       - image:
           source: /src/assets/images/54344562486-08317006a1-w.jpg
           alt: Call for Entries Issued for the 2024 Stevie Awards
-        postedDate: "May 12, 2024"
-        readTime: "2 mins"
+        postedDate: May 12, 2024
+        readTime: 2 mins
         title: Call for Entries Issued for the 2024 Stevie Awards
-        description: All U.S.-based organisations are eligible to enter in the top business awards program in the United State of America (USA).
+        description: All U.S.-based organisations are eligible to enter in the top
+          business awards program in the United State of America (USA).
         link: https://blog.stevieawards.com/blog
     viewMoreLink: https://blog.stevieawards.com/blog
     viewMoreText: View More
