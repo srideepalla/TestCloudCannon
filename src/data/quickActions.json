@@ -2,19 +2,13 @@
   "heading": "THE STEVIE® AWARDS",
   "links": [
     {
-      "text": "Enter Now/Submit Entries",
-      "href": "/enter/how-to-enter",
-      "openInNewTab": false,
-      "modalTarget": "select-program"
-    },
-    {
-      "text": "Log in/Create Account",
+      "text": "Log-In/Create Account",
       "href": "https://the-stevie-awards.com/login",
       "openInNewTab": false
     },
     {
-      "text": "Get Entry Kit",
-      "href": "/enter/request-the-iba-entry-kit",
+      "text": "Get an Entry Kit",
+      "href": "/enter/get-entry-kit",
       "openInNewTab": false
     },
     {

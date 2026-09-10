@@ -19,7 +19,7 @@ pageSections:
       - _component: building-blocks/core-elements/button
         text: ENTER NOW
         hideText: false
-        link: /enter/request-the-iba-entry-kit/
+        link: /enter/get-entry-kit/
         openInNewTab: false
         iconName: ''
         iconPosition: before

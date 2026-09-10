@@ -62,16 +62,19 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       <hr class="quick-actions-divider" />
       <ul class="quick-actions-list">
         {
-          links.map((link) => (
+          links.map((link, index) => (
             <li class="quick-actions-list-item">
+              <span class="quick-actions-number">{String(index + 1).padStart(2, "0")}</span>
               {link.modalTarget ? (
-                <button
-                  class="quick-action-modal-trigger"
+                <Button
+                  text={link.text}
+                  element="button"
+                  variant="text-strong"
+                  size="md"
+                  uppercase
+                  class="quick-action-button quick-action-modal-trigger"
                   data-modal-target={link.modalTarget}
-                  type="button"
-                >
-                  {link.text}
-                </button>
+                />
               ) : (
                 <Button
                   text={link.text}
@@ -79,7 +82,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
                   openInNewTab={link.openInNewTab}
                   variant="text-strong"
                   size="md"
-                  uppercase={false}
+                  uppercase
                   class="quick-action-button"
                 />
               )}
@@ -88,7 +91,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
         }
       </ul>
       <div class="quick-actions-enter-row">
-        <a href="/enter/how-to-enter" class="quick-actions-enter-btn">ENTER</a>
+        <button type="button" class="quick-actions-enter-btn quick-action-modal-trigger" data-modal-target="select-program">ENTER</button>
       </div>
     </div>
   </div>
@@ -180,7 +183,7 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <p class="qa-reminder-status-text">Your Mobile Number has been verified</p>
-        <button class="qa-reminder-btn qa-reminder-btn--primary" type="button" popovertarget="modal-schedule-reminders" popovertargetaction="hide">GOT IT</button>
+        <button class="qa-reminder-btn qa-reminder-btn--primary" type="button" data-action="got-it">GOT IT</button>
       </div>
     </div>
   </div>
@@ -223,21 +226,12 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       });
     });
 
-    // Select Awards Program — ENTER button
-    const programEnterBtn = document.querySelector<HTMLButtonElement>(".qa-program-enter-btn");
-    if (programEnterBtn) {
-      programEnterBtn.addEventListener("click", () => {
-        const selected = document.querySelector<HTMLInputElement>('input[name="award-program"]:checked');
-        if (selected?.value) {
-          window.location.href = selected.value;
-        }
-      });
-    }
+    // Shared OTP verification logic
+    let pendingRedirectUrl: string | null = null;
 
-    // Schedule Reminders — step navigation
-    const remindersModal = document.getElementById("modal-schedule-reminders");
-    if (remindersModal) {
-      const steps = remindersModal.querySelectorAll<HTMLElement>(".qa-reminder-step");
+    const verifyModal = document.getElementById("modal-schedule-reminders");
+    if (verifyModal) {
+      const steps = verifyModal.querySelectorAll<HTMLElement>(".qa-reminder-step");
 
       function showStep(stepNum: number) {
         steps.forEach((step) => {
@@ -245,23 +239,32 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
         });
       }
 
-      const sendOtpBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="send-otp"]');
+      const sendOtpBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="send-otp"]');
       sendOtpBtn?.addEventListener("click", () => {
         showStep(2);
       });
 
-      const verifyBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="verify-otp"]');
+      const verifyBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="verify-otp"]');
       verifyBtn?.addEventListener("click", () => {
         showStep(3);
       });
 
-      const resendBtn = remindersModal.querySelector<HTMLButtonElement>('[data-action="resend-otp"]');
+      const gotItBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="got-it"]');
+      gotItBtn?.addEventListener("click", () => {
+        verifyModal.hidePopover();
+        if (pendingRedirectUrl) {
+          window.location.href = pendingRedirectUrl;
+          pendingRedirectUrl = null;
+        }
+      });
+
+      const resendBtn = verifyModal.querySelector<HTMLButtonElement>('[data-action="resend-otp"]');
       resendBtn?.addEventListener("click", () => {
         // Placeholder for resend logic
       });
 
       // OTP auto-advance
-      const otpInputs = remindersModal.querySelectorAll<HTMLInputElement>(".qa-otp-digit");
+      const otpInputs = verifyModal.querySelectorAll<HTMLInputElement>(".qa-otp-digit");
       otpInputs.forEach((input, idx) => {
         input.addEventListener("input", () => {
           if (input.value.length === 1 && idx < otpInputs.length - 1) {
@@ -276,9 +279,23 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       });
 
       // Reset to step 1 when modal closes
-      remindersModal.addEventListener("toggle", (e) => {
+      verifyModal.addEventListener("toggle", (e) => {
         if ((e as ToggleEvent).newState === "closed") {
           showStep(1);
+          otpInputs.forEach((input) => (input.value = ""));
+        }
+      });
+    }
+
+    // Select Awards Program — ENTER button → opens verification flow
+    const programEnterBtn = document.querySelector<HTMLButtonElement>(".qa-program-enter-btn");
+    if (programEnterBtn) {
+      programEnterBtn.addEventListener("click", () => {
+        const selected = document.querySelector<HTMLInputElement>('input[name="award-program"]:checked');
+        if (selected?.value && verifyModal) {
+          pendingRedirectUrl = selected.value;
+          document.getElementById("modal-select-program")?.hidePopover();
+          verifyModal.showPopover();
         }
       });
     }
@@ -379,27 +396,31 @@ const popoverId = `modal-${slugifyLabel(heading)}`;
       list-style: none;
     }
 
+    .quick-actions-list-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .quick-actions-number {
+      font-family: var(--font-headings);
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-text-strong);
+      opacity: 0.7;
+      flex-shrink: 0;
+    }
+
     .quick-action-button {
       padding: var(--spacing-sm) 0;
     }
 
-    .quick-action-modal-trigger {
-      display: block;
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      color: var(--color-text-strong);
-      font-family: var(--font-headings);
-      font-size: var(--font-size-md);
-      font-weight: 700;
-      padding: var(--spacing-sm) 0;
-      cursor: pointer;
-      transition: opacity 0.15s ease;
+    .quick-actions-list .quick-action-button .button-inner.variant-text-strong {
+      font-weight: 400 !important;
     }
 
-    .quick-action-modal-trigger:hover {
-      opacity: 0.8;
+    .quick-action-modal-trigger.button {
+      padding: var(--spacing-sm) 0;
     }
 
     .quick-actions-enter-row {
