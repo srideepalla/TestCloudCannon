@@ -261,28 +261,27 @@ pageSections:
     colorScheme: light
     backgroundColor: base
   - _component: page-sections/features/grid-testimonials
-    heading: ' Testimonials'
+    heading: Testimonials
     testimonials:
-      - quote: Winning the Stevie Award has been an affirmation of our good work and the
-          intent that we set out with. It gives us validation of our effort, our
-          plans, and our execution. This award helps bring our initiatives to a
-          larger community. We will be able to build on our purpose to make
-          students industry-ready, and hope this award will encourage others to
-          do more for the larger community.
-        authorName: Mona Bharadwaj
-        authorTitle: Technology Partner ,Specialist, IBM India
+      - quote: My Stevie Awards judging experience was truly exceptional. Engaging with
+          innovative entries and collaborating with industry experts was not
+          only inspiring but also incredibly enriching. The well-organized
+          process and the dedication of the Stevie Awards team made this
+          experience unforgettable.
+        authorName: CLINTUS VICTORIYA
+        authorTitle: Account Manager, Suisse Associates LLC
         companyLogo:
-          source: /images/IBA/IBA-Winner-IBM.png
+          source:
           alt: IBM India
-      - quote: We're proud that Setupad's drive to deliver the best publisher tech on
-          the market was acknowledged by this esteemed award. The Stevie triumph
-          is not just an accolade;it's a strategic asset leading to new heights
-          of impact, reputation, and sustainable growth. It's a catalyst for our
-          ongoing success story.
-        authorName: Toms Panders
-        authorTitle: '&nbsp;Co-Founder &amp; CEO, Setupad, Latvia'
+      - quote: I am incredibly honored to have participated on the judging committee for
+          the Stevie Awards Women in Business for Media & Social Media Awards.
+          It has been an extremely rewarding experience reviewing all of the
+          incredible accomplishments and real world impact by female leaders all
+          over the world!
+        authorName: KRISTEN DOLAN
+        authorTitle: Vice President Media Strategy &amp; Innovation at Influential
         companyLogo:
-          source: /images/logo-fin-v-x3.webp
+          source:
           alt: Setupad
     colorScheme: light
     backgroundColor: surface
