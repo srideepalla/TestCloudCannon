@@ -287,7 +287,7 @@ pageSections:
     colorScheme: dark
     backgroundColor: base
   - _component: page-sections/features/feature-logo-scroller
-    heading: Heading Text
+    heading: PAST STEVIE® WINNERS INCLUDES
     description: ''
     logos:
       - source: /images/IBA/IBA-Winner-Amazon.jpeg
@@ -300,8 +300,6 @@ pageSections:
         alt: Cathay United Bank
       - source: /images/IBA/IBA-Winner-Cisco.png
         alt: Cisco
-      - source: ''
-        alt: Company Logo
       - source: /images/IBA/IBA-Winner-Dell.png
         alt: Dell
       - source: /images/IBA/IBA-Winner-DHL.png
