@@ -283,10 +283,12 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
         const str = String(s || "").trim();
         if (!str || seen.has(str)) continue;
         seen.add(str);
+        // Citations show live website links only -- a database record count or
+        // internal-catalog description (e.g. "Official Stevie Awards Database
+        // (83,021 Records)") isn't a link a visitor can open, so it's dropped
+        // here rather than shown as a non-clickable citation chip.
         if (/^https?:\/\//i.test(str)) {
           out.push({ isUrl: true, href: str, label: linkLabel(str) });
-        } else {
-          out.push({ isUrl: false, href: null, label: str });
         }
       }
       if (!out.length) {

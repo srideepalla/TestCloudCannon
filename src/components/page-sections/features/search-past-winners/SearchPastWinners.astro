@@ -87,6 +87,15 @@ const config = {
     data-spw
     data-config={JSON.stringify(config)}
   >
+    <div class="spw__eyebrow">
+      <span class="spw__eyebrow-pill">
+        <svg class="spw__eyebrow-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+        </svg>
+        Stevie® Awards Intelligence
+      </span>
+      <span class="spw__eyebrow-stat">83,000+ Verified Winners Archive</span>
+    </div>
     <Heading
       level="h2"
       size="lg"
@@ -106,21 +115,32 @@ const config = {
       <div class="spw__row">
         <label class="spw__field spw__field--grow">
           <span class="spw__label">Search</span>
-          <input
-            type="search"
-            name="q"
-            class="spw__input"
-            data-spw-q
-            placeholder="e.g. IBM, customer service team, gold winners in 2024"
-            autocomplete="off"
-          />
+          <div class="spw__input-wrap">
+            <svg class="spw__input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input
+              type="search"
+              name="q"
+              class="spw__input"
+              data-spw-q
+              placeholder="e.g. IBM, customer service team, gold winners in 2024"
+              autocomplete="off"
+            />
+          </div>
         </label>
         <button
           type="submit"
           class="spw__submit"
           data-spw-submit
-          >Search</button
         >
+          <svg class="spw__submit-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          Search
+        </button>
         {
           showFilters && (
             <button
@@ -414,6 +434,10 @@ const config = {
           class="spw__drawer-close"
           data-spw-drawer-close
         >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
           Close
         </button>
       </div>
@@ -1578,31 +1602,80 @@ const config = {
 <style is:global>
   @layer page-sections {
     .search-past-winners {
-      --spw-gold: #dfba19;
-      --spw-gold-soft: rgba(223, 186, 25, 0.16);
-      --spw-silver: #c5ccd6;
-      --spw-silver-soft: rgba(197, 204, 214, 0.16);
-      --spw-bronze: #c67b3e;
-      --spw-bronze-soft: rgba(198, 123, 62, 0.18);
-      --spw-teal: #2d7272;
+      /* Brand & Core Palette */
+      --spw-gold: #c69214;
+      --spw-gold-dark: #92400e;
+      --spw-gold-solid: #a16207;
+      --spw-gold-light: #fefce8;
+      --spw-gold-subtle: #fef3c7;
+      --spw-gold-border: #fde047;
+
+      /* Solid Award Tier Colors (WCAG AA compliant white text) */
+      --spw-gold-pill: #a16207;
+      --spw-silver-pill: #475569;
+      --spw-bronze-pill: #9a3412;
+      --spw-grand-pill: #6d28d9;
+      --spw-finalist-pill: #4338ca;
+      --spw-peoples-choice-pill: #1d4ed8;
+      --spw-distinguished-pill: #0f766e;
+      --spw-other-pill: #57534e;
+
+      /* UI Surfaces & Typography */
+      --spw-surface: #ffffff;
+      --spw-surface-alt: #f8fafc;
+      --spw-surface-muted: #f1f5f9;
+      --spw-border: #e2e8f0;
+      --spw-border-subtle: #f1f5f9;
+      --spw-border-focus: #c69214;
+      --spw-text: #0f172a;
+      --spw-text-muted: #64748b;
+      --spw-text-dim: #94a3b8;
+
+      /* Modern Elevations */
+      --spw-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+      --spw-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --spw-shadow-md: 0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05);
+      --spw-shadow-lg: 0 10px 15px -3px rgba(15, 23, 42, 0.08), 0 4px 6px -4px rgba(15, 23, 42, 0.04);
+      --spw-shadow-xl: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+      --spw-shadow-modal: 0 25px 50px -12px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(15, 23, 42, 0.06);
+
+      /* Radii */
+      --spw-radius-sm: 6px;
+      --spw-radius-md: 10px;
+      --spw-radius-lg: 14px;
+      --spw-radius-xl: 18px;
     }
 
+    /* Explicit dark section override only when section explicitly requests it */
+    .search-past-winners[data-color-scheme="dark"],
+    .search-past-winners[data-color-scheme="invert"] {
+      --spw-surface: #1e293b;
+      --spw-surface-alt: #0f172a;
+      --spw-surface-muted: #1e293b;
+      --spw-border: #334155;
+      --spw-border-subtle: #1e293b;
+      --spw-text: #f8fafc;
+      --spw-text-muted: #94a3b8;
+      --spw-text-dim: #64748b;
+    }
+
+    /* Keyframe Animations */
     @keyframes spw-spin {
       to { transform: rotate(360deg); }
     }
 
     @keyframes spw-shimmer {
-      0% { background-position: 100% 0; }
-      100% { background-position: -100% 0; }
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
     }
 
     @keyframes spw-fade-up {
       from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: none; }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes spw-pop {
-      from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+      from { opacity: 0; transform: translate(-50%, -46%) scale(0.97); }
       to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     }
 
@@ -1616,90 +1689,76 @@ const config = {
       overflow: hidden;
     }
 
+    /* --- Eyebrow & Hero Header --- */
+    .search-past-winners .spw__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .search-past-winners .spw__eyebrow-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.75rem;
+      border-radius: 9999px;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(161, 98, 7, 0.1) 100%);
+      border: 1px solid rgba(161, 98, 7, 0.25);
+      color: #92400e;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .search-past-winners .spw__eyebrow-icon {
+      color: #c69214;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__eyebrow-stat {
+      color: var(--spw-text-muted);
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    /* --- Main Form & Search Command Bar --- */
     .search-past-winners .spw__form {
-      margin-top: var(--spacing-lg);
+      margin-top: 1.5rem;
+      padding: 1.35rem 1.5rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-lg);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-md);
+      position: relative;
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .search-past-winners .spw__form::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 1.5rem;
+      right: 1.5rem;
+      height: 2px;
+      background: linear-gradient(90deg, #d4af37 0%, #b45309 40%, rgba(212, 175, 55, 0.2) 100%);
+      border-radius: 2px;
     }
 
     .search-past-winners .spw__row {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-md);
+      gap: 0.85rem;
       align-items: flex-end;
-    }
-
-    .search-past-winners .spw__row--filters {
-      margin-top: var(--spacing-md);
-      padding-top: var(--spacing-md);
-      border-top: 1px solid var(--color-border-subtle, var(--color-border));
-    }
-
-    /* Same specificity trap the drawer already hit (see the [hidden] note
-       further down): .spw__row's own `display: flex` is an author rule, and
-       an author rule beats the browser default [hidden]{display:none} at
-       equal specificity regardless of source order, so the panel would
-       otherwise stay visibly flexed even while hidden. */
-    .search-past-winners .spw__row--filters[hidden] {
-      display: none;
-    }
-
-    .search-past-winners .spw__filters-toggle {
-      position: relative;
-      display: inline-flex;
-      flex-shrink: 0;
-      align-items: center;
-      gap: var(--spacing-xs);
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background-color: transparent;
-      color: var(--color-text);
-      font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
-      cursor: pointer;
-      transition: background-color var(--animation-fast) ease, border-color var(--animation-fast) ease,
-        color var(--animation-fast) ease;
-    }
-
-    .search-past-winners .spw__filters-toggle:hover {
-      background-color: var(--color-state-hover, var(--color-bg-muted));
-    }
-
-    /* Set by the script, not :focus/:hover -- this is "the panel this button
-       controls is currently open", so it needs to persist while focus and the
-       pointer move elsewhere into the panel itself. */
-    .search-past-winners .spw__filters-toggle[aria-expanded="true"] {
-      border-color: var(--color-brand);
-      color: var(--color-brand);
-    }
-
-    .search-past-winners .spw__filters-icon {
-      width: 1.1em;
-      height: 1.1em;
-      flex-shrink: 0;
-    }
-
-    .search-past-winners .spw__filters-count {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 1.3em;
-      height: 1.3em;
-      padding: 0 0.3em;
-      border-radius: var(--radius-full);
-      background-color: var(--color-brand);
-      color: var(--color-text-on-brand, #000);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-bold);
-      font-variant-numeric: tabular-nums;
-      line-height: 1;
     }
 
     .search-past-winners .spw__field {
       display: flex;
       flex: 1 1 12rem;
       flex-direction: column;
-      gap: var(--spacing-xs);
+      gap: 0.4rem;
       min-width: 0;
     }
 
@@ -1708,229 +1767,413 @@ const config = {
     }
 
     .search-past-winners .spw__field--narrow {
-      flex: 0 1 7rem;
+      flex: 0 1 7.5rem;
     }
 
     .search-past-winners .spw__label {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
+      font-size: 0.72rem;
+      color: var(--spw-text-muted);
       text-transform: uppercase;
       letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .search-past-winners .spw__input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .search-past-winners .spw__input-icon {
+      position: absolute;
+      left: 0.95rem;
+      width: 1.15rem;
+      height: 1.15rem;
+      color: var(--spw-text-dim);
+      pointer-events: none;
+      transition: color 0.15s ease;
+    }
+
+    .search-past-winners .spw__input-wrap:focus-within .spw__input-icon {
+      color: var(--spw-gold-dark);
     }
 
     .search-past-winners .spw__input,
     .search-past-winners .spw__select {
       width: 100%;
-      padding: var(--spacing-sm);
-      border: 1px solid var(--color-border-inputs, var(--color-border));
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg);
-      color: var(--color-text-strong, var(--color-text));
-      caret-color: var(--color-text-strong, var(--color-text));
+      height: 2.75rem;
+      padding: 0.55rem 0.95rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text);
       font-family: var(--font-body);
-      font-size: var(--font-size-sm);
+      font-size: 0.92rem;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+      box-sizing: border-box;
     }
 
+    .search-past-winners .spw__input-wrap .spw__input {
+      padding-left: 2.65rem;
+    }
+
+    .search-past-winners .spw__input::placeholder {
+      color: var(--spw-text-dim);
+    }
+
+    .search-past-winners .spw__input:focus,
     .search-past-winners .spw__input:focus-visible,
+    .search-past-winners .spw__select:focus,
     .search-past-winners .spw__select:focus-visible {
-      outline: 2px solid var(--color-focus-ring, var(--color-brand));
-      outline-offset: 2px;
+      outline: none;
+      background-color: #ffffff;
+      border-color: var(--spw-gold);
+      box-shadow: 0 0 0 3px rgba(198, 146, 20, 0.16);
     }
 
-    .search-past-winners .spw__submit,
-    .search-past-winners .spw__reset,
-    .search-past-winners .spw__page-btn {
-      padding: var(--spacing-sm) var(--spacing-lg);
-      border: 1px solid var(--color-brand);
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg-brand, var(--color-brand));
-      color: var(--color-text-on-brand, var(--color-text-strong));
-      font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
+    .search-past-winners .spw__select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1rem;
+      padding-right: 2.2rem;
       cursor: pointer;
-      transition: background-color var(--animation-fast) ease, color var(--animation-fast) ease,
-        border-color var(--animation-fast) ease;
     }
 
-    .search-past-winners .spw__reset,
-    .search-past-winners .spw__page-btn {
-      border-color: var(--color-border);
-      background-color: transparent;
-      color: var(--color-text);
+    /* Primary Search Button */
+    .search-past-winners .spw__submit {
+      height: 2.75rem;
+      padding: 0 1.4rem;
+      border: 1px solid #a16207;
+      border-radius: var(--spw-radius-md);
+      background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+      color: #ffffff !important;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(146, 64, 14, 0.25);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* .spw__submit needs its own rule, not the shared one below: its default
-       state is a solid brand-colored fill with BLACK text
-       (--color-text-on-brand), so swapping only the background to
-       --color-state-hover (a ~4%-opacity white tint) left the button nearly
-       black -- the tint barely lightens a dark page background at all -- with
-       black text on top of it, i.e. invisible. Confirmed live via
-       getComputedStyle: background rgba(255,255,255,0.04) over this page's
-       black section background rendered as black, text stayed rgb(0,0,0).
-       Fixed by flipping to the same transparent+light-text pair the site's
-       own Button.astro uses for its primary-variant hover, instead of only
-       touching one half of the pairing. */
+    .search-past-winners .spw__submit-icon {
+      flex-shrink: 0;
+    }
+
     .search-past-winners .spw__submit:hover:not(:disabled) {
-      background-color: transparent;
-      border-color: var(--color-border-strong, var(--color-border));
-      color: var(--color-text-strong, var(--color-text));
+      background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+      border-color: #78350f;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(146, 64, 14, 0.32);
     }
 
-    .search-past-winners .spw__reset:hover:not(:disabled),
-    .search-past-winners .spw__page-btn:hover:not(:disabled) {
-      background-color: var(--color-state-hover, var(--color-bg-muted));
+    .search-past-winners .spw__submit:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(146, 64, 14, 0.2);
     }
 
-    .search-past-winners .spw__submit:disabled,
-    .search-past-winners .spw__page-btn:disabled {
-      opacity: 0.5;
+    .search-past-winners .spw__submit:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
     }
 
+    /* Filters Toggle Button */
+    .search-past-winners .spw__filters-toggle {
+      position: relative;
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      gap: 0.5rem;
+      height: 2.75rem;
+      padding: 0 1.15rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .search-past-winners .spw__filters-toggle:hover {
+      background-color: #ffffff;
+      border-color: var(--spw-gold-border);
+      color: var(--spw-gold-dark);
+    }
+
+    .search-past-winners .spw__filters-toggle[aria-expanded="true"] {
+      border-color: var(--spw-gold);
+      background-color: #fefce8;
+      color: #92400e;
+      box-shadow: 0 0 0 1px var(--spw-gold);
+    }
+
+    .search-past-winners .spw__filters-icon {
+      width: 1.15rem;
+      height: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .search-past-winners .spw__filters-count {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 1.25rem;
+      height: 1.25rem;
+      padding: 0 0.35rem;
+      border-radius: 9999px;
+      background-color: #a16207;
+      color: #ffffff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    /* Filter Expansion Panel */
+    .search-past-winners .spw__row--filters {
+      margin-top: 1rem;
+      padding: 1.15rem;
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      animation: spw-fade-up 0.2s ease;
+    }
+
+    /* Bulletproof [hidden] overrides */
+    .search-past-winners .spw__row--filters[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__reset {
+      height: 2.75rem;
+      padding: 0 1rem;
+      border: 1px dashed var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: transparent;
+      color: var(--spw-text-muted);
+      font-family: var(--font-body);
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      align-self: flex-end;
+    }
+
+    .search-past-winners .spw__reset:hover:not(:disabled) {
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+    }
+
+    /* --- Status Line --- */
     .search-past-winners .spw__status {
-      margin-top: var(--spacing-md);
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
+      margin-top: 0.9rem;
+      padding: 0.45rem 0.75rem;
+      color: var(--spw-text-muted);
+      font-size: 0.86rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
 
     .search-past-winners .spw__status[data-kind="error"] {
-      color: var(--color-error, #b3261e);
+      background-color: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: var(--spw-radius-sm);
+      color: #b91c1c;
+      font-weight: 600;
     }
 
-    .search-past-winners .spw__empty {
-      margin-top: var(--spacing-lg);
-      padding: var(--spacing-xl) var(--spacing-lg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      text-align: center;
-      color: var(--color-text-muted);
+    /* --- Spinners & Skeletons --- */
+    .search-past-winners .spw__spinner {
+      display: inline-block;
+      width: 1.8rem;
+      height: 1.8rem;
+      border: 2.5px solid var(--spw-border);
+      border-top-color: #c69214;
+      border-right-color: #b45309;
+      border-radius: 50%;
+      animation: spw-spin 0.75s linear infinite;
+      flex-shrink: 0;
     }
 
-    .search-past-winners .spw__empty p {
-      margin: 0;
-      font-size: var(--font-size-md);
+    .search-past-winners .spw__inline-spin {
+      display: inline-block;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(161, 98, 7, 0.25);
+      border-top-color: #a16207;
+      border-radius: 50%;
+      animation: spw-spin 0.7s linear infinite;
+      vertical-align: -0.15em;
+      margin-right: 0.45em;
     }
 
+    .search-past-winners .spw__skel {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .search-past-winners .spw__skel-row {
+      height: 3.6rem;
+      border-radius: var(--spw-radius-md);
+      background: linear-gradient(
+        90deg,
+        var(--spw-surface-muted) 0%,
+        #e2e8f0 45%,
+        var(--spw-surface-muted) 100%
+      );
+      background-size: 200% 100%;
+      animation: spw-shimmer 1.5s ease-in-out infinite;
+    }
+
+    /* --- Executive AI Overview Brief --- */
     .search-past-winners .spw__overview {
-      margin-top: var(--spacing-lg);
-      padding: var(--spacing-lg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background-color: var(--color-bg-surface, var(--color-bg-muted));
-      animation: spw-fade-up var(--animation-normal) ease;
+      margin-top: 1.75rem;
+      padding: 1.65rem 1.85rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-lg);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-lg);
+      position: relative;
+      overflow: hidden;
+      animation: spw-fade-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .search-past-winners .spw__overview::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #d4af37 0%, #f59e0b 50%, #0d9488 100%);
+    }
+
+    .search-past-winners .spw__overview[hidden] {
+      display: none !important;
     }
 
     .search-past-winners .spw__overview-loading,
     .search-past-winners .spw__overview-error {
       display: flex;
       align-items: center;
-      gap: var(--spacing-md);
+      gap: 1.15rem;
       min-height: 5.5rem;
     }
 
     .search-past-winners .spw__overview-error {
       justify-content: space-between;
+      background-color: #fffbeb;
+      border: 1px solid #fef3c7;
+      border-radius: var(--spw-radius-md);
+      padding: 1.15rem 1.35rem;
     }
 
     .search-past-winners .spw__overview-loading[hidden],
     .search-past-winners .spw__overview-error[hidden],
     .search-past-winners .spw__overview-ready[hidden] {
-      display: none;
+      display: none !important;
     }
 
     .search-past-winners .spw__overview-retry {
       flex: 0 0 auto;
-      min-height: 2.6rem;
-      padding: 0.55rem 0.9rem;
-      border: 1px solid var(--spw-gold);
-      border-radius: var(--radius-sm);
-      background: var(--color-bg-surface);
-      color: var(--color-text-strong);
-      font-weight: var(--font-weight-semibold);
+      height: 2.5rem;
+      padding: 0 1.15rem;
+      border: 1px solid #a16207;
+      border-radius: var(--spw-radius-md);
+      background: #ffffff;
+      color: #92400e;
+      font-weight: 700;
+      font-size: 0.85rem;
       cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+    }
+
+    .search-past-winners .spw__overview-retry:hover {
+      background: #fefce8;
+      border-color: #854d0e;
+      color: #78350f;
     }
 
     .search-past-winners .spw__overview-loading-title {
       margin: 0;
-      font-weight: var(--font-weight-semibold);
-      color: var(--color-text-strong);
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--spw-text);
     }
 
     .search-past-winners .spw__overview-loading-copy {
-      margin: 0.2rem 0 0;
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
-    }
-
-    .search-past-winners .spw__spinner,
-    .search-past-winners .spw__inline-spin {
-      display: inline-block;
-      width: 1.6rem;
-      height: 1.6rem;
-      border: 2px solid var(--color-border);
-      border-top-color: var(--spw-gold);
-      border-radius: 50%;
-      animation: spw-spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
-
-    .search-past-winners .spw__inline-spin {
-      width: 0.9rem;
-      height: 0.9rem;
-      border-width: 2px;
-      vertical-align: -0.1em;
-      margin-right: 0.4em;
-    }
-
-    .search-past-winners .spw__skel {
-      display: grid;
-      gap: 0.6rem;
-      margin-top: var(--spacing-lg);
-    }
-
-    .search-past-winners .spw__skel-row {
-      height: 3rem;
-      border-radius: var(--radius-sm);
-      background: linear-gradient(
-        90deg,
-        var(--color-bg-muted) 0%,
-        var(--color-bg-surface) 45%,
-        var(--color-bg-muted) 100%
-      );
-      background-size: 200% 100%;
-      animation: spw-shimmer 1.2s ease-in-out infinite;
+      margin: 0.25rem 0 0;
+      color: var(--spw-text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
 
     .search-past-winners .spw__overview-head {
       display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-sm);
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.5rem;
+    }
+
+    .search-past-winners .spw__overview-head-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
     }
 
     .search-past-winners .spw__overview-title {
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-bold);
+      font-size: 0.74rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.09em;
+      color: #a16207;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
     }
 
     .search-past-winners .spw__overview-source {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
+      border-radius: 9999px;
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text-muted);
+      font-size: 0.74rem;
+      font-weight: 600;
     }
 
+    /* AI Answer Callout */
     .search-past-winners .spw__answer {
-      margin-top: var(--spacing-sm);
-      padding: var(--spacing-sm) var(--spacing-md);
-      border-left: 3px solid var(--color-brand);
-      background-color: var(--color-bg-accent, transparent);
-      color: var(--color-text-strong);
-      font-size: var(--font-size-md);
-      font-weight: var(--font-weight-semibold);
-      line-height: 1.4;
+      margin-top: 0.75rem;
+      padding: 1.15rem 1.35rem;
+      border-left: 4px solid #d4af37;
+      border-radius: 0 var(--spw-radius-md) var(--spw-radius-md) 0;
+      background: linear-gradient(90deg, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0.015) 100%);
+      color: var(--spw-text);
+      font-size: 1.08rem;
+      font-weight: 600;
+      line-height: 1.55;
       overflow-wrap: anywhere;
     }
 
@@ -1938,54 +2181,44 @@ const config = {
     .search-past-winners .spw__detail:empty,
     .search-past-winners .spw__orgs:empty,
     .search-past-winners .spw__chips:empty {
-      display: none;
+      display: none !important;
     }
 
     .search-past-winners .spw__detail {
-      margin-top: var(--spacing-sm);
-      color: var(--color-text);
-      font-size: var(--font-size-sm);
+      margin-top: 0.85rem;
+      color: var(--spw-text-muted);
+      font-size: 0.92rem;
       line-height: 1.6;
       overflow-wrap: anywhere;
     }
 
+    /* Award Level Chips */
     .search-past-winners .spw__chips {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-xs);
+      gap: 0.5rem;
       align-items: center;
-      margin-top: var(--spacing-md);
-    }
-
-    /* A vertical list, not a chip wrap -- each row carries its own bar, which
-       needs the full row width to be proportional against the leader. */
-    .search-past-winners .spw__orgs {
-      display: flex;
-      flex-direction: column;
-      gap: var(--spacing-sm);
-      margin-top: var(--spacing-md);
-    }
-
-    .search-past-winners .spw__orgs-label,
-    .search-past-winners .spw__chip {
-      font-size: var(--font-size-xs);
-    }
-
-    .search-past-winners .spw__orgs-label {
-      margin-bottom: var(--spacing-xs);
-      color: var(--color-text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      margin-top: 1.15rem;
     }
 
     .search-past-winners .spw__chip {
       display: inline-flex;
       align-items: center;
-      gap: 0.35em;
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-full);
-      background-color: var(--color-bg);
+      gap: 0.4rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      line-height: 1.2;
+      transition: transform 0.15s ease;
+      color: #ffffff !important;
+    }
+
+    .search-past-winners .spw__chip b {
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      margin-left: 0.15rem;
+      color: #ffffff !important;
     }
 
     .search-past-winners .spw__chip i,
@@ -1994,77 +2227,131 @@ const config = {
       width: 0.55em;
       height: 0.55em;
       border-radius: 50%;
-      background: currentColor;
+      background: #ffffff !important;
+      flex-shrink: 0;
     }
 
+    /* Solid Award Tier Pills (Consistent across chip, medal, tile) */
     .search-past-winners .spw__level--gold,
-    .search-past-winners .spw__chip.spw__level--gold {
-      color: var(--spw-gold);
-      border-color: var(--spw-gold);
-      background: var(--spw-gold-soft);
+    .search-past-winners .spw__chip.spw__level--gold,
+    .search-past-winners .spw__medal--gold,
+    .search-past-winners .spw__tile--gold {
+      color: #ffffff !important;
+      background-color: var(--spw-gold-pill) !important;
+      border-color: var(--spw-gold-pill) !important;
     }
 
     .search-past-winners .spw__level--silver,
-    .search-past-winners .spw__chip.spw__level--silver {
-      color: var(--spw-silver);
-      border-color: var(--spw-silver);
-      background: var(--spw-silver-soft);
+    .search-past-winners .spw__chip.spw__level--silver,
+    .search-past-winners .spw__medal--silver,
+    .search-past-winners .spw__tile--silver {
+      color: #ffffff !important;
+      background-color: var(--spw-silver-pill) !important;
+      border-color: var(--spw-silver-pill) !important;
     }
 
     .search-past-winners .spw__level--bronze,
-    .search-past-winners .spw__chip.spw__level--bronze {
-      color: var(--spw-bronze);
-      border-color: var(--spw-bronze);
-      background: var(--spw-bronze-soft);
+    .search-past-winners .spw__chip.spw__level--bronze,
+    .search-past-winners .spw__medal--bronze,
+    .search-past-winners .spw__tile--bronze {
+      color: #ffffff !important;
+      background-color: var(--spw-bronze-pill) !important;
+      border-color: var(--spw-bronze-pill) !important;
     }
 
     .search-past-winners .spw__level--grand-stevie,
     .search-past-winners .spw__chip.spw__level--grand-stevie {
-      color: var(--spw-gold);
-      border-color: var(--spw-gold);
+      color: #ffffff !important;
+      background-color: var(--spw-grand-pill) !important;
+      border-color: var(--spw-grand-pill) !important;
     }
 
-    /* One organization's bar, same convention as the main dashboard's search
-       page (index.html ovOrgRow): proportional to the leader of THIS visible
-       list, not a fixed scale, so the longest bar is always the top result. */
-    .search-past-winners .spw__org-row + .spw__org-row {
-      padding-top: var(--spacing-sm);
-      border-top: 1px solid var(--color-border-subtle, var(--color-border));
+    .search-past-winners .spw__level--finalist,
+    .search-past-winners .spw__chip.spw__level--finalist {
+      color: #ffffff !important;
+      background-color: var(--spw-finalist-pill) !important;
+      border-color: var(--spw-finalist-pill) !important;
+    }
+
+    .search-past-winners .spw__level--people-s-choice,
+    .search-past-winners .spw__chip.spw__level--people-s-choice {
+      color: #ffffff !important;
+      background-color: var(--spw-peoples-choice-pill) !important;
+      border-color: var(--spw-peoples-choice-pill) !important;
+    }
+
+    .search-past-winners .spw__level--distinguished-honoree,
+    .search-past-winners .spw__chip.spw__level--distinguished-honoree {
+      color: #ffffff !important;
+      background-color: var(--spw-distinguished-pill) !important;
+      border-color: var(--spw-distinguished-pill) !important;
+    }
+
+    .search-past-winners .spw__level--other,
+    .search-past-winners .spw__chip.spw__level--other {
+      color: #ffffff !important;
+      background-color: var(--spw-other-pill) !important;
+      border-color: var(--spw-other-pill) !important;
+    }
+
+    /* Top Organizations Leaderboard */
+    .search-past-winners .spw__orgs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      padding-top: 1.35rem;
+      border-top: 1px solid var(--spw-border-subtle);
+    }
+
+    .search-past-winners .spw__orgs-label {
+      font-size: 0.72rem;
+      color: var(--spw-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      font-weight: 800;
+      margin-bottom: 0.35rem;
     }
 
     .search-past-winners .spw__org-row {
-      animation: spw-fade-up var(--animation-normal) ease both;
-      animation-delay: calc(var(--spw-i, 0) * 40ms);
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border-subtle);
+      animation: spw-fade-up 0.25s ease both;
+      animation-delay: calc(var(--spw-i, 0) * 35ms);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .search-past-winners .spw__org-row:hover {
+      background-color: #ffffff;
+      border-color: var(--spw-border);
+      box-shadow: var(--spw-shadow-xs);
     }
 
     .search-past-winners .spw__orgs-list[data-collapsed] .spw__org-row:nth-child(n + 4) {
-      display: none;
-    }
-
-    .search-past-winners .spw__orgs .spw__chip-more {
-      margin-top: var(--spacing-sm);
-    }
-
-    .search-past-winners .spw__group-label {
-      margin: var(--spacing-lg) 0 var(--spacing-sm);
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-bold);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
+      display: none !important;
     }
 
     .search-past-winners .spw__org-head {
       display: flex;
       align-items: baseline;
-      gap: var(--spacing-sm);
+      gap: 0.65rem;
     }
 
     .search-past-winners .spw__org-rank {
       flex: 0 0 1.4rem;
-      color: var(--color-text-muted);
+      height: 1.4rem;
+      border-radius: 50%;
+      background-color: var(--spw-surface-muted);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text-muted);
       font-variant-numeric: tabular-nums;
-      font-size: var(--font-size-xs);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .search-past-winners .spw__org-name {
@@ -2073,30 +2360,31 @@ const config = {
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      font-weight: var(--font-weight-semibold);
-      font-size: var(--font-size-sm);
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: var(--spw-text);
     }
 
     .search-past-winners .spw__org-count {
-      font-weight: var(--font-weight-bold);
+      font-weight: 800;
       font-variant-numeric: tabular-nums;
-      color: var(--color-brand);
-      font-size: var(--font-size-sm);
+      color: #a16207;
+      font-size: 0.92rem;
     }
 
     .search-past-winners .spw__org-meta {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 3.4rem 3.4rem 3.4rem 5.6rem;
+      grid-template-columns: minmax(0, 1fr) 3.6rem 3.6rem 3.6rem 5.8rem;
       align-items: center;
-      column-gap: 0.45rem;
-      margin-top: 4px;
+      column-gap: 0.5rem;
+      margin-top: 6px;
     }
 
     .search-past-winners .spw__org-bar {
       display: block;
-      height: 4px;
-      border-radius: var(--radius-full);
-      background-color: var(--color-bg-muted);
+      height: 7px;
+      border-radius: 9999px;
+      background-color: #e2e8f0;
       overflow: hidden;
       min-width: 0;
     }
@@ -2104,21 +2392,23 @@ const config = {
     .search-past-winners .spw__org-bar i {
       display: block;
       height: 100%;
-      border-radius: var(--radius-full);
-      background-color: var(--color-brand);
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #d4af37 0%, #b45309 100%);
+      transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .search-past-winners .spw__org-meta > .spw__medal {
       justify-content: center;
       min-width: 0;
-      padding: 0.12em 0.2em;
+      padding: 0.15em 0.3em;
     }
 
     .search-past-winners .spw__org-span {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
+      color: var(--spw-text-muted);
+      font-size: 0.76rem;
       text-align: right;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
     }
 
     .search-past-winners .spw__medal.is-empty {
@@ -2126,414 +2416,397 @@ const config = {
       pointer-events: none;
     }
 
-    .search-past-winners .spw__chip b {
-      font-weight: var(--font-weight-bold);
+    .search-past-winners .spw__chip-more {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.35rem 0.95rem;
+      border: 1px solid var(--spw-border);
+      border-radius: 9999px;
+      background: var(--spw-surface);
+      color: #a16207;
+      font-family: var(--font-body);
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+      align-self: flex-start;
+      margin-top: 0.5rem;
     }
 
-    /* Deliberately loud (dark, monospace, high-contrast) rather than matching
-       the theme -- this panel is a troubleshooting tool, not part of the
-       page's design, and should look like one so nobody mistakes it for a
-       finished feature if the `debug` prop gets left on by accident. */
-    .search-past-winners .spw__debug {
-      margin-top: var(--spacing-md);
-      padding: var(--spacing-sm) var(--spacing-md);
-      max-height: 220px;
-      overflow-y: auto;
-      border: 1px dashed var(--color-error, #b3261e);
-      border-radius: var(--radius-sm);
-      background-color: #0b0f19;
-      color: #7ee787;
-      font-family: var(--font-mono, monospace);
-      font-size: var(--font-size-xs);
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-all;
+    .search-past-winners .spw__chip-more:hover {
+      background: #fefce8;
+      border-color: var(--spw-gold);
+      color: #92400e;
     }
 
-    /* Results table leans on the site's global table styles in
-       styles/base/_tables.css; only the overflow guard and cell tone are local.
-       max-width (not just overflow-x) matters here: without it, a table whose
-       auto layout wants more room than the page can still push the CONTAINER
-       wider first and only then scroll, widening the whole page along with it
-       rather than scrolling in place. */
+    /* --- Results Data Grid --- */
     .search-past-winners .spw__results {
       max-width: 100%;
       overflow-x: auto;
-      margin-top: var(--spacing-lg);
+      margin-top: 1.75rem;
+      border-radius: var(--spw-radius-lg);
+      border: 1px solid var(--spw-border);
+      background-color: var(--spw-surface);
+      box-shadow: var(--spw-shadow-md);
     }
 
     .search-past-winners .spw__table {
       width: 100%;
-      font-size: var(--font-size-sm);
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.88rem;
     }
 
-    /* break-word, NOT anywhere. `anywhere` also shrinks a column's intrinsic
-       minimum width, which let the table squeeze every column to a few
-       characters and then break mid-word to fit -- on a phone that turned an
-       award count of 772 into "77" above a lone "2", i.e. a wrong number
-       rather than merely ugly wrapping. `break-word` still rescues a single
-       unbreakable run that genuinely cannot fit, but stops the layout from
-       treating every cell as infinitely compressible. */
-    .search-past-winners .spw__table th,
-    .search-past-winners .spw__table td {
-      overflow-wrap: break-word;
-    }
-
-    /* Figures must never break or wrap: they are read as one token, and half a
-       number silently reads as a different number. */
-    .search-past-winners .spw__num,
-    .search-past-winners .spw__medal {
-      white-space: nowrap;
-      overflow-wrap: normal;
-    }
-
-    /* One wrapper around the three medal counts. Needed because the mobile card
-       layout makes each cell a two-column grid (label | value), and a grid
-       container treats every ELEMENT child as its own grid item -- so three
-       bare <span> medals were being dealt into separate grid cells instead of
-       sitting together beside their label. Grouping them keeps the cell at
-       exactly two items whatever it contains. */
-    .search-past-winners .spw__medal-group {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(6.2rem, 1fr));
-      gap: 0.35rem 0.4rem;
-      min-width: 13rem;
-    }
-
-    /* Wide tabular data (the drawer's award history) scrolls inside its own box
-       so it can keep real column widths without widening the page. */
-    .search-past-winners .spw__table-scroll {
-      max-width: 100%;
-      overflow-x: auto;
-    }
-
-    .search-past-winners .spw__history-cards {
-      display: none;
-    }
-
-    .search-past-winners .spw__cell-org {
-      font-weight: var(--font-weight-semibold);
-    }
-
-    .search-past-winners .spw__cell-muted {
-      color: var(--color-text-muted);
-    }
-
-    .search-past-winners .spw__level {
-      display: inline-block;
-      padding: 2px var(--spacing-sm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
+    .search-past-winners .spw__table thead th {
+      background-color: var(--spw-surface-alt);
+      color: var(--spw-text-muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--spw-border);
+      text-align: left;
       white-space: nowrap;
     }
 
-    .search-past-winners .spw__level--gold {
-      border-color: var(--spw-gold);
-      color: var(--spw-gold);
-      background: var(--spw-gold-soft);
+    .search-past-winners .spw__table thead th.spw__num {
+      text-align: right;
     }
 
-    .search-past-winners .spw__level--silver {
-      border-color: var(--spw-silver);
-      color: var(--spw-silver);
-      background: var(--spw-silver-soft);
+    .search-past-winners .spw__table tbody td {
+      padding: 0.95rem 1.1rem;
+      border-bottom: 1px solid var(--spw-border-subtle);
+      vertical-align: middle;
+      transition: background-color 0.12s ease;
     }
 
-    .search-past-winners .spw__level--bronze {
-      border-color: var(--spw-bronze);
-      color: var(--spw-bronze);
-      background: var(--spw-bronze-soft);
+    .search-past-winners .spw__table tbody tr:last-child td {
+      border-bottom: none;
     }
 
     .search-past-winners .spw__hit {
       cursor: pointer;
-      transition: background-color var(--animation-fast) ease;
+    }
+
+    .search-past-winners .spw__hit:nth-child(even) td {
+      background-color: #fafbfd;
     }
 
     .search-past-winners .spw__hit:hover td {
-      background-color: var(--color-state-hover, rgba(223, 186, 25, 0.06));
+      background-color: rgba(212, 175, 55, 0.06);
     }
 
-    .search-past-winners .spw__pager {
-      display: flex;
-      gap: var(--spacing-md);
-      align-items: center;
-      justify-content: center;
-      margin-top: var(--spacing-lg);
-    }
-
-    .search-past-winners .spw__page-info {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
-    }
-
-    .search-past-winners .spw__num {
-      font-variant-numeric: tabular-nums;
-      text-align: right;
+    .search-past-winners .spw__cell-org {
+      font-weight: 700;
     }
 
     .search-past-winners .spw__profile-link {
       border: 0;
       background: none;
       padding: 0;
-      color: var(--color-link, var(--color-brand));
-      font: inherit;
-      font-weight: var(--font-weight-semibold);
+      color: var(--spw-text);
+      font-family: inherit;
+      font-size: 0.94rem;
+      font-weight: 700;
       text-align: left;
       cursor: pointer;
+      transition: color 0.15s ease;
+      line-height: 1.35;
     }
 
     .search-past-winners .spw__profile-link:hover {
-      color: var(--color-link-hover, var(--color-brand));
+      color: #a16207;
       text-decoration: underline;
     }
 
     .search-past-winners .spw__type-badge {
       display: inline-block;
-      padding: 2px var(--spacing-sm);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
+      padding: 0.2rem 0.55rem;
+      border-radius: 9999px;
+      font-size: 0.7rem;
+      font-weight: 700;
       white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .search-past-winners .spw__type-badge--org {
+      background-color: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+    }
+
+    .search-past-winners .spw__type-badge--person {
+      background-color: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      color: #6d28d9;
+    }
+
+    .search-past-winners .spw__cell-muted {
+      color: var(--spw-text-muted);
+    }
+
+    .search-past-winners .spw__num {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+      color: var(--spw-text);
+      text-align: right;
+    }
+
+    .search-past-winners .spw__medal-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: center;
+      min-width: 11rem;
     }
 
     .search-past-winners .spw__medal {
       display: inline-flex;
       align-items: center;
-      justify-content: flex-start;
       gap: 0.3em;
-      padding: 0.18em 0.55em;
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
+      padding: 0.22em 0.6em;
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 700;
       white-space: nowrap;
       line-height: 1.2;
     }
 
-    .search-past-winners .spw__medal--gold {
-      color: var(--spw-gold);
-      background: var(--spw-gold-soft);
-    }
-
-    .search-past-winners .spw__medal--silver {
-      color: var(--spw-silver);
-      background: var(--spw-silver-soft);
-    }
-
-    .search-past-winners .spw__medal--bronze {
-      color: var(--spw-bronze);
-      background: var(--spw-bronze-soft);
-    }
-
-    /* Deliberately NOT medal-colored: it's a reconciling remainder, not a
-       fourth medal tier this data distinguishes (see renderRows). Muted and
-       unbolded so it doesn't compete with the three that are real tiers, but
-       still legible enough that the row total visibly checks out. */
     .search-past-winners .spw__medal--other {
-      color: var(--color-text-muted);
-      font-weight: var(--font-weight-regular, 400);
+      color: #57534e !important;
+      border: 1px solid #e7e5e4 !important;
+      background-color: #f5f5f4 !important;
+      font-weight: 500;
     }
 
-    /* Detail overlay: a scrim plus a fixed side panel, matching the pattern
-       already established by Modal.astro (Popover-API-driven there; this one
-       is plain fixed-position + hidden attribute, since the content is filled
-       in dynamically per profile rather than known at markup time). */
-    /* --layer-6 (60) lost to the site's own sticky main nav in practice, even
-       though the nav's own rule asks for only --layer-2 (20) -- confirmed
-       live: the drawer's close button rendered underneath the nav bar,
-       invisible and unclickable. Sticky/fixed elements compare z-index within
-       whatever stacking context they end up in, not always as one flat list
-       against every other z-index on the page, so a numerically-larger value
-       is not a guarantee once a component is dropped into someone else's
-       page. --layer-8 ("critical UI elements", 1000) is deliberately the
-       highest tier the design tokens define, to make this win outright rather
-       than needing to reason about the surrounding page's stacking contexts. */
-    .search-past-winners .spw__scrim {
-      position: fixed;
-      inset: 0;
-      z-index: calc(var(--layer-8, 1000) - 1);
-      background: var(--color-overlay, rgba(0, 0, 0, 0.45));
+    .search-past-winners .spw__medal--other i {
+      background: currentColor !important;
+    }
+
+    /* Section group labels for Exact / Related */
+    .search-past-winners .spw__group-label {
+      margin: 1.75rem 0 0.75rem;
+      color: #a16207;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .search-past-winners .spw__group-label::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background-color: var(--spw-border);
+    }
+
+    /* Empty state card */
+    .search-past-winners .spw__empty {
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      background-color: var(--spw-surface);
+      border-radius: var(--spw-radius-lg);
+      border: 1px solid var(--spw-border);
+      box-shadow: var(--spw-shadow-sm);
+      margin-top: 1.75rem;
+    }
+
+    .search-past-winners .spw__empty p {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--spw-text);
+    }
+
+    /* Pagination */
+    .search-past-winners .spw__pager {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.75rem;
+    }
+
+    .search-past-winners .spw__pager[hidden] {
+      display: none !important;
+    }
+
+    .search-past-winners .spw__page-btn {
+      padding: 0.6rem 1.25rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface);
+      color: var(--spw-text);
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
+    }
+
+    .search-past-winners .spw__page-btn:hover:not(:disabled) {
+      background-color: var(--spw-surface-alt);
+      border-color: var(--spw-gold-border);
+      color: var(--spw-gold-dark);
+    }
+
+    .search-past-winners .spw__page-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .search-past-winners .spw__page-info {
+      color: var(--spw-text-muted);
+      font-size: 0.86rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- Profile Detail Modal / Drawer --- */
+    .search-past-winners .spw__scrim,
+    .search-past-winners .spw__scrim[popover],
+    [data-spw-scrim] {
+      position: fixed !important;
+      inset: 0 !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100vw !important;
+      height: 100vh !important;
+      height: 100dvh !important;
+      max-width: none !important;
+      max-height: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      border: 0 !important;
+      z-index: 9999990 !important;
+      background: rgba(15, 23, 42, 0.65) !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+    }
+
+    .search-past-winners .spw__scrim[hidden],
+    [data-spw-scrim][hidden] {
+      display: none !important;
     }
 
     .search-past-winners .spw__drawer {
       position: fixed;
       top: 50%;
       left: 50%;
-      right: auto;
-      bottom: auto;
-      z-index: var(--layer-8, 1000);
+      transform: translate(-50%, -50%);
+      z-index: 9999995;
       display: flex;
       flex-direction: column;
-      width: min(56rem, calc(100vw - 2rem));
-      max-height: min(88vh, 56rem);
-      background-color: var(--color-bg);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+      width: min(58rem, calc(100vw - 2.5rem));
+      max-height: min(88vh, 58rem);
+      background-color: var(--spw-surface);
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-xl);
+      box-shadow: var(--spw-shadow-modal);
       overflow-y: auto;
-      transform: translate(-50%, -50%);
+      animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    /* The `hidden` attribute is what the script actually toggles, but this
-       class's own `display: flex` above has higher specificity than the
-       browser's default `[hidden] { display: none }` rule, so it was WINNING
-       -- confirmed live: the drawer rendered at all times, full page height,
-       fixed over the right side of the content, background matching the page
-       (so nearly invisible) with only its left border and shadow showing.
-       That is exactly the "vertical line down the whole screen, with content
-       cut off beside it" symptom: not a text-wrapping bug, a permanently
-       open, mostly-invisible panel sitting on top of real content. This rule
-       has to win regardless of source order, hence the repeated class plus
-       the attribute selector for the extra specificity. */
     .search-past-winners .spw__drawer[hidden] {
-      display: none;
+      display: none !important;
     }
 
-    /* Same trap as [hidden] above, for the top-layer path: the browser hides a
-       closed popover with its own `[popover]:not(:popover-open){display:none}`
-       rule, but that is a UA rule and loses to the author `display: flex` /
-       `position: fixed` declarations here -- so without these the drawer and
-       scrim would render permanently again, exactly the "vertical line down the
-       whole page" symptom this component already hit once. */
     .search-past-winners .spw__drawer[popover]:not(:popover-open),
     .search-past-winners .spw__scrim[popover]:not(:popover-open) {
-      display: none;
-    }
-
-    /* A popover carries UA chrome (border, padding, background, and a width/
-       height that fits content) which has nothing to do with a full-height side
-       panel, so it is reset here rather than fought in each rule below. */
-    .search-past-winners .spw__drawer[popover],
-    .search-past-winners .spw__scrim[popover] {
-      margin: 0;
-      padding: 0;
-      border: 0;
-      max-width: none;
-      max-height: none;
-      overflow: visible;
-      color: inherit;
-    }
-
-    /* The UA popover style is `width: fit-content; height: fit-content`, and the
-       scrim is an empty element -- so it opened at 0x0 and dimmed nothing at
-       all, silently removing the modal backdrop. Sized explicitly against the
-       viewport (its containing block, being position: fixed). */
-    .search-past-winners .spw__scrim[popover] {
-      width: 100%;
-      height: 100%;
+      display: none !important;
     }
 
     .search-past-winners .spw__drawer[popover] {
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
+      margin: 0;
+      padding: 0;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-xl);
       overflow-y: auto;
       top: 50%;
       left: 50%;
-      right: auto;
-      bottom: auto;
-      height: auto;
-      max-height: min(88vh, 56rem);
       transform: translate(-50%, -50%);
+      max-height: min(88vh, 58rem);
+      box-shadow: var(--spw-shadow-modal);
     }
 
     .search-past-winners .spw__drawer[popover]:popover-open {
-      animation: spw-pop var(--animation-normal) ease;
+      animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .search-past-winners .spw__scrim[popover]:popover-open {
-      animation: spw-scrim-in var(--animation-fast) ease;
+      animation: spw-scrim-in 0.18s ease;
     }
 
     .search-past-winners .spw__drawer-head {
       display: flex;
-      gap: var(--spacing-md);
+      gap: 1.25rem;
       align-items: flex-start;
       justify-content: space-between;
-      padding: var(--spacing-lg);
-      border-bottom: 1px solid var(--color-border);
+      padding: 1.35rem 1.75rem;
+      border-bottom: 1px solid var(--spw-border);
       position: sticky;
       top: 0;
-      background-color: var(--color-bg);
+      background-color: var(--spw-surface);
+      z-index: 10;
     }
 
     .search-past-winners .spw__drawer-name {
       margin: 0;
-      font-size: var(--font-size-heading-xs);
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.015em;
+      color: var(--spw-text);
     }
 
     .search-past-winners .spw__drawer-sub {
-      margin: var(--spacing-xs) 0 0;
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
+      margin: 0.3rem 0 0;
+      color: var(--spw-text-muted);
+      font-size: 0.88rem;
+      font-weight: 500;
     }
 
     .search-past-winners .spw__drawer-close {
-      border: 1px solid var(--color-border);
-      background: none;
-      border-radius: var(--radius-sm);
-      padding: var(--spacing-xs) var(--spacing-md);
-      color: var(--color-text);
+      border: 1px solid var(--spw-border);
+      background: var(--spw-surface-alt);
+      border-radius: 9999px;
+      padding: 0.38rem 0.95rem;
+      width: auto;
+      height: auto;
+      min-height: 2rem;
+      color: var(--spw-text-muted);
       font-family: var(--font-body);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-semibold);
+      font-size: 0.82rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
       cursor: pointer;
       flex-shrink: 0;
+      box-shadow: var(--spw-shadow-xs);
+      transition: all 0.15s ease;
     }
 
     .search-past-winners .spw__drawer-close:hover {
-      background-color: var(--color-state-hover, var(--color-bg-muted));
+      background-color: #fee2e2;
+      border-color: #fca5a5;
+      color: #b91c1c;
+      transform: translateY(-1px);
     }
 
     .search-past-winners .spw__drawer-body {
-      padding: var(--spacing-lg);
-    }
-
-    .search-past-winners .spw__drawer-loading,
-    .search-past-winners .spw__drawer-note {
-      color: var(--color-text-muted);
-      font-size: var(--font-size-sm);
-    }
-
-    .search-past-winners .spw__tiles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-lg);
-    }
-
-    .search-past-winners .spw__tile {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: var(--spacing-sm) var(--spacing-md);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background-color: var(--color-bg-surface, var(--color-bg-muted));
-      min-width: 5rem;
-    }
-
-    .search-past-winners .spw__tile b {
-      font-size: var(--font-size-lg);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .search-past-winners .spw__tile--gold {
-      color: var(--spw-gold);
-      border-color: var(--spw-gold);
-      background: var(--spw-gold-soft);
-    }
-
-    .search-past-winners .spw__tile--silver {
-      color: var(--spw-silver);
-      border-color: var(--spw-silver);
-      background: var(--spw-silver-soft);
-    }
-
-    .search-past-winners .spw__tile--bronze {
-      color: var(--spw-bronze);
-      border-color: var(--spw-bronze);
-      background: var(--spw-bronze-soft);
+      padding: 1.65rem 1.75rem;
     }
 
     .search-past-winners .spw__drawer-loading {
@@ -2541,109 +2814,180 @@ const config = {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: var(--spacing-md);
-      min-height: 10rem;
-      color: var(--color-text-muted);
+      gap: 1rem;
+      min-height: 12rem;
+      color: var(--spw-text-muted);
+      font-size: 0.92rem;
+    }
+
+    .search-past-winners .spw__drawer-note {
+      color: var(--spw-text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    /* Metric KPI Tiles */
+    .search-past-winners .spw__tiles {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1.65rem;
+    }
+
+    .search-past-winners .spw__tile {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.95rem 1.15rem;
+      border: 1px solid var(--spw-border);
+      border-radius: var(--spw-radius-md);
+      background-color: var(--spw-surface-alt);
+    }
+
+    .search-past-winners .spw__tile b {
+      font-size: 1.55rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+      color: var(--spw-text);
     }
 
     .search-past-winners .spw__tile span {
-      font-size: var(--font-size-xs);
-      color: var(--color-text-muted);
+      font-size: 0.68rem;
+      color: var(--spw-text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
+      font-weight: 700;
     }
 
-    .search-past-winners .spw__table--history {
-      font-size: var(--font-size-xs);
+    .search-past-winners .spw__tile--gold b,
+    .search-past-winners .spw__tile--silver b,
+    .search-past-winners .spw__tile--bronze b {
+      color: #ffffff !important;
     }
 
-    /* Year and Level are always short ("2025", "Gold") -- without this the
-       table's auto column-width algorithm still tried to shrink them to fit
-       the wider Category/Nomination columns, wrapping "Year" one letter per
-       line rather than giving those columns the room the content needs. */
-    .search-past-winners .spw__table--history th:nth-child(1),
-    .search-past-winners .spw__table--history td:nth-child(1) {
-      white-space: nowrap;
-      width: 4rem;
+    .search-past-winners .spw__tile--gold span,
+    .search-past-winners .spw__tile--silver span,
+    .search-past-winners .spw__tile--bronze span {
+      color: rgba(255, 255, 255, 0.85) !important;
     }
 
-    .search-past-winners .spw__table--history th:nth-child(2),
-    .search-past-winners .spw__table--history td:nth-child(2) {
-      white-space: nowrap;
-      width: 5rem;
-    }
-
+    /* Facts Grid */
     .search-past-winners .spw__facts {
       display: grid;
-      gap: var(--spacing-md);
-      margin-bottom: var(--spacing-lg);
-      padding-bottom: var(--spacing-lg);
-      border-bottom: 1px solid var(--color-border);
+      gap: 1rem;
+      margin-bottom: 1.65rem;
+      padding-bottom: 1.35rem;
+      border-bottom: 1px solid var(--spw-border);
     }
 
     .search-past-winners .spw__fact-row {
       display: grid;
-      grid-template-columns: 7.5rem minmax(0, 1fr);
-      gap: var(--spacing-xs) var(--spacing-md);
+      grid-template-columns: 8rem minmax(0, 1fr);
+      gap: 0.4rem 1rem;
       align-items: start;
     }
 
     .search-past-winners .spw__fact-label {
-      padding-top: 0.4em;
-      color: var(--color-text-muted);
-      font-size: var(--font-size-xs);
+      padding-top: 0.35rem;
+      color: var(--spw-text-muted);
+      font-size: 0.74rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       line-height: 1.3;
     }
 
     .search-past-winners .spw__fact-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.45rem;
       min-width: 0;
     }
 
     .search-past-winners .spw__fact-chips .spw__chip {
-      max-width: 100%;
-      overflow-wrap: anywhere;
-      line-height: 1.35;
+      background-color: var(--spw-surface-alt);
+      border: 1px solid var(--spw-border);
+      color: var(--spw-text) !important;
+      font-size: 0.78rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
     }
 
     .search-past-winners .spw__fact-row[data-collapsed] .spw__chip.is-extra {
-      display: none;
-    }
-
-    .search-past-winners .spw__chip-more {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.2em 0.7em;
-      border: 1px dashed var(--color-brand);
-      border-radius: var(--radius-full);
-      background: transparent;
-      color: var(--color-brand);
-      font: inherit;
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-semibold);
-      cursor: pointer;
-    }
-
-    .search-past-winners .spw__chip-more:hover {
-      background: var(--color-bg-highlight, rgba(223, 186, 25, 0.12));
+      display: none !important;
     }
 
     .search-past-winners .spw__drawer-heading {
-      margin: 0 0 var(--spacing-sm);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-bold);
+      margin: 1.25rem 0 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--color-text-muted);
+      letter-spacing: 0.08em;
+      color: var(--spw-text-muted);
     }
 
+    /* History Table */
+    .search-past-winners .spw__table-scroll {
+      max-width: 100%;
+      overflow-x: auto;
+      border-radius: var(--spw-radius-md);
+      border: 1px solid var(--spw-border);
+      background-color: var(--spw-surface);
+    }
+
+    .search-past-winners .spw__table--history {
+      font-size: 0.82rem;
+    }
+
+    .search-past-winners .spw__table--history th {
+      padding: 0.75rem 0.95rem;
+      background-color: var(--spw-surface-alt);
+    }
+
+    .search-past-winners .spw__table--history td {
+      padding: 0.75rem 0.95rem;
+    }
+
+    .search-past-winners .spw__table--history th:nth-child(1),
+    .search-past-winners .spw__table--history td:nth-child(1) {
+      white-space: nowrap;
+      width: 4rem;
+      font-variant-numeric: tabular-nums;
+      font-weight: 600;
+    }
+
+    .search-past-winners .spw__table--history th:nth-child(2),
+    .search-past-winners .spw__table--history td:nth-child(2) {
+      white-space: nowrap;
+      width: 5.5rem;
+    }
+
+    .search-past-winners .spw__history-cards {
+      display: none;
+    }
+
+    /* --- Diagnostic Debug Panel --- */
+    .search-past-winners .spw__debug {
+      margin-top: 1.25rem;
+      padding: 0.85rem 1.15rem;
+      max-height: 220px;
+      overflow-y: auto;
+      border: 1px dashed #b3261e;
+      border-radius: var(--spw-radius-sm);
+      background-color: #0b0f19;
+      color: #7ee787;
+      font-family: var(--font-mono, monospace);
+      font-size: 0.76rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    /* --- Mobile Responsiveness (@media width < 768px) --- */
     @media (width < 768px) {
       .search-past-winners .spw__field--narrow {
-        flex: 1 1 6rem;
+        flex: 1 1 6.5rem;
       }
 
       .search-past-winners .spw__drawer,
@@ -2661,95 +3005,83 @@ const config = {
         box-shadow: none;
       }
 
-      .search-past-winners .spw__drawer[popover]:popover-open {
-        animation: spw-fade-up var(--animation-normal) ease;
-      }
-
       .search-past-winners .spw__drawer-head {
-        padding: var(--spacing-md);
+        padding: 1rem 1.25rem;
       }
 
       .search-past-winners .spw__drawer-body {
-        padding: var(--spacing-md);
+        padding: 1rem 1.25rem;
       }
 
       .search-past-winners .spw__tiles {
-        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: var(--spacing-sm);
+        gap: 0.65rem;
       }
 
       .search-past-winners .spw__fact-row {
         grid-template-columns: 1fr;
-        gap: 0.4rem;
+        gap: 0.35rem;
       }
 
       .search-past-winners .spw__fact-label {
         padding-top: 0;
       }
 
-      .search-past-winners .spw__fact-chips {
-        gap: 0.35rem;
-      }
-
-      .search-past-winners .spw__fact-chips .spw__chip {
-        font-size: var(--font-size-xs);
-        padding: 0.25em 0.65em;
-      }
-
       .search-past-winners .spw__org-meta {
-        grid-template-columns: minmax(0, 1fr) 2.6rem 2.6rem 2.6rem 4.8rem;
-        column-gap: 0.3rem;
+        grid-template-columns: minmax(0, 1fr) 2.8rem 2.8rem 2.8rem 4.8rem;
+        column-gap: 0.35rem;
       }
 
       .search-past-winners .spw__table-scroll {
-        display: none;
+        display: none !important;
       }
 
       .search-past-winners .spw__history-cards {
-        display: flex;
+        display: flex !important;
         flex-direction: column;
-        gap: var(--spacing-sm);
+        gap: 0.75rem;
         margin: 0;
         padding: 0;
         list-style: none;
       }
 
       .search-past-winners .spw__history-card {
-        padding: var(--spacing-sm) var(--spacing-md);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-sm);
-        background-color: var(--color-bg-surface, var(--color-bg-muted));
+        padding: 0.85rem 1rem;
+        border: 1px solid var(--spw-border);
+        border-radius: var(--spw-radius-md);
+        background-color: var(--spw-surface);
       }
 
       .search-past-winners .spw__history-card-top {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: var(--spacing-sm);
+        gap: 0.5rem;
         margin-bottom: 0.35rem;
       }
 
       .search-past-winners .spw__history-year {
-        font-weight: var(--font-weight-semibold);
+        font-weight: 700;
         font-variant-numeric: tabular-nums;
+        font-size: 0.9rem;
       }
 
       .search-past-winners .spw__history-cat,
       .search-past-winners .spw__history-nom,
       .search-past-winners .spw__history-place {
-        margin: 0.15rem 0 0;
+        margin: 0.2rem 0 0;
         overflow-wrap: anywhere;
       }
 
       .search-past-winners .spw__history-cat,
       .search-past-winners .spw__history-place {
-        color: var(--color-text-muted);
-        font-size: var(--font-size-xs);
+        color: var(--spw-text-muted);
+        font-size: 0.76rem;
       }
 
       .search-past-winners .spw__history-nom {
-        font-size: var(--font-size-sm);
+        font-size: 0.88rem;
+        font-weight: 500;
       }
 
       .search-past-winners .spw__medal-group {
@@ -2758,21 +3090,15 @@ const config = {
         width: 100%;
       }
 
-      /* ---- results table -> one card per profile -------------------------
-         Six columns cannot coexist in ~360px: measured on a real phone, every
-         header wrapped ("Secto r / role", "Meda ls", "Spa n"), single words
-         split across lines ("Techn ology", "Indonesi a"), and award counts
-         broke mid-number. Horizontal scrolling was the other option, but it
-         hides the columns that carry the answer (Awards, Medals) off-screen
-         by default, so the reader has to discover them. Stacking each row
-         into a labelled card keeps every field visible and readable at any
-         width, and is why each cell renders a data-label (see renderRows). */
+      /* Stacked mobile cards transformation for results data table */
       .search-past-winners .spw__results {
-        overflow-x: visible;      /* nothing left to scroll once stacked */
+        overflow-x: visible;
+        background: transparent;
+        border: none;
+        box-shadow: none;
       }
 
       .search-past-winners .spw__table thead {
-        /* Column names move into each cell's ::before label below. */
         position: absolute;
         width: 1px;
         height: 1px;
@@ -2790,149 +3116,95 @@ const config = {
       }
 
       .search-past-winners .spw__table tr {
-        margin-bottom: var(--spacing-md);
-        padding: var(--spacing-md);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-sm);
-        background-color: var(--color-bg-surface, var(--color-bg-muted));
+        margin-bottom: 1rem;
+        padding: 1.15rem;
+        border: 1px solid var(--spw-border);
+        border-radius: var(--spw-radius-lg);
+        background-color: var(--spw-surface);
+        box-shadow: var(--spw-shadow-sm);
       }
 
       .search-past-winners .spw__table td {
         display: grid;
-        grid-template-columns: 5.5rem 1fr;
-        gap: var(--spacing-sm);
+        grid-template-columns: 6.5rem 1fr;
+        gap: 0.5rem;
         align-items: baseline;
-        padding: 3px 0;
+        padding: 0.35rem 0;
         border: 0;
       }
 
       .search-past-winners .spw__table td::before {
         content: attr(data-label);
-        color: var(--color-text-muted);
-        font-size: var(--font-size-xs);
+        color: var(--spw-text-muted);
+        font-size: 0.7rem;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        line-height: 1.5;
+        font-weight: 700;
+        line-height: 1.4;
       }
 
-      /* The profile name is the card's heading, not a labelled field. */
       .search-past-winners .spw__table td.spw__cell-org {
         display: block;
-        margin-bottom: var(--spacing-xs);
-        padding-bottom: var(--spacing-xs);
-        border-bottom: 1px solid var(--color-border-subtle, var(--color-border));
-        font-size: var(--font-size-md);
+        margin-bottom: 0.65rem;
+        padding-bottom: 0.65rem;
+        border-bottom: 1px solid var(--spw-border-subtle);
+      }
+
+      .search-past-winners .spw__table td.spw__cell-org .spw__profile-link {
+        font-size: 1.08rem;
+        font-weight: 800;
       }
 
       .search-past-winners .spw__table td.spw__cell-org::before {
         content: none;
       }
 
-      /* Right-alignment is for a numeric COLUMN; in a card the value sits
-         beside its label, so it reads left-aligned like every other field. */
       .search-past-winners .spw__table td.spw__num {
         text-align: left;
-      }
-
-      /* The drawer's award history keeps its table shape and scrolls, so it
-         must NOT inherit the stacking above. */
-      .search-past-winners .spw__table-scroll .spw__table,
-      .search-past-winners .spw__table-scroll .spw__table tbody {
-        display: table;
-        width: 100%;
-      }
-
-      .search-past-winners .spw__table-scroll .spw__table thead {
-        display: table-header-group;
-        position: static;
-        width: auto;
-        height: auto;
-        clip-path: none;
-      }
-
-      .search-past-winners .spw__table-scroll .spw__table tr {
-        display: table-row;
-        margin: 0;
-        padding: 0;
-        border: 0;
-        border-radius: 0;
-        background-color: transparent;
-      }
-
-      .search-past-winners .spw__table-scroll .spw__table td {
-        display: table-cell;
-        padding: var(--spacing-xs) var(--spacing-sm);
-      }
-
-      .search-past-winners .spw__table-scroll .spw__table td::before {
-        content: none;
-      }
-
-      /* Category and Nomination carry real prose; without a floor they
-         collapse to a few characters per line inside the scroll box. */
-      .search-past-winners .spw__table--history th:nth-child(3),
-      .search-past-winners .spw__table--history td:nth-child(3),
-      .search-past-winners .spw__table--history th:nth-child(4),
-      .search-past-winners .spw__table--history td:nth-child(4) {
-        min-width: 11rem;
-      }
-
-      .search-past-winners .spw__table--history th:nth-child(5),
-      .search-past-winners .spw__table--history td:nth-child(5) {
-        min-width: 7rem;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .search-past-winners .spw__overview,
       .search-past-winners .spw__org-row,
+      .search-past-winners .spw__drawer,
       .search-past-winners .spw__drawer[popover]:popover-open,
       .search-past-winners .spw__scrim[popover]:popover-open,
       .search-past-winners .spw__skel-row,
       .search-past-winners .spw__spinner,
       .search-past-winners .spw__inline-spin {
-        animation: none;
+        animation: none !important;
       }
     }
   }
 
   /* ==========================================
-     SPW FEEDBACK & MODAL STYLING
+     SPW FEEDBACK WIDGET & MODAL STYLING
      ========================================== */
-  .spw__overview-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .spw__overview-head-left {
-    display: flex;
-    align-items: baseline;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
   .spw__feedback {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    font-size: 0.76rem;
-    color: #64748b;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--spw-text-muted, #64748b);
   }
+
   .spw__feedback-label {
-    font-weight: 500;
+    font-weight: 600;
   }
+
   .spw__feedback-actions {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.35rem;
   }
+
   .spw__feedback-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     background: #ffffff;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
@@ -2940,34 +3212,39 @@ const config = {
     cursor: pointer;
     transition: all 0.15s ease;
   }
+
   .spw__feedback-btn:hover:not(:disabled) {
     background: #f8fafc;
     border-color: #94a3b8;
-    color: #1e293b;
+    color: #0f172a;
   }
+
   .spw__feedback-btn.is-up:hover:not(:disabled),
   .spw__feedback-btn.is-up.is-selected {
     background: #ecfdf5;
     border-color: #10b981;
     color: #059669;
   }
+
   .spw__feedback-btn.is-down:hover:not(:disabled),
   .spw__feedback-btn.is-down.is-selected {
     background: #fef2f2;
     border-color: #ef4444;
     color: #dc2626;
   }
+
   .spw__feedback-btn:disabled {
     cursor: default;
     opacity: 0.8;
   }
+
   .spw__feedback-status {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: #0b6e6e;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #0f766e;
   }
 
-  /* SPW Modal */
+  /* SPW Feedback Modal Dialog */
   .spw-modal-backdrop {
     position: fixed !important;
     top: 0 !important;
@@ -2978,200 +3255,239 @@ const config = {
     height: 100vh !important;
     height: 100dvh !important;
     z-index: 9999999 !important;
-    background: rgba(15, 23, 42, 0.7) !important;
-    backdrop-filter: blur(4px);
+    background: rgba(15, 23, 42, 0.65) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 1rem;
     box-sizing: border-box;
-    animation: fadeIn 0.2s ease;
+    animation: spw-scrim-in 0.2s ease;
   }
+
   .spw-modal-backdrop[hidden] {
     display: none !important;
   }
+
   .spw-modal-dialog {
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-radius: 16px;
+    box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(15, 23, 42, 0.05);
     width: 100%;
-    max-width: 500px;
+    max-width: 520px;
     overflow: hidden;
-    animation: scaleIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: spw-pop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   }
+
   .spw-modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.1rem 1.4rem;
+    padding: 1.25rem 1.6rem;
     border-bottom: 1px solid #f1f5f9;
     background: #f8fafc;
   }
+
   .spw-modal-title-wrap {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
+    gap: 0.65rem;
   }
+
   .spw-modal-icon {
-    color: #0b6e6e;
+    color: #0f766e;
     display: flex;
   }
+
   .spw-modal-title {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 800;
     color: #0f172a;
+    letter-spacing: -0.01em;
   }
+
   .spw-modal-close {
     background: none;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1;
     color: #94a3b8;
     cursor: pointer;
-    padding: 0.2rem 0.4rem;
-    border-radius: 4px;
-    transition: color 0.15s;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
   }
+
   .spw-modal-close:hover {
-    color: #334155;
+    color: #0f172a;
+    background-color: #e2e8f0;
   }
+
   .spw-modal-body {
-    padding: 1.4rem;
+    padding: 1.5rem 1.6rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.15rem;
   }
+
   .spw-modal-body[hidden] {
     display: none !important;
   }
+
   .spw-modal-desc {
     margin: 0;
-    font-size: 0.84rem;
-    line-height: 1.5;
+    font-size: 0.86rem;
+    line-height: 1.55;
     color: #64748b;
   }
+
   .spw-form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: 0.4rem;
   }
+
   .spw-form-label {
-    font-size: 0.78rem;
-    font-weight: 600;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: #334155;
   }
+
   .spw-required {
     color: #ef4444;
   }
+
   .spw-optional {
     font-weight: 400;
     color: #94a3b8;
-    font-size: 0.72rem;
+    font-size: 0.74rem;
   }
+
   .spw-form-input,
   .spw-form-textarea {
     width: 100%;
     background-color: #ffffff !important;
     border: 1px solid #cbd5e1;
-    border-radius: 6px;
-    padding: 0.55rem 0.75rem;
-    font-size: 0.84rem;
-    /* The modal is moved to document.body at runtime. Explicitly override
-       inherited site form colours so entered feedback remains readable. */
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.88rem;
     color: #0f172a !important;
     -webkit-text-fill-color: #0f172a;
     caret-color: #0f172a;
     font-family: inherit;
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
     box-sizing: border-box;
   }
+
   .spw-form-input::placeholder,
   .spw-form-textarea::placeholder {
-    color: #64748b;
-    -webkit-text-fill-color: #64748b;
-    opacity: 1;
+    color: #94a3b8;
+    -webkit-text-fill-color: #94a3b8;
   }
+
   .spw-form-input:focus,
   .spw-form-textarea:focus {
     outline: none;
-    border-color: #0b6e6e;
-    box-shadow: 0 0 0 3px rgba(11, 110, 110, 0.12);
+    border-color: #0f766e;
+    box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
   }
+
   .spw-modal-footer {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.6rem;
+    gap: 0.75rem;
     margin-top: 0.5rem;
-    padding-top: 0.8rem;
+    padding-top: 1rem;
     border-top: 1px solid #f1f5f9;
   }
+
   .spw-modal-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.82rem;
-    font-weight: 600;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.15s ease;
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.5rem;
   }
+
   .spw-modal-btn.is-secondary {
     background: #ffffff;
     border: 1px solid #cbd5e1;
     color: #475569;
   }
+
   .spw-modal-btn.is-secondary:hover {
     background: #f8fafc;
     color: #0f172a;
+    border-color: #94a3b8;
   }
+
   .spw-modal-btn.is-primary {
-    background: #0b6e6e;
-    border: 1px solid #0b6e6e;
+    background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+    border: 1px solid #0f766e;
     color: #ffffff;
+    box-shadow: 0 2px 4px rgba(15, 118, 110, 0.25);
   }
+
   .spw-modal-btn.is-primary:hover:not(:disabled) {
-    background: #085050;
-    border-color: #085050;
+    background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+    box-shadow: 0 4px 8px rgba(15, 118, 110, 0.35);
   }
+
   .spw-modal-btn:disabled {
     opacity: 0.65;
     cursor: not-allowed;
   }
+
   .spw-modal-success {
-    padding: 2.2rem 1.5rem;
+    padding: 2.5rem 1.75rem;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.8rem;
+    gap: 0.85rem;
   }
+
   .spw-modal-success[hidden] {
     display: none !important;
   }
+
   .spw-modal-success-icon {
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: #f0fdfa;
+    border: 2px solid #ccfbf1;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  .spw-modal-success-title {
-    margin: 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #0f172a;
-  }
-  .spw-modal-success-copy {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #64748b;
-    max-width: 360px;
-    line-height: 1.5;
+    margin-bottom: 0.25rem;
   }
 
+  .spw-modal-success-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #0f172a;
+  }
+
+  .spw-modal-success-copy {
+    margin: 0;
+    font-size: 0.88rem;
+    color: #64748b;
+    max-width: 380px;
+    line-height: 1.55;
+  }
+
+  /* Global Fallback for Hidden Elements */
+  [data-spw] [hidden],
+  [data-spw][hidden] {
+    display: none !important;
+  }
 </style>
