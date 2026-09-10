@@ -103,26 +103,6 @@
       }
     ]
   },
-  "tickets": {
-    "heading": "Tickets",
-    "links": [
-      {
-        "text": "2026 Awards Event",
-        "href": "/tickets/awards-banquet",
-        "openInNewTab": false
-      },
-      {
-        "text": "Watch the Luncheon Ceremony Awards Presentations",
-        "href": "/tickets/watch-awards-presentations-luncheon/",
-        "openInNewTab": false
-      },
-      {
-        "text": "Watch the Evening Ceremony Awards Presentations",
-        "href": "/tickets/watch-awards-presentations-evening/",
-        "openInNewTab": false
-      }
-    ]
-  },
   "sponsors": {
     "heading": "Sponsors",
     "links": [
