@@ -40,7 +40,7 @@ const {
     distributionMode="half"
     verticalAlignment="top"
     gap="3xl"
-    minSplitWidth={960}
+    minSplitWidth={1400}
   >
     <div
       slot="first"
@@ -365,7 +365,15 @@ const {
       background: rgba(60, 60, 60, 0.9);
     }
 
-    @media (max-width: 960px) {
+    @media (max-width: 1400px) {
+      .hero-calendar {
+        min-height: auto;
+      }
+
+      .award-programs {
+        margin-top: var(--spacing-xl);
+      }
+
       .hero-calendar__hero-socials {
         position: static;
         transform: none;
