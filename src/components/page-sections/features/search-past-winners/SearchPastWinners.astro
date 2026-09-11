@@ -703,14 +703,15 @@ const config = {
             <label
               for="spw-feedback-email"
               class="spw-form-label"
-              >Your Email <span class="spw-optional">(optional - to receive ticket updates)</span
-              ></label
+              >Your Email <span class="spw-required">*</span>
+              <span class="spw-optional">(so we can follow up on your ticket)</span></label
             >
             <input
               type="email"
               id="spw-feedback-email"
               class="spw-form-input"
               placeholder="e.g. jane@company.com"
+              required
             />
           </div>
 
@@ -1869,7 +1870,7 @@ const config = {
     const q = spwFeedbackQueryInput?.value || "";
     const overview = spwFeedbackOverviewInput?.value || "";
 
-    if (!name || !comments) return;
+    if (!name || !email || !comments) return;
 
     if (spwFeedbackSubmitBtn) {
       spwFeedbackSubmitBtn.disabled = true;
