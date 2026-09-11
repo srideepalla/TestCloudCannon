@@ -37,10 +37,10 @@ const {
   {...htmlAttributes}
 >
   <Split
-    distributionMode="half"
+    distributionMode="two-thirds-third"
     verticalAlignment="top"
     gap="3xl"
-    minSplitWidth={1400}
+    minSplitWidth={960}
   >
     <div
       slot="first"
@@ -365,15 +365,7 @@ const {
       background: rgba(60, 60, 60, 0.9);
     }
 
-    @media (max-width: 1400px) {
-      .hero-calendar {
-        min-height: auto;
-      }
-
-      .award-programs {
-        margin-top: var(--spacing-xl);
-      }
-
+    @media (max-width: 960px) {
       .hero-calendar__hero-socials {
         position: static;
         transform: none;
@@ -381,6 +373,21 @@ const {
         justify-content: center;
         margin-top: var(--spacing-md);
       }
+    }
+  }
+
+  .hero-calendar .award-programs {
+    margin-right: 3rem;
+  }
+
+  @media (max-width: 1600px) {
+    .hero-calendar .award-programs {
+      max-width: 360px;
+      margin-top: 5rem;
+    }
+
+    .hero-calendar__subheading {
+      margin-top: 5rem;
     }
   }
 </style>
