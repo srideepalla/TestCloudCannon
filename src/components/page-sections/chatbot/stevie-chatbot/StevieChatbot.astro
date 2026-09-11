@@ -3744,7 +3744,9 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     /* ---------- Identity gate + profile ---------- */
 
     /* The canvas is position:relative, so the gate covers the conversation and
-       the composer together -- nothing behind it is reachable while it is up. */
+       the composer together -- nothing behind it is reachable while it is up.
+       Frosted luxury glass reveals the blurred assistant behind it, with warm
+       radial gold glow and architectural micro-dots. */
     .stevie-gate {
       position: absolute;
       inset: 0;
@@ -3753,8 +3755,34 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
       align-items: center;
       justify-content: center;
       padding: 1.25rem;
-      background: var(--scb-surface);
+      background:
+        radial-gradient(
+          circle at 50% 48%,
+          rgba(254, 243, 199, 0.55) 0%,
+          rgba(255, 255, 255, 0.65) 50%,
+          rgba(255, 255, 255, 0.82) 100%
+        ),
+        radial-gradient(rgba(198, 146, 20, 0.15) 1.2px, transparent 1.2px);
+      background-size:
+        100% 100%,
+        24px 24px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       border-radius: inherit;
+    }
+
+    .stevie-chatbot-section[data-color-scheme="dark"] .stevie-gate {
+      background:
+        radial-gradient(
+          circle at 50% 48%,
+          rgba(198, 146, 20, 0.15) 0%,
+          rgba(15, 23, 42, 0.7) 55%,
+          rgba(15, 23, 42, 0.88) 100%
+        ),
+        radial-gradient(rgba(198, 146, 20, 0.2) 1.2px, transparent 1.2px);
+      background-size:
+        100% 100%,
+        24px 24px;
     }
 
     /* Author `display: flex` above beats the browser default for [hidden], so
@@ -3764,14 +3792,32 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
     }
 
     .stevie-gate__card {
+      position: relative;
       width: 100%;
-      max-width: 25rem;
-      padding: 1.75rem;
+      max-width: 26rem;
+      padding: 2.1rem;
       background: var(--scb-surface);
-      border: 1px solid var(--scb-border);
-      border-radius: var(--radius-lg, 16px);
-      box-shadow: var(--scb-shadow-lg);
+      border: 1px solid rgba(226, 232, 240, 0.95);
+      border-radius: var(--radius-lg, 18px);
+      box-shadow:
+        0 25px 50px -12px rgba(15, 23, 42, 0.18),
+        0 0 0 1px rgba(198, 146, 20, 0.14);
       text-align: left;
+      overflow: hidden;
+    }
+
+    .stevie-gate__card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #c69214 0%, #fde047 50%, #a16207 100%);
+    }
+
+    .stevie-chatbot-section[data-color-scheme="dark"] .stevie-gate__card {
+      border-color: #334155;
     }
 
     .stevie-gate__badge {
@@ -3863,21 +3909,24 @@ const apiKey = apiKeyProp || import.meta.env.PUBLIC_STEVIE_API_KEY || "";
 
     .stevie-gate__submit {
       margin-top: 0.25rem;
-      padding: 0.7rem 1rem;
-      border: 1px solid var(--scb-gold-solid);
+      padding: 0.72rem 1.1rem;
+      border: 1px solid #a16207;
       border-radius: var(--radius-sm, 8px);
-      background: var(--scb-gold-solid);
+      background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
       color: #fff;
       font-family: var(--font-body);
-      font-size: 0.9rem;
+      font-size: 0.92rem;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(146, 64, 14, 0.25);
       transition: all 0.18s ease;
     }
 
     .stevie-gate__submit:hover:not(:disabled) {
-      background: var(--scb-gold-dark);
-      border-color: var(--scb-gold-dark);
+      background: linear-gradient(135deg, #92400e 0%, #78350f 100%);
+      border-color: #78350f;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(146, 64, 14, 0.35);
     }
 
     .stevie-gate__submit:disabled {
